@@ -1,0 +1,60 @@
+﻿- id: 1
+  name_german: Angerburg
+  name_polish_old: Węgobork
+  name_polish: Węgorzewo
+  elevation: 123
+  latitude: 54.218000
+  longitude: 21.725389
+- id: 2
+  name_german: Angerburg Stadtwald
+  name_polish_old: Węgobork Park
+  name_polish: Węgorzewo Park
+  elevation: 135
+  latitude: 54.225889
+  longitude: 21.794056
+- id: 3
+  name_german: Buddern
+  name_polish: Budry
+  elevation: 117
+  latitude: 54.245278
+  longitude: 21.891250
+- id: 4
+  name_german: Popiollen
+  name_german_new: Albrechtswiesen
+  name_polish: Popioły
+  elevation: 109
+  latitude: 54.231361
+  longitude: 21.940444
+- id: 5
+  name_german: Benkheim
+  name_polish: Banie Mazurskie
+  elevation: 108
+  latitude: 54.227083
+  longitude: 21.974167
+- id: 6
+  name_german: Bodschwingken
+  name_german_new: Herandstal
+  name_polish: Boćwinka
+  elevation: 111
+  latitude: 54.241472
+  longitude: 22.037028
+- id: 7
+  name_german: Grabowen
+  name_german_new: Arnswald
+  name_polish: Grabowo Jeziorki
+  elevation: 141
+  latitude: 54.219889
+  longitude: 22.146500
+- id: 8
+  name_german: Jeblonsken
+  name_german_new: Urbansdorf
+  name_polish: Jabłońskie
+  elevation: 191
+  latitude: 54.225278
+  longitude: 22.229028
+- id: 9
+  name_german: Goldap
+  name_polish: Gołdap
+  elevation: 152
+  latitude: 54.314667
+  longitude: 22.307472

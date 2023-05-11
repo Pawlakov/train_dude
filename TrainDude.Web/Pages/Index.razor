@@ -1,0 +1,76 @@
+﻿@using TrainDude.Network.Commands;
+@using TrainDude.Network.Queries;
+@page "/"
+
+@inject IMediator mediator
+@inject IJSRuntime js
+
+<PageTitle>Strona Główna</PageTitle>
+
+<section class="section">
+    <h1 class="title">Strona Główna</h1>
+    <p class="subtitle">Frontem do klienta.</p>
+</section>
+<hr />
+<section class="section">
+    <div class="block">
+        <div class="field has-addons">
+            <p class="control">
+                <span class="select">
+                    <select>
+                        @foreach (var hour in Enumerable.Range(0, 24))
+                        {
+                            <option>@(hour)</option>
+                        }
+                    </select>
+                </span>
+            </p>
+            <p class="control">
+                <a class="button is-static">
+                    :
+                </a>
+            </p>
+            <p class="control">
+                <span class="select">
+                    <select>
+                        @foreach (var minutes in Enumerable.Range(0, 60))
+                        {
+                            <option>@(minutes.ToString("D2"))</option>
+                        }
+                    </select>
+                </span>
+            </p>
+            <p class="control">
+                <a class="button is-info">
+                    Pokaż pociągi
+                </a>
+            </p>
+        </div>
+        <div id="map" style="height:512px;"></div>
+    </div>
+</section>
+
+@code {
+    private IJSObjectReference scriptModule;
+    private string stationsGeoJson;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        this.stationsGeoJson = await this.mediator.Send(new GetNetworkGeoJsonQuery());
+
+        await base.OnParametersSetAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            this.scriptModule = await this.js.InvokeAsync<IJSObjectReference>("import", "./Pages/Index.razor.js");
+
+            await this.scriptModule.InvokeVoidAsync("initMap", "map", 54.218000, 21.725389, 12);
+            await this.scriptModule.InvokeVoidAsync("addGeoJson", this.stationsGeoJson);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

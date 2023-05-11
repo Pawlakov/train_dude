@@ -1,0 +1,37 @@
+﻿@using TrainDude.Network.Commands;
+@page "/admin"
+
+@inject IMediator mediator
+
+<PageTitle>Administracja</PageTitle>
+
+<section class="section">
+    <h1 class="title">Administracja</h1>
+    <p class="subtitle">Narzędzia specjalnego przeznaczenia.</p>
+</section>
+<hr />
+<section class="section">
+    <div class="block">
+        <h2 class="title">Stacje i odcinki</h2>
+        <div class="buttons">
+            <button class="button is-info" onclick="@this.Drop">
+                Drop
+            </button>
+            <button class="button is-info" onclick="@this.Seed">
+                Seed
+            </button>
+        </div>
+    </div>
+</section>
+
+@code {
+    private async void Drop()
+    {
+        await this.mediator.Send(new DropCommand());
+    }
+
+    private async void Seed()
+    {
+        await this.mediator.Send(new SeedCommand());
+    }
+}

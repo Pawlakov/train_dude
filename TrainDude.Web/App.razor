@@ -1,0 +1,14 @@
+﻿@using TrainDude.Web.Shared
+
+<Router AppAssembly="@typeof(App).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+    </Found>
+    <NotFound>
+        <PageTitle>Nie znaleziono</PageTitle>
+        <LayoutView Layout="@typeof(MainLayout)">
+            <div class="notification is-danger" role="alert">Nie znaleziono strony pod tym adresem.</div>
+        </LayoutView>
+    </NotFound>
+</Router>

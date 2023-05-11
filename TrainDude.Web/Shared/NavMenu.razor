@@ -1,0 +1,56 @@
+﻿<nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a role="button" class="@this.burgerClass" aria-label="menu" aria-expanded="false" @onclick="this.ToggleNavMenu">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+    <div class="@this.menuClass">
+        <div class="navbar-start">
+            <a class="navbar-item" href="">
+                Strona Główna
+            </a>
+            <a class="navbar-item" href="stations">
+                Stacje
+            </a>
+            <a class="navbar-item" href="admin">
+                Administracja
+            </a>
+        </div>
+    </div>
+</nav>
+
+@code {
+    private const string DefaultBurgerClass = "navbar-burger";
+    private const string DefaultMenuClass = "navbar-menu";
+
+    private bool isActive;
+    private string burgerClass;
+    private string menuClass;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        this.isActive = false;
+        this.burgerClass = DefaultBurgerClass;
+        this.menuClass = DefaultMenuClass;
+
+        await base.OnParametersSetAsync();
+    }
+
+    private void ToggleNavMenu()
+    {
+        if (this.isActive)
+        {
+            this.isActive = false;
+            this.burgerClass = DefaultBurgerClass;
+            this.menuClass = DefaultMenuClass;
+        }
+        else
+        {
+            this.isActive = true;
+            this.burgerClass = $"{DefaultBurgerClass} is-active";
+            this.menuClass = $"{DefaultMenuClass} is-active";
+        }
+    }
+}

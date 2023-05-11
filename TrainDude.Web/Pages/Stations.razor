@@ -1,0 +1,55 @@
+﻿@using TrainDude.Network.DTOs;
+@using TrainDude.Network.Queries;
+
+@page "/stations"
+
+@inject IMediator mediator
+
+<PageTitle>Stacje</PageTitle>
+
+<section class="section">
+    <h1 class="title">Stacje</h1>
+    <p class="subtitle">Lista stacji.</p>
+</section>
+<hr />
+<section class="section">
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nazwa</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (stations == null)
+                {
+                    <tr>
+                        <td colspan="3"><em>Loading...</em></td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var station in stations)
+                    {
+                        <tr>
+                            <td>@(station.Id)</td>
+                            <td>@(station.Name)</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+@code {
+    private IEnumerable<StationSummaryDTO> stations;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        this.stations = await this.mediator.Send(new GetStationsQuery());
+
+        await base.OnParametersSetAsync();
+    }
+}

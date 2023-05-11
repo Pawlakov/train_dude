@@ -1,0 +1,163 @@
+﻿# Angerburg - Goldap
+- number: 401
+  type: local
+  classes: [second, third]
+  schedules:
+    - days: everyday
+      start: '6:01'
+      events:
+       - { type: departs, station: 1, at: 0 }
+       - { type: halts, station: 2, at: 7 }
+       - { type: halts, station: 3, at: 18 }
+       - { type: halts, station: 4, at: 27 }
+       - { type: halts, station: 5, at: 39 }
+       - { type: halts, station: 6, at: 51 }
+       - { type: halts, station: 7, at: 61 }
+       - { type: halts, station: 8, at: 70 }
+       - { type: arrives, station: 9, at: 81 }
+- number: 403
+  type: local
+  classes: [second, third]
+  schedules:
+    - days: everyday
+      start: '7:17'
+      events:
+       - { type: departs, station: 1, at: 0 }
+       - { type: halts, station: 2, at: 7 }
+       - { type: halts, station: 3, at: 17 }
+       - { type: halts, station: 4, at: 26 }
+       - { type: halts, station: 5, at: 33 }
+       - { type: halts, station: 6, at: 44 }
+       - { type: halts, station: 7, at: 53 }
+       - { type: halts, station: 8, at: 61 }
+       - { type: arrives, station: 9, at: 71 }
+- number: 409
+  type: local
+  classes: [second, third]
+  schedules:
+    - days: everyday
+      start: '10:13'
+      events:
+       - { type: departs, station: 1, at: 0 }
+       - { type: halts, station: 2, at: 7 }
+       - { type: halts, station: 3, at: 18 }
+       - { type: halts, station: 4, at: 27 }
+       - { type: halts, station: 5, at: 36 }
+       - { type: halts, station: 6, at: 48 }
+       - { type: halts, station: 7, at: 58 }
+       - { type: halts, station: 8, at: 67 }
+       - { type: arrives, station: 9, at: 78 }
+- number: 411
+  type: local
+  classes: [second, third]
+  schedules:
+    - days: everyday
+      start: '14:14'
+      events:
+       - { type: departs, station: 1, at: 0 }
+       - { type: halts, station: 2, at: 7 }
+       - { type: halts, station: 3, at: 21 }
+       - { type: halts, station: 4, at: 30 }
+       - { type: halts, station: 5, at: 38 }
+       - { type: halts, station: 6, at: 50 }
+       - { type: halts, station: 7, at: 60 }
+       - { type: halts, station: 8, at: 69 }
+       - { type: arrives, station: 9, at: 79 }
+- number: 415
+  type: local
+  classes: [second, third]
+  schedules:
+    - days: everyday
+      start: '18:55'
+      events:
+       - { type: departs, station: 1, at: 0 }
+       - { type: halts, station: 2, at: 7 }
+       - { type: halts, station: 3, at: 18 }
+       - { type: halts, station: 4, at: 27 }
+       - { type: halts, station: 5, at: 34 }
+       - { type: halts, station: 6, at: 45 }
+       - { type: halts, station: 7, at: 54 }
+       - { type: halts, station: 8, at: 63 }
+       - { type: arrives, station: 9, at: 73 }
+
+# Goldap - Angerburg
+- number: 404
+  type: local
+  classes: [second, third]
+  schedules:
+    - days: everyday
+      start: '5:52'
+      events:
+       - { type: departs, station: 9, at: 0 }
+       - { type: halts, station: 8, at: 11 }
+       - { type: halts, station: 7, at: 20 }
+       - { type: halts, station: 6, at: 29 }
+       - { type: halts, station: 5, at: 45 }
+       - { type: halts, station: 4, at: 52 }
+       - { type: halts, station: 3, at: 62 }
+       - { type: halts, station: 2, at: 73 }
+       - { type: arrives, station: 1, at: 80 }
+- number: 408
+  type: local
+  classes: [second, third]
+  schedules:
+    - days: everyday
+      start: '9:00'
+      events:
+       - { type: departs, station: 9, at: 0 }
+       - { type: halts, station: 8, at: 10 }
+       - { type: halts, station: 7, at: 19 }
+       - { type: halts, station: 6, at: 27 }
+       - { type: halts, station: 5, at: 38 }
+       - { type: halts, station: 4, at: 45 }
+       - { type: halts, station: 3, at: 55 }
+       - { type: halts, station: 2, at: 65 }
+       - { type: arrives, station: 1, at: 71 }
+- number: 410
+  type: local
+  classes: [second, third]
+  schedules:
+    - days: everyday
+      start: '13:28'
+      events:
+       - { type: departs, station: 9, at: 0 }
+       - { type: halts, station: 8, at: 11 }
+       - { type: halts, station: 7, at: 19 }
+       - { type: halts, station: 6, at: 28 }
+       - { type: halts, station: 5, at: 40 }
+       - { type: halts, station: 4, at: 47 }
+       - { type: halts, station: 3, at: 64 }
+       - { type: halts, station: 2, at: 74 }
+       - { type: arrives, station: 1, at: 80 }
+- number: 416
+  type: local
+  classes: [second, third]
+  schedules:
+    - days: everyday
+      start: '17:37'
+      events:
+       - { type: departs, station: 9, at: 0 }
+       - { type: halts, station: 8, at: 10 }
+       - { type: halts, station: 7, at: 20 }
+       - { type: halts, station: 6, at: 29 }
+       - { type: halts, station: 5, at: 41 }
+       - { type: halts, station: 4, at: 48 }
+       - { type: halts, station: 3, at: 58 }
+       - { type: halts, station: 2, at: 69 }
+       - { type: arrives, station: 1, at: 76 }
+- number: 482
+  type: local
+  classes: [second, third]
+  schedules:
+    - days: everyday
+      start: '20:30'
+      events:
+       - { type: departs, station: 9, at: 0 }
+       - { type: halts, station: 8, at: 11 }
+       - { type: halts, station: 7, at: 20 }
+       - { type: halts, station: 6, at: 29 }
+       - { type: halts, station: 5, at: 41 }
+       - { type: halts, station: 4, at: 48 }
+       - { type: halts, station: 3, at: 58 }
+       - { type: halts, station: 2, at: 69 }
+       - { type: arrives, station: 1, at: 76 }
