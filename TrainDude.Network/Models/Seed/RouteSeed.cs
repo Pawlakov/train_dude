@@ -4,13 +4,33 @@
 
 namespace TrainDude.Network.Models.Seed;
 
+using System.Collections.Generic;
+
 internal class RouteSeed
 {
-    public int A { get; set; }
+    required public EndPoint A { get; set; }
 
-    public int B { get; set; }
+    required public EndPoint B { get; set; }
 
     public double Length { get; set; }
 
     public int Tracks { get; set; }
+
+    public List<MidPoint>? MidPoints { get; set; }
+
+    internal class EndPoint
+    {
+        public int StationId { get; set; }
+
+        public int? Axle { get; set; }
+
+        public bool Pole { get; set; }
+    }
+
+    internal class MidPoint
+    {
+        public double Latitude { get; set; }
+
+        public double Longitude { get; set; }
+    }
 }

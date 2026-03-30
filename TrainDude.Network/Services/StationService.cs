@@ -43,6 +43,11 @@ internal class StationService
         return await this.collection.Find(FilterDefinition<Station>.Empty).ToListAsync();
     }
 
+    public async Task<Station?> Get(ObjectId id)
+    {
+        return await this.collection.Find(Builders<Station>.Filter.Eq(x => x.Id, id)).SingleOrDefaultAsync();
+    }
+
     public async Task DeleteAll()
     {
         await this.collection.DeleteManyAsync(FilterDefinition<Station>.Empty);

@@ -1,32 +1,105 @@
-﻿- a: 1
-  b: 2
+﻿- a: 
+   station_id: 1
+   axle: 0
+   pole: true
+  b: 
+   station_id: 2
+   axle: 0
+   pole: false
   length: 4.8
   tracks: 1
-- a: 2
-  b: 3
+- a: 
+   station_id: 2
+   axle: 0
+   pole: true
+  b: 
+   station_id: 3
+   axle: 0
+   pole: false
   length: 7.3
   tracks: 1
-- a: 3
-  b: 4
+- a: 
+   station_id: 3
+   axle: 0
+   pole: true
+  b: 
+   station_id: 4
+   axle: 0
+   pole: false
   length: 6.1
   tracks: 1
-- a: 4
-  b: 5
+- a: 
+   station_id: 4
+   pole: true
+  b: 
+   station_id: 5
+   pole: false
   length: 4.7
   tracks: 1
-- a: 5
-  b: 6
+- a: 
+   station_id: 5
+   pole: true
+  b: 
+   station_id: 6
+   pole: false
   length: 7.7
   tracks: 1
-- a: 6
-  b: 7
+- a: 
+   station_id: 6
+   pole: true
+  b: 
+   station_id: 7
+   pole: false
   length: 6.0
   tracks: 1
-- a: 7
-  b: 8
+- a: 
+   station_id: 7
+   pole: true
+  b: 
+   station_id: 8
+   pole: false
   length: 5.8
   tracks: 1
-- a: 8
-  b: 9
+- a: 
+   station_id: 8
+   pole: true
+  b: 
+   station_id: 9
+   pole: false
   length: 7.5
   tracks: 1
+  mid_points:
+   - latitude: 54.273977
+     longitude: 22.246789
+   - latitude: 54.284920
+     longitude: 22.245212
+   - latitude: 54.286197
+     longitude: 22.245469
+   - latitude: 54.290000
+     longitude: 22.248600
+   - latitude: 54.292134
+     longitude: 22.250190
+   - latitude: 54.293286
+     longitude: 22.250748
+   - latitude: 54.296016
+     longitude: 22.251606
+   - latitude: 54.302077
+     longitude: 22.256670
+   - latitude: 54.309288
+     longitude: 22.261648
+   - latitude: 54.311400
+     longitude: 22.264400
+   - latitude: 54.312843
+     longitude: 22.267270
+   - latitude: 54.313569
+     longitude: 22.269588
+   - latitude: 54.316961
+     longitude: 22.282054
+   - latitude: 54.317575
+     longitude: 22.284629
+   - latitude: 54.317728
+     longitude: 22.285810
+   - latitude: 54.317762
+     longitude: 22.286480
+   - latitude: 54.317665
+     longitude: 22.287515

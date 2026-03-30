@@ -1,0 +1,61 @@
+﻿@using TrainDude.Network.DTOs;
+@using TrainDude.Network.Queries;
+
+@page "/routes"
+
+@inject IMediator mediator
+
+<PageTitle>Odcinki</PageTitle>
+
+<section class="section">
+    <h1 class="title">Odcinki</h1>
+    <p class="subtitle">Lista odcinków.</p>
+</section>
+<hr />
+<section class="section">
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>A</th>
+                    <th>B</th>
+                    <th>Długość</th>
+                    <th>Długość nominalna</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (this.routes == null)
+                {
+                    <tr>
+                        <td colspan="4"><em>Loading...</em></td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var route in this.routes)
+                    {
+                        <tr>
+                            <td>@(route.NameA)</td>
+                            <td>@(route.NameB)</td>
+                            <td>@($"{route.Haversine:0.00}")km</td>
+                            <td>@($"{route.Length:0.0}")km</td>
+                            <td><a href="route/@(route.Id)">Szczegóły</a></td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+@code {
+    private IEnumerable<RouteSummaryDTO> routes;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        this.routes = await this.mediator.Send(new GetRoutesQuery());
+
+        await base.OnParametersSetAsync();
+    }
+}

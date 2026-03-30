@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 using MongoDB.Bson;
 using MongoDB.Driver;
+
 using TrainDude.Network.Models;
 
 internal class RouteService
@@ -32,8 +33,8 @@ internal class RouteService
     {
         await this.collection.InsertOneAsync(model);
 
-        var sameAFilter = Builders<Route>.Filter.Eq(x => x.A, model.A);
-        var sameBFilter = Builders<Route>.Filter.Eq(x => x.B, model.B);
+        var sameAFilter = Builders<Route>.Filter.Eq(x => x.A.StationId, model.A.StationId);
+        var sameBFilter = Builders<Route>.Filter.Eq(x => x.B.StationId, model.B.StationId);
         var combinedFilter = Builders<Route>.Filter.And(sameAFilter, sameBFilter);
         var justInserted = await this.collection.Find(combinedFilter).SingleAsync();
         return justInserted.Id;
@@ -42,6 +43,11 @@ internal class RouteService
     public async Task<IEnumerable<Route>> GetAll()
     {
         return await this.collection.Find(FilterDefinition<Route>.Empty).ToListAsync();
+    }
+
+    public async Task<Route?> Get(ObjectId id)
+    {
+        return await this.collection.Find(Builders<Route>.Filter.Eq(x => x.Id, id)).SingleOrDefaultAsync();
     }
 
     public async Task DeleteAll()

@@ -43,11 +43,3 @@ export function addGeoJson(geoJson) {
 
     myLayer.addData(geoObject);
 }
-
-function makeBound(currentPoint, width, height) {
-    var xDifference = width / 2;
-    var yDifference = height / 2;
-    var southWest = L.point((currentPoint.x - xDifference), (currentPoint.y - yDifference));
-    var northEast = L.point((currentPoint.x + xDifference), (currentPoint.y + yDifference));
-    return L.latLngBounds(map.containerPointToLatLng(southWest), map.containerPointToLatLng(northEast));
-}

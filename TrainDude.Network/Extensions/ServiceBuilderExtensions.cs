@@ -31,7 +31,9 @@ public static class ServiceBuilderExtensions
             .AddSingleton<SeedService>()
             .AddSingleton<StationService>()
             .AddSingleton<RouteService>()
+            .AddSingleton<RadiusService>()
             .AddSingleton<IMongoCollection<Station>>(services => services.GetRequiredService<IMongoDatabase>().GetCollection<Station>("stations"))
-            .AddSingleton<IMongoCollection<Route>>(services => services.GetRequiredService<IMongoDatabase>().GetCollection<Route>("routes"));
+            .AddSingleton<IMongoCollection<Route>>(services => services.GetRequiredService<IMongoDatabase>().GetCollection<Route>("routes"))
+            .AddSingleton<IMongoCollection<Radius>>(services => services.GetRequiredService<IMongoDatabase>().GetCollection<Radius>("radii"));
     }
 }

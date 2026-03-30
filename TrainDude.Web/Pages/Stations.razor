@@ -17,7 +17,6 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Nazwa</th>
                 </tr>
             </thead>
@@ -25,7 +24,7 @@
                 @if (stations == null)
                 {
                     <tr>
-                        <td colspan="3"><em>Loading...</em></td>
+                        <td colspan="2"><em>Loading...</em></td>
                     </tr>
                 }
                 else
@@ -33,7 +32,6 @@
                     @foreach (var station in stations)
                     {
                         <tr>
-                            <td>@(station.Id)</td>
                             <td>@(station.Name)</td>
                         </tr>
                     }

@@ -26,4 +26,8 @@ public class StationSummaryDTO
     /// Gets name of the station if present.
     /// </summary>
     public string? Name { get; init; }
+
+    public double? Latitude { get; init; }
+
+    public double? Longitude { get; init; }
 }

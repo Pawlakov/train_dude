@@ -1,0 +1,57 @@
+﻿@using TrainDude.Network.DTOs
+@using TrainDude.Network.Queries
+
+@page "/radii"
+
+@inject IMediator mediator
+
+<PageTitle>Promienie</PageTitle>
+
+<section class="section">
+    <h1 class="title">Promienie</h1>
+    <p class="subtitle">Lista minimalnych promieni łuku.</p>
+</section>
+<hr />
+<section class="section">
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Prędkość maksymalna</th>
+                    <th>Minimalny promień łuku</th>
+                    <th>Maksymalny antypromień łuku</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (this.radii == null)
+                {
+                    <tr>
+                        <td colspan="4"><em>Loading...</em></td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var radius in this.radii)
+                    {
+                        <tr>
+                            <td>@($"{radius.Speed}") km/h</td>
+                            <td>@($"{radius.Minimum}") km</td>
+                            <td>@($"{radius.MaximumAntiradius:0.00}") 1/Mm</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+@code {
+    private IEnumerable<RadiusSummaryDTO> radii;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        this.radii = await this.mediator.Send(new GetRadiiQuery());
+
+        await base.OnParametersSetAsync();
+    }
+}

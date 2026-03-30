@@ -27,7 +27,7 @@ internal class GetStationsQueryHandler : IRequestHandler<GetStationsQuery, IEnum
     {
         var models = await this.networkService.GetAll();
         var dtos = models
-            .Select(x => new StationSummaryDTO { Id = x.Id, Name = x.NameGerman })
+            .Select(x => new StationSummaryDTO { Id = x.Id, Name = x.NameGerman, Longitude = x.Location?.Coordinates?.Longitude, Latitude = x.Location?.Coordinates?.Latitude })
             .ToList();
 
         return dtos;

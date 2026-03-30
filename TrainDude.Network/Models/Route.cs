@@ -11,16 +11,33 @@ using System.Text;
 using System.Threading.Tasks;
 
 using MongoDB.Bson;
+using MongoDB.Driver.GeoJsonObjectModel;
 
 internal class Route
 {
     public ObjectId Id { get; set; }
 
-    public ObjectId A { get; set; }
+    required public EndPoint A { get; set; }
 
-    public ObjectId B { get; set; }
+    required public EndPoint B { get; set; }
 
     public double? NominalLength { get; set; }
 
     public int? Tracks { get; set; }
+
+    required public List<MidPoint> MidPoints { get; set; }
+
+    internal class EndPoint
+    {
+        public ObjectId StationId { get; set; }
+
+        public int? Axle { get; set; }
+
+        public bool Pole { get; set; }
+    }
+
+    internal class MidPoint
+    {
+        required public GeoJsonPoint<GeoJson2DGeographicCoordinates> Location { get; set; }
+    }
 }

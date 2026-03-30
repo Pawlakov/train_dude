@@ -68,4 +68,25 @@ internal class SeedService
             }
         }
     }
+
+    public async Task<IList<RadiusSeed>> GetRadiiSeed()
+    {
+        var assembly = Assembly.GetExecutingAssembly();
+        var fileName = assembly.GetManifestResourceNames().Where(x => x.EndsWith("radii_seed.yml")).Single();
+
+        using (var stream = assembly.GetManifestResourceStream(fileName))
+        {
+            if (stream == null)
+            {
+                throw new FileNotFoundException("Embedded resource not found.", fileName);
+            }
+
+            using (var reader = new StreamReader(stream))
+            {
+                var result = reader.ReadToEnd();
+                var list = this.deserializer.Deserialize<List<RadiusSeed>>(result);
+                return await Task.FromResult(list);
+            }
+        }
+    }
 }

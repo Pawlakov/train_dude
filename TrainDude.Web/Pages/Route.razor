@@ -1,0 +1,56 @@
+﻿@using MongoDB.Bson
+@using TrainDude.Network.DTOs;
+@using TrainDude.Network.Queries;
+
+@page "/route/{StringId}"
+
+@inject IMediator mediator
+@inject IJSRuntime js
+
+<PageTitle>Odcinek</PageTitle>
+
+<section class="section">
+    <h1 class="title">Odcinek</h1>
+    @if (this.route != null)
+    {
+        <p class="subtitle">@(this.route.A.Name) - @(this.route.B.Name)</p>
+    }
+</section>
+<hr />
+<section class="section">
+    <div class="block">
+        <div id="map" style="height:512px;"></div>
+    </div>
+</section>
+
+@code {
+    private IJSObjectReference scriptModule;
+    private RouteDetailsDTO route;
+    private string routeGeoJson;
+
+
+    [Parameter]
+    public string StringId { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        this.route = await this.mediator.Send(new GetRouteQuery(this.StringId));
+        this.routeGeoJson = await this.mediator.Send(new GetRouteGeoJsonQuery(this.StringId));
+        var antiradiusSeries = await this.mediator.Send(new GetRouteAntiradiusSeriesQuery(this.StringId, 20));
+
+        await base.OnParametersSetAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            this.scriptModule = await this.js.InvokeAsync<IJSObjectReference>("import", "./Pages/Route.razor.js");
+
+            await this.scriptModule.InvokeVoidAsync("initMap", "map", route.A.Latitude, route.A.Longitude, 12);
+            await this.scriptModule.InvokeVoidAsync("addGeoJson", this.routeGeoJson);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+}

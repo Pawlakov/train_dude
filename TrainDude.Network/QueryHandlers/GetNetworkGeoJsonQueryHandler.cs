@@ -11,8 +11,10 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using MediatR;
+
 using MongoDB.Bson;
 using MongoDB.Driver.GeoJsonObjectModel;
+
 using TrainDude.Network.Queries;
 using TrainDude.Network.Services;
 
@@ -47,7 +49,13 @@ internal class GetNetworkGeoJsonQueryHandler : IRequestHandler<GetNetworkGeoJson
         var routes = await this.routeService.GetAll();
         foreach (var route in routes)
         {
-            var line = new GeoJsonLineString<GeoJson2DGeographicCoordinates>(new GeoJsonLineStringCoordinates<GeoJson2DGeographicCoordinates>(new GeoJson2DGeographicCoordinates[] { stationPoints[route.A].Coordinates, stationPoints[route.B].Coordinates }));
+            var points = route.MidPoints
+                .Select(x => x.Location.Coordinates)
+                .Prepend(stationPoints[route.A.StationId].Coordinates)
+                .Append(stationPoints[route.B.StationId].Coordinates)
+                .ToArray();
+
+            var line = new GeoJsonLineString<GeoJson2DGeographicCoordinates>(new GeoJsonLineStringCoordinates<GeoJson2DGeographicCoordinates>(points));
 
             routesGeoJson.Add(line.ToJson());
         }

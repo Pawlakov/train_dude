@@ -27,5 +27,5 @@ internal class Station
 
     public GeoJsonPoint<GeoJson2DGeographicCoordinates>? Location { get; set; }
 
-    public double? Altitude { get; set; }
+    public int? AxleCount { get; set; }
 }
