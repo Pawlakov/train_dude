@@ -1,5 +1,4 @@
-﻿@using TrainDude.Network.Commands;
-@page "/admin"
+﻿@page "/admin"
 
 @inject IMediator mediator
 
@@ -27,11 +26,11 @@
 @code {
     private async void Drop()
     {
-        await this.mediator.Send(new DropCommand());
+        /*await this.mediator.Send(new DropCommand());*/
     }
 
     private async void Seed()
     {
-        await this.mediator.Send(new SeedCommand());
+        /*await this.mediator.Send(new SeedCommand());*/
     }
 }

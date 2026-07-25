@@ -7,10 +7,10 @@ namespace TrainDude.Web;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MongoDB.Driver;
+
+using TrainDude.Data.Extensions;
 using TrainDude.Network.Extensions;
 using TrainDude.Network.Queries;
-using TrainDude.Schedule.Extensions;
 
 /// <summary>
 /// The main class.
@@ -29,14 +29,11 @@ public static class Program
         builder.Services.AddRazorPages();
         builder.Services.AddServerSideBlazor();
 
-        builder.Services.AddSingleton<IMongoClient>(new MongoClient("mongodb://localhost:27017"));
-        builder.Services.AddSingleton<IMongoDatabase>(services => services.GetRequiredService<IMongoClient>().GetDatabase("train_dude"));
-        builder.Services.AddNetworkServices();
-        builder.Services.AddScheduleServices();
-        builder.Services.AddMediatR(config =>
-        {
-            config.RegisterServicesFromAssemblyContaining<GetStationsQuery>();
-        });
+        builder.Services
+            .AddDataServices()
+            .AddNetworkServices();
+
+        builder.Services.AddMediatR(config => { config.RegisterServicesFromAssemblyContaining<GetStationsQuery>(); });
 
         var app = builder.Build();
 

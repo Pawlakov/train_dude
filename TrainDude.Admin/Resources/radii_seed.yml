@@ -1,0 +1,16 @@
+﻿- speed: 350
+  minimum: 7000
+- speed: 300
+  minimum: 5000
+- speed: 250
+  minimum: 3500
+- speed: 200
+  minimum: 2200
+- speed: 160
+  minimum: 1500
+- speed: 120
+  minimum: 900
+- speed: 100
+  minimum: 600
+- speed: 80
+  minimum: 500

@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net10.0</TargetFramework>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MediatR" Version="14.2.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.10">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.10" />
+      <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="YamlDotNet" Version="18.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="..\stylecop.json">
+        <Link>stylecop.json</Link>
+      </AdditionalFiles>
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="Resources\radii_seed.yml" />
+      <EmbeddedResource Include="Resources\routes_seed.yml" />
+      <EmbeddedResource Include="Resources\stations_seed.yml" />
+      <EmbeddedResource Include="Resources\trains_seed.yml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\TrainDude.Data\TrainDude.Data.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,81 @@
+﻿- id: 1
+  name_german: Angerburg (Ostpreußen)
+  name_polish_old: Węgobork
+  name_polish: Węgorzewo
+  latitude: 54.2178
+  longitude: 21.7285
+- id: 2
+  name_german: Angerburg Stadtwald
+  name_polish_old: Węgobork Park
+  name_polish: Węgorzewo Park
+  latitude: 54.2245
+  longitude: 21.7925
+- id: 3
+  name_german: Buddern
+  name_polish: Budry
+  latitude: 54.2451
+  longitude: 21.8948
+- id: 4
+  name_german: Popiollen
+  name_german_new: Albrechtswiesen
+  name_polish: Popioły
+  latitude: 54.2279
+  longitude: 21.9766
+- id: 5
+  name_german: Benkheim
+  name_polish: Banie Mazurskie
+  latitude: 54.2417
+  longitude: 22.0362
+- id: 6
+  name_german: Bodschwingken
+  name_german_new: Herandstal
+  name_polish: Boćwinka
+  latitude: 54.2208
+  longitude: 22.1445
+- id: 7
+  name_german: Grabowen
+  name_german_new: Arnswald (Ostpreußen)
+  name_polish: Grabowo Jeziorki
+  latitude: 54.2252
+  longitude: 22.2292
+- id: 8
+  name_german: Jeblonsken
+  name_german_new: Urbansdorf
+  name_polish: Jabłońskie
+  latitude: 54.2740
+  longitude: 22.2468
+- id: 9
+  name_german: Goldap
+  name_polish: Gołdap
+  latitude: 54.3147
+  longitude: 22.3066
+- id: 10
+  name_german: Gerdauen
+  name_polish_old: Gierdawy
+  latitude: 21.3240
+  longitude: 54.3572
+- id: 11
+  name_german: Wandlacken
+- id: 12
+  name_german: Pröck
+- id: 13
+  name_german: Nordenburg (Kreis Gerdauen)
+  name_polish_old: Nordembork/Oświn
+  latitude: 21.5516
+  longitude: 54.3332
+- id: 14
+  name_german: Reuschenfeld
+  name_polish: Ruskie Pole
+  latitude: 21.6329
+  longitude: 54.3213
+- id: 15
+  name_german: Perlswalde
+  name_polish: Perły
+  latitude: 21.6540
+  longitude: 54.2917
+- id: 16
+  name_german: Prinowen
+  name_german_new: Primsdorf
+  name_polish: Prynowo
+  latitude: 21.6783
+  longitude: 54.2414

@@ -4,17 +4,9 @@
 
 namespace TrainDude.Network.DTOs;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using MongoDB.Bson;
-
 public class RouteSummaryDTO
 {
-    public ObjectId Id { get; init; }
+    public int Id { get; init; }
 
     public string? NameA { get; init; }
 

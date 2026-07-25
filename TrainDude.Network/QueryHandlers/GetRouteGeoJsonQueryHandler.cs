@@ -6,56 +6,48 @@ namespace TrainDude.Network.QueryHandlers;
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 using MediatR;
 
-using MongoDB.Bson;
-using MongoDB.Driver.GeoJsonObjectModel;
+using Microsoft.EntityFrameworkCore;
 
+using TrainDude.Data.Models;
 using TrainDude.Network.Queries;
-using TrainDude.Network.Services;
 
 internal class GetRouteGeoJsonQueryHandler : IRequestHandler<GetRouteGeoJsonQuery, string>
 {
-    private readonly StationService stationService;
-    private readonly RouteService routeService;
+    private readonly NetworkDbContext db;
 
-    public GetRouteGeoJsonQueryHandler(StationService stationService, RouteService routeService)
+    public GetRouteGeoJsonQueryHandler(NetworkDbContext db)
     {
-        this.stationService = stationService;
-        this.routeService = routeService;
+        this.db = db;
     }
 
     public async Task<string> Handle(GetRouteGeoJsonQuery request, CancellationToken cancellationToken)
     {
         var routesGeoJson = new List<string>();
-        var route = await this.routeService.Get(request.Id);
-        if (route != null)
+        var aLocation = await this.db.RouteEnds.Where(x => x.RouteId == request.Id && !x.IsEnd).Select(x => x.Station!.Location).SingleOrDefaultAsync(cancellationToken);
+        var bLocation = await this.db.RouteEnds.Where(x => x.RouteId == request.Id && x.IsEnd).Select(x => x.Station!.Location).SingleOrDefaultAsync(cancellationToken);
+        if (aLocation != null && bLocation != null)
         {
             var stationsGeoJson = new List<string>();
-            var stationA = await this.stationService.Get(route.A.StationId);
-            var stationB = await this.stationService.Get(route.B.StationId);
-            foreach (var station in new[] { stationA, stationB })
+            foreach (var location in new[] { aLocation, bLocation })
             {
-                if (station?.Location != null)
-                {
-                    stationsGeoJson.Add(station?.Location.ToJson()!);
-                }
+                stationsGeoJson.Add($"{{ type: \"Point\", coordinates: [ {location} ] }}");
             }
 
-            var points = route.MidPoints
-                .Select(x => x.Location.Coordinates)
-                .Prepend(stationA?.Location?.Coordinates)
-                .Append(stationB?.Location?.Coordinates)
+            var points = new[] { aLocation, bLocation }
                 .Where(x => x != null)
+                .Cast<Coordinates>()
                 .ToArray();
 
-            var line = new GeoJsonLineString<GeoJson2DGeographicCoordinates>(new GeoJsonLineStringCoordinates<GeoJson2DGeographicCoordinates>(points));
+            var line = string.Join(',', points.Select(x => $"[{x.ToString()}]"));
 
-            routesGeoJson.Add(line.ToJson());
+            routesGeoJson.Add($"{{ \"type\": \"LineString\", \"coordinates\": [{line}] }}");
 
             return $"[{string.Join(',', routesGeoJson.Concat(stationsGeoJson))}]";
         }

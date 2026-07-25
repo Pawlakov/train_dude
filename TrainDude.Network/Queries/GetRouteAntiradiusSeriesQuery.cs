@@ -4,23 +4,18 @@
 
 namespace TrainDude.Network.Queries;
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 using MediatR;
 
-using MongoDB.Bson;
-
-public class GetRouteAntiradiusSeriesQuery : IRequest<string>
+public class GetRouteAntiradiusSeriesQuery
+    : IRequest<string>
 {
-    public ObjectId Id { get; }
+    public int Id { get; }
 
     public int Resolution { get; }
 
-    public GetRouteAntiradiusSeriesQuery(string stringId, int resolution)
+    public GetRouteAntiradiusSeriesQuery(int id, int resolution)
     {
-        this.Id = ObjectId.Parse(stringId);
+        this.Id = id;
         this.Resolution = resolution;
     }
 }

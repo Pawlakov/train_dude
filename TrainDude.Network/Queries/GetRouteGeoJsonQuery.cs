@@ -6,14 +6,12 @@ namespace TrainDude.Network.Queries;
 
 using MediatR;
 
-using MongoDB.Bson;
-
 public class GetRouteGeoJsonQuery : IRequest<string>
 {
-    public ObjectId Id { get; }
+    public int Id { get; }
 
-    public GetRouteGeoJsonQuery(string stringId)
+    public GetRouteGeoJsonQuery(int id)
     {
-        this.Id = ObjectId.Parse(stringId);
+        this.Id = id;
     }
 }

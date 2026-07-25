@@ -4,55 +4,64 @@
 
 namespace TrainDude.Network.QueryHandlers;
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 using MediatR;
 
-using MongoDB.Driver.GeoJsonObjectModel;
+using Microsoft.EntityFrameworkCore;
 
+using TrainDude.Data.Models;
 using TrainDude.Network.DTOs;
 using TrainDude.Network.Queries;
-using TrainDude.Network.Services;
 
 internal class GetRouteQueryHandler : IRequestHandler<GetRouteQuery, RouteDetailsDTO>
 {
-    private readonly RouteService routeService;
-    private readonly StationService stationService;
+    private readonly NetworkDbContext db;
 
-    public GetRouteQueryHandler(RouteService routeService, StationService stationService)
+    public GetRouteQueryHandler(NetworkDbContext db)
     {
-        this.routeService = routeService;
-        this.stationService = stationService;
+        this.db = db;
     }
 
     public async Task<RouteDetailsDTO?> Handle(GetRouteQuery request, CancellationToken cancellationToken)
     {
-        var model = await this.routeService.Get(request.Id);
-        if (model != null)
-        {
-            var a = await this.stationService.Get(model.A.StationId);
-            var b = await this.stationService.Get(model.B.StationId);
+        var queryResult = await this.db.Routes
+            .Where(x => x.Id == request.Id)
+            .Select(x => new
+            {
+                A = new
+                {
+                    x.Ends.Single(y => !y.IsEnd).StationId,
+                    x.Ends.Single(y => !y.IsEnd).Station!.NameGerman,
+                    x.Ends.Single(y => !y.IsEnd).Station!.Location,
+                },
+                B = new
+                {
+                    x.Ends.Single(y => y.IsEnd).StationId,
+                    x.Ends.Single(y => y.IsEnd).Station!.NameGerman,
+                    x.Ends.Single(y => y.IsEnd).Station!.Location,
+                },
+            })
+            .SingleOrDefaultAsync(cancellationToken);
 
+        if (queryResult != null)
+        {
             var dto = new RouteDetailsDTO
             {
-                Id = model.Id,
+                Id = request.Id,
                 A = new StationSummaryDTO
                 {
-                    Id = a.Id,
-                    Name = a.NameGerman,
-                    Latitude = a.Location?.Coordinates?.Latitude,
-                    Longitude = a.Location?.Coordinates?.Longitude,
+                    Id = queryResult.A.StationId,
+                    Name = queryResult.A.NameGerman,
+                    Location = queryResult.A.Location,
                 },
                 B = new StationSummaryDTO
                 {
-                    Id = b.Id,
-                    Name = b.NameGerman,
-                    Latitude = b.Location?.Coordinates?.Latitude,
-                    Longitude = b.Location?.Coordinates?.Longitude,
+                    Id = queryResult.B.StationId,
+                    Name = queryResult.B.NameGerman,
+                    Location = queryResult.B.Location,
                 },
             };
 

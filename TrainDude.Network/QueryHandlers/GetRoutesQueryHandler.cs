@@ -12,40 +12,46 @@ using System.Threading.Tasks;
 
 using MediatR;
 
-using MongoDB.Driver.GeoJsonObjectModel;
+using Microsoft.EntityFrameworkCore;
 
+using TrainDude.Data.Models;
 using TrainDude.Network.DTOs;
 using TrainDude.Network.Extensions;
 using TrainDude.Network.Queries;
-using TrainDude.Network.Services;
 
 internal class GetRoutesQueryHandler : IRequestHandler<GetRoutesQuery, IEnumerable<RouteSummaryDTO>>
 {
-    private readonly RouteService routeService;
-    private readonly StationService stationService;
+    private readonly NetworkDbContext db;
 
-    public GetRoutesQueryHandler(RouteService routeService, StationService stationService)
+    public GetRoutesQueryHandler(NetworkDbContext db)
     {
-        this.routeService = routeService;
-        this.stationService = stationService;
+        this.db = db;
     }
 
     public async Task<IEnumerable<RouteSummaryDTO>> Handle(GetRoutesQuery request, CancellationToken cancellationToken)
     {
-        var nameMap = (await this.stationService.GetAll()).ToDictionary(x => x.Id, x => x);
+        var nameMap = (await this.db.Stations.AsNoTracking().ToListAsync(cancellationToken)).ToDictionary(x => x.Id, x => x);
 
-        var models = await this.routeService.GetAll();
+        var models = await this.db.Routes.AsNoTracking().ToListAsync(cancellationToken);
         var dtos = models
-            .Select(x => new RouteSummaryDTO
-            {
-                Id = x.Id,
-                NameA = nameMap[x.A.StationId].NameGerman,
-                NameB = nameMap[x.B.StationId].NameGerman,
-                Length = x.NominalLength,
-                Haversine = x.MidPoints.Select(x => x.Location.Coordinates).Prepend(nameMap[x.A.StationId].Location?.Coordinates).Append(nameMap[x.B.StationId].Location?.Coordinates).Segments().Haversine(),
-            })
+            .Select(x => this.HandleItem(x, nameMap))
             .ToList();
 
         return dtos;
+    }
+
+    private RouteSummaryDTO HandleItem(Route x, Dictionary<int, Station> nameMap)
+    {
+        var a = nameMap[x.Ends.Single(y => !y.IsEnd).StationId];
+        var b = nameMap[x.Ends.Single(y => y.IsEnd).StationId];
+
+        return new RouteSummaryDTO
+        {
+            Id = x.Id,
+            NameA = a.NameGerman,
+            NameB = b.NameGerman,
+            Length = x.NominalLength,
+            Haversine = new[] { a.Location, b.Location }.Segments().Haversine(),
+        };
     }
 }

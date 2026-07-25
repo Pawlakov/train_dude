@@ -12,22 +12,24 @@ using System.Threading.Tasks;
 
 using MediatR;
 
+using Microsoft.EntityFrameworkCore;
+
+using TrainDude.Data.Models;
 using TrainDude.Network.DTOs;
 using TrainDude.Network.Queries;
-using TrainDude.Network.Services;
 
 internal class GetRadiiQueryHandler : IRequestHandler<GetRadiiQuery, IEnumerable<RadiusSummaryDTO>>
 {
-    private readonly RadiusService radiusService;
+    private readonly NetworkDbContext db;
 
-    public GetRadiiQueryHandler(RadiusService radiusService)
+    public GetRadiiQueryHandler(NetworkDbContext db)
     {
-        this.radiusService = radiusService;
+        this.db = db;
     }
 
     public async Task<IEnumerable<RadiusSummaryDTO>> Handle(GetRadiiQuery request, CancellationToken cancellationToken)
     {
-        var models = await this.radiusService.GetAll();
+        var models = await this.db.Radii.AsNoTracking().ToListAsync(cancellationToken);
         var dtos = models
             .Select(x => new RadiusSummaryDTO
             {

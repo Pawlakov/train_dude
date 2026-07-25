@@ -4,13 +4,7 @@
 
 namespace TrainDude.Network.DTOs;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using MongoDB.Bson;
+using TrainDude.Data.Models;
 
 /// <summary>
 /// A summary of a train station.
@@ -20,14 +14,12 @@ public class StationSummaryDTO
     /// <summary>
     /// Gets ID of the station in the database.
     /// </summary>
-    public ObjectId Id { get; init; }
+    public int Id { get; init; }
 
     /// <summary>
     /// Gets name of the station if present.
     /// </summary>
     public string? Name { get; init; }
 
-    public double? Latitude { get; init; }
-
-    public double? Longitude { get; init; }
+    public Coordinates? Location { get; init; }
 }

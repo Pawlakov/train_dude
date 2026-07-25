@@ -8,11 +8,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using MongoDB.Bson;
-
 public class RadiusSummaryDTO
 {
-    public ObjectId Id { get; init; }
+    public int Id { get; init; }
 
     public int Speed { get; init; }
 

@@ -12,32 +12,28 @@ using System.Threading.Tasks;
 
 using MediatR;
 
-using MongoDB.Driver.GeoJsonObjectModel;
+using Microsoft.EntityFrameworkCore;
 
+using TrainDude.Data.Models;
 using TrainDude.Network.Extensions;
 using TrainDude.Network.Queries;
-using TrainDude.Network.Services;
 
 internal class GetRouteAntiradiusSeriesQueryHandler : IRequestHandler<GetRouteAntiradiusSeriesQuery, string>
 {
-    private readonly StationService stationService;
-    private readonly RouteService routeService;
+    private readonly NetworkDbContext db;
 
-    public GetRouteAntiradiusSeriesQueryHandler(StationService stationService, RouteService routeService)
+    public GetRouteAntiradiusSeriesQueryHandler(NetworkDbContext db)
     {
-        this.stationService = stationService;
-        this.routeService = routeService;
+        this.db = db;
     }
 
     public async Task<string> Handle(GetRouteAntiradiusSeriesQuery request, CancellationToken cancellationToken)
     {
-        var route = await this.routeService.Get(request.Id);
-        if (route != null)
+        var aLocation = await this.db.RouteEnds.Where(x => x.RouteId == request.Id && !x.IsEnd).Select(x => x.Station!.Location).SingleOrDefaultAsync(cancellationToken);
+        var bLocation = await this.db.RouteEnds.Where(x => x.RouteId == request.Id && x.IsEnd).Select(x => x.Station!.Location).SingleOrDefaultAsync(cancellationToken);
+        if (aLocation != null && bLocation != null)
         {
-            var a = await this.stationService.Get(route.A.StationId);
-            var b = await this.stationService.Get(route.B.StationId);
-
-            var points = route.MidPoints.Select(x => x.Location.Coordinates).Prepend(a?.Location?.Coordinates).Append(b?.Location?.Coordinates).ToArray();
+            var points = new[] { aLocation, bLocation };
             var segments = points.Segments().ToArray();
 
             var totalHaversine = segments.Haversine();
@@ -45,7 +41,7 @@ internal class GetRouteAntiradiusSeriesQueryHandler : IRequestHandler<GetRouteAn
 
             var currentSegment = segments[0];
             var currentPoint = segments[0].A;
-            var samplePoints = new List<GeoJson2DGeographicCoordinates> { segments[0].A };
+            var samplePoints = new List<Coordinates> { segments[0].A };
             for (var i = 1; i < request.Resolution; ++i)
             {
                 // todo
