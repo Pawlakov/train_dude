@@ -20,10 +20,18 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="YamlDotNet" Version="18.1.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\TrainDude.Data\TrainDude.Data.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="Resources\radii_seed.yml" />
+      <EmbeddedResource Include="Resources\routes_seed.yml" />
+      <EmbeddedResource Include="Resources\stations_seed.yml" />
+      <EmbeddedResource Include="Resources\trains_seed.yml" />
     </ItemGroup>
 
 </Project>

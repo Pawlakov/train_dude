@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Admin.CommandHandlers;
+namespace TrainDude.Network.CommandHandlers;
 
 using System.Collections.Generic;
 using System.Threading;
@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 using MediatR;
 
-using TrainDude.Admin.Commands;
-using TrainDude.Admin.Services;
 using TrainDude.Data.Models;
+using TrainDude.Network.Commands;
+using TrainDude.Network.Services;
 
 internal class SeedCommandHandler : IRequestHandler<SeedCommand>
 {
@@ -32,7 +32,7 @@ internal class SeedCommandHandler : IRequestHandler<SeedCommand>
         var radiiSeed = await this.seedService.GetRadiiSeed();
         var trainsSeed = await this.seedService.GetTrainsSeed();
 
-        var idDictionary = new Dictionary<int, int>();
+        var idDictionary = new Dictionary<int, Station>();
         foreach (var stationSeed in stationsSeed)
         {
             var station = new Station
@@ -46,7 +46,7 @@ internal class SeedCommandHandler : IRequestHandler<SeedCommand>
 
             await this.db.Set<Station>().AddAsync(station, cancellationToken);
 
-            idDictionary[stationSeed.Id] = station.Id;
+            idDictionary[stationSeed.Id] = station;
         }
 
         foreach (var routeSeed in routesSeed)
@@ -57,12 +57,12 @@ internal class SeedCommandHandler : IRequestHandler<SeedCommand>
                 {
                     new RouteExtreme
                     {
-                        StationId = idDictionary[routeSeed.A.StationId],
+                        Station = idDictionary[routeSeed.A.StationId],
                         IsEnd = false,
                     },
                     new RouteExtreme
                     {
-                        StationId = idDictionary[routeSeed.B.StationId],
+                        Station = idDictionary[routeSeed.B.StationId],
                         IsEnd = true,
                     },
                 },
@@ -82,5 +82,7 @@ internal class SeedCommandHandler : IRequestHandler<SeedCommand>
 
             await this.db.Set<Radius>().AddAsync(radius, cancellationToken);
         }
+
+        await this.db.SaveChangesAsync(cancellationToken);
     }
 }

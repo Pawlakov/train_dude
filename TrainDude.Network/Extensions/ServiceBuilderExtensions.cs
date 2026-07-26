@@ -6,6 +6,8 @@ namespace TrainDude.Network.Extensions;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using TrainDude.Network.Services;
+
 /// <summary>
 /// A container for extensions methods concerning services.
 /// </summary>
@@ -18,6 +20,6 @@ public static class ServiceBuilderExtensions
     /// <returns>Collection of service descriptors with services added.</returns>
     public static IServiceCollection AddNetworkServices(this IServiceCollection services)
     {
-        return services;
+        return services.AddSingleton<SeedService>();
     }
 }

@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Admin.Services;
+namespace TrainDude.Network.Services;
 
 using System.Collections.Generic;
 using System.IO;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-using TrainDude.Admin.Models.Seed;
+using TrainDude.Network.Models.Seed;
 
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;

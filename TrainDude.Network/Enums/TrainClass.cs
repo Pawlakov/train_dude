@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Admin.Enums;
+namespace TrainDude.Network.Enums;
 
 public enum TrainClass
 {

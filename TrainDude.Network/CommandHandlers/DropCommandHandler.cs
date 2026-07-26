@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Admin.CommandHandlers;
+namespace TrainDude.Network.CommandHandlers;
 
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,8 +11,8 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-using TrainDude.Admin.Commands;
 using TrainDude.Data.Models;
+using TrainDude.Network.Commands;
 
 internal class DropCommandHandler : IRequestHandler<DropCommand>
 {

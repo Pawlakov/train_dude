@@ -1,5 +1,7 @@
 ﻿@page "/admin"
 
+@using TrainDude.Network.Commands
+
 @inject IMediator mediator
 
 <PageTitle>Administracja</PageTitle>
@@ -26,11 +28,11 @@
 @code {
     private async void Drop()
     {
-        /*await this.mediator.Send(new DropCommand());*/
+        await this.mediator.Send(new DropCommand());
     }
 
     private async void Seed()
     {
-        /*await this.mediator.Send(new SeedCommand());*/
+        await this.mediator.Send(new SeedCommand());
     }
 }

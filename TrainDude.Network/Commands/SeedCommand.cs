@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Admin.Commands;
+namespace TrainDude.Network.Commands;
 
 using MediatR;
 

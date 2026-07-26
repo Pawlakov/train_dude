@@ -2,9 +2,9 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Admin.Models.Seed;
+namespace TrainDude.Network.Models.Seed;
 
-using TrainDude.Admin.Enums;
+using TrainDude.Network.Enums;
 
 internal class TrainSeed
 {
