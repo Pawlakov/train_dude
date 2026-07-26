@@ -6,11 +6,11 @@ namespace TrainDude.Network.Models.Seed;
 
 using System.Collections.Generic;
 
-internal class RouteSeed
+internal class SegmentSeed
 {
-    required public EndPoint A { get; set; }
+    required public ExtremeSeed A { get; set; }
 
-    required public EndPoint B { get; set; }
+    required public ExtremeSeed B { get; set; }
 
     public double Length { get; set; }
 
@@ -18,7 +18,7 @@ internal class RouteSeed
 
     public List<MidPoint>? MidPoints { get; set; }
 
-    internal class EndPoint
+    internal class ExtremeSeed
     {
         public int StationId { get; set; }
 

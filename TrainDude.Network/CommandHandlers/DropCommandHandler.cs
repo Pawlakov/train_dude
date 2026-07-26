@@ -26,7 +26,7 @@ internal class DropCommandHandler : IRequestHandler<DropCommand>
     public async Task Handle(DropCommand request, CancellationToken cancellationToken)
     {
         await this.db.Radii.ExecuteDeleteAsync(cancellationToken);
-        await this.db.Routes.ExecuteDeleteAsync(cancellationToken);
+        await this.db.Segments.ExecuteDeleteAsync(cancellationToken);
         await this.db.Stations.ExecuteDeleteAsync(cancellationToken);
     }
 }

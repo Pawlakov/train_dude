@@ -29,7 +29,7 @@
 
     <ItemGroup>
       <EmbeddedResource Include="Resources\radii_seed.yml" />
-      <EmbeddedResource Include="Resources\routes_seed.yml" />
+      <EmbeddedResource Include="Resources\segments_seed.yml" />
       <EmbeddedResource Include="Resources\stations_seed.yml" />
       <EmbeddedResource Include="Resources\trains_seed.yml" />
     </ItemGroup>

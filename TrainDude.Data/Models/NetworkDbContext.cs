@@ -9,11 +9,11 @@ public partial class NetworkDbContext(DbContextOptions<NetworkDbContext> options
 {
     public virtual DbSet<Station> Stations { get; set; }
 
-    public virtual DbSet<Segment> Routes { get; set; }
+    public virtual DbSet<Segment> Segments { get; set; }
 
     public virtual DbSet<Radius> Radii { get; set; }
 
-    public virtual DbSet<SegmentExtreme> RouteEnds { get; set; }
+    public virtual DbSet<SegmentExtreme> SegmentExtremes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

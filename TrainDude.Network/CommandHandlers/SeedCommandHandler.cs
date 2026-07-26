@@ -28,7 +28,7 @@ internal class SeedCommandHandler : IRequestHandler<SeedCommand>
     public async Task Handle(SeedCommand request, CancellationToken cancellationToken)
     {
         var stationsSeed = await this.seedService.GetStationsSeed();
-        var routesSeed = await this.seedService.GetRoutesSeed();
+        var routesSeed = await this.seedService.GetSegmentsSeed();
         var radiiSeed = await this.seedService.GetRadiiSeed();
         var trainsSeed = await this.seedService.GetTrainsSeed();
 

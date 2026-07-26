@@ -47,10 +47,10 @@ internal class SeedService
         }
     }
 
-    public async Task<IList<RouteSeed>> GetRoutesSeed()
+    public async Task<IList<SegmentSeed>> GetSegmentsSeed()
     {
         var assembly = Assembly.GetExecutingAssembly();
-        var fileName = assembly.GetManifestResourceNames().Where(x => x.EndsWith("routes_seed.yml")).Single();
+        var fileName = assembly.GetManifestResourceNames().Where(x => x.EndsWith("segments_seed.yml")).Single();
 
         using (var stream = assembly.GetManifestResourceStream(fileName))
         {
@@ -62,7 +62,7 @@ internal class SeedService
             using (var reader = new StreamReader(stream))
             {
                 var result = reader.ReadToEnd();
-                var list = this.deserializer.Deserialize<List<RouteSeed>>(result);
+                var list = this.deserializer.Deserialize<List<SegmentSeed>>(result);
                 return await Task.FromResult(list);
             }
         }

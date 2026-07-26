@@ -30,7 +30,7 @@ namespace TrainDude.Data.Migrations
 
                     b.HasKey("RadiusId");
 
-                    b.ToTable("Radii", (string)null);
+                    b.ToTable("Radii");
                 });
 
             modelBuilder.Entity("TrainDude.Data.Models.Segment", b =>
@@ -44,7 +44,7 @@ namespace TrainDude.Data.Migrations
 
                     b.HasKey("SegmentId");
 
-                    b.ToTable("Routes", (string)null);
+                    b.ToTable("Segments");
                 });
 
             modelBuilder.Entity("TrainDude.Data.Models.SegmentExtreme", b =>
@@ -62,7 +62,7 @@ namespace TrainDude.Data.Migrations
 
                     b.HasIndex("StationId");
 
-                    b.ToTable("RouteEnds", (string)null);
+                    b.ToTable("SegmentExtremes");
                 });
 
             modelBuilder.Entity("TrainDude.Data.Models.Station", b =>
@@ -89,7 +89,7 @@ namespace TrainDude.Data.Migrations
                     b.HasIndex("NameGerman")
                         .IsUnique();
 
-                    b.ToTable("Stations", (string)null);
+                    b.ToTable("Stations");
                 });
 
             modelBuilder.Entity("TrainDude.Data.Models.StationLocation", b =>
@@ -105,7 +105,7 @@ namespace TrainDude.Data.Migrations
 
                     b.HasKey("StationId");
 
-                    b.ToTable("StationLocation", (string)null);
+                    b.ToTable("StationLocation");
                 });
 
             modelBuilder.Entity("TrainDude.Data.Models.SegmentExtreme", b =>
@@ -117,7 +117,7 @@ namespace TrainDude.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("TrainDude.Data.Models.Station", "Station")
-                        .WithMany("RouteEnds")
+                        .WithMany("SegmentExtremes")
                         .HasForeignKey("StationId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -147,7 +147,7 @@ namespace TrainDude.Data.Migrations
                 {
                     b.Navigation("Location");
 
-                    b.Navigation("RouteEnds");
+                    b.Navigation("SegmentExtremes");
                 });
 #pragma warning restore 612, 618
         }

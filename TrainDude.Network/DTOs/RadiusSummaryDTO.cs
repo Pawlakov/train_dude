@@ -10,7 +10,7 @@ using System.Text;
 
 public class RadiusSummaryDTO
 {
-    public int Id { get; init; }
+    public int RadiusId { get; init; }
 
     public int Speed { get; init; }
 

@@ -38,7 +38,7 @@ internal class GetStationsQueryHandler : IRequestHandler<GetStationsQuery, IEnum
             .ToListAsync(cancellationToken);
 
         var dtos = models
-            .Select(x => new StationSummaryDTO { Id = x.Id, Name = x.Name, HasLocation = x.Location != null })
+            .Select(x => new StationSummaryDTO { StationId = x.Id, Name = x.Name, HasLocation = x.Location != null })
             .ToList();
 
         return dtos;
