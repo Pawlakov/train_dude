@@ -12,12 +12,10 @@ internal class StationEntityTypeConfiguration
 {
     public void Configure(EntityTypeBuilder<Station> builder)
     {
-        builder.HasKey(x => x.Id);
+        builder.HasKey(x => x.StationId);
 
         builder
             .HasIndex(x => x.NameGerman)
             .IsUnique();
-
-        builder.OwnsOne(x => x.Location);
     }
 }

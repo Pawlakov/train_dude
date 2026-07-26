@@ -30,8 +30,8 @@ internal class GetRouteGeoJsonQueryHandler : IRequestHandler<GetRouteGeoJsonQuer
     public async Task<string> Handle(GetRouteGeoJsonQuery request, CancellationToken cancellationToken)
     {
         var routesGeoJson = new List<string>();
-        var aLocation = await this.db.RouteEnds.Where(x => x.RouteId == request.Id && !x.IsEnd).Select(x => x.Station!.Location).SingleOrDefaultAsync(cancellationToken);
-        var bLocation = await this.db.RouteEnds.Where(x => x.RouteId == request.Id && x.IsEnd).Select(x => x.Station!.Location).SingleOrDefaultAsync(cancellationToken);
+        var aLocation = await this.db.RouteEnds.Where(x => x.SegmentId == request.Id && !x.IsEnd).Select(x => x.Station!.Location).SingleOrDefaultAsync(cancellationToken);
+        var bLocation = await this.db.RouteEnds.Where(x => x.SegmentId == request.Id && x.IsEnd).Select(x => x.Station!.Location).SingleOrDefaultAsync(cancellationToken);
         if (aLocation != null && bLocation != null)
         {
             var stationsGeoJson = new List<string>();
@@ -42,7 +42,7 @@ internal class GetRouteGeoJsonQueryHandler : IRequestHandler<GetRouteGeoJsonQuer
 
             var points = new[] { aLocation, bLocation }
                 .Where(x => x != null)
-                .Cast<Coordinates>()
+                .Cast<StationLocation>()
                 .ToArray();
 
             var line = string.Join(',', points.Select(x => $"[{x.ToString()}]"));

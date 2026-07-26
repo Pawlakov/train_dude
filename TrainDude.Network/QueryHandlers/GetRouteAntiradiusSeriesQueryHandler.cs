@@ -29,8 +29,8 @@ internal class GetRouteAntiradiusSeriesQueryHandler : IRequestHandler<GetRouteAn
 
     public async Task<string> Handle(GetRouteAntiradiusSeriesQuery request, CancellationToken cancellationToken)
     {
-        var aLocation = await this.db.RouteEnds.Where(x => x.RouteId == request.Id && !x.IsEnd).Select(x => x.Station!.Location).SingleOrDefaultAsync(cancellationToken);
-        var bLocation = await this.db.RouteEnds.Where(x => x.RouteId == request.Id && x.IsEnd).Select(x => x.Station!.Location).SingleOrDefaultAsync(cancellationToken);
+        var aLocation = await this.db.RouteEnds.Where(x => x.SegmentId == request.Id && !x.IsEnd).Select(x => x.Station!.Location).SingleOrDefaultAsync(cancellationToken);
+        var bLocation = await this.db.RouteEnds.Where(x => x.SegmentId == request.Id && x.IsEnd).Select(x => x.Station!.Location).SingleOrDefaultAsync(cancellationToken);
         if (aLocation != null && bLocation != null)
         {
             var points = new[] { aLocation, bLocation };
@@ -41,7 +41,7 @@ internal class GetRouteAntiradiusSeriesQueryHandler : IRequestHandler<GetRouteAn
 
             var currentSegment = segments[0];
             var currentPoint = segments[0].A;
-            var samplePoints = new List<Coordinates> { segments[0].A };
+            var samplePoints = new List<StationLocation> { segments[0].A };
             for (var i = 1; i < request.Resolution; ++i)
             {
                 // todo

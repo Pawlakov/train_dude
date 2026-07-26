@@ -32,7 +32,7 @@ internal class GetNetworkGeoJsonQueryHandler : IRequestHandler<GetNetworkGeoJson
             .Where(x => x.Location != null)
             .Select(x => new
             {
-                x.Id,
+                Id = x.StationId,
                 Location = x.Location!,
             })
             .ToListAsync(cancellationToken);
@@ -40,8 +40,8 @@ internal class GetNetworkGeoJsonQueryHandler : IRequestHandler<GetNetworkGeoJson
         var routes = await this.db.Routes.AsNoTracking()
             .Select(x => new
             {
-                ALocation = x.Ends.Single(y => !y.IsEnd).Station!.Location,
-                BLocation = x.Ends.Single(y => y.IsEnd).Station!.Location,
+                ALocation = x.Extremes.Single(y => !y.IsEnd).Station!.Location,
+                BLocation = x.Extremes.Single(y => y.IsEnd).Station!.Location,
             })
             .ToListAsync(cancellationToken);
 

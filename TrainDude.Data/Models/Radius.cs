@@ -2,7 +2,7 @@
 
 public class Radius
 {
-    public int Id { get; set; }
+    public int RadiusId { get; set; }
 
     public int Speed { get; set; }
 

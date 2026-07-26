@@ -12,6 +12,6 @@ internal class RadiusEntityTypeConfiguration
 {
     public void Configure(EntityTypeBuilder<Radius> builder)
     {
-        builder.HasKey(x => x.Id);
+        builder.HasKey(x => x.RadiusId);
     }
 }

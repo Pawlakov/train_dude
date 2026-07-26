@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 public class Station
 {
-    public int Id { get; set; }
+    public int StationId { get; set; }
 
     public string NameGerman { get; set; }
 
@@ -18,7 +18,7 @@ public class Station
 
     public string? NamePolishOld { get; set; }
 
-    public Coordinates? Location { get; set; }
+    public StationLocation? Location { get; set; }
 
-    public virtual ICollection<RouteExtreme> RouteEnds { get; set; }
+    public virtual ICollection<SegmentExtreme> SegmentExtremes { get; set; }
 }

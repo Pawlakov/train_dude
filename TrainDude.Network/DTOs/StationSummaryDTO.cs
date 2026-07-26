@@ -21,5 +21,5 @@ public class StationSummaryDTO
     /// </summary>
     public string? Name { get; init; }
 
-    public Coordinates? Location { get; init; }
+    public bool HasLocation { get; init; }
 }

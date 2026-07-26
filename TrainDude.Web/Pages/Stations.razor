@@ -17,14 +17,16 @@
         <table class="table">
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Nazwa</th>
+                    <th>Położenie</th>
                 </tr>
             </thead>
             <tbody>
                 @if (stations == null)
                 {
                     <tr>
-                        <td colspan="2"><em>Loading...</em></td>
+                        <td colspan="2"><em>Ładowanie...</em></td>
                     </tr>
                 }
                 else
@@ -32,7 +34,9 @@
                     @foreach (var station in stations)
                     {
                         <tr>
+                            <td>@(station.Id)</td>
                             <td>@(station.Name)</td>
+                            <td>@(station.HasLocation)</td>
                         </tr>
                     }
                 }

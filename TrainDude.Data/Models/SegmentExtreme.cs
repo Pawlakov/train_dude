@@ -1,10 +1,10 @@
-// <copyright file="RouteExtreme.cs" company="Pawlakov">
+// <copyright file="SegmentExtreme.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
 namespace TrainDude.Data.Models;
 
-public class RouteExtreme
+public class SegmentExtreme
 {
     public bool IsEnd { get; set; }
 
@@ -12,7 +12,7 @@ public class RouteExtreme
 
     public virtual Station? Station { get; set; }
 
-    public int RouteId { get; set; }
+    public int SegmentId { get; set; }
 
-    public virtual Route? Route { get; set; }
+    public virtual Segment? Segment { get; set; }
 }

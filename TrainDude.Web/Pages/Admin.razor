@@ -33,6 +33,7 @@
 
     private async void Seed()
     {
+        // TODO jakiś indicator że proces trwa i że się skończył
         await this.mediator.Send(new SeedCommand());
     }
 }

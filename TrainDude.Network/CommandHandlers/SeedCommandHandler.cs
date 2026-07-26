@@ -35,13 +35,14 @@ internal class SeedCommandHandler : IRequestHandler<SeedCommand>
         var idDictionary = new Dictionary<int, Station>();
         foreach (var stationSeed in stationsSeed)
         {
+            var location = stationSeed.Latitude.HasValue && stationSeed.Longitude.HasValue ? new StationLocation { Latitude = stationSeed.Latitude.Value, Longitude = stationSeed.Longitude.Value } : null;
             var station = new Station
             {
                 NameGerman = stationSeed.NameGerman,
                 NameGermanNew = stationSeed.NameGermanNew,
                 NamePolish = stationSeed.NamePolish,
                 NamePolishOld = stationSeed.NamePolishOld,
-                Location = new Coordinates { Latitude = stationSeed.Latitude, Longitude = stationSeed.Longitude },
+                Location = location,
             };
 
             await this.db.Set<Station>().AddAsync(station, cancellationToken);
@@ -51,16 +52,16 @@ internal class SeedCommandHandler : IRequestHandler<SeedCommand>
 
         foreach (var routeSeed in routesSeed)
         {
-            var route = new Route
+            var route = new Segment
             {
-                Ends = new List<RouteExtreme>
+                Extremes = new List<SegmentExtreme>
                 {
-                    new RouteExtreme
+                    new SegmentExtreme
                     {
                         Station = idDictionary[routeSeed.A.StationId],
                         IsEnd = false,
                     },
-                    new RouteExtreme
+                    new SegmentExtreme
                     {
                         Station = idDictionary[routeSeed.B.StationId],
                         IsEnd = true,
@@ -69,7 +70,7 @@ internal class SeedCommandHandler : IRequestHandler<SeedCommand>
                 NominalLength = routeSeed.Length,
             };
 
-            await this.db.Set<Route>().AddAsync(route, cancellationToken);
+            await this.db.Set<Segment>().AddAsync(route, cancellationToken);
         }
 
         foreach (var radiusSeed in radiiSeed)

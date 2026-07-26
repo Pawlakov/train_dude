@@ -30,7 +30,7 @@ internal class GetRoutesQueryHandler : IRequestHandler<GetRoutesQuery, IEnumerab
 
     public async Task<IEnumerable<RouteSummaryDTO>> Handle(GetRoutesQuery request, CancellationToken cancellationToken)
     {
-        var nameMap = (await this.db.Stations.AsNoTracking().ToListAsync(cancellationToken)).ToDictionary(x => x.Id, x => x);
+        var nameMap = (await this.db.Stations.AsNoTracking().ToListAsync(cancellationToken)).ToDictionary(x => x.StationId, x => x);
 
         var models = await this.db.Routes.AsNoTracking().ToListAsync(cancellationToken);
         var dtos = models
@@ -40,14 +40,14 @@ internal class GetRoutesQueryHandler : IRequestHandler<GetRoutesQuery, IEnumerab
         return dtos;
     }
 
-    private RouteSummaryDTO HandleItem(Route x, Dictionary<int, Station> nameMap)
+    private RouteSummaryDTO HandleItem(Segment x, Dictionary<int, Station> nameMap)
     {
-        var a = nameMap[x.Ends.Single(y => !y.IsEnd).StationId];
-        var b = nameMap[x.Ends.Single(y => y.IsEnd).StationId];
+        var a = nameMap[x.Extremes.Single(y => !y.IsEnd).StationId];
+        var b = nameMap[x.Extremes.Single(y => y.IsEnd).StationId];
 
         return new RouteSummaryDTO
         {
-            Id = x.Id,
+            Id = x.SegmentId,
             NameA = a.NameGerman,
             NameB = b.NameGerman,
             Length = x.NominalLength,

@@ -12,7 +12,7 @@
     <h1 class="title">Odcinek</h1>
     @if (this.route != null)
     {
-        <p class="subtitle">@(this.route.A.Name) - @(this.route.B.Name)</p>
+        <p class="subtitle">@(this.route.AName) - @(this.route.BName)</p>
     }
 </section>
 <hr />
@@ -46,7 +46,7 @@
         {
             this.scriptModule = await this.js.InvokeAsync<IJSObjectReference>("import", "./Pages/Route.razor.js");
 
-            await this.scriptModule.InvokeVoidAsync("initMap", "map", route.A.Location!.Latitude, route.A.Location!.Longitude, 12);
+            await this.scriptModule.InvokeVoidAsync("initMap", "map", route.ALocation!.Latitude, route.ALocation!.Longitude, 12);
             await this.scriptModule.InvokeVoidAsync("addGeoJson", this.routeGeoJson);
         }
 
