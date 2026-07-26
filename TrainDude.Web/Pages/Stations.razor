@@ -51,7 +51,5 @@
     protected override async Task OnParametersSetAsync()
     {
         this.stations = await this.mediator.Send(new GetStationsQuery());
-
-        await base.OnParametersSetAsync();
     }
 }
