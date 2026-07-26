@@ -10,9 +10,9 @@ public class SegmentExtreme
 
     public int StationId { get; set; }
 
-    public virtual Station? Station { get; set; }
+    public virtual Station Station { get; set; }
 
     public int SegmentId { get; set; }
 
-    public virtual Segment? Segment { get; set; }
+    public virtual Segment Segment { get; set; }
 }

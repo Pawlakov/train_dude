@@ -18,7 +18,7 @@ using TrainDude.Data.Models;
 using TrainDude.Network.Extensions;
 using TrainDude.Network.Queries;
 
-internal class GetRouteAntiradiusSeriesQueryHandler : IRequestHandler<GetRouteAntiradiusSeriesQuery, string>
+internal class GetRouteAntiradiusSeriesQueryHandler : IRequestHandler<GetSegmentAntiradiusSeriesQuery, string>
 {
     private readonly NetworkDbContext db;
 
@@ -27,10 +27,10 @@ internal class GetRouteAntiradiusSeriesQueryHandler : IRequestHandler<GetRouteAn
         this.db = db;
     }
 
-    public async Task<string> Handle(GetRouteAntiradiusSeriesQuery request, CancellationToken cancellationToken)
+    public async Task<string> Handle(GetSegmentAntiradiusSeriesQuery request, CancellationToken cancellationToken)
     {
-        var aLocation = await this.db.RouteEnds.Where(x => x.SegmentId == request.Id && !x.IsEnd).Select(x => x.Station!.Location).SingleOrDefaultAsync(cancellationToken);
-        var bLocation = await this.db.RouteEnds.Where(x => x.SegmentId == request.Id && x.IsEnd).Select(x => x.Station!.Location).SingleOrDefaultAsync(cancellationToken);
+        var aLocation = await this.db.SegmentExtremes.Where(x => x.SegmentId == request.SegmentId && !x.IsEnd).Select(x => x.Station!.Location).SingleOrDefaultAsync(cancellationToken);
+        var bLocation = await this.db.SegmentExtremes.Where(x => x.SegmentId == request.SegmentId && x.IsEnd).Select(x => x.Station!.Location).SingleOrDefaultAsync(cancellationToken);
         if (aLocation != null && bLocation != null)
         {
             var points = new[] { aLocation, bLocation };
@@ -41,7 +41,7 @@ internal class GetRouteAntiradiusSeriesQueryHandler : IRequestHandler<GetRouteAn
 
             var currentSegment = segments[0];
             var currentPoint = segments[0].A;
-            var samplePoints = new List<StationLocation> { segments[0].A };
+            var samplePoints = new List<Location> { segments[0].A };
             for (var i = 1; i < request.Resolution; ++i)
             {
                 // todo

@@ -19,7 +19,7 @@ using TrainDude.Network.DTOs;
 using TrainDude.Network.Extensions;
 using TrainDude.Network.Queries;
 
-internal class GetRoutesQueryHandler : IRequestHandler<GetRoutesQuery, IEnumerable<RouteSummaryDTO>>
+internal class GetRoutesQueryHandler : IRequestHandler<GetSegmentsQuery, IEnumerable<SegmentSummaryDTO>>
 {
     private readonly NetworkDbContext db;
 
@@ -28,30 +28,39 @@ internal class GetRoutesQueryHandler : IRequestHandler<GetRoutesQuery, IEnumerab
         this.db = db;
     }
 
-    public async Task<IEnumerable<RouteSummaryDTO>> Handle(GetRoutesQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<SegmentSummaryDTO>> Handle(GetSegmentsQuery request, CancellationToken cancellationToken)
     {
         var nameMap = (await this.db.Stations.AsNoTracking().ToListAsync(cancellationToken)).ToDictionary(x => x.StationId, x => x);
 
-        var models = await this.db.Routes.AsNoTracking().ToListAsync(cancellationToken);
+        var models = await this.db.Segments.AsNoTracking()
+            .Select(x => new
+            {
+                x.SegmentId,
+                x.NominalLength,
+                A = new
+                {
+                    Name = x.Extremes.Where(y => !y.IsEnd).Select(y => y.Station.NameGermanNew ?? y.Station.NameGerman).Single(),
+                    Location = x.Extremes.Where(y => !y.IsEnd).Select(y => y.Station.Location).Single(),
+                },
+                B = new
+                {
+                    Name = x.Extremes.Where(y => y.IsEnd).Select(y => y.Station.NameGermanNew ?? y.Station.NameGerman).Single(),
+                    Location = x.Extremes.Where(y => y.IsEnd).Select(y => y.Station.Location).Single(),
+                },
+            })
+            .ToListAsync(cancellationToken);
+
         var dtos = models
-            .Select(x => this.HandleItem(x, nameMap))
+            .Select(x => new SegmentSummaryDTO
+            {
+                SegmentId = x.SegmentId,
+                Length = x.NominalLength,
+                NameA = x.A.Name,
+                NameB = x.B.Name,
+                Haversine = (x.A.Location != null && x.B.Location != null) ? new[] { x.A.Location, x.B.Location }.Segments().Haversine() : null,
+            })
             .ToList();
 
         return dtos;
-    }
-
-    private RouteSummaryDTO HandleItem(Segment x, Dictionary<int, Station> nameMap)
-    {
-        var a = nameMap[x.Extremes.Single(y => !y.IsEnd).StationId];
-        var b = nameMap[x.Extremes.Single(y => y.IsEnd).StationId];
-
-        return new RouteSummaryDTO
-        {
-            Id = x.SegmentId,
-            NameA = a.NameGerman,
-            NameB = b.NameGerman,
-            Length = x.NominalLength,
-            Haversine = new[] { a.Location, b.Location }.Segments().Haversine(),
-        };
     }
 }

@@ -14,7 +14,7 @@ public class StationSummaryDTO
     /// <summary>
     /// Gets ID of the station in the database.
     /// </summary>
-    public int Id { get; init; }
+    public int StationId { get; init; }
 
     /// <summary>
     /// Gets name of the station if present.

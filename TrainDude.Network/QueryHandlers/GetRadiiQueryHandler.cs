@@ -33,6 +33,7 @@ internal class GetRadiiQueryHandler : IRequestHandler<GetRadiiQuery, IEnumerable
         var dtos = models
             .Select(x => new RadiusSummaryDTO
             {
+                RadiusId = x.RadiusId,
                 Speed = x.Speed,
                 Minimum = x.Minimum,
                 MaximumAntiradius = 1000 / (double)x.Minimum,

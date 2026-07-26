@@ -52,8 +52,8 @@
 - id: 10
   name_german: Gerdauen
   name_polish_old: Gierdawy
-  latitude: 21.3240
-  longitude: 54.3572
+  latitude: 54.3572
+  longitude: 21.3240
 - id: 11
   name_german: Wandlacken
 - id: 12
@@ -61,21 +61,21 @@
 - id: 13
   name_german: Nordenburg (Kreis Gerdauen)
   name_polish_old: Nordembork/Oświn
-  latitude: 21.5516
-  longitude: 54.3332
+  latitude: 54.3332
+  longitude: 21.5516
 - id: 14
   name_german: Reuschenfeld
   name_polish: Ruskie Pole
-  latitude: 21.6329
-  longitude: 54.3213
+  latitude: 54.3213
+  longitude: 21.6329
 - id: 15
   name_german: Perlswalde
   name_polish: Perły
-  latitude: 21.6540
-  longitude: 54.2917
+  latitude: 54.2917
+  longitude: 21.6540
 - id: 16
   name_german: Prinowen
   name_german_new: Primsdorf
   name_polish: Prynowo
-  latitude: 21.6783
-  longitude: 54.2414
+  latitude: 54.2414
+  longitude: 21.6783

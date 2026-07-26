@@ -8,7 +8,7 @@ using TrainDude.Data.Models;
 
 internal static class GeoJsonExtensions
 {
-    internal static double Haversine(this IEnumerable<(StationLocation, StationLocation)> segments)
+    internal static double Haversine(this IEnumerable<(Location A, Location B)> segments)
     {
         var pointPairs = segments.ToArray();
         var earthRadius = 6371.2;
@@ -27,15 +27,15 @@ internal static class GeoJsonExtensions
     }
 
     // https://medium.com/theburningmonk-com/net-tips-use-linq-to-create-pairs-of-adjacent-elements-from-a-collection-a3e9c04ed5b
-    internal static IEnumerable<(StationLocation A, StationLocation B)> Segments(this IEnumerable<StationLocation?> points)
+    internal static IEnumerable<(Location A, Location B)> Segments(this IEnumerable<Location?> points)
     {
-        var pointArray = points.Where(x => x != null).Cast<StationLocation>().ToArray();
+        var pointArray = points.Where(x => x != null).Cast<Location>().ToArray();
         if (pointArray.Length > 1)
         {
             return pointArray.Skip(1).Zip(pointArray, (a, b) => (a, b))!;
         }
 
-        return Enumerable.Empty<(StationLocation, StationLocation)>();
+        return Enumerable.Empty<(Location, Location)>();
     }
 
     private static double ToRadians(double angle)

@@ -18,7 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using TrainDude.Data.Models;
 using TrainDude.Network.Queries;
 
-internal class GetRouteGeoJsonQueryHandler : IRequestHandler<GetRouteGeoJsonQuery, string>
+internal class GetRouteGeoJsonQueryHandler : IRequestHandler<GetSegmentGeoJsonQuery, string>
 {
     private readonly NetworkDbContext db;
 
@@ -27,11 +27,11 @@ internal class GetRouteGeoJsonQueryHandler : IRequestHandler<GetRouteGeoJsonQuer
         this.db = db;
     }
 
-    public async Task<string> Handle(GetRouteGeoJsonQuery request, CancellationToken cancellationToken)
+    public async Task<string> Handle(GetSegmentGeoJsonQuery request, CancellationToken cancellationToken)
     {
         var routesGeoJson = new List<string>();
-        var aLocation = await this.db.RouteEnds.Where(x => x.SegmentId == request.Id && !x.IsEnd).Select(x => x.Station!.Location).SingleOrDefaultAsync(cancellationToken);
-        var bLocation = await this.db.RouteEnds.Where(x => x.SegmentId == request.Id && x.IsEnd).Select(x => x.Station!.Location).SingleOrDefaultAsync(cancellationToken);
+        var aLocation = await this.db.SegmentExtremes.Where(x => x.SegmentId == request.SegmentId && !x.IsEnd).Select(x => x.Station!.Location).SingleOrDefaultAsync(cancellationToken);
+        var bLocation = await this.db.SegmentExtremes.Where(x => x.SegmentId == request.SegmentId && x.IsEnd).Select(x => x.Station!.Location).SingleOrDefaultAsync(cancellationToken);
         if (aLocation != null && bLocation != null)
         {
             var stationsGeoJson = new List<string>();

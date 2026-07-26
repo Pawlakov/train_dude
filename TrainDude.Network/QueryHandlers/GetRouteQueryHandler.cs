@@ -16,7 +16,7 @@ using TrainDude.Data.Models;
 using TrainDude.Network.DTOs;
 using TrainDude.Network.Queries;
 
-internal class GetRouteQueryHandler : IRequestHandler<GetRouteQuery, RouteDetailsDTO>
+internal class GetRouteQueryHandler : IRequestHandler<GetSegmentQuery, SegmentDetailsDTO>
 {
     private readonly NetworkDbContext db;
 
@@ -25,10 +25,10 @@ internal class GetRouteQueryHandler : IRequestHandler<GetRouteQuery, RouteDetail
         this.db = db;
     }
 
-    public async Task<RouteDetailsDTO?> Handle(GetRouteQuery request, CancellationToken cancellationToken)
+    public async Task<SegmentDetailsDTO?> Handle(GetSegmentQuery request, CancellationToken cancellationToken)
     {
-        var queryResult = await this.db.Routes
-            .Where(x => x.SegmentId == request.Id)
+        var queryResult = await this.db.Segments
+            .Where(x => x.SegmentId == request.SegmentId)
             .Select(x => new
             {
                 A = new
@@ -49,9 +49,9 @@ internal class GetRouteQueryHandler : IRequestHandler<GetRouteQuery, RouteDetail
             return null;
         }
 
-        var dto = new RouteDetailsDTO
+        var dto = new SegmentDetailsDTO
         {
-            Id = request.Id,
+            SegmentId = request.SegmentId,
             AName = queryResult.A.NameGerman,
             BName = queryResult.A.NameGerman,
             ALocation = queryResult.A.Location!,

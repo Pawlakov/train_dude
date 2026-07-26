@@ -37,7 +37,7 @@ internal class GetNetworkGeoJsonQueryHandler : IRequestHandler<GetNetworkGeoJson
             })
             .ToListAsync(cancellationToken);
 
-        var routes = await this.db.Routes.AsNoTracking()
+        var routes = await this.db.Segments.AsNoTracking()
             .Select(x => new
             {
                 ALocation = x.Extremes.Single(y => !y.IsEnd).Station!.Location,
