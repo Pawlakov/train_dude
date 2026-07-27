@@ -53,7 +53,7 @@ internal class GetRouteQueryHandler : IRequestHandler<GetSegmentQuery, SegmentDe
         {
             SegmentId = request.SegmentId,
             AName = queryResult.A.NameGerman,
-            BName = queryResult.A.NameGerman,
+            BName = queryResult.B.NameGerman,
             ALocation = queryResult.A.Location!,
         };
 

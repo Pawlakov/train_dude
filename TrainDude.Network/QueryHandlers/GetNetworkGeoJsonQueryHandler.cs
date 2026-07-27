@@ -50,7 +50,7 @@ internal class GetNetworkGeoJsonQueryHandler : IRequestHandler<GetNetworkGeoJson
 
         foreach (var station in stations)
         {
-            stationsGeoJson.Add($"{{ \"type\": \"Point\", \"coordinates\": [{station.Location.Latitude},{station.Location.Latitude}] }}");
+            stationsGeoJson.Add($"{{ \"type\": \"Point\", \"coordinates\": {station.Location} }}");
         }
 
         foreach (var route in routes)
@@ -59,7 +59,7 @@ internal class GetNetworkGeoJsonQueryHandler : IRequestHandler<GetNetworkGeoJson
             {
                 var points = new[] { route.ALocation!, route.BLocation! };
 
-                var line = string.Join(',', points.Select(x => $"[{x.ToString()}]"));
+                var line = string.Join(',', points);
 
                 routesGeoJson.Add($"{{ \"type\": \"LineString\", \"coordinates\": [{line}] }}");
             }

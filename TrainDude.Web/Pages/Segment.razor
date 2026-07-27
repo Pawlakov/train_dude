@@ -1,10 +1,11 @@
 ﻿@using TrainDude.Network.DTOs;
 @using TrainDude.Network.Queries;
 
-@page "/segment/{Id}"
+@page "/segment/{Id:int}"
 
-@inject IMediator mediator
-@inject IJSRuntime js
+@inject NavigationManager NavigationManager
+@inject IMediator Mediator
+@inject IJSRuntime JS
 
 <PageTitle>Odcinek</PageTitle>
 
@@ -24,32 +25,36 @@
 
 @code {
     private IJSObjectReference scriptModule;
-    private SegmentDetailsDTO segment;
+    private SegmentDetailsDTO? segment;
     private string segmentGeoJson;
-
+    private string antiradiusSeries;
 
     [Parameter]
     public int Id { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
-        this.segment = await this.mediator.Send(new GetSegmentQuery(this.Id));
-        this.segmentGeoJson = await this.mediator.Send(new GetSegmentGeoJsonQuery(this.Id));
-        var antiradiusSeries = await this.mediator.Send(new GetSegmentAntiradiusSeriesQuery(this.Id, 20));
-
-        await base.OnParametersSetAsync();
+        this.segment = await this.Mediator.Send(new GetSegmentQuery(this.Id));
+        if (this.segment != null)
+        {
+            this.segmentGeoJson = await this.Mediator.Send(new GetSegmentGeoJsonQuery(this.Id));
+            /* TODO this thing:
+            this.antiradiusSeries = await this.Mediator.Send(new GetSegmentAntiradiusSeriesQuery(this.Id, 20));*/
+        }
+        else
+        {
+            NavigationManager.NotFound();
+        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
+        if (this.segment != null && firstRender)
         {
-            this.scriptModule = await this.js.InvokeAsync<IJSObjectReference>("import", "./Pages/Segment.razor.js");
+            this.scriptModule = await this.JS.InvokeAsync<IJSObjectReference>("import", "./Pages/Segment.razor.js");
 
             await this.scriptModule.InvokeVoidAsync("initMap", "map", segment.ALocation!.Latitude, segment.ALocation!.Longitude, 12);
             await this.scriptModule.InvokeVoidAsync("addGeoJson", this.segmentGeoJson);
         }
-
-        await base.OnAfterRenderAsync(firstRender);
     }
 }
