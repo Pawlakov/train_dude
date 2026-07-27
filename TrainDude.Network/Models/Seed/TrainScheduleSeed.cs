@@ -8,7 +8,7 @@ using TrainDude.Network.Enums;
 
 internal class TrainScheduleSeed
 {
-    public TrainScheduleDays Days { get; set; }
+    public TrainScheduleDays[]? Days { get; set; }
 
     public string? Start { get; set; }
 

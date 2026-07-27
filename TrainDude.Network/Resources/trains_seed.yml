@@ -2,8 +2,7 @@
   type: local
   classes: [ second, third ]
   schedules:
-    - days: everyday
-      start: '6:01'
+    - start: '6:01'
       events:
         - { type: departs, station: 1, at: 0 }
         - { type: halts, station: 2, at: 7 }
@@ -18,8 +17,7 @@
   type: local
   classes: [ second, third ]
   schedules:
-    - days: everyday
-      start: '4:55'
+    - start: '4:55'
       events:
         - { type: departs, station: 1, at: 0 }
         - { type: halts, station: 16, at: 6 }
@@ -33,8 +31,7 @@
   type: local
   classes: [ second, third ]
   schedules:
-    - days: everyday
-      start: '6:13'
+    - start: '6:13'
       events:
         - { type: departs, station: 10, at: 0 }
         - { type: halts, station: 11, at: 12 }
@@ -57,8 +54,7 @@
   type: local
   classes: [ second, third ]
   schedules:
-    - days: everyday
-      start: '5:52'
+    - start: '5:52'
       events:
         - { type: departs, station: 9, at: 0 }
         - { type: halts, station: 8, at: 11 }
@@ -81,8 +77,7 @@
   type: local
   classes: [ second, third ]
   schedules:
-    - days: everyday
-      start: '7:40'
+    - start: '7:40'
       events:
         - { type: departs, station: 10, at: 0 }
         - { type: halts, station: 11, at: 19 }
@@ -96,8 +91,7 @@
   type: local
   classes: [ second, third ]
   schedules:
-    - days: everyday
-      start: '9:00'
+    - start: '9:00'
       events:
         - { type: departs, station: 9, at: 0 }
         - { type: halts, station: 8, at: 10 }
@@ -120,8 +114,7 @@
   type: local
   classes: [ second, third ]
   schedules:
-    - days: everyday
-      start: '9:10'
+    - start: '9:10'
       events:
         - { type: departs, station: 10, at: 0 }
         - { type: passes, station: 11 }
@@ -144,8 +137,7 @@
   type: local
   classes: [ second, third ]
   schedules:
-    - days: everyday
-      start: '13:28'
+    - start: '13:28'
       events:
         - { type: departs, station: 9, at: 0 }
         - { type: halts, station: 8, at: 11 }
@@ -168,8 +160,7 @@
   type: local
   classes: [ second, third ]
   schedules:
-    - days: everyday
-      start: '12:56'
+    - start: '12:56'
       events:
         - { type: departs, station: 10, at: 0 }
         - { type: halts, station: 11, at: 11 }
@@ -192,8 +183,7 @@
   type: local
   classes: [ second, third ]
   schedules:
-    - days: everyday
-      start: '17:20'
+    - start: '17:20'
       events:
         - { type: departs, station: 10, at: 0 }
         - { type: halts, station: 11, at: 11 }
@@ -216,8 +206,7 @@
   type: local
   classes: [ second, third ]
   schedules:
-    - days: everyday
-      start: '17:37'
+    - start: '17:37'
       events:
         - { type: departs, station: 9, at: 0 }
         - { type: halts, station: 8, at: 10 }
@@ -240,8 +229,7 @@
   type: local
   classes: [ second, third ]
   schedules:
-    - days: everyday
-      start: '23:58'
+    - start: '23:58'
       events:
         - { type: departs, station: 10, at: 0 }
         - { type: halts, station: 11, at: 12 }
@@ -255,8 +243,7 @@
   type: local
   classes: [ second, third ]
   schedules:
-    - days: everyday
-      start: '20:59'
+    - start: '20:59'
       events:
         - { type: departs, station: 1, at: 0 }
         - { type: passes, station: 16 }
@@ -270,8 +257,7 @@
   type: local
   classes: [ second, third ]
   schedules:
-    - days: everyday
-      start: '19:25'
+    - start: '19:25'
       events:
         - { type: departs, station: 10, at: 0 }
         - { type: halts, station: 11, at: 11 }
@@ -285,8 +271,7 @@
   type: local
   classes: [ second, third ]
   schedules:
-    - days: everyday
-      start: '20:30'
+    - start: '20:30'
       events:
         - { type: departs, station: 9, at: 0 }
         - { type: halts, station: 8, at: 11 }
@@ -297,3 +282,175 @@
         - { type: halts, station: 3, at: 58 }
         - { type: halts, station: 2, at: 69 }
         - { type: arrives, station: 1, at: 76 }
+- number: 581 # Angerburg - Gumbinnen (119e)
+  type: local
+  classes: [ second, third ]
+  schedules:
+    - start: '5:15'
+      events:
+        - { type: departs, station: 1, at: 0 }
+        - { type: halts, station: 16, at: 7 }
+        - { type: halts, station: 23, at: 14, on_request: true }
+        - { type: halts, station: 22, at: 22 }
+        - { type: halts, station: 21, at: 30 }
+        - { type: halts, station: 20, at: 35, on_request: true }
+        - { type: halts, station: 19, at: 42 }
+        - { type: halts, station: 18, at: 53 }
+        - { type: arrives, station: 17, at: 60 }
+- number: 582 # Gumbinnen - Angerburg (119e)
+  type: local
+  classes: [ second, third ]
+  schedules:
+    - start: '6:25'
+      events:
+        - { type: departs, station: 17, at: 0 }
+        - { type: halts, station: 18, at: 7 }
+        - { type: halts, station: 19, at: 18 }
+        - { type: halts, station: 20, at: 25 }
+        - { type: halts, station: 21, at: 30 }
+        - { type: halts, station: 22, at: 38 }
+        - { type: halts, station: 23, at: 45 }
+        - { type: halts, station: 16, at: 52 }
+        - { type: arrives, station: 1, at: 58 }
+- number: 583 # Angerburg - Angerapp (119e)
+  type: local
+  classes: [ second, third ]
+  schedules:
+    - days: [ wednesday, saturday ]
+      start: '7:36'
+      events:
+        - { type: departs, station: 1, at: 0 }
+        - { type: halts, station: 16, at: 6 }
+        - { type: halts, station: 23, at: 13 }
+        - { type: halts, station: 22, at: 20 }
+        - { type: halts, station: 21, at: 28 }
+        - { type: halts, station: 20, at: 33 }
+        - { type: halts, station: 19, at: 40 }
+        - { type: halts, station: 18, at: 51 }
+        - { type: arrives, station: 17, at: 58 }
+- number: 584 # Gumbinnen - Angerburg (119e)
+  type: local
+  classes: [ second, third ]
+  schedules:
+    - start: '8:46'
+      events:
+        - { type: departs, station: 17, at: 0 }
+        - { type: halts, station: 18, at: 7 }
+        - { type: halts, station: 19, at: 19 }
+        - { type: halts, station: 20, at: 26 }
+        - { type: halts, station: 21, at: 31 }
+        - { type: halts, station: 22, at: 39 }
+        - { type: halts, station: 23, at: 47 }
+        - { type: halts, station: 16, at: 54 }
+        - { type: arrives, station: 1, at: 60 }
+- number: 585 # Angerburg - Gumbinnen (119e)
+  type: local
+  classes: [ second, third ]
+  schedules:
+    - start: '10:45'
+      events:
+        - { type: departs, station: 1, at: 0 }
+        - { type: halts, station: 16, at: 7 }
+        - { type: halts, station: 23, at: 14 }
+        - { type: halts, station: 22, at: 22 }
+        - { type: halts, station: 21, at: 31 }
+        - { type: halts, station: 20, at: 36 }
+        - { type: halts, station: 19, at: 44 }
+        - { type: halts, station: 18, at: 56 }
+        - { type: arrives, station: 17, at: 62 }
+- number: 586 # Angerapp - Angerburg (119e)
+  type: local
+  classes: [ second, third ]
+  schedules:
+    - days: [ wednesday, saturday ]
+      start: '11:58'
+      events:
+        - { type: departs, station: 17, at: 0 }
+        - { type: halts, station: 18, at: 7 }
+        - { type: halts, station: 19, at: 20 }
+        - { type: halts, station: 20, at: 27 }
+        - { type: halts, station: 21, at: 33 }
+        - { type: halts, station: 22, at: 41 }
+        - { type: halts, station: 23, at: 49 }
+        - { type: halts, station: 16, at: 56 }
+        - { type: arrives, station: 1, at: 62 }
+- number: 587 # Angerburg - Gumbinnen (119e)
+  type: local
+  classes: [ second, third ]
+  schedules:
+    - start: '14:15'
+      events:
+        - { type: departs, station: 1, at: 0 }
+        - { type: halts, station: 16, at: 7 }
+        - { type: halts, station: 23, at: 14 }
+        - { type: halts, station: 22, at: 21 }
+        - { type: halts, station: 21, at: 30 }
+        - { type: halts, station: 20, at: 34 }
+        - { type: halts, station: 19, at: 41 }
+        - { type: halts, station: 18, at: 53 }
+        - { type: arrives, station: 17, at: 59 }
+- number: 589 # Angerburg - Gumbinnen (119e)
+  type: local
+  classes: [ second, third ]
+  schedules:
+    - start: '19:23'
+      events:
+        - { type: departs, station: 1, at: 0 }
+        - { type: halts, station: 16, at: 7 }
+        - { type: halts, station: 23, at: 14 }
+        - { type: halts, station: 22, at: 21 }
+        - { type: halts, station: 21, at: 29 }
+        - { type: halts, station: 20, at: 34 }
+        - { type: halts, station: 19, at: 41 }
+        - { type: halts, station: 18, at: 54 }
+        - { type: arrives, station: 17, at: 60 }
+- number: 590 # Gumbinnen - Angerburg (119e)
+  type: local
+  classes: [ second, third ]
+  schedules:
+    - start: '19:36'
+      events:
+        - { type: departs, station: 17, at: 0 }
+        - { type: halts, station: 18, at: 8 }
+        - { type: halts, station: 19, at: 30 }
+        - { type: halts, station: 20, at: 37 }
+        - { type: halts, station: 21, at: 42 }
+        - { type: halts, station: 22, at: 51 }
+        - { type: halts, station: 23, at: 58 }
+        - { type: halts, station: 16, at: 65 }
+        - { type: arrives, station: 1, at: 72 }
+- number: 592 # Angerapp - Angerburg (119e)
+  type: local
+  classes: [ second, third ]
+  schedules:
+    - start: '15:56'
+      events:
+        - { type: departs, station: 17, at: 0 }
+        - { type: halts, station: 18, at: 7 }
+        - { type: halts, station: 19, at: 18 }
+        - { type: halts, station: 20, at: 26 }
+        - { type: halts, station: 21, at: 31 }
+        - { type: halts, station: 22, at: 39 }
+        - { type: halts, station: 23, at: 46 }
+        - { type: halts, station: 16, at: 52, on_request: true }
+        - { type: arrives, station: 1, at: 58 }
+- number: 846 # Insterburg - Angerapp West (118s/119e)
+  type: local
+  classes: [ second, third ]
+  limited_storage: true
+  schedules:
+    - days: [ school ]
+      start: '14:31'
+      events:
+        - { type: departs, station: 17, at: 0}
+        - { type: arrives, station: 18, at: 6}
+- number: 847 # Angerapp West - Insterburg (119e/118s)
+  type: local
+  classes: [ second, third ]
+  limited_storage: true
+  schedules:
+    - days: [ school ]
+      start: '14:45'
+      events:
+        - { type: departs, station: 18, at: 0}
+        - { type: arrives, station: 17, at: 6}

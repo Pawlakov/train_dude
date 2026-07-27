@@ -12,6 +12,8 @@ internal class TrainSeed
 
     public TrainType Type { get; set; }
 
+    public bool? LimitedStorage { get; set; }
+
     public TrainClass[]? Classes { get; set; }
 
     public TrainScheduleSeed[]? Schedules { get; set; }

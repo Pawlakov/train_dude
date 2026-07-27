@@ -6,5 +6,7 @@ namespace TrainDude.Network.Enums;
 
 public enum TrainScheduleDays
 {
-    Everyday,
+    School,
+    Wednesday,
+    Saturday,
 }

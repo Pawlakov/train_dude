@@ -79,3 +79,35 @@
   name_polish: Prynowo
   latitude: 54.2414
   longitude: 21.6783
+- id: 17
+  name_german: Darkehmen
+  name_german_new: Angerapp
+  name_polish_old: Darkiejmy
+- id: 18
+  name_german: Darkehmen West
+  name_german_new: Angerapp West
+- id: 19
+  name_german: Beynuhnen
+  name_german_new: Beinuhnen
+- id: 20
+  name_german: Friedrichsruh (Ostpreußen)
+  longitude: 21.8570
+  latitude: 54.3398
+- id: 21
+  name_german: Launingken (Ostpreußen)
+  name_german_new: Sanden
+  name_polish: Ołownik
+  longitude: 21.8239
+  latitude: 54.3270
+- id: 22
+  name_german: Olschöwen (Angerapp)
+  name_german_new: Kanitz
+  name_polish: Olszewo Węgorzewskie
+  name_polish_old: Olszewo Węgoborskie
+  longitude: 21.7637
+  latitude: 54.2955
+- id: 23
+  name_german: Klimken
+  name_polish: Klimki
+  longitude: 21.7069
+  latitude: 54.2741

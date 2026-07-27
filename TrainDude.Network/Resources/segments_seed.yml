@@ -145,3 +145,45 @@
     station_id: 1
   length: 4.2
   tracks: 2
+- a:
+    station_id: 17
+  b:
+    station_id: 18
+  length: 3.6
+  tracks: 1
+- a:
+    station_id: 18
+  b:
+    station_id: 19
+  length: 7.9
+  tracks: 1
+- a:
+    station_id: 19
+  b:
+    station_id: 20
+  length: 4.6
+  tracks: 1
+- a:
+    station_id: 20
+  b:
+    station_id: 21
+  length: 2.5
+  tracks: 1
+- a:
+    station_id: 21
+  b:
+    station_id: 22
+  length: 5.4
+  tracks: 1
+- a:
+    station_id: 22
+  b:
+    station_id: 23
+  length: 4.6
+  tracks: 1
+- a:
+    station_id: 23
+  b:
+    station_id: 16
+  length: 4.6
+  tracks: 1

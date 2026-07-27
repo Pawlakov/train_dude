@@ -13,4 +13,6 @@ internal class TrainScheduleEventSeed
     public int Station { get; set; }
 
     public int? At { get; set; }
+
+    public bool? OnRequest { get; set; }
 }
