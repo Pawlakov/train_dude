@@ -31,6 +31,7 @@ internal class GetSegmentGeoJsonQueryHandler : IRequestHandler<GetSegmentGeoJson
         var routesGeoJson = new List<string>();
         var aLocation = await this.db.SegmentExtremes.Where(x => x.SegmentId == request.SegmentId && !x.IsEnd).Select(x => x.Station!.Location).SingleOrDefaultAsync(cancellationToken);
         var bLocation = await this.db.SegmentExtremes.Where(x => x.SegmentId == request.SegmentId && x.IsEnd).Select(x => x.Station!.Location).SingleOrDefaultAsync(cancellationToken);
+        var vertices = await this.db.Set<SegmentVertexLocation>().Where(x => x.SegmentId == request.SegmentId).OrderBy(x => x.OrdinalId).ToListAsync(cancellationToken);
         if (aLocation != null && bLocation != null)
         {
             var stationsGeoJson = new List<string>();
@@ -39,10 +40,11 @@ internal class GetSegmentGeoJsonQueryHandler : IRequestHandler<GetSegmentGeoJson
                 stationsGeoJson.Add($"{{ \"type\": \"Point\", \"coordinates\": {location} }}");
             }
 
-            var points = new[] { aLocation, bLocation }
-                .Where(x => x != null)
-                .Cast<StationLocation>()
-                .ToArray();
+            var points = vertices
+                .Cast<Location>()
+                .Prepend(aLocation)
+                .Append(bLocation)
+                .ToList();
 
             var line = string.Join(',', points);
 

@@ -16,7 +16,7 @@ internal class SegmentSeed
 
     public int Tracks { get; set; }
 
-    public List<MidPoint>? MidPoints { get; set; }
+    public List<VertexSeed>? Vertices { get; set; }
 
     internal class ExtremeSeed
     {
@@ -27,7 +27,7 @@ internal class SegmentSeed
         public bool Pole { get; set; }
     }
 
-    internal class MidPoint
+    internal class VertexSeed
     {
         public double Latitude { get; set; }
 

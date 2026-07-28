@@ -37,34 +37,35 @@ internal class GetNetworkGeoJsonQueryHandler : IRequestHandler<GetNetworkGeoJson
             })
             .ToListAsync(cancellationToken);
 
-        var routes = await this.db.Segments.AsNoTracking()
+        var segments = await this.db.Segments.AsNoTracking()
             .Select(x => new
             {
                 ALocation = x.Extremes.Single(y => !y.IsEnd).Station!.Location,
                 BLocation = x.Extremes.Single(y => y.IsEnd).Station!.Location,
+                Vertices = x.Vertices.OrderBy(y => y.OrdinalId).ToList(),
             })
             .ToListAsync(cancellationToken);
 
         var stationsGeoJson = new List<string>();
-        var routesGeoJson = new List<string>();
+        var segmentsGeoJson = new List<string>();
 
         foreach (var station in stations)
         {
             stationsGeoJson.Add($"{{ \"type\": \"Point\", \"coordinates\": {station.Location} }}");
         }
 
-        foreach (var route in routes)
+        foreach (var segment in segments)
         {
-            if (route.ALocation != null && route.BLocation != null)
+            if (segment.ALocation != null && segment.BLocation != null)
             {
-                var points = new[] { route.ALocation!, route.BLocation! };
+                var points = segment.Vertices.Cast<Location>().Prepend(segment.ALocation!).Append(segment.BLocation!);
 
                 var line = string.Join(',', points);
 
-                routesGeoJson.Add($"{{ \"type\": \"LineString\", \"coordinates\": [{line}] }}");
+                segmentsGeoJson.Add($"{{ \"type\": \"LineString\", \"coordinates\": [{line}] }}");
             }
         }
 
-        return $"[{string.Join(',', routesGeoJson.Concat(stationsGeoJson))}]";
+        return $"[{string.Join(',', segmentsGeoJson.Concat(stationsGeoJson))}]";
     }
 }

@@ -10,6 +10,7 @@ internal static class GeoJsonExtensions
 {
     internal static double Haversine(this IEnumerable<(Location A, Location B)> segments)
     {
+        // TODO dostosować do do geoidy i pary dwóch punktów tylko
         var pointPairs = segments.ToArray();
         var earthRadius = 6371.2;
         var total = 0.0;

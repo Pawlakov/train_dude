@@ -13,4 +13,6 @@ public class Segment
     public double? NominalLength { get; set; }
 
     public virtual ICollection<SegmentExtreme> Extremes { get; set; }
+
+    public virtual ICollection<SegmentVertexLocation> Vertices { get; set; }
 }

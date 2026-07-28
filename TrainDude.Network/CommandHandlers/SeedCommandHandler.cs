@@ -5,6 +5,7 @@
 namespace TrainDude.Network.CommandHandlers;
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -52,8 +53,13 @@ internal class SeedCommandHandler : IRequestHandler<SeedCommand>
 
         foreach (var routeSeed in routesSeed)
         {
+            var vertices = (routeSeed.Vertices ?? [])
+                .Select((x, index) => new SegmentVertexLocation { OrdinalId = index, Longitude = x.Longitude, Latitude = x.Latitude })
+                .ToList();
+
             var route = new Segment
             {
+                NominalLength = routeSeed.Length,
                 Extremes = new List<SegmentExtreme>
                 {
                     new SegmentExtreme
@@ -67,7 +73,7 @@ internal class SeedCommandHandler : IRequestHandler<SeedCommand>
                         IsEnd = true,
                     },
                 },
-                NominalLength = routeSeed.Length,
+                Vertices = vertices,
             };
 
             await this.db.Set<Segment>().AddAsync(route, cancellationToken);

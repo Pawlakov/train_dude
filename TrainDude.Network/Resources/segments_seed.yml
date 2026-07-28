@@ -68,7 +68,7 @@
     pole: false
   length: 7.5
   tracks: 1
-  mid_points:
+  vertices:
     - latitude: 54.273977
       longitude: 22.246789
     - latitude: 54.284920
