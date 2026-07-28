@@ -111,3 +111,95 @@
   name_polish: Klimki
   longitude: 21.7069
   latitude: 54.2741
+- id: 24
+  name_german: Rastenburg
+  name_polish: Kętrzyn
+  name_polish_old: Rastembork
+  longitude: 21.3853
+  latitude: 54.0728
+- id: 25
+  name_german: Carlshof (Ostpreußen)
+  name_polish: Karolewo
+  longitude: 21.4180
+  latitude: 54.0764
+- id: 26
+  name_german: Schwarzstein
+  name_polish: Czerniki
+  name_polish_old: Swarsztyn
+  longitude: 21.4511
+  latitude: 54.0851
+- id: 27
+  name_german: Moysee
+  name_polish: Siercze
+  longitude: 21.4777
+  latitude: 54.0806
+- id: 28
+  name_german: Görlitz (Ostpreußen)
+  name_polish: Gierłoż
+  longitude: 21.4941
+  latitude: 54.0793
+- id: 29
+  name_german: Groß Partsch
+  name_polish: Parcz
+  longitude: 21.5207
+  latitude: 54.0847
+- id: 30
+  name_german: Rosengarten (Ostpreußen)
+  name_polish: Radzieje Węgorzewskie
+  name_polish_old: Rożengart
+  longitude: 21.5794
+  latitude: 54.1296
+- id: 31
+  name_german: Groß Steinort
+  name_polish: Kamionek Wielki
+  longitude: 21.6285
+  latitude: 54.1569
+- id: 32
+  name_german: Pristanien
+  name_german_new: Poßdorf
+  name_polish: Przystań
+  longitude: 21.6415
+  latitude: 54.2101
+- id: 33
+  name_german: Ogonken
+  name_german_new: Schwenten (Ostpreußen)
+  name_polish: Ogonki
+  longitude: 21.8061
+  latitude: 54.1844
+- id: 34
+  name_german: Possessern
+  name_german_new: Großgarten (Ostpreußen)
+  name_polish: Pozezdrze
+  longitude: 21.8670
+  latitude: 54.1399
+- id: 35
+  name_german: Willuden
+  name_german_new: Andreastal
+  name_polish: Wyłudy
+  longitude: 21.8860
+  latitude: 54.1109
+- id: 36
+  name_german: Kruglanken
+  name_polish: Kruklanki
+  name_polish_old: Krukłanki
+  longitude: 21.9105
+  latitude: 54.0864
+- id: 37
+  name_german: Pietzonken
+  name_german_new: Grünau (Ostpreußen)
+  name_polish: Pieczonki
+  name_polish_old: Pieczonka
+  longitude: 21.8883
+  latitude: 54.0668
+- id: 38
+  name_german: Groß Kosuchen
+  name_german_new: Allenbruch
+  name_polish: Kożuchy Wielkie
+  longitude: 21.8551
+  latitude: 54.0355
+- id: 39
+  name_german: Lötzen
+  name_polish: Giżycko
+  name_polish_old: Łuczany
+  longitude: 21.7782
+  latitude: 54.0316
