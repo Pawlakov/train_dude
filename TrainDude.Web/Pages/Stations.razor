@@ -17,7 +17,6 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Nazwa</th>
                     <th>Położenie</th>
                 </tr>
@@ -34,7 +33,6 @@
                     @foreach (var station in stations)
                     {
                         <tr>
-                            <td>@(station.StationId)</td>
                             <td>@(station.Name)</td>
                             <td>@(station.HasLocation)</td>
                         </tr>

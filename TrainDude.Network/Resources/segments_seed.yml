@@ -8,6 +8,8 @@
     pole: false
   length: 4.8
   tracks: 1
+  charts:
+    - '118f'
 - a:
     station_id: 2
     axle: 0
@@ -18,6 +20,8 @@
     pole: false
   length: 7.3
   tracks: 1
+  charts:
+    - '118f'
 - a:
     station_id: 3
     axle: 0
@@ -28,6 +32,8 @@
     pole: false
   length: 6.1
   tracks: 1
+  charts:
+    - '118f'
 - a:
     station_id: 4
     pole: true
@@ -36,6 +42,8 @@
     pole: false
   length: 4.7
   tracks: 1
+  charts:
+    - '118f'
 - a:
     station_id: 5
     pole: true
@@ -44,6 +52,8 @@
     pole: false
   length: 7.7
   tracks: 1
+  charts:
+    - '118f'
 - a:
     station_id: 6
     pole: true
@@ -52,6 +62,8 @@
     pole: false
   length: 6.0
   tracks: 1
+  charts:
+    - '118f'
 - a:
     station_id: 7
     pole: true
@@ -60,6 +72,8 @@
     pole: false
   length: 5.8
   tracks: 1
+  charts:
+    - '118f'
 - a:
     station_id: 8
     pole: true
@@ -68,218 +82,360 @@
     pole: false
   length: 7.5
   tracks: 1
+  charts:
+    - '118f'
   vertices:
-    - latitude: 54.273977
-      longitude: 22.246789
-    - latitude: 54.284920
-      longitude: 22.245212
-    - latitude: 54.286197
-      longitude: 22.245469
-    - latitude: 54.290000
-      longitude: 22.248600
-    - latitude: 54.292134
-      longitude: 22.250190
-    - latitude: 54.293286
-      longitude: 22.250748
-    - latitude: 54.296016
-      longitude: 22.251606
-    - latitude: 54.302077
-      longitude: 22.256670
-    - latitude: 54.309288
-      longitude: 22.261648
-    - latitude: 54.311400
-      longitude: 22.264400
-    - latitude: 54.312843
-      longitude: 22.267270
-    - latitude: 54.313569
-      longitude: 22.269588
-    - latitude: 54.316961
-      longitude: 22.282054
-    - latitude: 54.317575
-      longitude: 22.284629
-    - latitude: 54.317728
-      longitude: 22.285810
-    - latitude: 54.317762
-      longitude: 22.286480
-    - latitude: 54.317665
-      longitude: 22.287515
+    - latitude: 54.2740
+      longitude: 22.2468
+    - latitude: 54.2849
+      longitude: 22.2452
+    - latitude: 54.2862
+      longitude: 22.2455
+    - latitude: 54.2900
+      longitude: 22.2486
+    - latitude: 54.2921
+      longitude: 22.2502
+    - latitude: 54.2933
+      longitude: 22.2507
+    - latitude: 54.2960
+      longitude: 22.2516
+    - latitude: 54.3021
+      longitude: 22.2567
+    - latitude: 54.3093
+      longitude: 22.2616
+    - latitude: 54.3114
+      longitude: 22.2644
+    - latitude: 54.3128
+      longitude: 22.2673
+    - latitude: 54.3136
+      longitude: 22.2696
+    - latitude: 54.3170
+      longitude: 22.2821
+    - latitude: 54.3176
+      longitude: 22.2846
+    - latitude: 54.3177
+      longitude: 22.2858
+    - latitude: 54.3178
+      longitude: 22.2865
+    - latitude: 54.3177
+      longitude: 22.2875
 - a:
     station_id: 10
   b:
     station_id: 11
   length: 7.5
   tracks: 1
+  charts:
+    - '118e'
 - a:
     station_id: 11
   b:
     station_id: 12
   length: 3.8
   tracks: 1
+  charts:
+    - '118e'
 - a:
     station_id: 12
   b:
     station_id: 13
   length: 6.2
   tracks: 1
+  charts:
+    - '118e'
 - a:
     station_id: 13
   b:
     station_id: 14
   length: 5.6
   tracks: 1
+  charts:
+    - '118e'
 - a:
     station_id: 14
   b:
     station_id: 15
   length: 3.4
   tracks: 1
+  charts:
+    - '118e'
 - a:
     station_id: 15
   b:
     station_id: 16
   length: 6.3
   tracks: 1
+  charts:
+    - '118e'
 - a:
     station_id: 16
   b:
     station_id: 1
   length: 4.2
   tracks: 2
+  charts:
+    - '118e'
+    - '119e'
 - a:
     station_id: 17
   b:
     station_id: 18
   length: 3.6
   tracks: 1
+  charts:
+    - '119e'
 - a:
     station_id: 18
   b:
     station_id: 19
   length: 7.9
   tracks: 1
+  charts:
+    - '119e'
 - a:
     station_id: 19
   b:
     station_id: 20
   length: 4.6
   tracks: 1
+  charts:
+    - '119e'
 - a:
     station_id: 20
   b:
     station_id: 21
   length: 2.5
   tracks: 1
+  charts:
+    - '119e'
 - a:
     station_id: 21
   b:
     station_id: 22
   length: 5.4
   tracks: 1
+  charts:
+    - '119e'
 - a:
     station_id: 22
   b:
     station_id: 23
   length: 4.6
   tracks: 1
+  charts:
+    - '119e'
 - a:
     station_id: 23
   b:
     station_id: 16
   length: 4.6
   tracks: 1
+  charts:
+    - '119e'
 - a:
     station_id: 24
   b:
     station_id: 25
   length: 2.3
   tracks: 1
+  charts:
+    - '117m'
 - a:
     station_id: 25
   b:
     station_id: 26
   length: 2.7
   tracks: 1
+  charts:
+    - '117m'
 - a:
     station_id: 26
   b:
     station_id: 27
   length: 1.6
   tracks: 1
+  charts:
+    - '117m'
 - a:
     station_id: 27
   b:
     station_id: 28
   length: 0.9
   tracks: 1
+  charts:
+    - '117m'
 - a:
     station_id: 28
   b:
     station_id: 29
   length: 2.4
   tracks: 1
+  charts:
+    - '117m'
 - a:
     station_id: 29
   b:
     station_id: 30
   length: 6.4
   tracks: 1
+  charts:
+    - '117m'
 - a:
     station_id: 30
   b:
     station_id: 31
   length: 4.9
   tracks: 1
+  charts:
+    - '117m'
 - a:
     station_id: 31
   b:
     station_id: 32
   length: 6.2
   tracks: 1
+  charts:
+    - '117m'
 - a:
     station_id: 32
   b:
     station_id: 1
   length: 5.9
   tracks: 1
+  charts:
+    - '117m'
 - a:
     station_id: 1
   b:
     station_id: 33
   length: 8
   tracks: 1
+  charts:
+    - '118t'
+  vertices:
+    - longitude: 21.7285
+      latitude: 54.2178
+    - longitude: 21.7338
+      latitude: 54.2175
+    - longitude: 21.7349
+      latitude: 54.2175
+    - longitude: 21.7355
+      latitude: 54.2175
+    - longitude: 21.7361
+      latitude: 54.2175
+    - longitude: 21.7368
+      latitude: 54.2176
+    - longitude: 21.7372
+      latitude: 54.2177
+    - longitude: 21.7376
+      latitude: 54.2178
+    - longitude: 21.7376
+      latitude: 54.2178
+    - longitude: 21.7385
+      latitude: 54.2182
+    - longitude: 21.7388
+      latitude: 54.2183
+    - longitude: 21.7391
+      latitude: 54.2185
+    - longitude: 21.7395
+      latitude: 54.2188
+    - longitude: 21.7402
+      latitude: 54.2193
+    - longitude: 21.7409
+      latitude: 54.2199
+    - longitude: 21.7413
+      latitude: 54.2202
+    - longitude: 21.7418
+      latitude: 54.2204
+    - longitude: 21.7426
+      latitude: 54.2208
+    - longitude: 21.7430
+      latitude: 54.2210
+    - longitude: 21.7434
+      latitude: 54.2211
+    - longitude: 21.7440
+      latitude: 54.2213
+    - longitude: 21.7446
+      latitude: 54.2215
+    - longitude: 21.74516
+      latitude: 54.2216
+    - longitude: 21.7458
+      latitude: 54.2217
+    - longitude: 21.7470
+      latitude: 54.2218
+    - longitude: 21.7482
+      latitude: 54.2219
+    - longitude: 21.7495
+      latitude: 54.2218
+    - longitude: 21.7509
+      latitude: 54.2217
+    - longitude: 21.7533
+      latitude: 54.2216
+    - longitude: 21.7559
+      latitude: 54.2214
+    - longitude: 21.7572
+      latitude: 54.2213
+    - longitude: 21.7584
+      latitude: 54.2213
+    - longitude: 21.7595
+      latitude: 54.2212
+    - longitude: 21.7607
+      latitude: 54.2211
+    - longitude: 21.7619
+      latitude: 54.2209
+    - longitude: 21.7631
+      latitude: 54.2207
+    - longitude: 21.7644
+      latitude: 54.2206
+    - longitude: 21.7651
+      latitude: 54.2204
+    - longitude: 21.7661
+      latitude: 54.2201
 - a:
     station_id: 33
   b:
     station_id: 34
   length: 6.8
   tracks: 1
+  charts:
+    - '118t'
 - a:
     station_id: 34
   b:
     station_id: 35
   length: 3.9
   tracks: 1
+  charts:
+    - '118t'
 - a:
     station_id: 35
   b:
     station_id: 36
   length: 3.4
   tracks: 1
+  charts:
+    - '118t'
 - a:
     station_id: 36
   b:
     station_id: 37
   length: 2.8
   tracks: 1
+  charts:
+    - '118t'
 - a:
     station_id: 37
   b:
     station_id: 38
   length: 4.3
   tracks: 1
+  charts:
+    - '118t'
 - a:
     station_id: 38
   b:
     station_id: 39
   length: 5.4
   tracks: 1
+  charts:
+    - '118t'

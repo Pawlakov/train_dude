@@ -18,6 +18,8 @@ internal class SegmentSeed
 
     public List<VertexSeed>? Vertices { get; set; }
 
+    public List<string> Charts { get; set; }
+
     internal class ExtremeSeed
     {
         public int StationId { get; set; }

@@ -14,6 +14,7 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
+using TrainDude.Data;
 using TrainDude.Data.Models;
 using TrainDude.Network.Queries;
 

@@ -15,4 +15,6 @@ public class Segment
     public virtual ICollection<SegmentExtreme> Extremes { get; set; }
 
     public virtual ICollection<SegmentVertexLocation> Vertices { get; set; }
+
+    public virtual ICollection<ChartSegment> Charts { get; set; }
 }

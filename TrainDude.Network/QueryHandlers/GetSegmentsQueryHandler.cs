@@ -14,6 +14,7 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
+using TrainDude.Data;
 using TrainDude.Data.Models;
 using TrainDude.Network.DTOs;
 using TrainDude.Network.Extensions;
@@ -48,6 +49,7 @@ internal class GetSegmentsQueryHandler : IRequestHandler<GetSegmentsQuery, IEnum
                     Location = x.Extremes.Where(y => y.IsEnd).Select(y => y.Station.Location).Single(),
                 },
                 Vertices = x.Vertices.OrderBy(y => y.OrdinalId).ToList(),
+                Charts = x.Charts.Select(y => y.ChartId).ToList(),
             })
             .ToListAsync(cancellationToken);
 
@@ -59,6 +61,7 @@ internal class GetSegmentsQueryHandler : IRequestHandler<GetSegmentsQuery, IEnum
                 NameA = x.A.Name,
                 NameB = x.B.Name,
                 Haversine = (x.A.Location != null && x.B.Location != null) ? x.Vertices.Cast<Location>().Prepend(x.A.Location).Append(x.A.Location).Segments().Haversine() : null,
+                Charts = x.Charts,
             })
             .ToList();
 

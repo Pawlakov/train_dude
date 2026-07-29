@@ -4,6 +4,8 @@
 
 namespace TrainDude.Network.DTOs;
 
+using System.Collections.Generic;
+
 public class SegmentSummaryDTO
 {
     public int SegmentId { get; init; }
@@ -15,4 +17,6 @@ public class SegmentSummaryDTO
     public double? Length { get; init; }
 
     public double? Haversine { get; init; }
+
+    public List<string> Charts { get; set; }
 }

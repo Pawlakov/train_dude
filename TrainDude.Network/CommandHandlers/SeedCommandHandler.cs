@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 using MediatR;
 
+using TrainDude.Data;
 using TrainDude.Data.Models;
 using TrainDude.Network.Commands;
 using TrainDude.Network.Services;
@@ -51,6 +52,12 @@ internal class SeedCommandHandler : IRequestHandler<SeedCommand>
             idDictionary[stationSeed.Id] = station;
         }
 
+        var allCharts = routesSeed
+            .SelectMany(x => x.Charts)
+            .GroupBy(x => x)
+            .Select(x => new Chart { ChartId = x.Key })
+            .ToDictionary(x => x.ChartId, x => x);
+
         foreach (var routeSeed in routesSeed)
         {
             var vertices = (routeSeed.Vertices ?? [])
@@ -74,6 +81,7 @@ internal class SeedCommandHandler : IRequestHandler<SeedCommand>
                     },
                 },
                 Vertices = vertices,
+                Charts = routeSeed.Charts.Select(x => new ChartSegment { Chart = allCharts[x] }).ToList(),
             };
 
             await this.db.Set<Segment>().AddAsync(route, cancellationToken);

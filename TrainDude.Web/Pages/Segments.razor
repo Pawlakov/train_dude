@@ -50,6 +50,16 @@
                                     <text>@($"{segment.Length:0.00} km")</text>
                                 }
                             </td>
+                            <td>
+                                @if (segment.Charts.Count > 0)
+                                {
+                                    <text>@(string.Join(", ", segment.Charts))</text>
+                                }
+                                else
+                                {
+                                    <text>brak</text>
+                                }
+                            </td>
                             <td><a href="segment/@(segment.SegmentId)">Szczegóły</a></td>
                         </tr>
                     }
