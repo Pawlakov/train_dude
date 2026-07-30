@@ -9,6 +9,8 @@ public class GetSegmentQueryResult
     required public string AName { get; init; }
 
     required public string BName { get; init; }
-
+    
     required public GeodeticPosition ALocation { get; set; }
+
+    required public GeodeticPosition BLocation { get; set; }
 }

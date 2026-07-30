@@ -18,5 +18,5 @@ public class GetSegmentsQueryResultItem
 
     public double? Haversine { get; init; }
 
-    public List<string> Charts { get; set; }
+    public List<string> Charts { get; set; } = new List<string>();
 }

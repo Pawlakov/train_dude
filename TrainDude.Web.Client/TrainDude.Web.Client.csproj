@@ -23,6 +23,8 @@
       <AdditionalFiles Include="..\stylecop.json">
         <Link>stylecop.json</Link>
       </AdditionalFiles>
+      <AdditionalFiles Include="Layout\MainLayout.razor" />
+      <AdditionalFiles Include="Layout\NavMenu.razor" />
     </ItemGroup>
 
     <ItemGroup>

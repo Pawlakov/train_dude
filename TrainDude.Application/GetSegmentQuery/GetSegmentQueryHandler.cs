@@ -34,12 +34,12 @@ internal class GetSegmentQueryHandler
             {
                 A = new
                 {
-                    x.Extremes.Single(y => !y.IsEnd).Station!.NameGerman,
+                    Name = x.Extremes.Single(y => !y.IsEnd).Station!.NameGermanNew ?? x.Extremes.Single(y => !y.IsEnd).Station!.NameGerman,
                     x.Extremes.Single(y => !y.IsEnd).Station!.Location,
                 },
                 B = new
                 {
-                    x.Extremes.Single(y => y.IsEnd).Station!.NameGerman,
+                    Name = x.Extremes.Single(y => y.IsEnd).Station!.NameGermanNew ?? x.Extremes.Single(y => y.IsEnd).Station!.NameGerman,
                     x.Extremes.Single(y => y.IsEnd).Station!.Location,
                 },
             })
@@ -53,9 +53,10 @@ internal class GetSegmentQueryHandler
         var dto = new GetSegmentQueryResult
         {
             SegmentId = request.SegmentId,
-            AName = queryResult.A.NameGerman,
-            BName = queryResult.B.NameGerman,
+            AName = queryResult.A.Name,
+            BName = queryResult.B.Name,
             ALocation = new GeodeticPosition(queryResult.A.Location!.Longitude, queryResult.A.Location!.Latitude),
+            BLocation = new GeodeticPosition(queryResult.B.Location!.Longitude, queryResult.B.Location!.Latitude),
         };
 
         return dto;

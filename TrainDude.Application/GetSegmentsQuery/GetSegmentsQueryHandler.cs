@@ -30,8 +30,6 @@ internal class GetSegmentsQueryHandler
 
     public async Task<GetSegmentsQueryResult> Handle(GetSegmentsQuery request, CancellationToken cancellationToken)
     {
-        var nameMap = (await this.db.Stations.AsNoTracking().ToListAsync(cancellationToken)).ToDictionary(x => x.StationId, x => x);
-
         var models = await this.db.Segments.AsNoTracking()
             .Select(x => new
             {
@@ -59,7 +57,7 @@ internal class GetSegmentsQueryHandler
                 Length = x.NominalLength,
                 NameA = x.A.Name,
                 NameB = x.B.Name,
-                Haversine = (x.A.Location != null && x.B.Location != null) ? x.Vertices.Cast<Location>().Prepend(x.A.Location).Append(x.A.Location).Select(y => new GeodeticPosition{ Longitude = y.Longitude, Latitude = y.Latitude }).ToList().Segments().Haversine() : null,
+                Haversine = (x.A.Location != null && x.B.Location != null) ? x.Vertices.Cast<Location>().Prepend(x.A.Location).Append(x.B.Location).Select(y => new GeodeticPosition{ Longitude = y.Longitude, Latitude = y.Latitude }).ToList().Segments().Haversine() : null,
                 Charts = x.Charts,
             })
             .ToList();
