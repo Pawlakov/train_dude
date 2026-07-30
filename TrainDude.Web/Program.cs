@@ -8,9 +8,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-using TrainDude.Data.Extensions;
-using TrainDude.Network.Extensions;
-using TrainDude.Network.Queries;
+using TrainDude.Application.Extensions;
+using TrainDude.Application.HostBuilders;
+using TrainDude.Data.HostBuilders;
+using TrainDude.Web.Components;
 
 /// <summary>
 /// The main class.
@@ -26,34 +27,40 @@ public static class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
-        builder.Services.AddRazorPages();
-        builder.Services.AddServerSideBlazor();
+        builder.Services.AddRazorComponents()
+            .AddInteractiveWebAssemblyComponents();
+
+        builder.Services.AddControllers(); // TODO Mediator Controller
 
         builder.Services
             .AddDataServices()
-            .AddNetworkServices();
-
-        builder.Services.AddMediatR(config => { config.RegisterServicesFromAssemblyContaining<GetStationsQuery>(); });
+            .AddApplicationServices()
+            .AddRequests()
+            .AddDataValidation();
 
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
-        if (!app.Environment.IsDevelopment())
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseWebAssemblyDebugging();
+        }
+        else
         {
             app.UseExceptionHandler("/Error");
-
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
 
+        app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
         app.UseHttpsRedirection();
 
-        app.UseStaticFiles();
+        app.UseAntiforgery();
 
-        app.UseRouting();
-
-        app.MapBlazorHub();
-        app.MapFallbackToPage("/_Host");
+        app.MapStaticAssets();
+        app.MapRazorComponents<App>()
+            .AddInteractiveWebAssemblyRenderMode()
+            .AddAdditionalAssemblies(typeof(Client._Imports).Assembly);
 
         app.Run();
     }

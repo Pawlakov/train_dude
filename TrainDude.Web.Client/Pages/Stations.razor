@@ -1,0 +1,53 @@
+﻿@using TrainDude.Application.Requests.GetStationsQuery
+
+@page "/stations"
+
+@inject IMediator mediator
+
+<PageTitle>Stacje</PageTitle>
+
+<section class="section">
+    <h1 class="title">Stacje</h1>
+    <p class="subtitle">Lista stacji.</p>
+</section>
+<hr />
+<section class="section">
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nazwa</th>
+                    <th>Położenie</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (stations == null)
+                {
+                    <tr>
+                        <td colspan="2"><em>Ładowanie...</em></td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var station in stations)
+                    {
+                        <tr>
+                            <td>@(station.Name)</td>
+                            <td>@(station.HasLocation)</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+@code {
+    private IEnumerable<GetStationsQueryResultItem> stations;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var result = await this.mediator.Send(new GetStationsQuery());
+        this.stations = result.Items.ToList();
+    }
+}

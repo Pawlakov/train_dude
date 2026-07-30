@@ -1,0 +1,71 @@
+﻿// <copyright file="GetNetworkGeoJsonQueryHandler.cs" company="Pawlakov">
+// Copyright (c) Pawlakov. All rights reserved.
+// </copyright>
+
+namespace TrainDude.Application.GetNetworkGeoJsonQuery;
+
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+
+using MediatR;
+
+using Microsoft.EntityFrameworkCore;
+
+using TrainDude.Application.Requests.GetNetworkGeoJsonQuery;
+using TrainDude.Data;
+using TrainDude.Data.Entities;
+
+internal class GetNetworkGeoJsonQueryHandler : IRequestHandler<GetNetworkGeoJsonQuery, string>
+{
+    private readonly NetworkDbContext db;
+
+    public GetNetworkGeoJsonQueryHandler(NetworkDbContext db)
+    {
+        this.db = db;
+    }
+
+    public async Task<string> Handle(GetNetworkGeoJsonQuery request, CancellationToken cancellationToken)
+    {
+        var stations = await this.db.Stations.AsNoTracking()
+            .Where(x => x.Location != null)
+            .Select(x => new
+            {
+                Id = x.StationId,
+                Location = x.Location!,
+            })
+            .ToListAsync(cancellationToken);
+
+        var segments = await this.db.Segments.AsNoTracking()
+            .Select(x => new
+            {
+                ALocation = x.Extremes.Single(y => !y.IsEnd).Station!.Location,
+                BLocation = x.Extremes.Single(y => y.IsEnd).Station!.Location,
+                Vertices = x.Vertices.OrderBy(y => y.OrdinalId).ToList(),
+            })
+            .ToListAsync(cancellationToken);
+
+        var stationsGeoJson = new List<string>();
+        var segmentsGeoJson = new List<string>();
+
+        foreach (var station in stations)
+        {
+            stationsGeoJson.Add($"{{ \"type\": \"Point\", \"coordinates\": {station.Location} }}");
+        }
+
+        foreach (var segment in segments)
+        {
+            if (segment.ALocation != null && segment.BLocation != null)
+            {
+                var points = segment.Vertices.Cast<Location>().Prepend(segment.ALocation!).Append(segment.BLocation!);
+
+                var line = string.Join(',', points);
+
+                segmentsGeoJson.Add($"{{ \"type\": \"LineString\", \"coordinates\": [{line}] }}");
+            }
+        }
+
+        return $"[{string.Join(',', segmentsGeoJson.Concat(stationsGeoJson))}]";
+    }
+}

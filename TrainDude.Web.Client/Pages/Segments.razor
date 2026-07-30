@@ -1,0 +1,80 @@
+﻿@page "/segments"
+@using TrainDude.Application.Requests.GetSegmentsQuery
+
+@inject IMediator mediator
+
+<PageTitle>Odcinki</PageTitle>
+
+<section class="section">
+    <h1 class="title">Odcinki</h1>
+    <p class="subtitle">Lista odcinków.</p>
+</section>
+<hr />
+<section class="section">
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>A</th>
+                    <th>B</th>
+                    <th>Długość</th>
+                    <th>Długość nominalna</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (this.segments == null)
+                {
+                    <tr>
+                        <td colspan="4"><em>Loading...</em></td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var segment in this.segments)
+                    {
+                        <tr>
+                            <td>@(segment.NameA)</td>
+                            <td>@(segment.NameB)</td>
+                            <td>
+                                @if (segment.Haversine != null)
+                                {
+                                    <text>@($"{segment.Haversine:0.00} km")</text>
+                                }
+                            </td>
+                            <td>
+                                @if (segment.Length != null)
+                                {
+                                    <text>@($"{segment.Length:0.00} km")</text>
+                                }
+                            </td>
+                            <td>
+                                @if (segment.Charts.Count > 0)
+                                {
+                                    <text>@(string.Join(", ", segment.Charts))</text>
+                                }
+                                else
+                                {
+                                    <text>brak</text>
+                                }
+                            </td>
+                            <td><a href="segment/@(segment.SegmentId)">Szczegóły</a></td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+@code {
+    private IEnumerable<GetSegmentsQueryResultItem> segments;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var result = await this.mediator.Send(new GetSegmentsQuery());
+        this.segments = result.Items.ToList();
+
+        await base.OnParametersSetAsync();
+    }
+}

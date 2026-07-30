@@ -3,29 +3,56 @@
     <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <Nullable>enable</Nullable>
+        <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
     </PropertyGroup>
 
     <ItemGroup>
         <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
+        <AdditionalFiles Include="Components\Pages\Admin.razor" />
+        <AdditionalFiles Include="Components\Pages\Error.razor" />
+        <AdditionalFiles Include="Components\Pages\Index.razor" />
+        <AdditionalFiles Include="Components\Pages\Radii.razor" />
+        <AdditionalFiles Include="Components\Pages\Segment.razor" />
+        <AdditionalFiles Include="Components\Pages\Segments.razor" />
+        <AdditionalFiles Include="Components\Pages\Stations.razor" />
+        <AdditionalFiles Include="Components\Pages\_Host.cshtml" />
+        <AdditionalFiles Include="Components\Shared\MainLayout.razor" />
+        <AdditionalFiles Include="Components\Shared\NavMenu.razor" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="GeoJSON.Net" Version="1.4.1" />
-        <PackageReference Include="MediatR" Version="14.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.10" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.10">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="YamlDotNet" Version="18.1.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\TrainDude.Network\TrainDude.Network.csproj" />
+      <ProjectReference Include="..\TrainDude.Application\TrainDude.Application.csproj" />
+      <ProjectReference Include="..\TrainDude.Web.Client\TrainDude.Web.Client.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Pages\Error.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\_Host.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Index.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Radii.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Segment.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Segments.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Stations.razor" />
+      <_ContentIncludedByDefault Remove="Shared\MainLayout.razor" />
+      <_ContentIncludedByDefault Remove="Shared\NavMenu.razor" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Components\Shared\" />
     </ItemGroup>
 
 </Project>

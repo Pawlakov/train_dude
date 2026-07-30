@@ -6,8 +6,8 @@ namespace TrainDude.Data;
 
 using Microsoft.EntityFrameworkCore;
 
-using TrainDude.Data.Models;
-using TrainDude.Data.Models.Configuration;
+using TrainDude.Data.Entities;
+using TrainDude.Data.Entities.Configuration;
 
 public partial class NetworkDbContext(DbContextOptions<NetworkDbContext> options)
     : DbContext(options)
