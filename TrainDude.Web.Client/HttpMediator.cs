@@ -8,7 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Text;
+using System.Net.Http.Json;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,7 +18,7 @@ using FluentValidation.Results;
 
 using MediatR;
 
-using Newtonsoft.Json;
+using TrainDude.Application.Requests.Base;
 
 public class HttpMediator
     : IMediator
@@ -31,32 +32,52 @@ public class HttpMediator
 
     public async Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = new CancellationToken())
     {
-        var typeString = Convert.ToBase64String(Encoding.UTF8.GetBytes(request.GetType().AssemblyQualifiedName));
-        var requestString = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(request, typeof(IRequest<TResponse>), null)));
-
-        var response = await this.http.GetAsync($"api/mediator/requestresponse?type={typeString}&request={requestString}", cancellationToken);
-        if (response.StatusCode == HttpStatusCode.BadRequest)
+        if (request is not BaseClientRequest polymorphicRequest)
         {
-            var errors = JsonConvert.DeserializeObject<ValidationFailure[]>(await response.Content.ReadAsStringAsync());
-            throw new ValidationException(errors);
+            throw new NotSupportedException($"This request type is not supporting polymorphic JSON serialization. The type is {request.GetType()}.");
         }
 
-        var result = JsonConvert.DeserializeObject<TResponse>(await response.Content.ReadAsStringAsync());
-        return result;
+        var response = await this.http.PostAsJsonAsync("api/mediator/with", polymorphicRequest, cancellationToken);
+        if (!response.IsSuccessStatusCode)
+        {
+            if (response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                var errors = await response.Content.ReadFromJsonAsync<ValidationFailure[]>();
+                throw new ValidationException(errors);
+            }
+            else
+            {
+                throw new ApplicationException("A request to the mediator endpoint returned a status code indicating failure.");
+            }
+        }
+
+        var result = await response.Content.ReadFromJsonAsync<TResponse>();
+        return result ?? throw new InvalidOperationException("Missing response.");
     }
 
     public async Task Send<TRequest>(TRequest request, CancellationToken cancellationToken = new CancellationToken())
         where TRequest : IRequest
     {
-        var typeString = Convert.ToBase64String(Encoding.UTF8.GetBytes(request.GetType().AssemblyQualifiedName));
-        var requestString = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(request, typeof(TRequest), null)));
-
-        var response = await this.http.GetAsync($"api/mediator/request?type={typeString}&request={requestString}", cancellationToken);
-        if (response.StatusCode == HttpStatusCode.BadRequest)
+        if (request is not BaseClientRequest polymorphicRequest)
         {
-            var errors = JsonConvert.DeserializeObject<ValidationFailure[]>(await response.Content.ReadAsStringAsync());
-            throw new ValidationException(errors);
+            throw new NotSupportedException($"This request type is not supporting polymorphic JSON serialization. The type is {request.GetType()}.");
         }
+
+        var response = await this.http.PostAsJsonAsync("api/mediator/without", polymorphicRequest, cancellationToken);
+        if (!response.IsSuccessStatusCode)
+        {
+            if (response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                var errors = await response.Content.ReadFromJsonAsync<ValidationFailure[]>();
+                throw new ValidationException(errors);
+            }
+            else
+            {
+                throw new ApplicationException("A request to the mediator endpoint returned a status code indicating failure.");
+            }
+        }
+
+        response.EnsureSuccessStatusCode();
     }
 
     public Task<object?> Send(object request, CancellationToken cancellationToken = new CancellationToken())

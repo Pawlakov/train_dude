@@ -4,7 +4,10 @@
 
 namespace TrainDude.Application.Requests.GetSegmentsQuery;
 
+using TrainDude.Application.Requests.Base;
+
 public class GetSegmentsQueryResult
+    : BaseClientResponse
 {
     public IEnumerable<GetSegmentsQueryResultItem> Items { get; set; }
 }

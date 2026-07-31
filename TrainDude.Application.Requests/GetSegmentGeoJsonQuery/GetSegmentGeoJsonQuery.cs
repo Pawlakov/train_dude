@@ -6,12 +6,10 @@ namespace TrainDude.Application.Requests.GetSegmentGeoJsonQuery;
 
 using MediatR;
 
-public class GetSegmentGeoJsonQuery : IRequest<string>
-{
-    public int SegmentId { get; }
+using TrainDude.Application.Requests.Base;
 
-    public GetSegmentGeoJsonQuery(int id)
-    {
-        this.SegmentId = id;
-    }
+public class GetSegmentGeoJsonQuery
+    : BaseClientRequest, IRequest<GetSegmentGeoJsonQueryResult>
+{
+    public int SegmentId { get; init; }
 }

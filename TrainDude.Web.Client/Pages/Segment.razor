@@ -1,5 +1,7 @@
 ﻿@using TrainDude.Application.Requests.GetSegmentGeoJsonQuery
 @using TrainDude.Application.Requests.GetSegmentQuery
+@using TrainDude.Web.Client.Layout
+@layout MapLayout
 
 @page "/segment/{Id:int}"
 
@@ -16,12 +18,6 @@
         <p class="subtitle">@(this.segment.AName) - @(this.segment.BName)</p>
     }
 </section>
-<hr />
-<section class="section">
-    <div class="block">
-        <div id="map" style="height:512px;"></div>
-    </div>
-</section>
 
 @code {
     private IJSObjectReference scriptModule;
@@ -34,10 +30,11 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        this.segment = await this.Mediator.Send(new GetSegmentQuery(this.Id));
+        this.segment = await this.Mediator.Send(new GetSegmentQuery { SegmentId = this.Id });
         if (this.segment != null)
         {
-            this.segmentGeoJson = await this.Mediator.Send(new GetSegmentGeoJsonQuery(this.Id));
+            var result = await this.Mediator.Send(new GetSegmentGeoJsonQuery { SegmentId = this.Id });
+            this.segmentGeoJson = result.GeoJson;
             /* TODO this thing:
             this.antiradiusSeries = await this.Mediator.Send(new GetSegmentAntiradiusSeriesQuery(this.Id, 20));*/
         }
@@ -51,9 +48,8 @@
     {
         if (this.segment != null && firstRender)
         {
-            this.scriptModule = await this.JS.InvokeAsync<IJSObjectReference>("import", "./Pages/Segment.razor.js");
+            this.scriptModule = await this.JS.InvokeAsync<IJSObjectReference>("import", "./Layout/MapLayout.razor.js");
 
-            await this.scriptModule.InvokeVoidAsync("initMap", "map", segment.ALocation!.Latitude, segment.ALocation!.Longitude, 12);
             await this.scriptModule.InvokeVoidAsync("addGeoJson", this.segmentGeoJson);
         }
     }

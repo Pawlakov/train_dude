@@ -30,7 +30,7 @@ public static class Program
         builder.Services.AddRazorComponents()
             .AddInteractiveWebAssemblyComponents();
 
-        builder.Services.AddControllers(); // TODO Mediator Controller
+        builder.Services.AddControllers();
 
         builder.Services
             .AddDataServices()
@@ -53,6 +53,8 @@ public static class Program
 
         app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
         app.UseHttpsRedirection();
+
+        app.MapControllers();
 
         app.UseAntiforgery();
 

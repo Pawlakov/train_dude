@@ -17,7 +17,8 @@ using TrainDude.Application.Requests.GetNetworkGeoJsonQuery;
 using TrainDude.Data;
 using TrainDude.Data.Entities;
 
-internal class GetNetworkGeoJsonQueryHandler : IRequestHandler<GetNetworkGeoJsonQuery, string>
+internal class GetNetworkGeoJsonQueryHandler
+    : IRequestHandler<GetNetworkGeoJsonQuery, GetNetworkGeoJsonQueryResult>
 {
     private readonly NetworkDbContext db;
 
@@ -26,7 +27,7 @@ internal class GetNetworkGeoJsonQueryHandler : IRequestHandler<GetNetworkGeoJson
         this.db = db;
     }
 
-    public async Task<string> Handle(GetNetworkGeoJsonQuery request, CancellationToken cancellationToken)
+    public async Task<GetNetworkGeoJsonQueryResult> Handle(GetNetworkGeoJsonQuery request, CancellationToken cancellationToken)
     {
         var stations = await this.db.Stations.AsNoTracking()
             .Where(x => x.Location != null)
@@ -66,6 +67,9 @@ internal class GetNetworkGeoJsonQueryHandler : IRequestHandler<GetNetworkGeoJson
             }
         }
 
-        return $"[{string.Join(',', segmentsGeoJson.Concat(stationsGeoJson))}]";
+        return new GetNetworkGeoJsonQueryResult
+        {
+            GeoJson = $"[{string.Join(',', segmentsGeoJson.Concat(stationsGeoJson))}]",
+        };
     }
 }

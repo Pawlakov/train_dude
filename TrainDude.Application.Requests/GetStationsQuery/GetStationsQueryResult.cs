@@ -4,7 +4,10 @@
 
 namespace TrainDude.Application.Requests.GetStationsQuery;
 
+using TrainDude.Application.Requests.Base;
+
 public class GetStationsQueryResult
+    : BaseClientResponse
 {
     public IEnumerable<GetStationsQueryResultItem> Items { get; set; }
 }

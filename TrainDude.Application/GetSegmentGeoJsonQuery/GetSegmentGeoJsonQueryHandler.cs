@@ -18,7 +18,7 @@ using TrainDude.Data;
 using TrainDude.Data.Entities;
 
 internal class GetSegmentGeoJsonQueryHandler
-    : IRequestHandler<GetSegmentGeoJsonQuery, string>
+    : IRequestHandler<GetSegmentGeoJsonQuery, GetSegmentGeoJsonQueryResult>
 {
     private readonly NetworkDbContext db;
 
@@ -27,7 +27,7 @@ internal class GetSegmentGeoJsonQueryHandler
         this.db = db;
     }
 
-    public async Task<string> Handle(GetSegmentGeoJsonQuery request, CancellationToken cancellationToken)
+    public async Task<GetSegmentGeoJsonQueryResult> Handle(GetSegmentGeoJsonQuery request, CancellationToken cancellationToken)
     {
         var routesGeoJson = new List<string>();
         var aLocation = await this.db.SegmentExtremes.Where(x => x.SegmentId == request.SegmentId && !x.IsEnd).Select(x => x.Station!.Location).SingleOrDefaultAsync(cancellationToken);
@@ -51,11 +51,17 @@ internal class GetSegmentGeoJsonQueryHandler
 
             routesGeoJson.Add($"{{ \"type\": \"LineString\", \"coordinates\": [{line}] }}");
 
-            return $"[{string.Join(',', routesGeoJson.Concat(stationsGeoJson))}]";
+            return new GetSegmentGeoJsonQueryResult
+            {
+                GeoJson = $"[{string.Join(',', routesGeoJson.Concat(stationsGeoJson))}]",
+            };
         }
         else
         {
-            return "[]";
+            return new GetSegmentGeoJsonQueryResult
+            {
+                GeoJson = "[]",
+            };
         }
     }
 }

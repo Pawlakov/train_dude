@@ -6,7 +6,9 @@ namespace TrainDude.Application.Requests.GetRadiiQuery;
 
 using MediatR;
 
+using TrainDude.Application.Requests.Base;
+
 public class GetRadiiQuery
-    : IRequest<GetRadiiQueryResult>
+    : BaseClientRequest, IRequest<GetRadiiQueryResult>
 {
 }

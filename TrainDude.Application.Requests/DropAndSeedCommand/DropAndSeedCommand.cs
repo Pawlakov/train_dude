@@ -6,10 +6,12 @@ namespace TrainDude.Application.Requests.DropAndSeedCommand;
 
 using MediatR;
 
+using TrainDude.Application.Requests.Base;
+
 /// <summary>
 /// A command which seeds basic network data.
 /// </summary>
 public class DropAndSeedCommand 
-    : IRequest
+    : BaseClientRequest, IRequest
 {
 }

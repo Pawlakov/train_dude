@@ -1,0 +1,25 @@
+@inherits LayoutComponentBase
+@inject IJSRuntime JSRuntime
+
+<NavMenu />
+<div id="map" style="display:flex;position:fixed;isolation:isolate;left:0;right:0;top:0;bottom:0;"></div>
+<main class="container is-max-desktop">
+    <div class="box">
+        @Body
+    </div>
+</main>
+
+@code
+{
+    private IJSObjectReference scriptModule;
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            this.scriptModule = await this.JSRuntime.InvokeAsync<IJSObjectReference>("import", "./Layout/MapLayout.razor.js");
+
+            await this.scriptModule.InvokeVoidAsync("initMap", "map", 54.218000, 21.725389, 12);
+        }
+    }
+}

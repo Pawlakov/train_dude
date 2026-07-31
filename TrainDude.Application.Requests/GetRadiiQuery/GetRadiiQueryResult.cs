@@ -4,7 +4,10 @@
 
 namespace TrainDude.Application.Requests.GetRadiiQuery;
 
+using TrainDude.Application.Requests.Base;
+
 public class GetRadiiQueryResult
+    : BaseClientResponse
 {
     public IEnumerable<GetRadiiQueryResultItem> Items { get; set; }
 }

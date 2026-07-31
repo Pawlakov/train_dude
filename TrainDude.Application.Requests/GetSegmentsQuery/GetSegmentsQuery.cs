@@ -6,6 +6,9 @@ namespace TrainDude.Application.Requests.GetSegmentsQuery;
 
 using MediatR;
 
-public class GetSegmentsQuery : IRequest<GetSegmentsQueryResult>
+using TrainDude.Application.Requests.Base;
+
+public class GetSegmentsQuery
+    : BaseClientRequest, IRequest<GetSegmentsQueryResult>
 {
 }

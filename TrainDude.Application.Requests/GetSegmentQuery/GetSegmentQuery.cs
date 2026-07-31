@@ -6,12 +6,10 @@ namespace TrainDude.Application.Requests.GetSegmentQuery;
 
 using MediatR;
 
-public class GetSegmentQuery : IRequest<GetSegmentQueryResult?>
-{
-    public int SegmentId { get; }
+using TrainDude.Application.Requests.Base;
 
-    public GetSegmentQuery(int stringId)
-    {
-        this.SegmentId = stringId;
-    }
+public class GetSegmentQuery
+    : BaseClientRequest, IRequest<GetSegmentQueryResult?>
+{
+    public int SegmentId { get; init; }
 }
