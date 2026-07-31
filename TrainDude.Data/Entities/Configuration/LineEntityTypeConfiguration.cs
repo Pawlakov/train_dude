@@ -6,11 +6,11 @@ namespace TrainDude.Data.Entities.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-internal class ChartEntityTypeConfiguration
-    : IEntityTypeConfiguration<Chart>
+internal class LineEntityTypeConfiguration
+    : IEntityTypeConfiguration<Line>
 {
-    public void Configure(EntityTypeBuilder<Chart> builder)
+    public void Configure(EntityTypeBuilder<Line> builder)
     {
-        builder.HasKey(x => x.ChartId);
+        builder.HasKey(x => x.LineId);
     }
 }

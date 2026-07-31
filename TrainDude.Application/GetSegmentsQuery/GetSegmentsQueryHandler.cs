@@ -46,7 +46,7 @@ internal class GetSegmentsQueryHandler
                     Location = x.Extremes.Where(y => y.IsEnd).Select(y => y.Station.Location).Single(),
                 },
                 Vertices = x.Vertices.OrderBy(y => y.OrdinalId).ToList(),
-                Charts = x.Charts.Select(y => y.ChartId).ToList(),
+                Charts = x.Lines.Select(y => y.LineId).ToList(),
             })
             .ToListAsync(cancellationToken);
 

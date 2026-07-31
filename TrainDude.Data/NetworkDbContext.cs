@@ -20,7 +20,7 @@ public partial class NetworkDbContext(DbContextOptions<NetworkDbContext> options
 
     public virtual DbSet<SegmentExtreme> SegmentExtremes { get; set; }
 
-    public virtual DbSet<Chart> Charts { get; set; }
+    public virtual DbSet<Line> Lines { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

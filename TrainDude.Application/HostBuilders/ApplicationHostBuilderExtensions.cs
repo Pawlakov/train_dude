@@ -9,7 +9,6 @@ using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
 using TrainDude.Application.Requests.GetRadiiQuery;
-using TrainDude.Application.Services;
 using TrainDude.Application.Validation;
 
 /// <summary>
@@ -17,16 +16,6 @@ using TrainDude.Application.Validation;
 /// </summary>
 public static class ApplicationHostBuilderExtensions
 {
-    /// <summary>
-    /// Adds to the collection service descriptors services required by the Network component.
-    /// </summary>
-    /// <param name="services">Collection of service descriptors.</param>
-    /// <returns>Collection of service descriptors with services added.</returns>
-    public static IServiceCollection AddApplicationServices(this IServiceCollection services)
-    {
-        return services.AddSingleton<SeedService>();
-    }
-
     public static IServiceCollection AddRequests(this IServiceCollection services)
     {
         services.AddMediatR(configuration =>

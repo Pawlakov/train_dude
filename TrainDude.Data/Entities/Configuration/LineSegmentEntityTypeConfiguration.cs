@@ -6,23 +6,23 @@ namespace TrainDude.Data.Entities.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-internal class ChartSegmentEntityTypeConfiguration
-    : IEntityTypeConfiguration<ChartSegment>
+internal class LineSegmentEntityTypeConfiguration
+    : IEntityTypeConfiguration<LineSegment>
 {
-    public void Configure(EntityTypeBuilder<ChartSegment> builder)
+    public void Configure(EntityTypeBuilder<LineSegment> builder)
     {
-        builder.HasKey(x => new { x.SegmentId, x.ChartId });
+        builder.HasKey(x => new { x.SegmentId, ChartId = x.LineId });
 
         builder
-            .HasOne(x => x.Chart)
+            .HasOne(x => x.Line)
             .WithMany(x => x.Segments)
-            .HasForeignKey(x => x.ChartId)
-            .HasPrincipalKey(x => x.ChartId)
+            .HasForeignKey(x => x.LineId)
+            .HasPrincipalKey(x => x.LineId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder
             .HasOne(x => x.Segment)
-            .WithMany(x => x.Charts)
+            .WithMany(x => x.Lines)
             .HasForeignKey(x => x.SegmentId)
             .HasPrincipalKey(x => x.SegmentId)
             .OnDelete(DeleteBehavior.Restrict);

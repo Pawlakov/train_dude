@@ -34,7 +34,6 @@ public static class Program
 
         builder.Services
             .AddDataServices()
-            .AddApplicationServices()
             .AddRequests()
             .AddDataValidation();
 

@@ -1,13 +1,14 @@
-// <copyright file="ChartSegment.cs" company="Pawlakov">
+// <copyright file="LineSegment.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
+
 namespace TrainDude.Data.Entities;
 
-public class ChartSegment
+public class LineSegment
 {
-    public string ChartId { get; set; }
+    public string LineId { get; set; }
 
-    public virtual Chart Chart { get; set; }
+    public virtual Line Line { get; set; }
 
     public int SegmentId { get; set; }
 

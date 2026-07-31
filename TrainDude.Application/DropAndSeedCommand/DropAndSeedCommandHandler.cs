@@ -14,7 +14,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 using TrainDude.Application.Requests.DropAndSeedCommand;
-using TrainDude.Application.Services;
+using TrainDude.Application.Seed;
 using TrainDude.Data;
 using TrainDude.Data.Entities;
 
@@ -22,11 +22,9 @@ internal class DropAndSeedCommandHandler
     : IRequestHandler<DropAndSeedCommand>
 {
     private readonly NetworkDbContext db;
-    private readonly SeedService seedService;
 
-    public DropAndSeedCommandHandler(SeedService seedService, NetworkDbContext db)
+    public DropAndSeedCommandHandler(NetworkDbContext db)
     {
-        this.seedService = seedService;
         this.db = db;
     }
 
@@ -35,13 +33,25 @@ internal class DropAndSeedCommandHandler
         await this.db.Radii.ExecuteDeleteAsync(cancellationToken);
         await this.db.Segments.ExecuteDeleteAsync(cancellationToken);
         await this.db.Stations.ExecuteDeleteAsync(cancellationToken);
+        await this.db.Lines.ExecuteDeleteAsync(cancellationToken);
 
         await this.db.SaveChangesAsync(cancellationToken);
 
-        var stationsSeed = await this.seedService.GetStationsSeed();
-        var routesSeed = await this.seedService.GetSegmentsSeed();
-        var radiiSeed = await this.seedService.GetRadiiSeed();
-        var trainsSeed = await this.seedService.GetTrainsSeed();
+        var linesSeed = SeedLoader.Load<LineSeed>("lines_seed.yml");
+        var stationsSeed = SeedLoader.Load<StationSeed>("stations_seed.yml");
+        var routesSeed = SeedLoader.Load<SegmentSeed>("segments_seed.yml");
+        var radiiSeed = SeedLoader.Load<RadiusSeed>("radii_seed.yml");
+        var trainsSeed = SeedLoader.Load<TrainSeed>("trains_seed.yml");
+
+        foreach (var lineSeed in linesSeed)
+        {
+            var line = new Line
+            {
+                LineId = lineSeed.Id,
+            };
+
+            await this.db.Lines.AddAsync(line, cancellationToken);
+        }
 
         var idDictionary = new Dictionary<int, Station>();
         foreach (var stationSeed in stationsSeed)
@@ -60,12 +70,6 @@ internal class DropAndSeedCommandHandler
 
             idDictionary[stationSeed.Id] = station;
         }
-
-        var allCharts = routesSeed
-            .SelectMany(x => x.Charts)
-            .GroupBy(x => x)
-            .Select(x => new Chart { ChartId = x.Key })
-            .ToDictionary(x => x.ChartId, x => x);
 
         foreach (var routeSeed in routesSeed)
         {
@@ -90,7 +94,7 @@ internal class DropAndSeedCommandHandler
                     },
                 },
                 Vertices = vertices,
-                Charts = routeSeed.Charts.Select(x => new ChartSegment { Chart = allCharts[x] }).ToList(),
+                Lines = routeSeed.Charts.Select(x => new LineSegment { LineId = x }).ToList(),
             };
 
             await this.db.Set<Segment>().AddAsync(route, cancellationToken);

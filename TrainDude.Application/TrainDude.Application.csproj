@@ -5,11 +5,7 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<Nullable>enable</Nullable>
     </PropertyGroup>
-
-    <ItemGroup>
-        <None Remove="Resources\stations_seed.yml" />
-    </ItemGroup>
-
+    
     <ItemGroup>
       <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
     </ItemGroup>
@@ -32,6 +28,7 @@
 
     <ItemGroup>
       <EmbeddedResource Include="Resources\radii_seed.yml" />
+      <EmbeddedResource Include="Resources\lines_seed.yml" />
       <EmbeddedResource Include="Resources\segments_seed.yml" />
       <EmbeddedResource Include="Resources\stations_seed.yml" />
       <EmbeddedResource Include="Resources\trains_seed.yml" />
