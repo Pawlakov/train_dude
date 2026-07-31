@@ -22,35 +22,48 @@
 @code {
     private IJSObjectReference scriptModule;
     private GetSegmentQueryResult? segment;
-    private string segmentGeoJson;
-    private string antiradiusSeries;
+    private string? segmentGeoJson;
+    private bool dataPresnt;
+    private bool loadingActive;
 
     [Parameter]
     public int Id { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
+        this.loadingActive = true;
+        this.StateHasChanged();
+        
         this.segment = await this.Mediator.Send(new GetSegmentQuery { SegmentId = this.Id });
         if (this.segment != null)
         {
             var result = await this.Mediator.Send(new GetSegmentGeoJsonQuery { SegmentId = this.Id });
             this.segmentGeoJson = result.GeoJson;
-            /* TODO this thing:
-            this.antiradiusSeries = await this.Mediator.Send(new GetSegmentAntiradiusSeriesQuery(this.Id, 20));*/
         }
         else
         {
+            this.loadingActive = false;
+            this.StateHasChanged();
+            
             this.NavigationManager.NavigateTo("/not-found");
         }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (this.segment != null && firstRender)
+        if (firstRender)
         {
             this.scriptModule = await this.JS.InvokeAsync<IJSObjectReference>("import", "./Layout/MapLayout.razor.js");
-
+        }
+        
+        if (!dataPresnt && this.segmentGeoJson != null)
+        {
+            await this.scriptModule.InvokeVoidAsync("clearGeoJson");
             await this.scriptModule.InvokeVoidAsync("addGeoJson", this.segmentGeoJson);
+
+            this.dataPresnt = true;
+            this.loadingActive = false;
+            this.StateHasChanged();
         }
     }
 }

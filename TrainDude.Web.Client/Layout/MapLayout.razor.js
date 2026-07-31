@@ -44,6 +44,23 @@ export function addGeoJson(geoJson) {
     myLayer.addData(geoObject);
 }
 
+export function clearGeoJson() {
+    map.removeLayer(myLayer);
+    
+    myLayer = L.geoJSON(undefined, {
+        pointToLayer: function (feature, latlng) {
+            return L.circleMarker(latlng, {
+                radius: 8,
+                fillColor: '#ff7800',
+                color: '#000',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            });
+        }
+    }).addTo(map);
+}
+
 function makeBound(currentPoint, width, height) {
     var xDifference = width / 2;
     var yDifference = height / 2;

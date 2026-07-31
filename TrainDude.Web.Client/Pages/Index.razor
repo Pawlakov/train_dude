@@ -7,24 +7,51 @@
 @inject IJSRuntime js
 
 <PageTitle>Strona Główna</PageTitle>
+<div class="modal @(this.loadingActive ? "is-active" : "")">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+        <section class="hero is-info">
+            <div class="hero-body">
+                <p class="title">Przetwarzanie</p>
+                <p class="subtitle">Proszę poczekać</p>
+            </div>
+        </section>
+    </div>
+</div>
 
 @code {
     private IJSObjectReference scriptModule;
     private string? stationsGeoJson;
+    private bool dataPresnt;
+    private bool loadingActive;
+    
+    [CascadingParameter]
+    private IJSObjectReference? CascadingModule { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
+        this.loadingActive = true;
+        this.StateHasChanged();
+        
         var result = await this.mediator.Send(new GetNetworkGeoJsonQuery());
         this.stationsGeoJson = result.GeoJson;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender && this.stationsGeoJson != null)
+        if (firstRender)
         {
             this.scriptModule = await this.js.InvokeAsync<IJSObjectReference>("import", "./Layout/MapLayout.razor.js");
-            
+        }
+        
+        if (!dataPresnt && this.stationsGeoJson != null)
+        {
+            await this.scriptModule.InvokeVoidAsync("clearGeoJson");
             await this.scriptModule.InvokeVoidAsync("addGeoJson", this.stationsGeoJson);
+
+            this.dataPresnt = true;
+            this.loadingActive = false;
+            this.StateHasChanged();
         }
     }
 }
