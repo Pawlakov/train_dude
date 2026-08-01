@@ -1,7 +1,5 @@
 ﻿@using TrainDude.Application.Requests.GetSegmentGeoJsonQuery
 @using TrainDude.Application.Requests.GetSegmentQuery
-@using TrainDude.Web.Client.Layout
-@layout MapLayout
 
 @page "/segment/{Id:int}"
 
@@ -53,7 +51,7 @@
     {
         if (firstRender)
         {
-            this.scriptModule = await this.JS.InvokeAsync<IJSObjectReference>("import", "./Layout/MapLayout.razor.js");
+            this.scriptModule = await this.JS.InvokeAsync<IJSObjectReference>("import", "./Layout/BaseMapLayout.razor.js");
         }
         
         if (!dataPresnt && this.segmentGeoJson != null)

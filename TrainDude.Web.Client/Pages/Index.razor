@@ -1,6 +1,6 @@
 ﻿@using TrainDude.Application.Requests.GetNetworkGeoJsonQuery
 @using TrainDude.Web.Client.Layout
-@layout MapLayout
+@layout BaseMapLayout
 @page "/"
 
 @inject IMediator mediator
@@ -41,7 +41,7 @@
     {
         if (firstRender)
         {
-            this.scriptModule = await this.js.InvokeAsync<IJSObjectReference>("import", "./Layout/MapLayout.razor.js");
+            this.scriptModule = await this.js.InvokeAsync<IJSObjectReference>("import", "./Layout/BaseMapLayout.razor.js");
         }
         
         if (!dataPresnt && this.stationsGeoJson != null)

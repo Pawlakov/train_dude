@@ -24,18 +24,7 @@ export function initMap(id, lat, long, zoom) {
         fillOpacity: 1
     };
 
-    myLayer = L.geoJSON(undefined, {
-        pointToLayer: function (feature, latlng) {
-            return L.circleMarker(latlng, {
-                radius: 8,
-                fillColor: '#ff7800',
-                color: '#000',
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 0.8
-            });
-        }
-    }).addTo(map);
+    clearGeoJson();
 }
 
 export function addGeoJson(geoJson) {
@@ -45,7 +34,9 @@ export function addGeoJson(geoJson) {
 }
 
 export function clearGeoJson() {
-    map.removeLayer(myLayer);
+    if (myLayer !== undefined) {
+        map.removeLayer(myLayer);
+    }
     
     myLayer = L.geoJSON(undefined, {
         pointToLayer: function (feature, latlng) {

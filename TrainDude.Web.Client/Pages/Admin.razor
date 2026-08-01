@@ -1,36 +1,25 @@
 ﻿@page "/admin"
 @using TrainDude.Application.Requests.DropAndSeedCommand
+@using TrainDude.Web.Client.Layout
+@layout BlockMapLayout
 
 @inject IMediator mediator
 
 <PageTitle>Administracja</PageTitle>
 
-<section class="section">
-    <h1 class="title">Administracja</h1>
-    <p class="subtitle">Narzędzia specjalnego przeznaczenia.</p>
-</section>
-<hr />
-<section class="section">
+<header class="modal-card-head">
+    <p class="card-header-title title">Administracja</p>
+</header>
+<section class="modal-card-body">
     <div class="block">
         <h2 class="title">Stacje i odcinki</h2>
         <div class="buttons">
-            <button class="button is-info" onclick="@this.DropAndSeed">
+            <button class="button is-info @(this.loadingActive ? "is-loading" : "")" onclick="@this.DropAndSeed">
                 Drop & Seed
             </button>
         </div>
     </div>
 </section>
-<div class="modal @(this.loadingActive ? "is-active" : "")">
-    <div class="modal-background"></div>
-    <div class="modal-content">
-        <section class="hero is-info">
-            <div class="hero-body">
-                <p class="title">Przetwarzanie</p>
-                <p class="subtitle">Proszę poczekać</p>
-            </div>
-        </section>
-    </div>
-</div>
 
 @code {
     private bool loadingActive;
