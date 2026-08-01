@@ -1,4 +1,7 @@
-﻿<nav class="navbar" role="navigation" aria-label="main navigation">
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@inject NavigationManager Navigation
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <a role="button" class="@this.burgerClass" aria-label="menu" aria-expanded="false" @onclick="this.ToggleNavMenu">
             <span aria-hidden="true"></span>
@@ -23,6 +26,14 @@
             <a class="navbar-item" href="admin">
                 Administracja
             </a>
+            <AuthorizeView>
+                <Authorized>
+                    <button class="navbar-item" @onclick="Logout">Wyloguj</button>
+                </Authorized>
+                <NotAuthorized>
+                    <button class="navbar-item" @onclick="Login">Zaloguj</button>
+                </NotAuthorized>
+            </AuthorizeView>
         </div>
     </div>
 </nav>
@@ -58,5 +69,15 @@
             this.burgerClass = $"{DefaultBurgerClass} is-active";
             this.menuClass = $"{DefaultMenuClass} is-active";
         }
+    }
+    
+    private void Login()
+    {
+        Navigation.NavigateTo("authentication/login");
+    }
+
+    private void Logout()
+    {
+        Navigation.NavigateTo("authentication/logout");
     }
 }

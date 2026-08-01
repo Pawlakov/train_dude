@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Mediator;
 
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using TrainDude.Application.Requests.HostBuilders;
@@ -27,8 +28,12 @@ public static class Program
         });
 
         builder.Services.AddScoped<IMediator, HttpMediator>();
-
         builder.Services.AddInputValidation();
+
+        builder.Services.AddOidcAuthentication(options =>
+        {
+            builder.Configuration.Bind("Google", options.ProviderOptions);
+        });
 
         await builder.Build().RunAsync();
     }

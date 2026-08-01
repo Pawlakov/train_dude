@@ -1,0 +1,13 @@
+@page "/Authentication/{action}"
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using TrainDude.Web.Client.Layout
+@layout BlockMapLayout
+
+<RemoteAuthenticatorView Action="@action" />
+
+@code {
+
+    [Parameter]
+    public string? action { get; set; }
+
+}
