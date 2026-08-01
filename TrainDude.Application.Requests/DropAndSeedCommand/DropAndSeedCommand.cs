@@ -4,14 +4,14 @@
 
 namespace TrainDude.Application.Requests.DropAndSeedCommand;
 
-using MediatR;
+using Mediator;
 
 using TrainDude.Application.Requests.Base;
 
 /// <summary>
 /// A command which seeds basic network data.
 /// </summary>
-public class DropAndSeedCommand 
-    : BaseClientRequest, IRequest
+public sealed record class DropAndSeedCommand
+    : BasePolymorphicCommand, ICommand
 {
 }

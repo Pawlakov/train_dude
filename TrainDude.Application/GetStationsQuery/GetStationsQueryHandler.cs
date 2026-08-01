@@ -8,15 +8,15 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using MediatR;
+using Mediator;
 
 using Microsoft.EntityFrameworkCore;
 
 using TrainDude.Application.Requests.GetStationsQuery;
 using TrainDude.Data;
 
-internal class GetStationsQueryHandler
-    : IRequestHandler<GetStationsQuery, GetStationsQueryResult>
+public sealed class GetStationsQueryHandler
+    : IQueryHandler<GetStationsQuery, GetStationsQueryResult>
 {
     private readonly NetworkDbContext db;
 
@@ -25,7 +25,7 @@ internal class GetStationsQueryHandler
         this.db = db;
     }
 
-    public async Task<GetStationsQueryResult> Handle(GetStationsQuery request, CancellationToken cancellationToken)
+    public async ValueTask<GetStationsQueryResult> Handle(GetStationsQuery request, CancellationToken cancellationToken)
     {
         var models = await this.db.Stations.AsNoTracking()
             .Select(x => new

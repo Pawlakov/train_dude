@@ -4,11 +4,11 @@
 
 namespace TrainDude.Application.Requests.GetRadiiQuery;
 
-using MediatR;
+using Mediator;
 
 using TrainDude.Application.Requests.Base;
 
-public class GetRadiiQuery
-    : BaseClientRequest, IRequest<GetRadiiQueryResult>
+public sealed record class GetRadiiQuery
+    : BasePolymorphicQuery, IQuery<GetRadiiQueryResult>
 {
 }

@@ -8,12 +8,12 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using MediatR;
+using Mediator;
 
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
-using TrainDude.Web.Client.HostBuilders;
+using TrainDude.Application.Requests.HostBuilders;
 
 public static class Program
 {

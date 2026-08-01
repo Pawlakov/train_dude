@@ -7,7 +7,7 @@ namespace TrainDude.Application.Requests.GetSegmentsQuery;
 using TrainDude.Application.Requests.Base;
 
 public class GetSegmentsQueryResult
-    : BaseClientResponse
+    : BasePolymorphicResponse
 {
     public IEnumerable<GetSegmentsQueryResultItem> Items { get; set; }
 }

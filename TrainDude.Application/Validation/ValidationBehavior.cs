@@ -11,42 +11,36 @@ using System.Threading.Tasks;
 
 using FluentValidation;
 
-using MediatR;
+using Mediator;
 
-public class ValidationBehavior<TRequest, TResponse>
-    : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : IBaseRequest
+public sealed class ValidationBehavior<TMessage, TResponse>
+    : MessagePreProcessor<TMessage, TResponse>
+    where TMessage : IMessage
 {
-    private readonly IValidator<TRequest>[] validators;
+    private readonly IValidator<TMessage>[] validators;
 
-    public ValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
+    public ValidationBehavior(IEnumerable<IValidator<TMessage>> validators)
     {
         this.validators = validators.ToArray();
     }
 
-    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    protected override async ValueTask Handle(TMessage message, CancellationToken cancellationToken)
     {
-        if (!this.validators.Any())
+        if (this.validators.Length > 0)
         {
-            return await next();
+            var context = new ValidationContext<TMessage>(message);
+
+            var validationFailures = await Task.WhenAll(this.validators.Select(validator => validator.ValidateAsync(context, cancellationToken)));
+
+            var errors = validationFailures
+                .Where(validationResult => !validationResult.IsValid)
+                .SelectMany(validationResult => validationResult.Errors)
+                .ToList();
+
+            if (errors.Count != 0)
+            {
+                throw new ValidationException(errors);
+            }
         }
-
-        var context = new ValidationContext<TRequest>(request);
-
-        var validationFailures = await Task.WhenAll(this.validators.Select(validator => validator.ValidateAsync(context)));
-
-        var errors = validationFailures
-            .Where(validationResult => !validationResult.IsValid)
-            .SelectMany(validationResult => validationResult.Errors)
-            .ToList();
-
-        if (errors.Count != 0)
-        {
-            throw new ValidationException(errors);
-        }
-
-        var response = await next();
-
-        return response;
     }
 }

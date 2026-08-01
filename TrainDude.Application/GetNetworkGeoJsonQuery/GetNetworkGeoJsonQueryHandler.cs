@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using MediatR;
+using Mediator;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -17,8 +17,8 @@ using TrainDude.Application.Requests.GetNetworkGeoJsonQuery;
 using TrainDude.Data;
 using TrainDude.Data.Entities;
 
-internal class GetNetworkGeoJsonQueryHandler
-    : IRequestHandler<GetNetworkGeoJsonQuery, GetNetworkGeoJsonQueryResult>
+public sealed class GetNetworkGeoJsonQueryHandler
+    : IQueryHandler<GetNetworkGeoJsonQuery, GetNetworkGeoJsonQueryResult>
 {
     private readonly NetworkDbContext db;
 
@@ -27,7 +27,7 @@ internal class GetNetworkGeoJsonQueryHandler
         this.db = db;
     }
 
-    public async Task<GetNetworkGeoJsonQueryResult> Handle(GetNetworkGeoJsonQuery request, CancellationToken cancellationToken)
+    public async ValueTask<GetNetworkGeoJsonQueryResult> Handle(GetNetworkGeoJsonQuery request, CancellationToken cancellationToken)
     {
         var stations = await this.db.Stations.AsNoTracking()
             .Where(x => x.Location != null)

@@ -8,15 +8,15 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using MediatR;
+using Mediator;
 
 using Microsoft.EntityFrameworkCore;
 
 using TrainDude.Application.Requests.GetRadiiQuery;
 using TrainDude.Data;
 
-internal class GetRadiiQueryHandler
-    : IRequestHandler<GetRadiiQuery, GetRadiiQueryResult>
+public sealed class GetRadiiQueryHandler
+    : IQueryHandler<GetRadiiQuery, GetRadiiQueryResult>
 {
     private readonly NetworkDbContext db;
 
@@ -25,7 +25,7 @@ internal class GetRadiiQueryHandler
         this.db = db;
     }
 
-    public async Task<GetRadiiQueryResult> Handle(GetRadiiQuery request, CancellationToken cancellationToken)
+    public async ValueTask<GetRadiiQueryResult> Handle(GetRadiiQuery request, CancellationToken cancellationToken)
     {
         var models = await this.db.Radii.AsNoTracking().ToListAsync(cancellationToken);
         var dtos = models

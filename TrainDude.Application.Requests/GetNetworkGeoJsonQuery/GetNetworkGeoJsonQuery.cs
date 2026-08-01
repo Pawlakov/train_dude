@@ -4,14 +4,14 @@
 
 namespace TrainDude.Application.Requests.GetNetworkGeoJsonQuery;
 
-using MediatR;
+using Mediator;
 
 using TrainDude.Application.Requests.Base;
 
 /// <summary>
 /// A query which returns all stations and routes in the form of GeoJSON.
 /// </summary>
-public class GetNetworkGeoJsonQuery
-    : BaseClientRequest, IRequest<GetNetworkGeoJsonQueryResult>
+public sealed record class GetNetworkGeoJsonQuery
+    : BasePolymorphicQuery, IQuery<GetNetworkGeoJsonQueryResult>
 {
 }

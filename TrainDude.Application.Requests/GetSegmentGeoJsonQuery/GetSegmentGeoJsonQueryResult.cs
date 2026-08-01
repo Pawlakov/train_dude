@@ -6,7 +6,7 @@ namespace TrainDude.Application.Requests.GetSegmentGeoJsonQuery;
 using TrainDude.Application.Requests.Base;
 
 public class GetSegmentGeoJsonQueryResult
-    : BaseClientResponse
+    : BasePolymorphicResponse
 {
     public string GeoJson { get; set; }
 }

@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using MediatR;
+using Mediator;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -18,8 +18,8 @@ using TrainDude.Application.Seed;
 using TrainDude.Data;
 using TrainDude.Data.Entities;
 
-internal class DropAndSeedCommandHandler
-    : IRequestHandler<DropAndSeedCommand>
+public sealed class DropAndSeedCommandHandler
+    : ICommandHandler<DropAndSeedCommand>
 {
     private readonly NetworkDbContext db;
 
@@ -28,7 +28,7 @@ internal class DropAndSeedCommandHandler
         this.db = db;
     }
 
-    public async Task Handle(DropAndSeedCommand request, CancellationToken cancellationToken)
+    public async ValueTask<Unit> Handle(DropAndSeedCommand request, CancellationToken cancellationToken)
     {
         await this.db.Radii.ExecuteDeleteAsync(cancellationToken);
         await this.db.Segments.ExecuteDeleteAsync(cancellationToken);
@@ -112,5 +112,7 @@ internal class DropAndSeedCommandHandler
         }
 
         await this.db.SaveChangesAsync(cancellationToken);
+
+        return Unit.Value;
     }
 }

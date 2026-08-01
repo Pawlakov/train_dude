@@ -13,7 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 /// <summary>
 /// A container for extensions methods concerning services.
 /// </summary>
-public static class DataHostBuilderExtensions
+public static class HostBuilderExtensions
 {
     /// <summary>
     /// Adds to the collection service descriptors services required by the Network component.

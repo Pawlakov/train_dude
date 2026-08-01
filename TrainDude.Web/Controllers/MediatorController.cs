@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 using FluentValidation;
 
-using MediatR;
+using Mediator;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,13 +28,13 @@ public class MediatorController
         this.mediator = mediator;
     }
 
-    [HttpPost("with")]
-    public async Task<ActionResult<BaseClientResponse>> RequestWithResponse([FromBody] BaseClientRequest request)
+    [HttpPost("command")]
+    public async Task<ActionResult<BasePolymorphicResponse>> Command([FromBody] BasePolymorphicCommand request)
     {
         try
         {
             var response = await this.mediator.Send(request);
-            if (response is not BaseClientResponse polymorphicResponse)
+            if (response is not BasePolymorphicResponse polymorphicResponse)
             {
                 throw new NotSupportedException("This response type is not supporting polymorphic JSON serialization.");
             }
@@ -51,13 +51,18 @@ public class MediatorController
         }
     }
 
-    [HttpPost("without")]
-    public async Task<ActionResult> RequestWithoutResponse([FromBody] BaseClientRequest request)
+    [HttpPost("query")]
+    public async Task<ActionResult<BasePolymorphicResponse>> Query([FromBody] BasePolymorphicQuery request)
     {
         try
         {
-            await this.mediator.Send(request);
-            return this.Ok();
+            var response = await this.mediator.Send(request);
+            if (response is not BasePolymorphicResponse polymorphicResponse)
+            {
+                throw new NotSupportedException("This response type is not supporting polymorphic JSON serialization.");
+            }
+
+            return this.Ok(polymorphicResponse);
         }
         catch (ValidationException exception)
         {

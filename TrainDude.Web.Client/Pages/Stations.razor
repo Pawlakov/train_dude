@@ -1,4 +1,5 @@
-﻿@using TrainDude.Application.Requests.GetStationsQuery
+﻿@using Mediator
+@using TrainDude.Application.Requests.GetStationsQuery
 
 @page "/stations"
 
@@ -21,7 +22,7 @@
                 </tr>
             </thead>
             <tbody>
-                @if (stations == null)
+                @if (this.stations == null)
                 {
                     <tr>
                         <td colspan="2"><em>Ładowanie...</em></td>
@@ -43,7 +44,7 @@
 </section>
 
 @code {
-    private IEnumerable<GetStationsQueryResultItem> stations;
+    private IEnumerable<GetStationsQueryResultItem>? stations;
 
     protected override async Task OnParametersSetAsync()
     {

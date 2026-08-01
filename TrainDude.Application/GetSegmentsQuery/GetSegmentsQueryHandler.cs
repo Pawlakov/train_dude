@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using MediatR;
+using Mediator;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -18,8 +18,8 @@ using TrainDude.Application.Requests.Values;
 using TrainDude.Data;
 using TrainDude.Data.Entities;
 
-internal class GetSegmentsQueryHandler
-    : IRequestHandler<GetSegmentsQuery, GetSegmentsQueryResult>
+public sealed class GetSegmentsQueryHandler
+    : IQueryHandler<GetSegmentsQuery, GetSegmentsQueryResult>
 {
     private readonly NetworkDbContext db;
 
@@ -28,7 +28,7 @@ internal class GetSegmentsQueryHandler
         this.db = db;
     }
 
-    public async Task<GetSegmentsQueryResult> Handle(GetSegmentsQuery request, CancellationToken cancellationToken)
+    public async ValueTask<GetSegmentsQueryResult> Handle(GetSegmentsQuery request, CancellationToken cancellationToken)
     {
         var models = await this.db.Segments.AsNoTracking()
             .Select(x => new

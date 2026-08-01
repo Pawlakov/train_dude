@@ -7,7 +7,7 @@ namespace TrainDude.Application.Requests.GetRadiiQuery;
 using TrainDude.Application.Requests.Base;
 
 public class GetRadiiQueryResult
-    : BaseClientResponse
+    : BasePolymorphicResponse
 {
     public IEnumerable<GetRadiiQueryResultItem> Items { get; set; }
 }

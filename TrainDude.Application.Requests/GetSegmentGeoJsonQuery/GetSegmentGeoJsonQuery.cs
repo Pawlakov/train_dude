@@ -4,12 +4,12 @@
 
 namespace TrainDude.Application.Requests.GetSegmentGeoJsonQuery;
 
-using MediatR;
+using Mediator;
 
 using TrainDude.Application.Requests.Base;
 
-public class GetSegmentGeoJsonQuery
-    : BaseClientRequest, IRequest<GetSegmentGeoJsonQueryResult>
+public sealed record class GetSegmentGeoJsonQuery
+    : BasePolymorphicQuery, IQuery<GetSegmentGeoJsonQueryResult>
 {
     public int SegmentId { get; init; }
 }

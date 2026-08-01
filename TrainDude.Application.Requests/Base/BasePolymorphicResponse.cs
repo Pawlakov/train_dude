@@ -1,4 +1,4 @@
-// <copyright file="BaseClientResponse.cs" company="Pawlakov">
+// <copyright file="BasePolymorphicResponse.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
@@ -20,6 +20,6 @@ using TrainDude.Application.Requests.GetStationsQuery;
 [JsonDerivedType(typeof(GetSegmentGeoJsonQueryResult), nameof(GetSegmentGeoJsonQueryResult))]
 [JsonDerivedType(typeof(GetSegmentQueryResult), nameof(GetSegmentQueryResult))]
 [JsonDerivedType(typeof(GetSegmentsQueryResult), nameof(GetSegmentsQueryResult))]
-public abstract class BaseClientResponse
+public abstract class BasePolymorphicResponse
 {
 }

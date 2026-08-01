@@ -4,12 +4,12 @@
 
 namespace TrainDude.Application.Requests.GetSegmentQuery;
 
-using MediatR;
+using Mediator;
 
 using TrainDude.Application.Requests.Base;
 
-public class GetSegmentQuery
-    : BaseClientRequest, IRequest<GetSegmentQueryResult?>
+public sealed record class GetSegmentQuery
+    : BasePolymorphicQuery, IQuery<GetSegmentQueryResult?>
 {
     public int SegmentId { get; init; }
 }

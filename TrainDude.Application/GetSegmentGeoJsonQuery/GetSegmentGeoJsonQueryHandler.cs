@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using MediatR;
+using Mediator;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -17,8 +17,8 @@ using TrainDude.Application.Requests.GetSegmentGeoJsonQuery;
 using TrainDude.Data;
 using TrainDude.Data.Entities;
 
-internal class GetSegmentGeoJsonQueryHandler
-    : IRequestHandler<GetSegmentGeoJsonQuery, GetSegmentGeoJsonQueryResult>
+public sealed class GetSegmentGeoJsonQueryHandler
+    : IQueryHandler<GetSegmentGeoJsonQuery, GetSegmentGeoJsonQueryResult>
 {
     private readonly NetworkDbContext db;
 
@@ -27,7 +27,7 @@ internal class GetSegmentGeoJsonQueryHandler
         this.db = db;
     }
 
-    public async Task<GetSegmentGeoJsonQueryResult> Handle(GetSegmentGeoJsonQuery request, CancellationToken cancellationToken)
+    public async ValueTask<GetSegmentGeoJsonQueryResult> Handle(GetSegmentGeoJsonQuery request, CancellationToken cancellationToken)
     {
         var routesGeoJson = new List<string>();
         var aLocation = await this.db.SegmentExtremes.Where(x => x.SegmentId == request.SegmentId && !x.IsEnd).Select(x => x.Station!.Location).SingleOrDefaultAsync(cancellationToken);

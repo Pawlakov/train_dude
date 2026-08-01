@@ -1,8 +1,8 @@
-// <copyright file="ClientHostBuilderExtensions.cs" company="Pawlakov">
+// <copyright file="HostBuilderExtensions.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Web.Client.HostBuilders;
+namespace TrainDude.Application.Requests.HostBuilders;
 
 using System.Linq;
 
@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using TrainDude.Application.Requests.Validation;
 
-public static class ClientHostBuilderExtensions
+public static class HostBuilderExtensions
 {
     public static IServiceCollection AddInputValidation(this IServiceCollection services)
     {

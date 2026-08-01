@@ -4,14 +4,14 @@
 
 namespace TrainDude.Application.Requests.GetStationsQuery;
 
-using MediatR;
+using Mediator;
 
 using TrainDude.Application.Requests.Base;
 
 /// <summary>
 /// A query which returns all stations.
 /// </summary>
-public class GetStationsQuery
-    : BaseClientRequest, IRequest<GetStationsQueryResult>
+public sealed record class GetStationsQuery
+    : BasePolymorphicQuery, IQuery<GetStationsQueryResult>
 {
 }

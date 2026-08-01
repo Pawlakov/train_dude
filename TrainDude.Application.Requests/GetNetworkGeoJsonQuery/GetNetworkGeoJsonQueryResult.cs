@@ -6,7 +6,7 @@ namespace TrainDude.Application.Requests.GetNetworkGeoJsonQuery;
 using TrainDude.Application.Requests.Base;
 
 public class GetNetworkGeoJsonQueryResult
-    : BaseClientResponse
+    : BasePolymorphicResponse
 {
     public string GeoJson { get; set; }
 }

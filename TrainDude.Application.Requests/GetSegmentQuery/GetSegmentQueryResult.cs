@@ -4,7 +4,7 @@ using TrainDude.Application.Requests.Base;
 using TrainDude.Application.Requests.Values;
 
 public class GetSegmentQueryResult
-    : BaseClientResponse
+    : BasePolymorphicResponse
 {
     public int SegmentId { get; init; }
 

@@ -12,6 +12,7 @@ using TrainDude.Application.Extensions;
 using TrainDude.Application.HostBuilders;
 using TrainDude.Data.HostBuilders;
 using TrainDude.Web.Components;
+using TrainDude.Web.HostBuilders;
 
 /// <summary>
 /// The main class.
@@ -34,8 +35,8 @@ public static class Program
 
         builder.Services
             .AddDataServices()
-            .AddRequests()
-            .AddDataValidation();
+            .AddDataValidation()
+            .AddHandlers();
 
         var app = builder.Build();
 
