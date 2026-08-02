@@ -4,6 +4,7 @@
 
 namespace TrainDude.Application.DropAndSeedCommand;
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -17,38 +18,41 @@ using TrainDude.Application.Requests.DropAndSeedCommand;
 using TrainDude.Application.Seed;
 using TrainDude.Data;
 using TrainDude.Data.Entities;
+using TrainDude.Shared.Values;
 
 public sealed class DropAndSeedCommandHandler
     : ICommandHandler<DropAndSeedCommand>
 {
-    private readonly NetworkDbContext db;
+    private readonly INetworkDbContext db;
 
-    public DropAndSeedCommandHandler(NetworkDbContext db)
+    public DropAndSeedCommandHandler(INetworkDbContext db)
     {
         this.db = db;
     }
 
     public async ValueTask<Unit> Handle(DropAndSeedCommand request, CancellationToken cancellationToken)
     {
-        await this.db.Radii.ExecuteDeleteAsync(cancellationToken);
+        /* DROP */
+        await this.db.Trips.ExecuteDeleteAsync(cancellationToken);
+        await this.db.Lines.ExecuteDeleteAsync(cancellationToken);
         await this.db.Segments.ExecuteDeleteAsync(cancellationToken);
         await this.db.Stations.ExecuteDeleteAsync(cancellationToken);
-        await this.db.Lines.ExecuteDeleteAsync(cancellationToken);
+
+        /* SEED */
+
+        await this.db.Radii.ExecuteDeleteAsync(cancellationToken);
 
         await this.db.SaveChangesAsync(cancellationToken);
 
         var linesSeed = SeedLoader.Load<LineSeed>("lines_seed.yml");
         var stationsSeed = SeedLoader.Load<StationSeed>("stations_seed.yml");
-        var routesSeed = SeedLoader.Load<SegmentSeed>("segments_seed.yml");
+        var segmentsSeed = SeedLoader.Load<SegmentSeed>("segments_seed.yml");
         var radiiSeed = SeedLoader.Load<RadiusSeed>("radii_seed.yml");
-        var trainsSeed = SeedLoader.Load<TrainSeed>("trains_seed.yml");
+        var tripsSeed = SeedLoader.Load<TripSeed>("trips_seed.yml");
 
         foreach (var lineSeed in linesSeed)
         {
-            var line = new Line
-            {
-                LineId = lineSeed.Id,
-            };
+            var line = new Line(lineSeed.Number, lineSeed.Letter);
 
             await this.db.Lines.AddAsync(line, cancellationToken);
         }
@@ -56,59 +60,35 @@ public sealed class DropAndSeedCommandHandler
         var idDictionary = new Dictionary<int, Station>();
         foreach (var stationSeed in stationsSeed)
         {
-            var location = stationSeed.Latitude.HasValue && stationSeed.Longitude.HasValue ? new StationLocation { Latitude = stationSeed.Latitude.Value, Longitude = stationSeed.Longitude.Value } : null;
-            var station = new Station
-            {
-                NameGerman = stationSeed.NameGerman,
-                NameGermanNew = stationSeed.NameGermanNew,
-                NamePolish = stationSeed.NamePolish,
-                NamePolishOld = stationSeed.NamePolishOld,
-                Location = location,
-            };
+            var location = stationSeed is { Latitude: not null, Longitude: not null } ? new Location(stationSeed.Longitude.Value, stationSeed.Latitude.Value) : (Location?)null;
+            var station = new Station(stationSeed.NameGerman, stationSeed.NameGermanNew, stationSeed.NamePolish, stationSeed.NamePolishOld, location);
 
-            await this.db.Set<Station>().AddAsync(station, cancellationToken);
+            await this.db.Stations.AddAsync(station, cancellationToken);
 
             idDictionary[stationSeed.Id] = station;
         }
 
-        foreach (var routeSeed in routesSeed)
+        foreach (var segmentSeed in segmentsSeed)
         {
-            var vertices = (routeSeed.Vertices ?? [])
-                .Select((x, index) => new SegmentVertexLocation { OrdinalId = index, Longitude = x.Longitude, Latitude = x.Latitude })
-                .ToList();
+            var segment = new Segment(segmentSeed.Length);
+            segment.AddExtremes(idDictionary[segmentSeed.A.StationId], idDictionary[segmentSeed.B.StationId]);
+            segment.AddVertices(segmentSeed.Vertices?.Select(x => new Location(x.Longitude, x.Latitude)) ?? []);
 
-            var route = new Segment
-            {
-                NominalLength = routeSeed.Length,
-                Extremes = new List<SegmentExtreme>
-                {
-                    new SegmentExtreme
-                    {
-                        Station = idDictionary[routeSeed.A.StationId],
-                        IsEnd = false,
-                    },
-                    new SegmentExtreme
-                    {
-                        Station = idDictionary[routeSeed.B.StationId],
-                        IsEnd = true,
-                    },
-                },
-                Vertices = vertices,
-                Lines = routeSeed.Charts.Select(x => new LineSegment { LineId = x }).ToList(),
-            };
-
-            await this.db.Set<Segment>().AddAsync(route, cancellationToken);
+            await this.db.Segments.AddAsync(segment, cancellationToken);
         }
 
         foreach (var radiusSeed in radiiSeed)
         {
-            var radius = new Radius
-            {
-                Speed = radiusSeed.Speed,
-                Minimum = radiusSeed.Minimum,
-            };
+            var radius = new Radius(radiusSeed.Speed, radiusSeed.Minimum);
 
-            await this.db.Set<Radius>().AddAsync(radius, cancellationToken);
+            await this.db.Radii.AddAsync(radius, cancellationToken);
+        }
+
+        foreach (var tripSeed in tripsSeed)
+        {
+            var trip = new Trip(tripSeed.Number);
+
+            await this.db.Trips.AddAsync(trip, cancellationToken);
         }
 
         await this.db.SaveChangesAsync(cancellationToken);

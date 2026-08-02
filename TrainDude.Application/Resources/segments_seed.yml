@@ -8,8 +8,6 @@
     pole: false
   length: 4.8
   tracks: 1
-  charts:
-    - '118f'
 - a:
     station_id: 2
     axle: 0
@@ -20,8 +18,6 @@
     pole: false
   length: 7.3
   tracks: 1
-  charts:
-    - '118f'
 - a:
     station_id: 3
     axle: 0
@@ -32,8 +28,6 @@
     pole: false
   length: 6.1
   tracks: 1
-  charts:
-    - '118f'
 - a:
     station_id: 4
     pole: true
@@ -42,8 +36,6 @@
     pole: false
   length: 4.7
   tracks: 1
-  charts:
-    - '118f'
 - a:
     station_id: 5
     pole: true
@@ -52,8 +44,6 @@
     pole: false
   length: 7.7
   tracks: 1
-  charts:
-    - '118f'
 - a:
     station_id: 6
     pole: true
@@ -62,8 +52,6 @@
     pole: false
   length: 6.0
   tracks: 1
-  charts:
-    - '118f'
 - a:
     station_id: 7
     pole: true
@@ -72,8 +60,6 @@
     pole: false
   length: 5.8
   tracks: 1
-  charts:
-    - '118f'
 - a:
     station_id: 8
     pole: true
@@ -82,8 +68,6 @@
     pole: false
   length: 7.5
   tracks: 1
-  charts:
-    - '118f'
   vertices:
     - latitude: 54.2740
       longitude: 22.2468
@@ -125,193 +109,144 @@
     station_id: 11
   length: 7.5
   tracks: 1
-  charts:
-    - '118e'
 - a:
     station_id: 11
   b:
     station_id: 12
   length: 3.8
   tracks: 1
-  charts:
-    - '118e'
 - a:
     station_id: 12
   b:
     station_id: 13
   length: 6.2
   tracks: 1
-  charts:
-    - '118e'
 - a:
     station_id: 13
   b:
     station_id: 14
   length: 5.6
   tracks: 1
-  charts:
-    - '118e'
 - a:
     station_id: 14
   b:
     station_id: 15
   length: 3.4
   tracks: 1
-  charts:
-    - '118e'
 - a:
     station_id: 15
   b:
     station_id: 16
   length: 6.3
   tracks: 1
-  charts:
-    - '118e'
 - a:
     station_id: 16
   b:
     station_id: 1
   length: 4.2
   tracks: 2
-  charts:
-    - '118e'
-    - '119e'
 - a:
     station_id: 17
   b:
     station_id: 18
   length: 3.6
   tracks: 1
-  charts:
-    - '119e'
 - a:
     station_id: 18
   b:
     station_id: 19
   length: 7.9
   tracks: 1
-  charts:
-    - '119e'
 - a:
     station_id: 19
   b:
     station_id: 20
   length: 4.6
   tracks: 1
-  charts:
-    - '119e'
 - a:
     station_id: 20
   b:
     station_id: 21
   length: 2.5
   tracks: 1
-  charts:
-    - '119e'
 - a:
     station_id: 21
   b:
     station_id: 22
   length: 5.4
   tracks: 1
-  charts:
-    - '119e'
 - a:
     station_id: 22
   b:
     station_id: 23
   length: 4.6
   tracks: 1
-  charts:
-    - '119e'
 - a:
     station_id: 23
   b:
     station_id: 16
   length: 4.6
   tracks: 1
-  charts:
-    - '119e'
 - a:
     station_id: 24
   b:
     station_id: 25
   length: 2.3
   tracks: 1
-  charts:
-    - '117m'
 - a:
     station_id: 25
   b:
     station_id: 26
   length: 2.7
   tracks: 1
-  charts:
-    - '117m'
 - a:
     station_id: 26
   b:
     station_id: 27
   length: 1.6
   tracks: 1
-  charts:
-    - '117m'
 - a:
     station_id: 27
   b:
     station_id: 28
   length: 0.9
   tracks: 1
-  charts:
-    - '117m'
 - a:
     station_id: 28
   b:
     station_id: 29
   length: 2.4
   tracks: 1
-  charts:
-    - '117m'
 - a:
     station_id: 29
   b:
     station_id: 30
   length: 6.4
   tracks: 1
-  charts:
-    - '117m'
 - a:
     station_id: 30
   b:
     station_id: 31
   length: 4.9
   tracks: 1
-  charts:
-    - '117m'
 - a:
     station_id: 31
   b:
     station_id: 32
   length: 6.2
   tracks: 1
-  charts:
-    - '117m'
 - a:
     station_id: 32
   b:
     station_id: 1
   length: 5.9
   tracks: 1
-  charts:
-    - '117m'
 - a:
     station_id: 1
   b:
     station_id: 33
   length: 8
   tracks: 1
-  charts:
-    - '118t'
   vertices:
     - longitude: 21.7285
       latitude: 54.2178
@@ -397,45 +332,33 @@
     station_id: 34
   length: 6.8
   tracks: 1
-  charts:
-    - '118t'
 - a:
     station_id: 34
   b:
     station_id: 35
   length: 3.9
   tracks: 1
-  charts:
-    - '118t'
 - a:
     station_id: 35
   b:
     station_id: 36
   length: 3.4
   tracks: 1
-  charts:
-    - '118t'
 - a:
     station_id: 36
   b:
     station_id: 37
   length: 2.8
   tracks: 1
-  charts:
-    - '118t'
 - a:
     station_id: 37
   b:
     station_id: 38
   length: 4.3
   tracks: 1
-  charts:
-    - '118t'
 - a:
     station_id: 38
   b:
     station_id: 39
   length: 5.4
   tracks: 1
-  charts:
-    - '118t'

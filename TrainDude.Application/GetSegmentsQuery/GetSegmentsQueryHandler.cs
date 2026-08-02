@@ -14,16 +14,15 @@ using Microsoft.EntityFrameworkCore;
 
 using TrainDude.Application.Extensions;
 using TrainDude.Application.Requests.GetSegmentsQuery;
-using TrainDude.Application.Requests.Values;
 using TrainDude.Data;
 using TrainDude.Data.Entities;
 
 public sealed class GetSegmentsQueryHandler
     : IQueryHandler<GetSegmentsQuery, GetSegmentsQueryResult>
 {
-    private readonly NetworkDbContext db;
+    private readonly INetworkDbContext db;
 
-    public GetSegmentsQueryHandler(NetworkDbContext db)
+    public GetSegmentsQueryHandler(INetworkDbContext db)
     {
         this.db = db;
     }
@@ -46,7 +45,7 @@ public sealed class GetSegmentsQueryHandler
                     Location = x.Extremes.Where(y => y.IsEnd).Select(y => y.Station.Location).Single(),
                 },
                 Vertices = x.Vertices.OrderBy(y => y.OrdinalId).ToList(),
-                Charts = x.Lines.Select(y => y.LineId).ToList(),
+                Lines = x.Lines.Select(y => y.LineNumber.ToString() + y.LineLetter).ToList(),
             })
             .ToListAsync(cancellationToken);
 
@@ -57,8 +56,8 @@ public sealed class GetSegmentsQueryHandler
                 Length = x.NominalLength,
                 NameA = x.A.Name,
                 NameB = x.B.Name,
-                Haversine = (x.A.Location != null && x.B.Location != null) ? x.Vertices.Cast<Location>().Prepend(x.A.Location).Append(x.B.Location).Select(y => new GeodeticPosition{ Longitude = y.Longitude, Latitude = y.Latitude }).ToList().Segments().Haversine() : null,
-                Charts = x.Charts,
+                Haversine = (x.A.Location != null && x.B.Location != null) ? x.Vertices.Select(y => y.Location).Prepend(x.A.Location.Value).Append(x.B.Location.Value).ToList().Segments().Haversine() : null,
+                Lines = x.Lines,
             })
             .ToList();
 

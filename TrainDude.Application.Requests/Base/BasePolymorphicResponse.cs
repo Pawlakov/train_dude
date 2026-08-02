@@ -16,8 +16,8 @@ using TrainDude.Application.Requests.GetStationsQuery;
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "$type")]
 [JsonDerivedType(typeof(GetRadiiQueryResult), nameof(GetRadiiQueryResult))]
 [JsonDerivedType(typeof(GetStationsQueryResult), nameof(GetStationsQueryResult))]
-[JsonDerivedType(typeof(GetNetworkGeoJsonQueryResult), nameof(GetNetworkGeoJsonQueryResult))]
-[JsonDerivedType(typeof(GetSegmentGeoJsonQueryResult), nameof(GetSegmentGeoJsonQueryResult))]
+[JsonDerivedType(typeof(GetNetworkGeoDataQueryResult), nameof(GetNetworkGeoDataQueryResult))]
+[JsonDerivedType(typeof(GetSegmentGeoDataQueryResult), nameof(GetSegmentGeoDataQueryResult))]
 [JsonDerivedType(typeof(GetSegmentQueryResult), nameof(GetSegmentQueryResult))]
 [JsonDerivedType(typeof(GetSegmentsQueryResult), nameof(GetSegmentsQueryResult))]
 public abstract class BasePolymorphicResponse

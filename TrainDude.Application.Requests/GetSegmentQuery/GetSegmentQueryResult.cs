@@ -1,7 +1,7 @@
 ﻿namespace TrainDude.Application.Requests.GetSegmentQuery;
 
 using TrainDude.Application.Requests.Base;
-using TrainDude.Application.Requests.Values;
+using TrainDude.Shared.Values;
 
 public class GetSegmentQueryResult
     : BasePolymorphicResponse
@@ -12,7 +12,7 @@ public class GetSegmentQueryResult
 
     required public string BName { get; init; }
 
-    required public GeodeticPosition ALocation { get; set; }
+    required public Location? ALocation { get; set; }
 
-    required public GeodeticPosition BLocation { get; set; }
+    required public Location? BLocation { get; set; }
 }

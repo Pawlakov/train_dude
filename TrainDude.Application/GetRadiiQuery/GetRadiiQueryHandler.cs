@@ -18,9 +18,9 @@ using TrainDude.Data;
 public sealed class GetRadiiQueryHandler
     : IQueryHandler<GetRadiiQuery, GetRadiiQueryResult>
 {
-    private readonly NetworkDbContext db;
+    private readonly INetworkDbContext db;
 
-    public GetRadiiQueryHandler(NetworkDbContext db)
+    public GetRadiiQueryHandler(INetworkDbContext db)
     {
         this.db = db;
     }

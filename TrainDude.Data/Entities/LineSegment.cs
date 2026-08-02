@@ -6,11 +6,17 @@ namespace TrainDude.Data.Entities;
 
 public class LineSegment
 {
-    public string LineId { get; set; }
+    private LineSegment()
+    {
+    }
 
-    public virtual Line Line { get; set; }
+    public int LineNumber { get; private set; }
 
-    public int SegmentId { get; set; }
+    public char? LineLetter { get; private set; }
 
-    public virtual Segment Segment { get; set; }
+    public virtual Line Line { get; private set; }
+
+    public int SegmentId { get; private set; }
+
+    public Segment Segment { get; private set; }
 }

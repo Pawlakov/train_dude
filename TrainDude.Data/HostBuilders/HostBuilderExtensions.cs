@@ -1,4 +1,4 @@
-﻿// <copyright file="DataHostBuilderExtensions.cs" company="Pawlakov">
+﻿// <copyright file="HostBuilderExtensions.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
@@ -8,24 +8,26 @@ using System;
 using System.IO;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-/// <summary>
-/// A container for extensions methods concerning services.
-/// </summary>
 public static class HostBuilderExtensions
 {
-    /// <summary>
-    /// Adds to the collection service descriptors services required by the Network component.
-    /// </summary>
-    /// <param name="services">Collection of service descriptors.</param>
-    /// <returns>Collection of service descriptors with services added.</returns>
-    public static IServiceCollection AddDataServices(this IServiceCollection services)
+    public static IServiceCollection AddDataServices(this IServiceCollection services, string connectionString, bool isDevelopment)
     {
-        var folder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        var path = Path.Join(folder, "TrainDude.db");
+        services.AddDbContext<NetworkDbContext>(options =>
+        {
+            options.UseSqlite(connectionString);
 
-        return services
-            .AddDbContext<NetworkDbContext>(options => options.UseSqlite($"Data Source={path}"));
+            if (isDevelopment)
+            {
+                options.EnableSensitiveDataLogging();
+                options.EnableDetailedErrors();
+            }
+        });
+
+        services.AddScoped<INetworkDbContext, NetworkDbContext>();
+
+        return services;
     }
 }

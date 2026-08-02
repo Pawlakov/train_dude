@@ -26,4 +26,8 @@
       </Reference>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\TrainDude.Shared\TrainDude.Shared.csproj" />
+    </ItemGroup>
+
 </Project>

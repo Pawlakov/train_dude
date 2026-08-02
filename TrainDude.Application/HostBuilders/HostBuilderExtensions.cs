@@ -21,7 +21,7 @@ public static class HostBuilderExtensions
     public static IServiceCollection AddDataValidation(this IServiceCollection services)
     {
         services
-            .AddValidatorsFromAssembly(typeof(GetNetworkGeoJsonQuery).Assembly)
+            .AddValidatorsFromAssembly(typeof(GetNetworkGeoDataQuery).Assembly)
             .AddSingleton(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
         return services;

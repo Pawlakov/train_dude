@@ -5,10 +5,10 @@
 namespace TrainDude.Web;
 
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-using TrainDude.Application.Extensions;
 using TrainDude.Application.HostBuilders;
 using TrainDude.Data.HostBuilders;
 using TrainDude.Web.Components;
@@ -33,8 +33,10 @@ public static class Program
 
         builder.Services.AddControllers();
 
+        var connectionString = builder.Configuration.GetConnectionString("Default");
+        var isDevelopment = builder.Environment.IsDevelopment();
         builder.Services
-            .AddDataServices()
+            .AddDataServices(connectionString, isDevelopment)
             .AddDataValidation()
             .AddHandlers();
 

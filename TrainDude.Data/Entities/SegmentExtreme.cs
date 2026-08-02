@@ -6,13 +6,23 @@ namespace TrainDude.Data.Entities;
 
 public class SegmentExtreme
 {
-    public bool IsEnd { get; set; }
+    private SegmentExtreme()
+    {
+    }
 
-    public int StationId { get; set; }
+    internal SegmentExtreme(bool isEnd, Station sation)
+    {
+        this.IsEnd = isEnd;
+        this.Station = sation;
+    }
 
-    public virtual Station Station { get; set; }
+    public bool IsEnd { get; private set; }
 
-    public int SegmentId { get; set; }
+    public int StationId { get; private set; }
 
-    public virtual Segment Segment { get; set; }
+    public Station Station { get; private set; }
+
+    public int SegmentId { get; private set; }
+
+    public Segment Segment { get; private set; }
 }

@@ -4,12 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using TrainDude.Application.Requests.Values;
 using TrainDude.Data.Entities;
+using TrainDude.Shared.Values;
 
 internal static class GeoJsonExtensions
 {
-    internal static double Haversine(this IEnumerable<(GeodeticPosition A, GeodeticPosition B)> segments)
+    internal static double Haversine(this IEnumerable<(Location A, Location B)> segments)
     {
         // TODO dostosować do do geoidy i pary dwóch punktów tylko
         var pointPairs = segments.ToArray();
@@ -29,14 +29,18 @@ internal static class GeoJsonExtensions
     }
 
     // https://medium.com/theburningmonk-com/net-tips-use-linq-to-create-pairs-of-adjacent-elements-from-a-collection-a3e9c04ed5b
-    internal static IEnumerable<(GeodeticPosition A, GeodeticPosition B)> Segments(this ICollection<GeodeticPosition> points)
+    internal static IEnumerable<(Location A, Location B)> Segments(this IEnumerable<Location> points)
     {
-        if (points.Count > 1)
+        var previous = (Location?)null;
+        foreach (var point in points)
         {
-            return points.Skip(1).Zip(points, (a, b) => (a, b))!;
-        }
+            if (previous.HasValue)
+            {
+                yield return (previous.Value, point);
+            }
 
-        return Enumerable.Empty<(GeodeticPosition, GeodeticPosition)>();
+            previous = point;
+        }
     }
 
     private static double ToRadians(double angle)

@@ -1,4 +1,4 @@
-﻿// <copyright file="RouteSeed.cs" company="Pawlakov">
+﻿// <copyright file="SegmentSeed.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
@@ -17,8 +17,6 @@ internal class SegmentSeed
     public int Tracks { get; set; }
 
     public List<VertexSeed>? Vertices { get; set; }
-
-    public List<string> Charts { get; set; }
 
     internal class ExtremeSeed
     {

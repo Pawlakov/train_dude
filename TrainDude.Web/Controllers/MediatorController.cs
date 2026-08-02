@@ -36,7 +36,7 @@ public class MediatorController
             var response = await this.mediator.Send(request);
             if (response is not BasePolymorphicResponse polymorphicResponse)
             {
-                throw new NotSupportedException("This response type is not supporting polymorphic JSON serialization.");
+                return this.BadRequest($"{response.GetType()} is not a supported response type.");
             }
 
             return this.Ok(polymorphicResponse);
@@ -59,7 +59,7 @@ public class MediatorController
             var response = await this.mediator.Send(request);
             if (response is not BasePolymorphicResponse polymorphicResponse)
             {
-                throw new NotSupportedException("This response type is not supporting polymorphic JSON serialization.");
+                return this.BadRequest($"{response.GetType()} is not a supported response type.");
             }
 
             return this.Ok(polymorphicResponse);
@@ -68,7 +68,7 @@ public class MediatorController
         {
             return this.BadRequest(JsonSerializer.Serialize(exception.Errors));
         }
-        catch
+        catch // TODO Jakiś lepszy handling tego co się wywaliło.
         {
             throw;
         }

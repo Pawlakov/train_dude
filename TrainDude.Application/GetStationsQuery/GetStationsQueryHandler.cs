@@ -18,9 +18,9 @@ using TrainDude.Data;
 public sealed class GetStationsQueryHandler
     : IQueryHandler<GetStationsQuery, GetStationsQueryResult>
 {
-    private readonly NetworkDbContext db;
+    private readonly INetworkDbContext db;
 
-    public GetStationsQueryHandler(NetworkDbContext db)
+    public GetStationsQueryHandler(INetworkDbContext db)
     {
         this.db = db;
     }

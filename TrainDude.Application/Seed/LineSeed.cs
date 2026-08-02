@@ -6,5 +6,7 @@ namespace TrainDude.Application.Seed;
 
 internal class LineSeed
 {
-    public string Id { get; set; }
+    public int Number { get; set; }
+
+    public char? Letter { get; set; }
 }

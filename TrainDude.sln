@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainDude.Web.Client", "Tra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainDude.Application.Requests", "TrainDude.Application.Requests\TrainDude.Application.Requests.csproj", "{291A62F3-B77A-4BE1-93E9-E71A43158243}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainDude.Shared", "TrainDude.Shared\TrainDude.Shared.csproj", "{2D20784E-330A-4671-9429-FBC30B58913C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{291A62F3-B77A-4BE1-93E9-E71A43158243}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{291A62F3-B77A-4BE1-93E9-E71A43158243}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{291A62F3-B77A-4BE1-93E9-E71A43158243}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D20784E-330A-4671-9429-FBC30B58913C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D20784E-330A-4671-9429-FBC30B58913C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D20784E-330A-4671-9429-FBC30B58913C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D20784E-330A-4671-9429-FBC30B58913C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

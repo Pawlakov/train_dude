@@ -14,6 +14,9 @@
             <a class="navbar-item" href="">
                 Strona Główna
             </a>
+            <a class="navbar-item" href="lines">
+                Linie
+            </a>
             <a class="navbar-item" href="stations">
                 Stacje
             </a>
@@ -23,9 +26,14 @@
             <a class="navbar-item" href="radii">
                 Promienie
             </a>
+            <a class="navbar-item" href="trips">
+                Kursy
+            </a>
             <a class="navbar-item" href="admin">
                 Administracja
             </a>
+        </div>
+        <div class="navbar-end">
             <AuthorizeView>
                 <Authorized>
                     <button class="navbar-item" @onclick="Logout">Wyloguj</button>

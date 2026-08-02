@@ -4,7 +4,7 @@
 
 namespace TrainDude.Application.Seed;
 
-using TrainDude.Application.Requests.Values;
+using TrainDude.Shared.Values;
 
 internal class TrainScheduleSeed
 {

@@ -6,21 +6,27 @@ namespace TrainDude.Data;
 
 using Microsoft.EntityFrameworkCore;
 
+using TrainDude.Data.Configurations;
 using TrainDude.Data.Entities;
-using TrainDude.Data.Entities.Configuration;
 
-public partial class NetworkDbContext(DbContextOptions<NetworkDbContext> options)
-    : DbContext(options)
+internal sealed class NetworkDbContext(DbContextOptions<NetworkDbContext> options)
+    : DbContext(options), INetworkDbContext
 {
-    public virtual DbSet<Station> Stations { get; set; }
+    public DbSet<Line> Lines => this.Set<Line>();
 
-    public virtual DbSet<Segment> Segments { get; set; }
+    public DbSet<Radius> Radii => this.Set<Radius>();
 
-    public virtual DbSet<Radius> Radii { get; set; }
+    public DbSet<Segment> Segments => this.Set<Segment>();
 
-    public virtual DbSet<SegmentExtreme> SegmentExtremes { get; set; }
+    public DbSet<Station> Stations => this.Set<Station>();
 
-    public virtual DbSet<Line> Lines { get; set; }
+    public DbSet<Trip> Trips => this.Set<Trip>();
+
+    private DbSet<LineSegment> LineSegments => this.Set<LineSegment>();
+
+    private DbSet<SegmentExtreme> SegmentExtremes => this.Set<SegmentExtreme>();
+
+    private DbSet<SegmentVertex> SegmentVertices => this.Set<SegmentVertex>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

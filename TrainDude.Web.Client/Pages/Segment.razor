@@ -1,4 +1,5 @@
-﻿@using Mediator
+﻿@using System.Globalization
+@using Mediator
 @using TrainDude.Application.Requests.GetSegmentGeoJsonQuery
 @using TrainDude.Application.Requests.GetSegmentQuery
 
@@ -21,7 +22,7 @@
 @code {
     private IJSObjectReference scriptModule;
     private GetSegmentQueryResult? segment;
-    private string? segmentGeoJson;
+    private string? geoJson;
     private bool dataPresnt;
     private bool loadingActive;
 
@@ -36,8 +37,8 @@
         this.segment = await this.Mediator.Send(new GetSegmentQuery { SegmentId = this.Id });
         if (this.segment != null)
         {
-            var result = await this.Mediator.Send(new GetSegmentGeoJsonQuery { SegmentId = this.Id });
-            this.segmentGeoJson = result.GeoJson;
+            var result = await this.Mediator.Send(new GetSegmentGeoDataQuery { SegmentId = this.Id });
+            this.geoJson = this.BuildGeoJson(result);
         }
         else
         {
@@ -55,14 +56,33 @@
             this.scriptModule = await this.JS.InvokeAsync<IJSObjectReference>("import", "./Layout/BaseMapLayout.razor.js");
         }
         
-        if (!dataPresnt && this.segmentGeoJson != null)
+        if (!dataPresnt && this.geoJson != null)
         {
             await this.scriptModule.InvokeVoidAsync("clearGeoJson");
-            await this.scriptModule.InvokeVoidAsync("addGeoJson", this.segmentGeoJson);
+            await this.scriptModule.InvokeVoidAsync("addGeoJson", this.geoJson);
 
             this.dataPresnt = true;
             this.loadingActive = false;
             this.StateHasChanged();
         }
+    }
+
+    private string BuildGeoJson(GetSegmentGeoDataQueryResult data)
+    {
+        var stationsGeoJson = new List<string>();
+        var segmentsGeoJson = new List<string>();
+
+        foreach (var station in data.Stations)
+        {
+            stationsGeoJson.Add($"{{ \"type\": \"Point\", \"coordinates\": [{station.Longitude.ToString(CultureInfo.InvariantCulture)},{station.Latitude.ToString(CultureInfo.InvariantCulture)}] }}");
+        }
+        
+        var points = data.Segment.Vertices.Prepend(data.Segment.ALocation!).Append(data.Segment.BLocation!);
+
+        var line = string.Join(',', points.Select(x => $"[{x.Longitude.ToString(CultureInfo.InvariantCulture)},{x.Latitude.ToString(CultureInfo.InvariantCulture)}]"));
+
+        segmentsGeoJson.Add($"{{ \"type\": \"LineString\", \"coordinates\": [{line}] }}");
+
+        return $"[{string.Join(',', segmentsGeoJson.Concat(stationsGeoJson))}]";
     }
 }

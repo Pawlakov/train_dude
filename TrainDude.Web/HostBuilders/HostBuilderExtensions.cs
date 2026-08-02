@@ -21,8 +21,8 @@ public static class HostBuilderExtensions
             {
                 options.Assemblies =
                 [
-                    typeof(GetNetworkGeoJsonQuery),
-                    typeof(GetNetworkGeoJsonQueryHandler),
+                    typeof(GetNetworkGeoDataQuery),
+                    typeof(GetNetworkGeoDataQueryHandler),
                 ];
                 options.ServiceLifetime = ServiceLifetime.Scoped;
             });

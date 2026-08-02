@@ -30,7 +30,7 @@
       <EmbeddedResource Include="Resources\lines_seed.yml" />
       <EmbeddedResource Include="Resources\segments_seed.yml" />
       <EmbeddedResource Include="Resources\stations_seed.yml" />
-      <EmbeddedResource Include="Resources\trains_seed.yml" />
+      <EmbeddedResource Include="Resources\trips_seed.yml" />
     </ItemGroup>
 
     <ItemGroup>

@@ -13,15 +13,14 @@ using Mediator;
 using Microsoft.EntityFrameworkCore;
 
 using TrainDude.Application.Requests.GetSegmentQuery;
-using TrainDude.Application.Requests.Values;
 using TrainDude.Data;
 
 public sealed class GetSegmentQueryHandler
     : IQueryHandler<GetSegmentQuery, GetSegmentQueryResult?>
 {
-    private readonly NetworkDbContext db;
+    private readonly INetworkDbContext db;
 
-    public GetSegmentQueryHandler(NetworkDbContext db)
+    public GetSegmentQueryHandler(INetworkDbContext db)
     {
         this.db = db;
     }
@@ -55,8 +54,8 @@ public sealed class GetSegmentQueryHandler
             SegmentId = request.SegmentId,
             AName = queryResult.A.Name,
             BName = queryResult.B.Name,
-            ALocation = new GeodeticPosition(queryResult.A.Location!.Longitude, queryResult.A.Location!.Latitude),
-            BLocation = new GeodeticPosition(queryResult.B.Location!.Longitude, queryResult.B.Location!.Latitude),
+            ALocation = queryResult.A.Location,
+            BLocation = queryResult.B.Location,
         };
 
         return dto;
