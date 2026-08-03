@@ -6,8 +6,10 @@ namespace TrainDude.Web.HostBuilders;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using TrainDude.Application.GetNetworkGeoJsonQuery;
-using TrainDude.Application.Requests.GetNetworkGeoJsonQuery;
+using TrainDude.Commands.Handlers.DropAndSeedCommand;
+using TrainDude.Commands.Requests.DropAndSeedCommand;
+using TrainDude.Queries.Handlers.GetNetworkQuery;
+using TrainDude.Queries.Requests.GetNetworkGeoJsonQuery;
 
 /// <summary>
 /// A container for extensions methods concerning services.
@@ -21,8 +23,10 @@ public static class HostBuilderExtensions
             {
                 options.Assemblies =
                 [
-                    typeof(GetNetworkGeoDataQuery),
-                    typeof(GetNetworkGeoDataQueryHandler),
+                    typeof(GetNetworkQuery),
+                    typeof(GetNetworkQueryHandler),
+                    typeof(DropAndSeedCommand),
+                    typeof(DropAndSeedCommandHandler),
                 ];
                 options.ServiceLifetime = ServiceLifetime.Scoped;
             });

@@ -5,20 +5,26 @@ VisualStudioVersion = 18.4.11519.219
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrainDude.Web", "TrainDude.Web\TrainDude.Web.csproj", "{E0F5E981-97FF-4610-989A-BE2751F95A22}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrainDude.Application", "TrainDude.Application\TrainDude.Application.csproj", "{20EFF599-F2C2-45AD-AD2C-C1D7D6883F31}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrainDude.Commands.Handlers", "TrainDude.Commands.Handlers\TrainDude.Commands.Handlers.csproj", "{20EFF599-F2C2-45AD-AD2C-C1D7D6883F31}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{032D867A-0964-488A-8492-7B35145C3500}"
 	ProjectSection(SolutionItems) = preProject
 		stylecop.json = stylecop.json
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainDude.Data", "TrainDude.Data\TrainDude.Data.csproj", "{3564AD01-FAFC-4FDB-878F-64F68F9D269F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainDude.Commands.Data", "TrainDude.Commands.Data\TrainDude.Commands.Data.csproj", "{3564AD01-FAFC-4FDB-878F-64F68F9D269F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainDude.Web.Client", "TrainDude.Web.Client\TrainDude.Web.Client.csproj", "{576ACE83-E0AB-4F19-B697-F76EB873FFE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainDude.Application.Requests", "TrainDude.Application.Requests\TrainDude.Application.Requests.csproj", "{291A62F3-B77A-4BE1-93E9-E71A43158243}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainDude.Commands.Requests", "TrainDude.Commands.Requests\TrainDude.Commands.Requests.csproj", "{291A62F3-B77A-4BE1-93E9-E71A43158243}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainDude.Shared", "TrainDude.Shared\TrainDude.Shared.csproj", "{2D20784E-330A-4671-9429-FBC30B58913C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainDude.Queries.Handlers", "TrainDude.Queries.Handlers\TrainDude.Queries.Handlers.csproj", "{1A028809-38EC-4F9D-AB0D-4F48EFF61FA9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainDude.Queries.Requests", "TrainDude.Queries.Requests\TrainDude.Queries.Requests.csproj", "{98014DD7-AB36-4AB5-9BB8-543F43392592}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainDude.Queries.Data", "TrainDude.Queries.Data\TrainDude.Queries.Data.csproj", "{3C96FAD3-3392-49ED-82E8-3623770925D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +56,18 @@ Global
 		{2D20784E-330A-4671-9429-FBC30B58913C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D20784E-330A-4671-9429-FBC30B58913C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D20784E-330A-4671-9429-FBC30B58913C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A028809-38EC-4F9D-AB0D-4F48EFF61FA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A028809-38EC-4F9D-AB0D-4F48EFF61FA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A028809-38EC-4F9D-AB0D-4F48EFF61FA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A028809-38EC-4F9D-AB0D-4F48EFF61FA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98014DD7-AB36-4AB5-9BB8-543F43392592}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98014DD7-AB36-4AB5-9BB8-543F43392592}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98014DD7-AB36-4AB5-9BB8-543F43392592}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98014DD7-AB36-4AB5-9BB8-543F43392592}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C96FAD3-3392-49ED-82E8-3623770925D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C96FAD3-3392-49ED-82E8-3623770925D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C96FAD3-3392-49ED-82E8-3623770925D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C96FAD3-3392-49ED-82E8-3623770925D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,6 +1,6 @@
 ﻿@using System.Globalization
 @using Mediator
-@using TrainDude.Application.Requests.GetNetworkGeoJsonQuery
+@using TrainDude.Queries.Requests.GetNetworkGeoJsonQuery
 @using TrainDude.Web.Client.Layout
 @layout BaseMapLayout
 @page "/"
@@ -35,7 +35,7 @@
         this.loadingActive = true;
         this.StateHasChanged();
 
-        var result = await this.mediator.Send(new GetNetworkGeoDataQuery());
+        var result = await this.mediator.Send(new GetNetworkQuery());
         this.geoJson = this.BuildGeoJson(result);
     }
 
@@ -57,7 +57,7 @@
         }
     }
 
-    private string BuildGeoJson(GetNetworkGeoDataQueryResult data)
+    private string BuildGeoJson(GetNetworkQueryResult data)
     {
         var stationsGeoJson = new List<string>();
         var segmentsGeoJson = new List<string>();

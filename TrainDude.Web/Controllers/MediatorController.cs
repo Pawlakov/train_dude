@@ -4,7 +4,6 @@
 
 namespace TrainDude.Web.Controllers;
 
-using System;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -14,7 +13,8 @@ using Mediator;
 
 using Microsoft.AspNetCore.Mvc;
 
-using TrainDude.Application.Requests.Base;
+using TrainDude.Commands.Requests.Base;
+using TrainDude.Queries.Requests.Base;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -29,12 +29,12 @@ public class MediatorController
     }
 
     [HttpPost("command")]
-    public async Task<ActionResult<BasePolymorphicResponse>> Command([FromBody] BasePolymorphicCommand request)
+    public async Task<ActionResult<BasePolymorphicCommandResponse>> Command([FromBody] BasePolymorphicCommand request)
     {
         try
         {
             var response = await this.mediator.Send(request);
-            if (response is not BasePolymorphicResponse polymorphicResponse)
+            if (response is not BasePolymorphicCommandResponse polymorphicResponse)
             {
                 return this.BadRequest($"{response.GetType()} is not a supported response type.");
             }
@@ -52,12 +52,12 @@ public class MediatorController
     }
 
     [HttpPost("query")]
-    public async Task<ActionResult<BasePolymorphicResponse>> Query([FromBody] BasePolymorphicQuery request)
+    public async Task<ActionResult<BasePolymorphicCommandResponse>> Query([FromBody] BasePolymorphicQuery request)
     {
         try
         {
             var response = await this.mediator.Send(request);
-            if (response is not BasePolymorphicResponse polymorphicResponse)
+            if (response is not BasePolymorphicCommandResponse polymorphicResponse)
             {
                 return this.BadRequest($"{response.GetType()} is not a supported response type.");
             }

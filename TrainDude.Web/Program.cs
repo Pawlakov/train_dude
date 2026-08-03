@@ -9,8 +9,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-using TrainDude.Application.HostBuilders;
-using TrainDude.Data.HostBuilders;
+using TrainDude.Commands.Data.HostBuilders;
+using TrainDude.Commands.Handlers.HostBuilders;
+using TrainDude.Queries.Data.HostBuilders;
+using TrainDude.Queries.Handlers.HostBuilders;
 using TrainDude.Web.Components;
 using TrainDude.Web.HostBuilders;
 
@@ -33,11 +35,14 @@ public static class Program
 
         builder.Services.AddControllers();
 
-        var connectionString = builder.Configuration.GetConnectionString("Default");
+        var readConnectionString = builder.Configuration.GetConnectionString("Read");
+        var writeConnectionString = builder.Configuration.GetConnectionString("Write");
         var isDevelopment = builder.Environment.IsDevelopment();
         builder.Services
-            .AddDataServices(connectionString, isDevelopment)
-            .AddDataValidation()
+            .AddReadDataServices(readConnectionString, isDevelopment)
+            .AddWriteDataServices(writeConnectionString, isDevelopment)
+            .AddReadDataValidation()
+            .AddWriteDataValidation()
             .AddHandlers();
 
         var app = builder.Build();
@@ -50,6 +55,7 @@ public static class Program
         else
         {
             app.UseExceptionHandler("/Error");
+
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
