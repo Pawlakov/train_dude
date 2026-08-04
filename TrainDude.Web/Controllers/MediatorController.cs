@@ -57,7 +57,7 @@ public class MediatorController
         try
         {
             var response = await this.mediator.Send(request);
-            if (response is not BasePolymorphicCommandResponse polymorphicResponse)
+            if (response is not BasePolymorphicQueryResponse polymorphicResponse)
             {
                 return this.BadRequest($"{response.GetType()} is not a supported response type.");
             }

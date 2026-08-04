@@ -1,4 +1,4 @@
-// <copyright file="IReadDbContext.cs" company="Pawlakov">
+// <copyright file="ISegmentRepository.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
@@ -8,11 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 using TrainDude.Queries.Data.Entities;
 
-public interface IReadDbContext
+public interface ISegmentRepository
 {
-    DbSet<Radius> Radii { get; }
-
     DbSet<Segment> Segments { get; }
-
-    DbSet<Station> Stations { get; }
 }

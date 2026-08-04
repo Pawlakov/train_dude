@@ -6,7 +6,7 @@ namespace TrainDude.Queries.Requests.Base;
 
 using System.Text.Json.Serialization;
 
-using TrainDude.Queries.Requests.GetNetworkGeoJsonQuery;
+using TrainDude.Queries.Requests.GetNetworkQuery;
 using TrainDude.Queries.Requests.GetRadiiQuery;
 using TrainDude.Queries.Requests.GetSegmentQuery;
 using TrainDude.Queries.Requests.GetSegmentsQuery;

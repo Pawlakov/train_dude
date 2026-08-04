@@ -18,9 +18,9 @@ using TrainDude.Queries.Requests.GetRadiiQuery;
 public sealed class GetRadiiQueryHandler
     : IQueryHandler<GetRadiiQuery, GetRadiiQueryResult>
 {
-    private readonly IReadDbContext db;
+    private readonly IRadiusRepository db;
 
-    public GetRadiiQueryHandler(IReadDbContext db)
+    public GetRadiiQueryHandler(IRadiusRepository db)
     {
         this.db = db;
     }

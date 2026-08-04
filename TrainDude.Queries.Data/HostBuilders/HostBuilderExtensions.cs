@@ -22,7 +22,9 @@ public static class HostBuilderExtensions
             }
         });
 
-        services.AddScoped<IReadDbContext, ReadDbContext>();
+        services.AddScoped<IRadiusRepository, ReadDbContext>();
+        services.AddScoped<ISegmentRepository, ReadDbContext>();
+        services.AddScoped<IStationRepository, ReadDbContext>();
 
         return services;
     }

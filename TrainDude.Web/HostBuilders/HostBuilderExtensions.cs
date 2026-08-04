@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TrainDude.Commands.Handlers.DropAndSeedCommand;
 using TrainDude.Commands.Requests.DropAndSeedCommand;
 using TrainDude.Queries.Handlers.GetNetworkQuery;
-using TrainDude.Queries.Requests.GetNetworkGeoJsonQuery;
+using TrainDude.Queries.Requests.GetNetworkQuery;
 
 /// <summary>
 /// A container for extensions methods concerning services.

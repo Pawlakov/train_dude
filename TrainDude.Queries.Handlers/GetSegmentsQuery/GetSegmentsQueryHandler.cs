@@ -18,9 +18,9 @@ using TrainDude.Queries.Requests.GetSegmentsQuery;
 public sealed class GetSegmentsQueryHandler
     : IQueryHandler<GetSegmentsQuery, GetSegmentsQueryResult>
 {
-    private readonly IReadDbContext db;
+    private readonly ISegmentRepository db;
 
-    public GetSegmentsQueryHandler(IReadDbContext db)
+    public GetSegmentsQueryHandler(ISegmentRepository db)
     {
         this.db = db;
     }

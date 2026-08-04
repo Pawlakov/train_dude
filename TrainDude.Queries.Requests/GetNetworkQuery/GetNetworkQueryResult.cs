@@ -1,8 +1,8 @@
-// <copyright file="GetNetworkGeoDataQueryResult.cs" company="Pawlakov">
+// <copyright file="GetNetworkQueryResult.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Queries.Requests.GetNetworkGeoJsonQuery;
+namespace TrainDude.Queries.Requests.GetNetworkQuery;
 
 using System.Collections.Generic;
 

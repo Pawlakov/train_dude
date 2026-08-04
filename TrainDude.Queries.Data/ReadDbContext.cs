@@ -10,16 +10,16 @@ using TrainDude.Queries.Data.Configurations;
 using TrainDude.Queries.Data.Entities;
 
 internal sealed class ReadDbContext(DbContextOptions<ReadDbContext> options)
-    : DbContext(options), IReadDbContext
+    : DbContext(options), IRadiusRepository, ISegmentRepository, IStationRepository
 {
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(RadiusEntityTypeConfiguration).Assembly);
-    }
-
     public DbSet<Radius> Radii => this.Set<Radius>();
 
     public DbSet<Segment> Segments => this.Set<Segment>();
 
     public DbSet<Station> Stations => this.Set<Station>();
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(RadiusEntityTypeConfiguration).Assembly);
+    }
 }

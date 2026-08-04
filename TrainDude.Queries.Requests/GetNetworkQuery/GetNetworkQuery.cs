@@ -1,8 +1,8 @@
-﻿// <copyright file="GetNetworkGeoDataQuery.cs" company="Pawlakov">
+﻿// <copyright file="GetNetworkQuery.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Queries.Requests.GetNetworkGeoJsonQuery;
+namespace TrainDude.Queries.Requests.GetNetworkQuery;
 
 using Mediator;
 

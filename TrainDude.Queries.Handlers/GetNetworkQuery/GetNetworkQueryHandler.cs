@@ -13,26 +13,28 @@ using Mediator;
 using Microsoft.EntityFrameworkCore;
 
 using TrainDude.Queries.Data;
-using TrainDude.Queries.Requests.GetNetworkGeoJsonQuery;
+using TrainDude.Queries.Requests.GetNetworkQuery;
 
 public sealed class GetNetworkQueryHandler
     : IQueryHandler<GetNetworkQuery, GetNetworkQueryResult>
 {
-    private readonly IReadDbContext db;
+    private readonly ISegmentRepository segmentDb;
+    private readonly IStationRepository stationDb;
 
-    public GetNetworkQueryHandler(IReadDbContext db)
+    public GetNetworkQueryHandler(ISegmentRepository segmentDb, IStationRepository stationDb)
     {
-        this.db = db;
+        this.segmentDb = segmentDb;
+        this.stationDb = stationDb;
     }
 
     public async ValueTask<GetNetworkQueryResult> Handle(GetNetworkQuery request, CancellationToken cancellationToken)
     {
-        var stations = await this.db.Stations.AsNoTracking()
+        var stations = await this.stationDb.Stations.AsNoTracking()
             .Where(x => x.Location != null)
             .Select(x => x.Location!.Value)
             .ToListAsync(cancellationToken);
 
-        var segments = await this.db.Segments.AsNoTracking()
+        var segments = await this.segmentDb.Segments.AsNoTracking()
             .Where(x => x.A.Location.HasValue && x.B.Location.HasValue)
             .Select(x => new
             {
