@@ -14,7 +14,7 @@ public class Segment
 
     public int SegmentId { get; private set; }
 
-    public double NominalLength { get; private set; }
+    public double? NominalLength { get; private set; }
 
     public SegmentStation A { get; private set; }
 

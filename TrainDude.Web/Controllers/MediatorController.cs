@@ -43,7 +43,7 @@ public class MediatorController
         }
         catch (ValidationException exception)
         {
-            return this.BadRequest(JsonSerializer.Serialize(exception.Errors));
+            return this.BadRequest(exception.Errors);
         }
         catch
         {
@@ -66,7 +66,7 @@ public class MediatorController
         }
         catch (ValidationException exception)
         {
-            return this.BadRequest(JsonSerializer.Serialize(exception.Errors));
+            return this.BadRequest(exception.Errors);
         }
         catch // TODO Jakiś lepszy handling tego co się wywaliło.
         {

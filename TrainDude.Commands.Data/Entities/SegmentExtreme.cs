@@ -10,10 +10,10 @@ public class SegmentExtreme
     {
     }
 
-    internal SegmentExtreme(bool isEnd, Station sation)
+    internal SegmentExtreme(bool isEnd, Station station)
     {
         this.IsEnd = isEnd;
-        this.Station = sation;
+        this.Station = station;
     }
 
     public bool IsEnd { get; private set; }

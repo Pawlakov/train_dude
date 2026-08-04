@@ -14,13 +14,11 @@ public class Segment
 {
     private readonly List<SegmentExtreme> extremes;
     private readonly List<SegmentVertex> vertices;
-    private readonly List<LineSegment> lines;
-
+    
     private Segment()
     {
         this.extremes = new List<SegmentExtreme>();
         this.vertices = new List<SegmentVertex>();
-        this.lines = new List<LineSegment>();
     }
 
     public Segment(double? nominalLength)
@@ -41,8 +39,6 @@ public class Segment
     public IReadOnlyCollection<SegmentExtreme> Extremes => this.extremes.AsReadOnly();
 
     public IReadOnlyCollection<SegmentVertex> Vertices => this.vertices.AsReadOnly();
-
-    public IReadOnlyCollection<LineSegment> Lines => this.lines.AsReadOnly();
 
     public void AddExtremes(Station startStation, Station endStation)
     {

@@ -17,6 +17,6 @@ public class Station
     public string NameGerman { get; private set; }
 
     public string? NameGermanNew { get; private set; }
-    
-    public Location? Location { get; set; }
+
+    public Location? Location { get; private set; }
 }

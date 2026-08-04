@@ -24,9 +24,5 @@ internal sealed class SegmentEntityTypeConfiguration
         builder
             .Navigation(x => x.Vertices)
             .UsePropertyAccessMode(PropertyAccessMode.Field);
-
-        builder
-            .Navigation(x => x.Lines)
-            .UsePropertyAccessMode(PropertyAccessMode.Field);
     }
 }

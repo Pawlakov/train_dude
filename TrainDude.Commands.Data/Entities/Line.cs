@@ -9,11 +9,8 @@ using System.Collections.Generic;
 
 public class Line
 {
-    private readonly List<LineSegment> segments;
-
     private Line()
     {
-        this.segments = new List<LineSegment>();
     }
 
     public Line(int lineNumber, char? lineLetter)
@@ -35,6 +32,4 @@ public class Line
     public int LineNumber { get; private set; }
 
     public char? LineLetter { get; private set; }
-
-    public IReadOnlyCollection<LineSegment> Segments => this.segments.AsReadOnly();
 }

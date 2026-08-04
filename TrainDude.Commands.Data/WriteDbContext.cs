@@ -22,8 +22,6 @@ internal sealed class WriteDbContext(DbContextOptions<WriteDbContext> options)
 
     public DbSet<Trip> Trips => this.Set<Trip>();
 
-    private DbSet<LineSegment> LineSegments => this.Set<LineSegment>();
-
     private DbSet<SegmentExtreme> SegmentExtremes => this.Set<SegmentExtreme>();
 
     private DbSet<SegmentVertex> SegmentVertices => this.Set<SegmentVertex>();

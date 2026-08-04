@@ -24,9 +24,5 @@ internal sealed class LineEntityTypeConfiguration
         builder
             .Property(x => x.LineLetter)
             .ValueGeneratedNever();
-
-        builder
-            .Navigation(x => x.Segments)
-            .UsePropertyAccessMode(PropertyAccessMode.Field);
     }
 }
