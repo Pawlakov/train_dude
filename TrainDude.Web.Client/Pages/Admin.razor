@@ -15,7 +15,7 @@
     <div class="block">
         <h2 class="title">Stacje i odcinki</h2>
         <div class="buttons">
-            <button class="button is-info @(this.loadingActive ? "is-loading" : "")" onclick="@this.DropAndSeed">
+            <button class="button is-info @(this.loadingActive ? "is-loading" : "")" @onclick="this.DropAndSeed">
                 Drop & Seed
             </button>
         </div>

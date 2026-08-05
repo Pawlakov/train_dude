@@ -11,6 +11,7 @@ using TrainDude.Commands.Requests.DropAndSeedCommand;
 using TrainDude.Projections;
 using TrainDude.Queries.Handlers.GetNetworkQuery;
 using TrainDude.Queries.Requests.GetNetworkQuery;
+using TrainDude.Shared.Events;
 
 /// <summary>
 /// A container for extensions methods concerning services.
@@ -28,7 +29,8 @@ public static class HostBuilderExtensions
                     typeof(GetNetworkQueryHandler),
                     typeof(DropAndSeedCommand),
                     typeof(DropAndSeedCommandHandler),
-                    typeof(DataModelProjector),
+                    typeof(DataChangedNotification),
+                    typeof(DataChangedNotificationHandler),
                 ];
                 options.ServiceLifetime = ServiceLifetime.Scoped;
             });
