@@ -25,6 +25,7 @@ public static class HostBuilderExtensions
         services.AddScoped<IRadiusRepository, ReadDbContext>();
         services.AddScoped<ISegmentRepository, ReadDbContext>();
         services.AddScoped<IStationRepository, ReadDbContext>();
+        services.AddScoped<IReadDbContext, ReadDbContext>();
 
         return services;
     }

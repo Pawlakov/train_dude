@@ -10,11 +10,15 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TrainDude.Queries.Data.Entities;
 
 internal sealed class StationEntityTypeConfiguration
-    : IEntityTypeConfiguration<Station>
+    : IEntityTypeConfiguration<StationAggregate>
 {
-    public void Configure(EntityTypeBuilder<Station> builder)
+    public void Configure(EntityTypeBuilder<StationAggregate> builder)
     {
         builder.HasKey(x => x.StationId);
+
+        builder
+            .Property(x => x.StationId)
+            .ValueGeneratedNever();
 
         builder
             .HasIndex(x => x.NameGerman)

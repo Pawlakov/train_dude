@@ -30,6 +30,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\TrainDude.Commands.Handlers\TrainDude.Commands.Handlers.csproj" />
+      <ProjectReference Include="..\TrainDude.Projections\TrainDude.Projections.csproj" />
       <ProjectReference Include="..\TrainDude.Queries.Handlers\TrainDude.Queries.Handlers.csproj" />
       <ProjectReference Include="..\TrainDude.Web.Client\TrainDude.Web.Client.csproj" />
     </ItemGroup>

@@ -10,5 +10,5 @@ using TrainDude.Queries.Data.Entities;
 
 public interface IStationRepository
 {
-    DbSet<Station> Stations { get; }
+    DbSet<StationAggregate> StationAggregates { get; }
 }

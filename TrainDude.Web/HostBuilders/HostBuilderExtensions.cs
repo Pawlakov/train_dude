@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using TrainDude.Commands.Handlers.DropAndSeedCommand;
 using TrainDude.Commands.Requests.DropAndSeedCommand;
+using TrainDude.Projections;
 using TrainDude.Queries.Handlers.GetNetworkQuery;
 using TrainDude.Queries.Requests.GetNetworkQuery;
 
@@ -27,6 +28,7 @@ public static class HostBuilderExtensions
                     typeof(GetNetworkQueryHandler),
                     typeof(DropAndSeedCommand),
                     typeof(DropAndSeedCommandHandler),
+                    typeof(DataModelProjector),
                 ];
                 options.ServiceLifetime = ServiceLifetime.Scoped;
             });

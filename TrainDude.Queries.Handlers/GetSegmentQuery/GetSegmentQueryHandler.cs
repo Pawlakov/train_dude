@@ -27,7 +27,7 @@ public sealed class GetSegmentQueryHandler
 
     public async ValueTask<GetSegmentQueryResult?> Handle(GetSegmentQuery request, CancellationToken cancellationToken)
     {
-        var queryResult = await this.db.Segments
+        var queryResult = await this.db.SegmentAggregates
             .Where(x => x.SegmentId == request.SegmentId)
             .Select(x => new
             {

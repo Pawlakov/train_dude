@@ -10,10 +10,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TrainDude.Queries.Data.Entities;
 
 internal sealed class RadiusEntityTypeConfiguration
-    : IEntityTypeConfiguration<Radius>
+    : IEntityTypeConfiguration<RadiusAggregate>
 {
-    public void Configure(EntityTypeBuilder<Radius> builder)
+    public void Configure(EntityTypeBuilder<RadiusAggregate> builder)
     {
         builder.HasKey(x => x.RadiusId);
+
+        builder
+            .Property(x => x.RadiusId)
+            .ValueGeneratedNever();
     }
 }

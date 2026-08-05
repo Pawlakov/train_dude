@@ -10,5 +10,5 @@ using TrainDude.Queries.Data.Entities;
 
 public interface IRadiusRepository
 {
-    DbSet<Radius> Radii { get; }
+    DbSet<RadiusAggregate> RadiusAggregates { get; }
 }

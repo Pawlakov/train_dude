@@ -17,16 +17,19 @@ using TrainDude.Commands.Data;
 using TrainDude.Commands.Data.Entities;
 using TrainDude.Commands.Handlers.Seed;
 using TrainDude.Commands.Requests.DropAndSeedCommand;
+using TrainDude.Shared.Events;
 using TrainDude.Shared.Values;
 
 public sealed class DropAndSeedCommandHandler
     : ICommandHandler<DropAndSeedCommand>
 {
     private readonly IWriteDbContext db;
+    private readonly IPublisher publisher;
 
-    public DropAndSeedCommandHandler(IWriteDbContext db)
+    public DropAndSeedCommandHandler(IWriteDbContext db, IPublisher publisher)
     {
         this.db = db;
+        this.publisher = publisher;
     }
 
     public async ValueTask<Unit> Handle(DropAndSeedCommand request, CancellationToken cancellationToken)
@@ -91,6 +94,8 @@ public sealed class DropAndSeedCommandHandler
         }
 
         await this.db.SaveChangesAsync(cancellationToken);
+
+        await this.publisher.Publish(new DataChangedNotification(), cancellationToken);
 
         return Unit.Value;
     }

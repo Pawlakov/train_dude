@@ -27,7 +27,7 @@ public sealed class GetSegmentsQueryHandler
 
     public async ValueTask<GetSegmentsQueryResult> Handle(GetSegmentsQuery request, CancellationToken cancellationToken)
     {
-        var models = await this.db.Segments.AsNoTracking()
+        var models = await this.db.SegmentAggregates.AsNoTracking()
             .Select(x => new
             {
                 x.SegmentId,

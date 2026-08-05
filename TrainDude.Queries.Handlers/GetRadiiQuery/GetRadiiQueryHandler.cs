@@ -27,7 +27,7 @@ public sealed class GetRadiiQueryHandler
 
     public async ValueTask<GetRadiiQueryResult> Handle(GetRadiiQuery request, CancellationToken cancellationToken)
     {
-        var models = await this.db.Radii.AsNoTracking().ToListAsync(cancellationToken);
+        var models = await this.db.RadiusAggregates.AsNoTracking().ToListAsync(cancellationToken);
         var dtos = models
             .Select(x => new GetRadiiQueryResultItem
             {

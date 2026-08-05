@@ -29,12 +29,12 @@ public sealed class GetNetworkQueryHandler
 
     public async ValueTask<GetNetworkQueryResult> Handle(GetNetworkQuery request, CancellationToken cancellationToken)
     {
-        var stations = await this.stationDb.Stations.AsNoTracking()
+        var stations = await this.stationDb.StationAggregates.AsNoTracking()
             .Where(x => x.Location != null)
             .Select(x => x.Location!.Value)
             .ToListAsync(cancellationToken);
 
-        var segments = await this.segmentDb.Segments.AsNoTracking()
+        var segments = await this.segmentDb.SegmentAggregates.AsNoTracking()
             .Where(x => x.A.Location.HasValue && x.B.Location.HasValue)
             .Select(x => new
             {

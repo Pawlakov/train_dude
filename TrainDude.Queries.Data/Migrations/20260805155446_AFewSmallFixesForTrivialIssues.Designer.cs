@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrainDude.Queries.Data;
 
@@ -10,16 +11,19 @@ using TrainDude.Queries.Data;
 namespace TrainDude.Queries.Data.Migrations
 {
     [DbContext(typeof(ReadDbContext))]
-    partial class ReadDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260805155446_AFewSmallFixesForTrivialIssues")]
+    partial class AFewSmallFixesForTrivialIssues
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.10");
 
-            modelBuilder.Entity("TrainDude.Queries.Data.Entities.RadiusAggregate", b =>
+            modelBuilder.Entity("TrainDude.Queries.Data.Entities.Radius", b =>
                 {
                     b.Property<int>("RadiusId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Minimum")
@@ -30,12 +34,13 @@ namespace TrainDude.Queries.Data.Migrations
 
                     b.HasKey("RadiusId");
 
-                    b.ToTable("RadiusAggregates");
+                    b.ToTable("Radii");
                 });
 
-            modelBuilder.Entity("TrainDude.Queries.Data.Entities.SegmentAggregate", b =>
+            modelBuilder.Entity("TrainDude.Queries.Data.Entities.Segment", b =>
                 {
                     b.Property<int>("SegmentId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("ASegmentStationId")
@@ -53,39 +58,10 @@ namespace TrainDude.Queries.Data.Migrations
 
                     b.HasIndex("BSegmentStationId");
 
-                    b.ToTable("SegmentAggregates");
+                    b.ToTable("Segments");
                 });
 
-            modelBuilder.Entity("TrainDude.Queries.Data.Entities.StationAggregate", b =>
-                {
-                    b.Property<int>("StationId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("NameGerman")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("NameGermanNew")
-                        .HasColumnType("TEXT");
-
-                    b.ComplexProperty(typeof(Dictionary<string, object>), "Location", "TrainDude.Queries.Data.Entities.StationAggregate.Location#Location", b1 =>
-                        {
-                            b1.Property<double>("Latitude")
-                                .HasColumnType("REAL");
-
-                            b1.Property<double>("Longitude")
-                                .HasColumnType("REAL");
-                        });
-
-                    b.HasKey("StationId");
-
-                    b.HasIndex("NameGerman")
-                        .IsUnique();
-
-                    b.ToTable("StationAggregates");
-                });
-
-            modelBuilder.Entity("TrainDude.Queries.Data.Entities.StationEntity", b =>
+            modelBuilder.Entity("TrainDude.Queries.Data.Entities.SegmentStation", b =>
                 {
                     b.Property<int>("SegmentStationId")
                         .ValueGeneratedOnAdd()
@@ -101,7 +77,7 @@ namespace TrainDude.Queries.Data.Migrations
                     b.Property<int>("StationId")
                         .HasColumnType("INTEGER");
 
-                    b.ComplexProperty(typeof(Dictionary<string, object>), "Location", "TrainDude.Queries.Data.Entities.StationEntity.Location#Location", b1 =>
+                    b.ComplexProperty(typeof(Dictionary<string, object>), "Location", "TrainDude.Queries.Data.Entities.SegmentStation.Location#Location", b1 =>
                         {
                             b1.Property<double>("Latitude")
                                 .HasColumnType("REAL");
@@ -112,18 +88,48 @@ namespace TrainDude.Queries.Data.Migrations
 
                     b.HasKey("SegmentStationId");
 
-                    b.ToTable("StationEntities");
+                    b.ToTable("SegmentStation");
                 });
 
-            modelBuilder.Entity("TrainDude.Queries.Data.Entities.SegmentAggregate", b =>
+            modelBuilder.Entity("TrainDude.Queries.Data.Entities.Station", b =>
                 {
-                    b.HasOne("TrainDude.Queries.Data.Entities.StationEntity", "A")
+                    b.Property<int>("StationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("NameGerman")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NameGermanNew")
+                        .HasColumnType("TEXT");
+
+                    b.ComplexProperty(typeof(Dictionary<string, object>), "Location", "TrainDude.Queries.Data.Entities.Station.Location#Location", b1 =>
+                        {
+                            b1.Property<double>("Latitude")
+                                .HasColumnType("REAL");
+
+                            b1.Property<double>("Longitude")
+                                .HasColumnType("REAL");
+                        });
+
+                    b.HasKey("StationId");
+
+                    b.HasIndex("NameGerman")
+                        .IsUnique();
+
+                    b.ToTable("Stations");
+                });
+
+            modelBuilder.Entity("TrainDude.Queries.Data.Entities.Segment", b =>
+                {
+                    b.HasOne("TrainDude.Queries.Data.Entities.SegmentStation", "A")
                         .WithMany()
                         .HasForeignKey("ASegmentStationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TrainDude.Queries.Data.Entities.StationEntity", "B")
+                    b.HasOne("TrainDude.Queries.Data.Entities.SegmentStation", "B")
                         .WithMany()
                         .HasForeignKey("BSegmentStationId")
                         .OnDelete(DeleteBehavior.Cascade)

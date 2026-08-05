@@ -34,6 +34,11 @@ public class MediatorController
         try
         {
             var response = await this.mediator.Send(request);
+            if (response is Unit)
+            {
+                return this.Ok(response);
+            }
+
             if (response is not BasePolymorphicCommandResponse polymorphicResponse)
             {
                 return this.BadRequest($"{response.GetType()} is not a supported response type.");
@@ -57,6 +62,11 @@ public class MediatorController
         try
         {
             var response = await this.mediator.Send(request);
+            if (response is Unit)
+            {
+                return this.Ok(response);
+            }
+
             if (response is not BasePolymorphicQueryResponse polymorphicResponse)
             {
                 return this.BadRequest($"{response.GetType()} is not a supported response type.");

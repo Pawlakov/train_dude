@@ -10,5 +10,5 @@ using TrainDude.Queries.Data.Entities;
 
 public interface ISegmentRepository
 {
-    DbSet<Segment> Segments { get; }
+    DbSet<SegmentAggregate> SegmentAggregates { get; }
 }

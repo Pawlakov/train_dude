@@ -10,15 +10,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TrainDude.Queries.Data.Entities;
 
 internal sealed class SegmentStationEntityTypeConfiguration
-    : IEntityTypeConfiguration<SegmentStation>
+    : IEntityTypeConfiguration<StationEntity>
 {
-    public void Configure(EntityTypeBuilder<SegmentStation> builder)
+    public void Configure(EntityTypeBuilder<StationEntity> builder)
     {
-        builder.HasKey(x => x.SegmentStationId);
-
         builder
-            .HasIndex(x => x.NameGerman)
-            .IsUnique();
+            .HasKey(x => x.SegmentStationId);
 
         builder
             .ComplexProperty(

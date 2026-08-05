@@ -10,10 +10,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TrainDude.Queries.Data.Entities;
 
 public class SegmentEntityTypeConfiguration
-    : IEntityTypeConfiguration<Segment>
+    : IEntityTypeConfiguration<SegmentAggregate>
 {
-    public void Configure(EntityTypeBuilder<Segment> builder)
+    public void Configure(EntityTypeBuilder<SegmentAggregate> builder)
     {
         builder.HasKey(x => x.SegmentId);
+
+        builder
+            .Property(x => x.SegmentId)
+            .ValueGeneratedNever();
     }
 }

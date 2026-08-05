@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="stylecop.json" />
+  </Folder>
+  <Project Path="TrainDude.Commands.Data/TrainDude.Commands.Data.csproj" />
+  <Project Path="TrainDude.Commands.Handlers/TrainDude.Commands.Handlers.csproj" />
+  <Project Path="TrainDude.Commands.Requests/TrainDude.Commands.Requests.csproj" />
+  <Project Path="TrainDude.Projections/TrainDude.Projections.csproj" />
+  <Project Path="TrainDude.Queries.Data/TrainDude.Queries.Data.csproj" />
+  <Project Path="TrainDude.Queries.Handlers/TrainDude.Queries.Handlers.csproj" />
+  <Project Path="TrainDude.Queries.Requests/TrainDude.Queries.Requests.csproj" />
+  <Project Path="TrainDude.Shared/TrainDude.Shared.csproj" />
+  <Project Path="TrainDude.Web.Client/TrainDude.Web.Client.csproj" />
+  <Project Path="TrainDude.Web/TrainDude.Web.csproj" />
+</Solution>

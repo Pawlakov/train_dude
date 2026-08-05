@@ -27,7 +27,7 @@ public sealed class GetStationsQueryHandler
 
     public async ValueTask<GetStationsQueryResult> Handle(GetStationsQuery request, CancellationToken cancellationToken)
     {
-        var models = await this.db.Stations.AsNoTracking()
+        var models = await this.db.StationAggregates.AsNoTracking()
             .Select(x => new
             {
                 Id = x.StationId,
