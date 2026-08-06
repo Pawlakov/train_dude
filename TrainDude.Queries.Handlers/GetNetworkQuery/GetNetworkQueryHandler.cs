@@ -40,7 +40,7 @@ public sealed class GetNetworkQueryHandler
             {
                 ALocation = x.A.Location!.Value,
                 BLocation = x.B.Location!.Value,
-                /*Vertices = x.Vertices.OrderBy(y => y.OrdinalId).Select(y => y.Location).ToList(),*/ // TODO dlaczego to się psuje
+                /*Vertices = x.Vertices.OrderBy(y => y.OrdinalId).Select(y => y.Location).ToList(),*/ // TODO fix me
             })
             .ToListAsync(cancellationToken);
 
@@ -52,7 +52,7 @@ public sealed class GetNetworkQueryHandler
                 {
                     ALocation = x.ALocation,
                     BLocation = x.BLocation,
-                    /*Vertices = x.Vertices,*/
+                    Vertices = /*x.Vertices,*/ [],
                 })
                 .ToList(),
         };

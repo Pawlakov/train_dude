@@ -10,9 +10,9 @@ using TrainDude.Shared.Values;
 
 public class GetNetworkQueryResultSegmentItem
 {
-    public Location ALocation { get; set; }
+    required public Location ALocation { get; init; }
 
-    public Location BLocation { get; set; }
+    required public Location BLocation { get; init; }
 
-    public ICollection<Location> Vertices { get; set; }
+    required public ICollection<Location> Vertices { get; init; }
 }

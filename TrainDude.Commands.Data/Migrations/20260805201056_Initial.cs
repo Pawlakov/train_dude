@@ -5,7 +5,7 @@
 namespace TrainDude.Commands.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class CleanSlate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -14,8 +14,8 @@ namespace TrainDude.Commands.Data.Migrations
                 name: "Lines",
                 columns: table => new
                 {
-                    LineNumber = table.Column<int>(type: "INTEGER", nullable: false),
-                    LineLetter = table.Column<char>(type: "TEXT", nullable: false)
+                    LineNumber = table.Column<int>(type: "int", nullable: false),
+                    LineLetter = table.Column<string>(type: "nvarchar(1)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -26,10 +26,10 @@ namespace TrainDude.Commands.Data.Migrations
                 name: "Radii",
                 columns: table => new
                 {
-                    RadiusId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Speed = table.Column<int>(type: "INTEGER", nullable: false),
-                    Minimum = table.Column<int>(type: "INTEGER", nullable: false)
+                    RadiusId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Speed = table.Column<int>(type: "int", nullable: false),
+                    Minimum = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -40,9 +40,9 @@ namespace TrainDude.Commands.Data.Migrations
                 name: "Segments",
                 columns: table => new
                 {
-                    SegmentId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    NominalLength = table.Column<double>(type: "REAL", nullable: true)
+                    SegmentId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NominalLength = table.Column<double>(type: "float", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -53,14 +53,14 @@ namespace TrainDude.Commands.Data.Migrations
                 name: "Stations",
                 columns: table => new
                 {
-                    StationId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    NameGerman = table.Column<string>(type: "TEXT", nullable: false),
-                    NameGermanNew = table.Column<string>(type: "TEXT", nullable: true),
-                    NamePolish = table.Column<string>(type: "TEXT", nullable: true),
-                    NamePolishOld = table.Column<string>(type: "TEXT", nullable: true),
-                    Location_Latitude = table.Column<double>(type: "REAL", nullable: true),
-                    Location_Longitude = table.Column<double>(type: "REAL", nullable: true)
+                    StationId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NameGerman = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    NameGermanNew = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NamePolish = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NamePolishOld = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Location_Latitude = table.Column<double>(type: "float", nullable: true),
+                    Location_Longitude = table.Column<double>(type: "float", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -71,7 +71,7 @@ namespace TrainDude.Commands.Data.Migrations
                 name: "Trips",
                 columns: table => new
                 {
-                    TripNumber = table.Column<int>(type: "INTEGER", nullable: false)
+                    TripNumber = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -79,38 +79,13 @@ namespace TrainDude.Commands.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "LineSegments",
-                columns: table => new
-                {
-                    LineNumber = table.Column<int>(type: "INTEGER", nullable: false),
-                    LineLetter = table.Column<char>(type: "TEXT", nullable: false),
-                    SegmentId = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_LineSegments", x => new { x.SegmentId, x.LineNumber, x.LineLetter });
-                    table.ForeignKey(
-                        name: "FK_LineSegments_Lines_LineNumber_LineLetter",
-                        columns: x => new { x.LineNumber, x.LineLetter },
-                        principalTable: "Lines",
-                        principalColumns: new[] { "LineNumber", "LineLetter" },
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_LineSegments_Segments_SegmentId",
-                        column: x => x.SegmentId,
-                        principalTable: "Segments",
-                        principalColumn: "SegmentId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "SegmentVertices",
                 columns: table => new
                 {
-                    OrdinalId = table.Column<int>(type: "INTEGER", nullable: false),
-                    SegmentId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Location_Latitude = table.Column<double>(type: "REAL", nullable: false),
-                    Location_Longitude = table.Column<double>(type: "REAL", nullable: false)
+                    OrdinalId = table.Column<int>(type: "int", nullable: false),
+                    SegmentId = table.Column<int>(type: "int", nullable: false),
+                    Location_Latitude = table.Column<double>(type: "float", nullable: false),
+                    Location_Longitude = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -127,9 +102,9 @@ namespace TrainDude.Commands.Data.Migrations
                 name: "SegmentExtremes",
                 columns: table => new
                 {
-                    IsEnd = table.Column<bool>(type: "INTEGER", nullable: false),
-                    SegmentId = table.Column<int>(type: "INTEGER", nullable: false),
-                    StationId = table.Column<int>(type: "INTEGER", nullable: false)
+                    IsEnd = table.Column<bool>(type: "bit", nullable: false),
+                    SegmentId = table.Column<int>(type: "int", nullable: false),
+                    StationId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -149,11 +124,6 @@ namespace TrainDude.Commands.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_LineSegments_LineNumber_LineLetter",
-                table: "LineSegments",
-                columns: new[] { "LineNumber", "LineLetter" });
-
-            migrationBuilder.CreateIndex(
                 name: "IX_SegmentExtremes_StationId",
                 table: "SegmentExtremes",
                 column: "StationId");
@@ -169,7 +139,7 @@ namespace TrainDude.Commands.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "LineSegments");
+                name: "Lines");
 
             migrationBuilder.DropTable(
                 name: "Radii");
@@ -182,9 +152,6 @@ namespace TrainDude.Commands.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Trips");
-
-            migrationBuilder.DropTable(
-                name: "Lines");
 
             migrationBuilder.DropTable(
                 name: "Stations");
