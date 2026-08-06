@@ -4,17 +4,15 @@
 
 namespace TrainDude.Queries.Requests.GetSegmentsQuery;
 
-using System.Collections.Generic;
-
 public class GetSegmentsQueryResultItem
 {
-    public int SegmentId { get; init; }
+    required public int SegmentId { get; init; }
 
-    public string NameA { get; init; }
+    required public string NameA { get; init; }
 
-    public string NameB { get; init; }
+    required public string NameB { get; init; }
 
-    public double? Length { get; init; }
+    required public double? Length { get; init; }
 
-    public double? Haversine { get; init; }
+    required public double? Haversine { get; init; }
 }

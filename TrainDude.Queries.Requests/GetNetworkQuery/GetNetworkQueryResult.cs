@@ -12,7 +12,7 @@ using TrainDude.Shared.Values;
 public class GetNetworkQueryResult
     : BasePolymorphicQueryResponse
 {
-    public ICollection<Location> Stations { get; set; }
+    required public ICollection<Location> Stations { get; init; }
 
-    public ICollection<GetNetworkQueryResultSegmentItem> Segments { get; set; }
+    required public ICollection<GetNetworkQueryResultSegmentItem> Segments { get; init; }
 }

@@ -14,7 +14,7 @@ public class Segment
 {
     private readonly List<SegmentExtreme> extremes;
     private readonly List<SegmentVertex> vertices;
-    
+
     private Segment()
     {
         this.extremes = new List<SegmentExtreme>();

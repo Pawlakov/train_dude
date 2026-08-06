@@ -4,28 +4,21 @@
 
 namespace TrainDude.Queries.Data.HostBuilders;
 
-using Microsoft.EntityFrameworkCore;
+using LiteDB;
+
 using Microsoft.Extensions.DependencyInjection;
+
+using TrainDude.Queries.Data.Aggregates;
 
 public static class HostBuilderExtensions
 {
-    public static IServiceCollection AddReadDataServices(this IServiceCollection services, string connectionString, bool isDevelopment)
+    public static IServiceCollection AddReadDataServices(this IServiceCollection services, string connectionString)
     {
-        services.AddDbContext<ReadDbContext>(options =>
-        {
-            options.UseSqlite(connectionString);
+        services.AddSingleton<ILiteDatabase>(new LiteDatabase(connectionString));
 
-            if (isDevelopment)
-            {
-                options.EnableSensitiveDataLogging();
-                options.EnableDetailedErrors();
-            }
-        });
-
-        services.AddScoped<IRadiusRepository, ReadDbContext>();
-        services.AddScoped<ISegmentRepository, ReadDbContext>();
-        services.AddScoped<IStationRepository, ReadDbContext>();
-        services.AddScoped<IReadDbContext, ReadDbContext>();
+        services.AddSingleton<ILiteCollection<Radius>>(x => x.GetRequiredService<ILiteDatabase>().GetCollection<Radius>("radii"));
+        services.AddSingleton<ILiteCollection<Segment>>(x => x.GetRequiredService<ILiteDatabase>().GetCollection<Segment>("segments"));
+        services.AddSingleton<ILiteCollection<Station>>(x => x.GetRequiredService<ILiteDatabase>().GetCollection<Station>("stations"));
 
         return services;
     }

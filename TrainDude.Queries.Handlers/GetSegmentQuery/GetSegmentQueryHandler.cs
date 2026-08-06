@@ -8,52 +8,42 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using LiteDB;
+
 using Mediator;
 
-using Microsoft.EntityFrameworkCore;
-
-using TrainDude.Queries.Data;
+using TrainDude.Queries.Data.Aggregates;
 using TrainDude.Queries.Requests.GetSegmentQuery;
 
 public sealed class GetSegmentQueryHandler
     : IQueryHandler<GetSegmentQuery, GetSegmentQueryResult?>
 {
-    private readonly ISegmentRepository db;
+    private readonly ILiteCollection<Segment> segmentRepository;
 
-    public GetSegmentQueryHandler(ISegmentRepository db)
+    public GetSegmentQueryHandler(ILiteCollection<Segment> segmentRepository)
     {
-        this.db = db;
+        this.segmentRepository = segmentRepository;
     }
 
-    public async ValueTask<GetSegmentQueryResult?> Handle(GetSegmentQuery request, CancellationToken cancellationToken)
+    public ValueTask<GetSegmentQueryResult?> Handle(GetSegmentQuery request, CancellationToken cancellationToken)
     {
-        var queryResult = await this.db.SegmentAggregates
-            .Where(x => x.SegmentId == request.SegmentId)
-            .Select(x => new
-            {
-                AName = x.A.NameGermanNew ?? x.A.NameGerman,
-                ALocation = x.A.Location,
-                BName = x.B.NameGermanNew ?? x.B.NameGerman,
-                BLocation = x.B.Location,
-                /*Vertices = x.Vertices.OrderBy(y => y.OrdinalId).ToList(),*/
-            })
-            .SingleOrDefaultAsync(cancellationToken);
+        var queryResult = this.segmentRepository
+            .FindById(request.SegmentId);
 
         if (queryResult == null)
         {
-            return null;
+            return ValueTask.FromResult<GetSegmentQueryResult?>(null);
         }
 
         var dto = new GetSegmentQueryResult
         {
-            SegmentId = request.SegmentId,
             AName = queryResult.AName,
             BName = queryResult.BName,
             ALocation = queryResult.ALocation,
             BLocation = queryResult.BLocation,
-            /*Vertices = queryResult.Vertices,*/
+            Vertices = queryResult.Vertices.ToList(),
         };
 
-        return dto;
+        return ValueTask.FromResult<GetSegmentQueryResult?>(dto);
     }
 }

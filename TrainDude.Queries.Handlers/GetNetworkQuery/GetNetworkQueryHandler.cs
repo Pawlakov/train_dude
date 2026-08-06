@@ -8,41 +8,43 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using LiteDB;
+
 using Mediator;
 
-using Microsoft.EntityFrameworkCore;
-
-using TrainDude.Queries.Data;
+using TrainDude.Queries.Data.Aggregates;
 using TrainDude.Queries.Requests.GetNetworkQuery;
 
 public sealed class GetNetworkQueryHandler
     : IQueryHandler<GetNetworkQuery, GetNetworkQueryResult>
 {
-    private readonly ISegmentRepository segmentDb;
-    private readonly IStationRepository stationDb;
+    private readonly ILiteCollection<Segment> segmentRepository;
+    private readonly ILiteCollection<Station> stationRepository;
 
-    public GetNetworkQueryHandler(ISegmentRepository segmentDb, IStationRepository stationDb)
+    public GetNetworkQueryHandler(ILiteCollection<Segment> segmentRepository, ILiteCollection<Station> stationRepository)
     {
-        this.segmentDb = segmentDb;
-        this.stationDb = stationDb;
+        this.segmentRepository = segmentRepository;
+        this.stationRepository = stationRepository;
     }
 
     public async ValueTask<GetNetworkQueryResult> Handle(GetNetworkQuery request, CancellationToken cancellationToken)
     {
-        var stations = await this.stationDb.StationAggregates.AsNoTracking()
+        var stations = this.stationRepository.Query()
             .Where(x => x.Location != null)
             .Select(x => x.Location!.Value)
-            .ToListAsync(cancellationToken);
+            .ToList();
 
-        var segments = await this.segmentDb.SegmentAggregates.AsNoTracking()
-            .Where(x => x.A.Location.HasValue && x.B.Location.HasValue)
+        var segments = this.segmentRepository.Query()
+            .Where(x => x.ALocation.HasValue && x.BLocation.HasValue)
             .Select(x => new
             {
-                ALocation = x.A.Location!.Value,
-                BLocation = x.B.Location!.Value,
-                /*Vertices = x.Vertices.OrderBy(y => y.OrdinalId).Select(y => y.Location).ToList(),*/ // TODO fix me
+                x.AStationId,
+                ALocation = x.ALocation!.Value,
+                x.BStationId,
+                BLocation = x.BLocation!.Value,
+                Vertices = x.Vertices.ToList(),
             })
-            .ToListAsync(cancellationToken);
+            .ToList();
 
         return new GetNetworkQueryResult
         {
@@ -52,7 +54,7 @@ public sealed class GetNetworkQueryHandler
                 {
                     ALocation = x.ALocation,
                     BLocation = x.BLocation,
-                    Vertices = /*x.Vertices,*/ [],
+                    Vertices = x.Vertices,
                 })
                 .ToList(),
         };

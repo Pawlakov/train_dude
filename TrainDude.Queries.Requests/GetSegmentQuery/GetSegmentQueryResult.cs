@@ -12,15 +12,13 @@ using TrainDude.Shared.Values;
 public class GetSegmentQueryResult
     : BasePolymorphicQueryResponse
 {
-    public int SegmentId { get; init; }
+    required public string AName { get; init; }
 
-    public string AName { get; init; }
+    required public string BName { get; init; }
 
-    public string BName { get; init; }
+    required public Location? ALocation { get; init; }
 
-    public Location? ALocation { get; set; }
+    required public Location? BLocation { get; init; }
 
-    public Location? BLocation { get; set; }
-
-    public IEnumerable<Location> Vertices { get; set; }
+    required public ICollection<Location> Vertices { get; init; }
 }

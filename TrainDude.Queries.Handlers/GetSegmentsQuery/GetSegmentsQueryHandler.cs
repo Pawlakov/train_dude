@@ -8,37 +8,43 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using LiteDB;
+
 using Mediator;
 
-using Microsoft.EntityFrameworkCore;
-
 using TrainDude.Queries.Data;
+using TrainDude.Queries.Data.Aggregates;
+using TrainDude.Queries.Handlers.Extensions;
 using TrainDude.Queries.Requests.GetSegmentsQuery;
 
 public sealed class GetSegmentsQueryHandler
     : IQueryHandler<GetSegmentsQuery, GetSegmentsQueryResult>
 {
-    private readonly ISegmentRepository db;
+    private readonly ILiteCollection<Segment> segmentRepository;
+    private readonly ILiteCollection<Station> stationRepository;
 
-    public GetSegmentsQueryHandler(ISegmentRepository db)
+    public GetSegmentsQueryHandler(ILiteCollection<Segment> segmentRepository, ILiteCollection<Station> stationRepository)
     {
-        this.db = db;
+        this.segmentRepository = segmentRepository;
+        this.stationRepository = stationRepository;
     }
 
-    public async ValueTask<GetSegmentsQueryResult> Handle(GetSegmentsQuery request, CancellationToken cancellationToken)
+    public ValueTask<GetSegmentsQueryResult> Handle(GetSegmentsQuery request, CancellationToken cancellationToken)
     {
-        var models = await this.db.SegmentAggregates.AsNoTracking()
+        var models = this.segmentRepository.Query()
             .Select(x => new
             {
                 x.SegmentId,
                 x.NominalLength,
-                AName = x.A.NameGermanNew ?? x.A.NameGerman,
-                ALocation = x.A.Location,
-                BName = x.B.NameGermanNew ?? x.B.NameGerman,
-                BLocation = x.B.Location,
-                /*Vertices = x.Vertices.OrderBy(y => y.OrdinalId).ToList(),*/
+                x.AStationId,
+                x.ALocation,
+                x.AName,
+                x.BStationId,
+                x.BLocation,
+                x.BName,
+                Vertices = x.Vertices.ToList(),
             })
-            .ToListAsync(cancellationToken);
+            .ToList();
 
         var dtos = models
             .Select(x => new GetSegmentsQueryResultItem
@@ -47,10 +53,10 @@ public sealed class GetSegmentsQueryHandler
                 Length = x.NominalLength,
                 NameA = x.AName,
                 NameB = x.BName,
-                /*Haversine = (x.A.Location != null && x.B.Location != null) ? x.Vertices.Select(y => y.Location).Prepend(x.A.Location.Value).Append(x.B.Location.Value).ToList().Segments().Haversine() : null,*/
+                Haversine = (x.ALocation.HasValue && x.BLocation.HasValue) ? x.Vertices.Prepend(x.ALocation.Value).Append(x.BLocation.Value).ToList().Segments().Haversine() : null,
             })
             .ToList();
 
-        return new GetSegmentsQueryResult { Items = dtos };
+        return ValueTask.FromResult(new GetSegmentsQueryResult { Items = dtos });
     }
 }

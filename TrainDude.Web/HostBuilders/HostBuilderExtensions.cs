@@ -12,13 +12,11 @@ using TrainDude.Projections;
 using TrainDude.Queries.Handlers.GetNetworkQuery;
 using TrainDude.Queries.Requests.GetNetworkQuery;
 using TrainDude.Shared.Events;
+using TrainDude.Web.Infrastructure;
 
-/// <summary>
-/// A container for extensions methods concerning services.
-/// </summary>
 public static class HostBuilderExtensions
 {
-    public static IServiceCollection AddHandlers(this IServiceCollection services)
+    public static IServiceCollection AddRequestHandlers(this IServiceCollection services)
     {
         services
             .AddMediator(options =>
@@ -34,6 +32,15 @@ public static class HostBuilderExtensions
                 ];
                 options.ServiceLifetime = ServiceLifetime.Scoped;
             });
+
+        return services;
+    }
+
+    public static IServiceCollection AddExcpetionHandlers(this IServiceCollection services)
+    {
+        services.AddExceptionHandler<ValidationExceptionHandler>();
+        services.AddExceptionHandler<GlobalExceptionHandler>();
+        services.AddProblemDetails();
 
         return services;
     }

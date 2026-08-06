@@ -43,12 +43,13 @@ public static class Program
         var writeConnectionString = builder.Configuration.GetConnectionString("Write");
         var isDevelopment = builder.Environment.IsDevelopment();
         builder.Services
-            .AddReadDataServices(readConnectionString, isDevelopment)
+            .AddReadDataServices(readConnectionString)
             .AddWriteDataServices(writeConnectionString, isDevelopment)
             .AddDataModelProjections()
             .AddReadDataValidation()
             .AddWriteDataValidation()
-            .AddHandlers();
+            .AddRequestHandlers()
+            .AddExcpetionHandlers();
 
         var app = builder.Build();
 
@@ -68,6 +69,7 @@ public static class Program
         app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
         app.UseHttpsRedirection();
 
+        app.UseExceptionHandler();
         app.MapControllers();
 
         app.UseAntiforgery();

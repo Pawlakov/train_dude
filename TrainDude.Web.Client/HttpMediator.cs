@@ -31,7 +31,7 @@ public class HttpMediator
         this.http = http;
     }
 
-    public Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = new CancellationToken())
+    public ValueTask<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = new CancellationToken())
     {
         throw new NotSupportedException("IRequest is not supported. Use ICommand or IQuery.");
     }
@@ -88,19 +88,17 @@ public class HttpMediator
 
     /* Savage fields below. */
 
-    public async ValueTask<object?> Send(object message, CancellationToken cancellationToken = new CancellationToken()) => throw new NotImplementedException();
+    public async ValueTask<object?> Send(object message, CancellationToken cancellationToken = new CancellationToken()) => throw new NotSupportedException();
 
-    public IAsyncEnumerable<TResponse> CreateStream<TResponse>(IStreamQuery<TResponse> query, CancellationToken cancellationToken = new CancellationToken()) => throw new NotImplementedException();
+    public IAsyncEnumerable<TResponse> CreateStream<TResponse>(IStreamQuery<TResponse> query, CancellationToken cancellationToken = new CancellationToken()) => throw new NotSupportedException();
 
-    public IAsyncEnumerable<TResponse> CreateStream<TResponse>(IStreamRequest<TResponse> request, CancellationToken cancellationToken = new CancellationToken()) => throw new NotImplementedException();
+    public IAsyncEnumerable<TResponse> CreateStream<TResponse>(IStreamRequest<TResponse> request, CancellationToken cancellationToken = new CancellationToken()) => throw new NotSupportedException();
 
-    public IAsyncEnumerable<TResponse> CreateStream<TResponse>(IStreamCommand<TResponse> command, CancellationToken cancellationToken = new CancellationToken()) => throw new NotImplementedException();
+    public IAsyncEnumerable<TResponse> CreateStream<TResponse>(IStreamCommand<TResponse> command, CancellationToken cancellationToken = new CancellationToken()) => throw new NotSupportedException();
 
-    public IAsyncEnumerable<object?> CreateStream(object message, CancellationToken cancellationToken = new CancellationToken()) => throw new NotImplementedException();
+    public IAsyncEnumerable<object?> CreateStream(object message, CancellationToken cancellationToken = new CancellationToken()) => throw new NotSupportedException();
+    
+    public ValueTask Publish<TNotification>(TNotification notification, CancellationToken cancellationToken = new CancellationToken()) where TNotification : INotification => throw new NotSupportedException();
 
-    async ValueTask<TResponse> ISender.Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken) => throw new NotImplementedException();
-
-    public async ValueTask Publish<TNotification>(TNotification notification, CancellationToken cancellationToken = new CancellationToken()) where TNotification : INotification => throw new NotImplementedException();
-
-    public async ValueTask Publish(object notification, CancellationToken cancellationToken = new CancellationToken()) => throw new NotImplementedException();
+    public ValueTask Publish(object notification, CancellationToken cancellationToken = new CancellationToken()) => throw new NotSupportedException();
 }
