@@ -8,9 +8,9 @@ public class GetSegmentsQueryResultItem
 {
     required public int SegmentId { get; init; }
 
-    required public string NameA { get; init; }
+    required public string AName { get; init; }
 
-    required public string NameB { get; init; }
+    required public string BName { get; init; }
 
     required public double? Length { get; init; }
 

@@ -2,7 +2,7 @@
 @using Mediator
 @using TrainDude.Queries.Requests.GetSegmentsQuery
 
-@inject IMediator mediator
+@inject ISender mediator
 
 <PageTitle>Odcinki</PageTitle>
 
@@ -35,8 +35,8 @@
                     @foreach (var segment in this.segments)
                     {
                         <tr>
-                            <td>@(segment.NameA)</td>
-                            <td>@(segment.NameB)</td>
+                            <td>@(segment.AName)</td>
+                            <td>@(segment.BName)</td>
                             <td>
                                 @if (segment.Haversine != null)
                                 {

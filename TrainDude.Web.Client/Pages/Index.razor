@@ -5,7 +5,7 @@
 @layout BaseMapLayout
 @page "/"
 
-@inject IMediator mediator
+@inject ISender mediator
 @inject IJSRuntime js
 
 <PageTitle>Strona Główna</PageTitle>
@@ -24,7 +24,7 @@
 @code {
     private IJSObjectReference scriptModule;
     private string? geoJson;
-    private bool dataPresnt;
+    private bool dataPresent;
     private bool loadingActive;
 
     [CascadingParameter]
@@ -46,12 +46,12 @@
             this.scriptModule = await this.js.InvokeAsync<IJSObjectReference>("import", "./Layout/BaseMapLayout.razor.js");
         }
 
-        if (!dataPresnt && this.geoJson != null)
+        if (!dataPresent && this.geoJson != null)
         {
             await this.scriptModule.InvokeVoidAsync("clearGeoJson");
             await this.scriptModule.InvokeVoidAsync("addGeoJson", this.geoJson);
 
-            this.dataPresnt = true;
+            this.dataPresent = true;
             this.loadingActive = false;
             this.StateHasChanged();
         }

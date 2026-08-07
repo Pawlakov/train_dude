@@ -36,7 +36,7 @@ public static class HostBuilderExtensions
         return services;
     }
 
-    public static IServiceCollection AddExcpetionHandlers(this IServiceCollection services)
+    public static IServiceCollection AddExceptionHandlers(this IServiceCollection services)
     {
         services.AddExceptionHandler<ValidationExceptionHandler>();
         services.AddExceptionHandler<GlobalExceptionHandler>();

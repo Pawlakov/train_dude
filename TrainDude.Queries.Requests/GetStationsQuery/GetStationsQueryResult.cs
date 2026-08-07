@@ -11,5 +11,5 @@ using TrainDude.Queries.Requests.Base;
 public class GetStationsQueryResult
     : BasePolymorphicQueryResponse
 {
-    public IEnumerable<GetStationsQueryResultItem> Items { get; set; }
+    required public IEnumerable<GetStationsQueryResultItem> Items { get; set; }
 }

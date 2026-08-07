@@ -28,7 +28,7 @@ public static class Program
             BaseAddress = new Uri(builder.HostEnvironment.BaseAddress),
         });
 
-        builder.Services.AddScoped<IMediator, HttpMediator>();
+        builder.Services.AddScoped<ISender, HttpMediator>();
         builder.Services.AddQueryInputValidation();
         builder.Services.AddCommandInputValidation();
 

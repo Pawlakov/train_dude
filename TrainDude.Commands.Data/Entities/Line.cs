@@ -13,14 +13,14 @@ public class Line
     {
     }
 
-    public Line(int lineNumber, char? lineLetter)
+    public Line(int lineNumber, char lineLetter)
     {
         if (lineNumber < 1)
         {
             throw new ArgumentOutOfRangeException(nameof(lineNumber));
         }
 
-        if (lineLetter is < 'a' or > 'z')
+        if (lineLetter is (< 'a' or > 'z') and not '-')
         {
             throw new ArgumentOutOfRangeException(nameof(lineLetter));
         }
@@ -31,5 +31,5 @@ public class Line
 
     public int LineNumber { get; private set; }
 
-    public char? LineLetter { get; private set; }
+    public char LineLetter { get; private set; }
 }

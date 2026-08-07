@@ -49,9 +49,11 @@ public static class Program
             .AddReadDataValidation()
             .AddWriteDataValidation()
             .AddRequestHandlers()
-            .AddExcpetionHandlers();
+            .AddExceptionHandlers();
 
         var app = builder.Build();
+
+        app.UseExceptionHandler("/Error");
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
@@ -60,8 +62,6 @@ public static class Program
         }
         else
         {
-            app.UseExceptionHandler("/Error");
-
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
@@ -69,7 +69,6 @@ public static class Program
         app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
         app.UseHttpsRedirection();
 
-        app.UseExceptionHandler();
         app.MapControllers();
 
         app.UseAntiforgery();

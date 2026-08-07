@@ -51,8 +51,8 @@ public sealed class GetSegmentsQueryHandler
             {
                 SegmentId = x.SegmentId,
                 Length = x.NominalLength,
-                NameA = x.AName,
-                NameB = x.BName,
+                AName = x.AName,
+                BName = x.BName,
                 Haversine = (x.ALocation.HasValue && x.BLocation.HasValue) ? (x.Vertices ?? []).Prepend(x.ALocation.Value).Append(x.BLocation.Value).ToList().Segments().Haversine() : null,
             })
             .ToList();

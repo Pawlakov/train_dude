@@ -12,12 +12,12 @@ public class GetStationsQueryResultItem
     /// <summary>
     /// Gets ID of the station in the database.
     /// </summary>
-    public int StationId { get; init; }
+    required public int StationId { get; init; }
 
     /// <summary>
     /// Gets name of the station if present.
     /// </summary>
-    public string? Name { get; init; }
+    required public string? Name { get; init; }
 
-    public bool HasLocation { get; init; }
+    required public bool HasLocation { get; init; }
 }

@@ -5,7 +5,7 @@
 @page "/segment/{Id:int}"
 
 @inject NavigationManager NavigationManager
-@inject IMediator Mediator
+@inject ISender Mediator
 @inject IJSRuntime JS
 
 <PageTitle>Odcinek</PageTitle>
@@ -22,7 +22,7 @@
     private IJSObjectReference scriptModule;
     private GetSegmentQueryResult? segment;
     private string? geoJson;
-    private bool dataPresnt;
+    private bool dataPresent;
     private bool loadingActive;
 
     [Parameter]
@@ -54,12 +54,12 @@
             this.scriptModule = await this.JS.InvokeAsync<IJSObjectReference>("import", "./Layout/BaseMapLayout.razor.js");
         }
 
-        if (!dataPresnt && this.geoJson != null)
+        if (!dataPresent && this.geoJson != null)
         {
             await this.scriptModule.InvokeVoidAsync("clearGeoJson");
             await this.scriptModule.InvokeVoidAsync("addGeoJson", this.geoJson);
 
-            this.dataPresnt = true;
+            this.dataPresent = true;
             this.loadingActive = false;
             this.StateHasChanged();
         }

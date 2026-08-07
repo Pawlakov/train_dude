@@ -1,9 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
     <PropertyGroup>
-        <TargetFramework>net10.0</TargetFramework>
-        <Nullable>enable</Nullable>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
         <StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
         <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
@@ -14,16 +11,9 @@
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.10"/>
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="10.0.10" />
         <PackageReference Include="Microsoft.DotNet.HotReload.WebAssembly.Browser" Version="10.0.204" />
-        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
-      <AdditionalFiles Include="..\stylecop.json">
-        <Link>stylecop.json</Link>
-      </AdditionalFiles>
       <AdditionalFiles Include="Layout\MainLayout.razor" />
       <AdditionalFiles Include="Layout\NavMenu.razor" />
     </ItemGroup>

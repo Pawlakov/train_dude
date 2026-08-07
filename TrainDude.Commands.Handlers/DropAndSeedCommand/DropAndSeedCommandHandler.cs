@@ -54,7 +54,7 @@ public sealed class DropAndSeedCommandHandler
 
         foreach (var lineSeed in linesSeed)
         {
-            var line = new Line(lineSeed.Number, lineSeed.Letter);
+            var line = new Line(lineSeed.Number, lineSeed.Letter ?? '-');
 
             await this.db.Lines.AddAsync(line, cancellationToken);
         }
