@@ -91,6 +91,7 @@ public sealed class DataModelProjector
                 BStationId = endStation.StationId,
                 BName = endStation.NameGermanNew ?? endStation.NameGerman,
                 BLocation = endStation.Location,
+                Vertices = segment.Vertices.OrderBy(x => x.OrdinalId).Select(x => x.Location).ToList(),
             };
 
             this.segmentsTarget.Insert(segment.SegmentId, segmentAggregate);

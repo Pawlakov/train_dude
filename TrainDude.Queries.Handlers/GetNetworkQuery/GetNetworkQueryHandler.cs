@@ -34,7 +34,8 @@ public sealed class GetNetworkQueryHandler
             .Select(x => x.Location!.Value)
             .ToList();
 
-        var segments = this.segmentRepository.Query()
+        var segments = this.segmentRepository
+            .Query()
             .Where(x => x.ALocation.HasValue && x.BLocation.HasValue)
             .Select(x => new
             {
@@ -42,7 +43,7 @@ public sealed class GetNetworkQueryHandler
                 ALocation = x.ALocation!.Value,
                 x.BStationId,
                 BLocation = x.BLocation!.Value,
-                Vertices = x.Vertices.ToList(),
+                x.Vertices,
             })
             .ToList();
 
@@ -54,7 +55,7 @@ public sealed class GetNetworkQueryHandler
                 {
                     ALocation = x.ALocation,
                     BLocation = x.BLocation,
-                    Vertices = x.Vertices,
+                    Vertices = x.Vertices?.ToList() ?? [],
                 })
                 .ToList(),
         };

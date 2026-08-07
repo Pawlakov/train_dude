@@ -41,7 +41,7 @@ public sealed class GetSegmentQueryHandler
             BName = queryResult.BName,
             ALocation = queryResult.ALocation,
             BLocation = queryResult.BLocation,
-            Vertices = queryResult.Vertices.ToList(),
+            Vertices = (queryResult.Vertices ?? []).ToList(),
         };
 
         return ValueTask.FromResult<GetSegmentQueryResult?>(dto);

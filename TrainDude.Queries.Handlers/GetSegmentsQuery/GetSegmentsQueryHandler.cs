@@ -42,7 +42,7 @@ public sealed class GetSegmentsQueryHandler
                 x.BStationId,
                 x.BLocation,
                 x.BName,
-                Vertices = x.Vertices.ToList(),
+                x.Vertices,
             })
             .ToList();
 
@@ -53,7 +53,7 @@ public sealed class GetSegmentsQueryHandler
                 Length = x.NominalLength,
                 NameA = x.AName,
                 NameB = x.BName,
-                Haversine = (x.ALocation.HasValue && x.BLocation.HasValue) ? x.Vertices.Prepend(x.ALocation.Value).Append(x.BLocation.Value).ToList().Segments().Haversine() : null,
+                Haversine = (x.ALocation.HasValue && x.BLocation.HasValue) ? (x.Vertices ?? []).Prepend(x.ALocation.Value).Append(x.BLocation.Value).ToList().Segments().Haversine() : null,
             })
             .ToList();
 
