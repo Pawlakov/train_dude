@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Commands.Data.Entities;
+/*namespace TrainDude.Commands.Data.Entities;
 
 using System;
 
@@ -23,4 +23,4 @@ public class Trip
     }
 
     public int TripNumber { get; private set; }
-}
+}*/

@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Commands.Data.Entities;
+/*namespace TrainDude.Commands.Data.Entities;
 
 using System;
 using System.Collections.Generic;
@@ -73,4 +73,4 @@ public class Segment
             this.vertices.Add(new SegmentVertex(index + 1, location));
         }
     }
-}
+}*/

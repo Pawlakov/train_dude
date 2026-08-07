@@ -16,7 +16,7 @@
         <h2 class="title">Stacje i odcinki</h2>
         <div class="buttons">
             <button class="button is-info @(this.loadingActive ? "is-loading" : "")" @onclick="this.DropAndSeed">
-                Drop & Seed
+                Seed
             </button>
         </div>
     </div>
@@ -30,7 +30,7 @@
         this.loadingActive = true;
         this.StateHasChanged();
         
-        await this.mediator.Send(new DropAndSeedCommand());
+        await this.mediator.Send(new SeedCommand());
 
         this.loadingActive = false;
         this.StateHasChanged();

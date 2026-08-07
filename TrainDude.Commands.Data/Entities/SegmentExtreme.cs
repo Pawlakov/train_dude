@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Commands.Data.Entities;
+/*namespace TrainDude.Commands.Data.Entities;
 
 public class SegmentExtreme
 {
@@ -25,4 +25,4 @@ public class SegmentExtreme
     public int SegmentId { get; private set; }
 
     public Segment Segment { get; private set; }
-}
+}*/

@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Commands.Data.Entities;
+/*namespace TrainDude.Commands.Data.Entities;
 
 using System;
 
@@ -33,4 +33,4 @@ public class Radius
     public int Speed { get; private set; }
 
     public int Minimum { get; private set; }
-}
+}*/

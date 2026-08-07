@@ -4,70 +4,67 @@
 
 namespace TrainDude.Commands.Handlers.DropAndSeedCommand;
 
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Marten;
+
 using Mediator;
 
-using Microsoft.EntityFrameworkCore;
-
-using TrainDude.Commands.Data;
-using TrainDude.Commands.Data.Entities;
+using TrainDude.Commands.Data.Documents;
+using TrainDude.Commands.Data.Events;
 using TrainDude.Commands.Handlers.Seed;
 using TrainDude.Commands.Requests.DropAndSeedCommand;
 using TrainDude.Shared.Events;
 using TrainDude.Shared.Values;
 
-public sealed class DropAndSeedCommandHandler
-    : ICommandHandler<DropAndSeedCommand>
+public sealed class SeedCommandHandler
+    : ICommandHandler<SeedCommand>
 {
-    private readonly IWriteDbContext db;
+    private readonly IDocumentSession session;
     private readonly IPublisher publisher;
 
-    public DropAndSeedCommandHandler(IWriteDbContext db, IPublisher publisher)
+    public SeedCommandHandler(IDocumentSession session, IPublisher publisher)
     {
-        this.db = db;
+        this.session = session;
         this.publisher = publisher;
     }
 
-    public async ValueTask<Unit> Handle(DropAndSeedCommand request, CancellationToken cancellationToken)
+    public async ValueTask<Unit> Handle(SeedCommand request, CancellationToken cancellationToken)
     {
-        /* DROP */
-        await this.db.Trips.ExecuteDeleteAsync(cancellationToken);
-        await this.db.Lines.ExecuteDeleteAsync(cancellationToken);
-        await this.db.Segments.ExecuteDeleteAsync(cancellationToken);
-        await this.db.Stations.ExecuteDeleteAsync(cancellationToken);
+        if (await this.session.Query<Station>().AnyAsync(cancellationToken))
+        {
+            throw new NotSupportedException("This database is already seeded. You need to drop it first.");
+        }
 
-        /* SEED */
-
-        await this.db.Radii.ExecuteDeleteAsync(cancellationToken);
-
-        await this.db.SaveChangesAsync(cancellationToken);
-
-        var linesSeed = SeedLoader.Load<LineSeed>("lines_seed.yml");
+        /*var linesSeed = SeedLoader.Load<LineSeed>("lines_seed.yml");*/
         var stationsSeed = SeedLoader.Load<StationSeed>("stations_seed.yml");
-        var segmentsSeed = SeedLoader.Load<SegmentSeed>("segments_seed.yml");
+        /*var segmentsSeed = SeedLoader.Load<SegmentSeed>("segments_seed.yml");
         var radiiSeed = SeedLoader.Load<RadiusSeed>("radii_seed.yml");
-        var tripsSeed = SeedLoader.Load<TripSeed>("trips_seed.yml");
+        var tripsSeed = SeedLoader.Load<TripSeed>("trips_seed.yml");*/
 
-        foreach (var lineSeed in linesSeed)
+        var idDictionary = new Dictionary<int, Guid>();
+        foreach (var stationSeed in stationsSeed)
+        {
+            var stationId = Guid.NewGuid();
+            idDictionary[stationSeed.Id] = stationId;
+
+            this.session.Events.StartStream<Station>(stationId, new StationCreated(stationId));
+
+            var location = stationSeed is { Latitude: not null, Longitude: not null } ? new Location(stationSeed.Longitude.Value, stationSeed.Latitude.Value) : (Location?)null;
+            if (location.HasValue)
+            {
+                this.session.Events.Append(stationId, new StationLocationSet(location.Value));
+            }
+        }
+
+        /*foreach (var lineSeed in linesSeed)
         {
             var line = new Line(lineSeed.Number, lineSeed.Letter ?? '\0');
 
             await this.db.Lines.AddAsync(line, cancellationToken);
-        }
-
-        var idDictionary = new Dictionary<int, Station>();
-        foreach (var stationSeed in stationsSeed)
-        {
-            var location = stationSeed is { Latitude: not null, Longitude: not null } ? new Location(stationSeed.Longitude.Value, stationSeed.Latitude.Value) : (Location?)null;
-            var station = new Station(stationSeed.NameGerman, stationSeed.NameGermanNew, stationSeed.NamePolish, stationSeed.NamePolishOld, location);
-
-            await this.db.Stations.AddAsync(station, cancellationToken);
-
-            idDictionary[stationSeed.Id] = station;
         }
 
         foreach (var segmentSeed in segmentsSeed)
@@ -91,9 +88,9 @@ public sealed class DropAndSeedCommandHandler
             var trip = new Trip(tripSeed.Number);
 
             await this.db.Trips.AddAsync(trip, cancellationToken);
-        }
+        }*/
 
-        await this.db.SaveChangesAsync(cancellationToken);
+        await this.session.SaveChangesAsync(cancellationToken);
 
         await this.publisher.Publish(new DataChangedNotification(), cancellationToken);
 

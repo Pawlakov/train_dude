@@ -21,7 +21,7 @@ public static class HostBuilderExtensions
     public static IServiceCollection AddWriteDataValidation(this IServiceCollection services)
     {
         services
-            .AddValidatorsFromAssembly(typeof(DropAndSeedCommand).Assembly)
+            .AddValidatorsFromAssembly(typeof(SeedCommand).Assembly)
             .AddSingleton(typeof(IPipelineBehavior<,>), typeof(WriteValidationBehavior<,>));
 
         return services;

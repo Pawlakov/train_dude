@@ -2,22 +2,16 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Queries.Data.Aggregates;
+namespace TrainDude.Commands.Data.Documents;
 
 using System;
 
-using LiteDB;
-
+using TrainDude.Commands.Data.Events;
 using TrainDude.Shared.Values;
 
 public class Station
 {
-    [BsonId]
-    public Guid StationId { get; set; }
-
-    public string? NameGerman { get; set; }
-
-    public string? NameGermanNew { get; set; }
+    public Guid Id { get; set; }
 
     public Location? Location { get; set; }
 }

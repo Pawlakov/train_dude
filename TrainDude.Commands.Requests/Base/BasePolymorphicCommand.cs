@@ -11,7 +11,7 @@ using Mediator;
 using TrainDude.Commands.Requests.DropAndSeedCommand;
 
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "$type")]
-[JsonDerivedType(typeof(DropAndSeedCommand), nameof(Requests.DropAndSeedCommand))]
+[JsonDerivedType(typeof(SeedCommand), nameof(Requests.DropAndSeedCommand))]
 public abstract record class BasePolymorphicCommand
     : IMessage
 {

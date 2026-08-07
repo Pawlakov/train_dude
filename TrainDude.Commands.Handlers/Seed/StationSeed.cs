@@ -16,6 +16,8 @@ internal class StationSeed
 
     public string? NamePolishOld { get; set; }
 
+    public string? NameRussian { get; set; }
+
     public double? Latitude { get; set; }
 
     public double? Longitude { get; set; }

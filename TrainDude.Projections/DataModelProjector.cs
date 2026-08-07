@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 using LiteDB;
 
-using Microsoft.EntityFrameworkCore;
+using Marten;
 
 using TrainDude.Commands.Data;
 using TrainDude.Queries.Data;
@@ -18,12 +18,12 @@ using TrainDude.Queries.Data.Aggregates;
 
 public sealed class DataModelProjector
 {
-    private readonly IWriteDbContext source;
+    private readonly IDocumentSession source;
     private readonly ILiteCollection<Radius> radiiTarget;
     private readonly ILiteCollection<Segment> segmentsTarget;
     private readonly ILiteCollection<Station> stationsTarget;
 
-    public DataModelProjector(IWriteDbContext source, ILiteCollection<Radius> radiiTarget, ILiteCollection<Segment> segmentsTarget, ILiteCollection<Station> stationsTarget)
+    public DataModelProjector(IDocumentSession source, ILiteCollection<Radius> radiiTarget, ILiteCollection<Segment> segmentsTarget, ILiteCollection<Station> stationsTarget)
     {
         this.source = source;
         this.radiiTarget = radiiTarget;
@@ -33,11 +33,11 @@ public sealed class DataModelProjector
 
     public async Task RebuildAsync(CancellationToken cancellationToken = default)
     {
-        var stations = await this.source.Stations
-            .AsNoTracking()
+        var stations = await this.source
+            .Query<Commands.Data.Documents.Station>()
             .ToListAsync(cancellationToken);
 
-        var radii = await this.source.Radii
+        /*var radii = await this.source.Radii
             .AsNoTracking()
             .ToListAsync(cancellationToken);
 
@@ -45,7 +45,7 @@ public sealed class DataModelProjector
             .AsNoTracking()
             .Include(s => s.Extremes)
             .ThenInclude(e => e.Station)
-            .ToListAsync(cancellationToken);
+            .ToListAsync(cancellationToken);*/
 
         this.segmentsTarget.DeleteAll();
         this.stationsTarget.DeleteAll();
@@ -55,16 +55,16 @@ public sealed class DataModelProjector
         {
             var stationAggregate = new Station
             {
-                StationId = station.StationId,
-                NameGerman = station.NameGerman,
-                NameGermanNew = station.NameGermanNew,
+                StationId = station.Id,
+                /*NameGerman = station.NameGerman,
+                NameGermanNew = station.NameGermanNew,*/
                 Location = station.Location,
             };
 
-            this.stationsTarget.Insert(station.StationId, stationAggregate);
+            this.stationsTarget.Insert(station.Id, stationAggregate);
         }
 
-        foreach (var radius in radii)
+        /*foreach (var radius in radii)
         {
             var radiusAggregate = new Radius
             {
@@ -95,6 +95,6 @@ public sealed class DataModelProjector
             };
 
             this.segmentsTarget.Insert(segment.SegmentId, segmentAggregate);
-        }
+        }*/
     }
 }

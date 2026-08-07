@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Commands.Data.Entities;
+/*namespace TrainDude.Commands.Data.Entities;
 
 using System;
 using System.Collections.Generic;
@@ -61,4 +61,4 @@ public class Station
     public Location? Location { get; private set; }
 
     public IReadOnlyCollection<SegmentExtreme> SegmentExtremes => this.segmentExtremes.AsReadOnly();
-}
+}*/

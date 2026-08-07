@@ -25,8 +25,8 @@ public static class HostBuilderExtensions
                 [
                     typeof(GetNetworkQuery),
                     typeof(GetNetworkQueryHandler),
-                    typeof(DropAndSeedCommand),
-                    typeof(DropAndSeedCommandHandler),
+                    typeof(SeedCommand),
+                    typeof(SeedCommandHandler),
                     typeof(DataChangedNotification),
                     typeof(DataChangedNotificationHandler),
                 ];

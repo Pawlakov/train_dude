@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Commands.Data.Entities;
+/*namespace TrainDude.Commands.Data.Entities;
 
 using System;
 using System.Collections.Generic;
@@ -32,4 +32,4 @@ public class Line
     public int LineNumber { get; private set; }
 
     public char LineLetter { get; private set; }
-}
+}*/

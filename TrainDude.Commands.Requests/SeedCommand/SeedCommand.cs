@@ -11,7 +11,7 @@ using TrainDude.Commands.Requests.Base;
 /// <summary>
 /// A command which seeds basic network data.
 /// </summary>
-public sealed record class DropAndSeedCommand
+public sealed record class SeedCommand
     : BasePolymorphicCommand, ICommand
 {
 }

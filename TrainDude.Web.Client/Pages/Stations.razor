@@ -17,7 +17,7 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>Nazwa</th>
+                    @* <th>Nazwa</th> *@
                     <th>Położenie</th>
                 </tr>
             </thead>
@@ -33,7 +33,7 @@
                     @foreach (var station in stations)
                     {
                         <tr>
-                            <td>@(station.Name)</td>
+                            @* <td>@(station.Name)</td> *@
                             <td>@(station.HasLocation)</td>
                         </tr>
                     }

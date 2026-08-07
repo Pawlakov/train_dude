@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Commands.Data.Entities;
+/*namespace TrainDude.Commands.Data.Entities;
 
 using System;
 
@@ -32,4 +32,4 @@ public class SegmentVertex
     public Segment Segment { get; private set; }
 
     public Location Location { get; private set; }
-}
+}*/
