@@ -6,8 +6,8 @@
   longitude: 21.7285
 - id: 2
   name_german: Angerburg Stadtwald
-  name_polish_old: Węgobork Park
-  name_polish: Węgorzewo Park
+  name_polish_old: Węgobork Miejski Las
+  name_polish: Węgorzewo Miejski Las
   latitude: 54.2245
   longitude: 21.7925
 - id: 3
@@ -18,7 +18,7 @@
 - id: 4
   name_german: Popiollen
   name_german_new: Albrechtswiesen
-  name_polish: Popioły
+  name_polish: Popioły/Dąbrówka Polska
   latitude: 54.2279
   longitude: 21.9766
 - id: 5
@@ -52,15 +52,19 @@
 - id: 10
   name_german: Gerdauen
   name_polish_old: Gierdawy
+  name_russian: Железнодорожный
   latitude: 54.3572
   longitude: 21.3240
 - id: 11
   name_german: Wandlacken
+  name_russian: Зверево
 - id: 12
   name_german: Pröck
+  name_russian: Кочкино
 - id: 13
   name_german: Nordenburg (Kreis Gerdauen)
   name_polish_old: Nordembork/Oświn
+  name_russian: Крылово
   latitude: 54.3332
   longitude: 21.5516
 - id: 14
@@ -83,12 +87,14 @@
   name_german: Darkehmen
   name_german_new: Angerapp
   name_polish_old: Darkiejmy
+  name_russian: Озёрск
 - id: 18
   name_german: Darkehmen West
   name_german_new: Angerapp West
 - id: 19
   name_german: Beynuhnen
   name_german_new: Beinuhnen
+  name_russian: Ульяновское
 - id: 20
   name_german: Friedrichsruh (Ostpreußen)
   longitude: 21.8570

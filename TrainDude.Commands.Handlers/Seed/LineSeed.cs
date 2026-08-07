@@ -9,4 +9,10 @@ internal class LineSeed
     public int Number { get; set; }
 
     public char? Letter { get; set; }
+
+    public int RootStation { get; set; }
+
+    public int[] Stations { get; set; }
+
+    public int[] Trips { get; set; }
 }
