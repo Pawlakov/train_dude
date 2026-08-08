@@ -9,14 +9,14 @@ using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-using TrainDude.Queries.Requests.Validation;
+using TrainDude.Shared.Validation;
 
 public static class HostBuilderExtensions
 {
     public static IServiceCollection AddQueryInputValidation(this IServiceCollection services)
     {
-        var inputValidatorInterfaceType = typeof(IQueryInputValidator<>);
-        var list = inputValidatorInterfaceType.Assembly.GetTypes()
+        var inputValidatorInterfaceType = typeof(IInputValidator<>);
+        var list = typeof(HostBuilderExtensions).Assembly.GetTypes()
             .Where(mytype => mytype.GetInterface(inputValidatorInterfaceType.Name) != null && !mytype.IsInterface && !mytype.IsAbstract)
             .ToList();
 

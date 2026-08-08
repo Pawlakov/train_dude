@@ -6,6 +6,26 @@
 
 <PageTitle>Linie</PageTitle>
 
+<nav class="breadcrumb" aria-label="breadcrumbs">
+    <ul>
+        <li>
+            <a href="/">
+                <span class="icon is-small">
+                    <i class="fas fa-map" aria-hidden="true"></i>
+                </span>
+                <span>Mapa</span>
+            </a>
+        </li>
+        <li class="is-active">
+            <a href="/lines">
+                <span class="icon is-small">
+                    <i class="fas fa-list" aria-hidden="true"></i>
+                </span>
+                <span>Linie</span>
+            </a>
+        </li>
+    </ul>
+</nav>
 <section class="section">
     <h1 class="title">Linie</h1>
     <p class="subtitle">Lista linii na które podzielony jest rozkład jazdy.</p>
@@ -17,6 +37,7 @@
             <thead>
             <tr>
                 <th>Symbol</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -32,6 +53,7 @@
                 {
                     <tr>
                         <td>@(item.LineDesignation)</td>
+                        <td><a href="line/@(item.LineId)">Szczegóły</a></td>
                     </tr>
                 }
             }

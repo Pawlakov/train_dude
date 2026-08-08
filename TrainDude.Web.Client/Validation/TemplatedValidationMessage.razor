@@ -1,0 +1,88 @@
+@implements IDisposable
+@typeparam TValue
+
+@using System.Linq.Expressions
+
+<div class="control">
+    @this.InputTemplate($"{this.BaseClass} {(this.validationMessages.Any() ? "is-danger" : string.Empty)}")
+</div>
+@foreach (var message in this.validationMessages)
+{
+    <p class="help is-danger">@message</p>
+}
+
+@code {
+    private readonly EventHandler<ValidationStateChangedEventArgs> validationStateChangedHandler;
+    private EditContext previousEditContext;
+    private Expression<Func<TValue>> previousFieldAccessor;
+    private FieldIdentifier fieldIdentifier;
+
+    private IEnumerable<string> validationMessages;
+
+    [CascadingParameter]
+    EditContext CurrentEditContext { get; set; }
+
+    [Parameter, EditorRequired]
+    public Expression<Func<TValue>> For { get; set; }
+
+    [Parameter, EditorRequired]
+    public RenderFragment<string> InputTemplate { get; set; }
+
+    [Parameter, EditorRequired]
+    public string BaseClass { get; set; }
+
+    public TemplatedValidationMessage()
+    {
+        this.validationStateChangedHandler = (sender, eventArgs) => this.StateHasChanged();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (this.CurrentEditContext == null)
+        {
+            throw new InvalidOperationException($"{this.GetType()} requires a cascading parameter " +
+                $"of type {nameof(EditContext)}. For example, you can use {this.GetType()} inside " +
+                $"an {nameof(EditForm)}.");
+        }
+
+        if (this.For == null)
+        {
+            throw new InvalidOperationException($"{this.GetType()} requires a value for the " +
+                $"{nameof(this.For)} parameter.");
+        }
+        else if (this.For != this.previousFieldAccessor)
+        {
+            this.fieldIdentifier = FieldIdentifier.Create(this.For);
+            this.previousFieldAccessor = this.For;
+        }
+
+        if (this.CurrentEditContext != this.previousEditContext)
+        {
+            this.DetachValidationStateChangedListener();
+            this.CurrentEditContext.OnValidationStateChanged += this.validationStateChangedHandler;
+            this.previousEditContext = this.CurrentEditContext;
+        }
+
+        this.validationMessages = this.CurrentEditContext.GetValidationMessages(this.fieldIdentifier);
+
+        await base.OnParametersSetAsync();
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+    }
+
+    void IDisposable.Dispose()
+    {
+        this.DetachValidationStateChangedListener();
+        this.Dispose(true);
+    }
+
+    private void DetachValidationStateChangedListener()
+    {
+        if (this.previousEditContext != null)
+        {
+            this.previousEditContext.OnValidationStateChanged -= this.validationStateChangedHandler;
+        }
+    }
+}

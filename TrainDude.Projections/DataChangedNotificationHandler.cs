@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 using Mediator;
 
-using TrainDude.Shared.Events;
+using TrainDude.Shared.Notifications;
 
 public sealed class DataChangedNotificationHandler
     : INotificationHandler<DataChangedNotification>

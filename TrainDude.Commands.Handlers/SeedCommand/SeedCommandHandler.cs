@@ -17,7 +17,7 @@ using TrainDude.Commands.Data.Documents;
 using TrainDude.Commands.Data.Events;
 using TrainDude.Commands.Handlers.Seed;
 using TrainDude.Commands.Requests.DropAndSeedCommand;
-using TrainDude.Shared.Events;
+using TrainDude.Shared.Notifications;
 using TrainDude.Shared.Values;
 
 public sealed class SeedCommandHandler

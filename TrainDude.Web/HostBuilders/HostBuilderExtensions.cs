@@ -11,7 +11,7 @@ using TrainDude.Commands.Requests.DropAndSeedCommand;
 using TrainDude.Projections;
 using TrainDude.Queries.Handlers.GetNetworkQuery;
 using TrainDude.Queries.Requests.GetNetworkQuery;
-using TrainDude.Shared.Events;
+using TrainDude.Shared.Notifications;
 using TrainDude.Web.Infrastructure;
 
 public static class HostBuilderExtensions

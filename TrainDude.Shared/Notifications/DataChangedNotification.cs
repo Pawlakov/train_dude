@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Shared.Events;
+namespace TrainDude.Shared.Notifications;
 
 using Mediator;
 

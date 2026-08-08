@@ -8,6 +8,7 @@ using System.Text.Json.Serialization;
 
 using Mediator;
 
+using TrainDude.Queries.Requests.GetLineQuery;
 using TrainDude.Queries.Requests.GetLinesQuery;
 using TrainDude.Queries.Requests.GetNetworkQuery;
 using TrainDude.Queries.Requests.GetRadiiQuery;
@@ -22,6 +23,7 @@ using TrainDude.Queries.Requests.GetStationsQuery;
 [JsonDerivedType(typeof(GetSegmentQuery), nameof(GetSegmentQuery))]
 [JsonDerivedType(typeof(GetSegmentsQuery), nameof(GetSegmentsQuery))]
 [JsonDerivedType(typeof(GetLinesQuery), nameof(GetLinesQuery))]
+[JsonDerivedType(typeof(GetLineQuery), nameof(Requests.GetLineQuery))]
 public abstract record class BasePolymorphicQuery
     : IMessage
 {
