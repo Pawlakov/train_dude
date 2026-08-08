@@ -23,21 +23,20 @@ using TrainDude.Shared.Values;
 public sealed class SeedCommandHandler
     : ICommandHandler<SeedCommand>
 {
+    private readonly IDocumentStore store;
     private readonly IDocumentSession session;
     private readonly IPublisher publisher;
 
-    public SeedCommandHandler(IDocumentSession session, IPublisher publisher)
+    public SeedCommandHandler(IDocumentStore store, IDocumentSession session, IPublisher publisher)
     {
+        this.store = store;
         this.session = session;
         this.publisher = publisher;
     }
 
     public async ValueTask<Unit> Handle(SeedCommand request, CancellationToken cancellationToken)
     {
-        if (await this.session.Query<Station>().AnyAsync(cancellationToken))
-        {
-            throw new NotSupportedException("This database is already seeded. You need to drop it first.");
-        }
+        await this.store.Advanced.Clean.CompletelyRemoveAllAsync(cancellationToken);
 
         /*var linesSeed = SeedLoader.Load<LineSeed>("lines_seed.yml");*/
         var stationsSeed = SeedLoader.Load<StationSeed>("stations_seed.yml");

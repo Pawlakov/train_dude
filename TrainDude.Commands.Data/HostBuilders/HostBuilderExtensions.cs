@@ -11,7 +11,7 @@ using Marten;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using TrainDude.Commands.Data.Projections;
+using TrainDude.Commands.Data.Documents;
 
 public static class HostBuilderExtensions
 {
@@ -21,7 +21,7 @@ public static class HostBuilderExtensions
             {
                 options.Connection(connectionString);
                 options.DatabaseSchemaName = "train_dude";
-                options.Projections.Add<StationProjection>(ProjectionLifecycle.Inline);
+                options.Projections.Snapshot<Station>(SnapshotLifecycle.Inline);
                 if (isDevelopment)
                 {
                     options.AutoCreateSchemaObjects = AutoCreate.All;
