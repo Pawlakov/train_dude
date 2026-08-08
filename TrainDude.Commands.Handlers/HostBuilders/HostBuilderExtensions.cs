@@ -10,8 +10,9 @@ using Mediator;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using TrainDude.Commands.Handlers.SeedCommand;
 using TrainDude.Commands.Handlers.Validation;
-using TrainDude.Commands.Requests.DropAndSeedCommand;
+using TrainDude.Commands.Requests.SeedCommand;
 
 /// <summary>
 /// A container for extensions methods concerning services.
@@ -22,7 +23,8 @@ public static class HostBuilderExtensions
     {
         services
             .AddValidatorsFromAssembly(typeof(SeedCommand).Assembly)
-            .AddSingleton(typeof(IPipelineBehavior<,>), typeof(WriteValidationBehavior<,>));
+            .AddValidatorsFromAssembly(typeof(SeedCommandHandler).Assembly)
+            .AddScoped(typeof(IPipelineBehavior<,>), typeof(WriteValidationBehavior<,>));
 
         return services;
     }

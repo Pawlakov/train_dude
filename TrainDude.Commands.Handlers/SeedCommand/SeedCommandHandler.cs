@@ -16,7 +16,7 @@ using Mediator;
 using TrainDude.Commands.Data.Documents;
 using TrainDude.Commands.Data.Events;
 using TrainDude.Commands.Handlers.Seed;
-using TrainDude.Commands.Requests.DropAndSeedCommand;
+using TrainDude.Commands.Requests.SeedCommand;
 using TrainDude.Shared.Notifications;
 using TrainDude.Shared.Values;
 

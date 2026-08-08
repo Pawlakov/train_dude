@@ -1,8 +1,8 @@
-﻿// <copyright file="DropAndSeedCommand.cs" company="Pawlakov">
+﻿// <copyright file="SeedCommand.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Commands.Requests.DropAndSeedCommand;
+namespace TrainDude.Commands.Requests.SeedCommand;
 
 using Mediator;
 

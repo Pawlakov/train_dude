@@ -6,16 +6,15 @@ namespace TrainDude.Commands.Handlers.SeedCommand;
 
 using FluentValidation;
 
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
 using TrainDude.Commands.Handlers.Validation;
-using TrainDude.Commands.Requests.DropAndSeedCommand;
+using TrainDude.Commands.Requests.SeedCommand;
 
 public class SeedCommandDataValidator
     : AbstractWriteDataValidator<SeedCommand>
 {
-    public SeedCommandDataValidator(IWebHostEnvironment environment)
+    public SeedCommandDataValidator(IHostEnvironment environment)
     {
         this.RuleFor(x => x)
             .Must(_ => environment.IsDevelopment())

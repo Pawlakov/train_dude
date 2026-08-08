@@ -10,6 +10,7 @@ using Mediator;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using TrainDude.Queries.Handlers.GetNetworkQuery;
 using TrainDude.Queries.Handlers.Validation;
 using TrainDude.Queries.Requests.GetNetworkQuery;
 
@@ -22,7 +23,8 @@ public static class HostBuilderExtensions
     {
         services
             .AddValidatorsFromAssembly(typeof(GetNetworkQuery).Assembly)
-            .AddSingleton(typeof(IPipelineBehavior<,>), typeof(ReadValidationBehavior<,>));
+            .AddValidatorsFromAssembly(typeof(GetNetworkQueryHandler).Assembly)
+            .AddScoped(typeof(IPipelineBehavior<,>), typeof(ReadValidationBehavior<,>));
 
         return services;
     }

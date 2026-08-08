@@ -19,14 +19,4 @@
       <EmbeddedResource Include="Resources\trips_seed.yml" />
     </ItemGroup>
 
-    <ItemGroup>
-      <AdditionalFiles Include="stylecop.json" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="Microsoft.AspNetCore.Hosting.Abstractions">
-        <HintPath>..\..\..\..\..\..\usr\lib64\dotnet\shared\Microsoft.AspNetCore.App\10.0.10\Microsoft.AspNetCore.Hosting.Abstractions.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-    
 </Project>
