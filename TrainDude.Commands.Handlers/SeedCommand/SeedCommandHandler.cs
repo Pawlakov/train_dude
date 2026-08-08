@@ -41,8 +41,8 @@ public sealed class SeedCommandHandler
         var linesSeed = SeedLoader.Load<LineSeed>("lines_seed.yml");
         var stationsSeed = SeedLoader.Load<StationSeed>("stations_seed.yml");
         /*var segmentsSeed = SeedLoader.Load<SegmentSeed>("segments_seed.yml");
-        var radiiSeed = SeedLoader.Load<RadiusSeed>("radii_seed.yml");
-        var tripsSeed = SeedLoader.Load<TripSeed>("trips_seed.yml");*/
+        var radiiSeed = SeedLoader.Load<RadiusSeed>("radii_seed.yml");*/
+        var tripsSeed = SeedLoader.Load<TripSeed>("trips_seed.yml");
 
         var idDictionary = new Dictionary<int, Guid>();
         foreach (var stationSeed in stationsSeed)
@@ -79,14 +79,13 @@ public sealed class SeedCommandHandler
             var radius = new Radius(radiusSeed.Speed, radiusSeed.Minimum);
 
             await this.db.Radii.AddAsync(radius, cancellationToken);
-        }
+        }*/
 
         foreach (var tripSeed in tripsSeed)
         {
-            var trip = new Trip(tripSeed.Number);
-
-            await this.db.Trips.AddAsync(trip, cancellationToken);
-        }*/
+            var tripId = Guid.NewGuid();
+            this.session.Events.StartStream<Trip>(tripId, new TripCreated(tripId, tripSeed.Number));
+        }
 
         await this.session.SaveChangesAsync(cancellationToken);
 

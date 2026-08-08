@@ -24,6 +24,7 @@ public static class HostBuilderExtensions
 
                 options.Projections.Snapshot<Station>(SnapshotLifecycle.Inline);
                 options.Projections.Snapshot<Line>(SnapshotLifecycle.Inline);
+                options.Projections.Snapshot<Trip>(SnapshotLifecycle.Inline);
 
                 if (isDevelopment)
                 {

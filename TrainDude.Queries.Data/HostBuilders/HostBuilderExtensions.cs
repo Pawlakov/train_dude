@@ -20,6 +20,7 @@ public static class HostBuilderExtensions
         services.AddSingleton<ILiteCollection<Radius>>(x => x.GetRequiredService<ILiteDatabase>().GetCollection<Radius>("radii"));
         services.AddSingleton<ILiteCollection<Segment>>(x => x.GetRequiredService<ILiteDatabase>().GetCollection<Segment>("segments"));
         services.AddSingleton<ILiteCollection<Station>>(x => x.GetRequiredService<ILiteDatabase>().GetCollection<Station>("stations"));
+        services.AddSingleton<ILiteCollection<Trip>>(x => x.GetRequiredService<ILiteDatabase>().GetCollection<Trip>("trips"));
 
         return services;
     }

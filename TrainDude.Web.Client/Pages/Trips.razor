@@ -1,17 +1,73 @@
 @page "/trips"
 @using Mediator
+@using TrainDude.Queries.Requests.GetTripsQuery
 
 @inject ISender mediator
 
 <PageTitle>Kursy</PageTitle>
 
+<nav class="breadcrumb" aria-label="breadcrumbs">
+    <ul>
+        <li>
+            <a href="/">
+                <span class="icon is-small">
+                    <i class="fas fa-map" aria-hidden="true"></i>
+                </span>
+                <span>Mapa</span>
+            </a>
+        </li>
+        <li class="is-active">
+            <a href="/trips">
+                <span class="icon is-small">
+                    <i class="fas fa-list" aria-hidden="true"></i>
+                </span>
+                <span>Kursy</span>
+            </a>
+        </li>
+    </ul>
+</nav>
 <section class="section">
     <h1 class="title">Kursy</h1>
     <p class="subtitle">Lista kursów w rozkładzie jazdy.</p>
 </section>
+<hr/>
+<section class="section">
+    <div class="table-container">
+        <table class="table table-isfullwidth">
+            <thead>
+            <tr>
+                <th>Numer</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @if (this.items == null)
+            {
+                <tr>
+                    <td colspan="2"><em>Ładowanie...</em></td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var item in this.items)
+                {
+                    <tr>
+                        <td>@(item.TripNumber)</td>
+                        <td><a href="trip/@(item.TripId)">Szczegóły</a></td>
+                    </tr>
+                }
+            }
+            </tbody>
+        </table>
+    </div>
+</section>
 
 @code {
+    private IEnumerable<GetTripsQueryResultItem>? items;
 
-    
-
+    protected override async Task OnParametersSetAsync()
+    {
+        var result = await this.mediator.Send(new GetTripsQuery());
+        this.items = result.Items.ToList();
+    }
 }

@@ -13,6 +13,8 @@ using TrainDude.Queries.Requests.GetRadiiQuery;
 using TrainDude.Queries.Requests.GetSegmentQuery;
 using TrainDude.Queries.Requests.GetSegmentsQuery;
 using TrainDude.Queries.Requests.GetStationsQuery;
+using TrainDude.Queries.Requests.GetTripQuery;
+using TrainDude.Queries.Requests.GetTripsQuery;
 
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "$type")]
 [JsonDerivedType(typeof(GetRadiiQueryResult), nameof(GetRadiiQueryResult))]
@@ -22,6 +24,8 @@ using TrainDude.Queries.Requests.GetStationsQuery;
 [JsonDerivedType(typeof(GetSegmentsQueryResult), nameof(GetSegmentsQueryResult))]
 [JsonDerivedType(typeof(GetLinesQueryResult), nameof(GetLinesQueryResult))]
 [JsonDerivedType(typeof(GetLineQueryResult), nameof(GetLineQueryResult))]
+[JsonDerivedType(typeof(GetTripsQueryResult), nameof(GetTripsQueryResult))]
+[JsonDerivedType(typeof(GetTripQueryResult), nameof(GetTripQueryResult))]
 public abstract class BasePolymorphicQueryResponse
 {
 }

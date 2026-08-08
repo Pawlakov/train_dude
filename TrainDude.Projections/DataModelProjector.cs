@@ -23,20 +23,26 @@ public sealed class DataModelProjector
     private readonly ILiteCollection<Radius> radiiTarget;
     private readonly ILiteCollection<Segment> segmentsTarget;
     private readonly ILiteCollection<Station> stationsTarget;
+    private readonly ILiteCollection<Trip> tripsTarget;
 
-    public DataModelProjector(IDocumentSession source, ILiteCollection<Line> linesTarget, ILiteCollection<Radius> radiiTarget, ILiteCollection<Segment> segmentsTarget, ILiteCollection<Station> stationsTarget)
+    public DataModelProjector(IDocumentSession source, ILiteCollection<Line> linesTarget, ILiteCollection<Radius> radiiTarget, ILiteCollection<Segment> segmentsTarget, ILiteCollection<Station> stationsTarget, ILiteCollection<Trip> tripsTarget)
     {
         this.source = source;
         this.linesTarget = linesTarget;
         this.radiiTarget = radiiTarget;
         this.segmentsTarget = segmentsTarget;
         this.stationsTarget = stationsTarget;
+        this.tripsTarget = tripsTarget;
     }
 
     public async Task RebuildAsync(CancellationToken cancellationToken = default)
     {
         var stations = await this.source
             .Query<Commands.Data.Documents.Station>()
+            .ToListAsync(cancellationToken);
+
+        var trips = await this.source
+            .Query<Commands.Data.Documents.Trip>()
             .ToListAsync(cancellationToken);
 
         var lines = await this.source
@@ -53,6 +59,7 @@ public sealed class DataModelProjector
             .ThenInclude(e => e.Station)
             .ToListAsync(cancellationToken);*/
 
+        this.tripsTarget.DeleteAll();
         this.segmentsTarget.DeleteAll();
         this.stationsTarget.DeleteAll();
         this.linesTarget.DeleteAll();
@@ -69,6 +76,17 @@ public sealed class DataModelProjector
             };
 
             this.stationsTarget.Insert(station.Id, stationAggregate);
+        }
+
+        foreach (var trip in trips)
+        {
+            var tripAggregate = new Trip
+            {
+                TripId = trip.Id,
+                TripNumber = trip.TripNumber,
+            };
+
+            this.tripsTarget.Insert(trip.Id, tripAggregate);
         }
 
         foreach (var line in lines)
