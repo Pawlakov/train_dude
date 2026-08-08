@@ -10,8 +10,6 @@ internal class LineSeed
 
     public char? Letter { get; set; }
 
-    public int RootStation { get; set; }
-
     public int[] Stations { get; set; }
 
     public int[] Trips { get; set; }

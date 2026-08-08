@@ -39,22 +39,24 @@
                 <tr>
                     <th>Nazwa</th>
                     <th>Położenie</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 @if (this.items == null)
                 {
                     <tr>
-                        <td colspan="2"><em>Ładowanie...</em></td>
+                        <td colspan="3"><em>Ładowanie...</em></td>
                     </tr>
                 }
                 else
                 {
-                    @foreach (var station in items)
+                    @foreach (var item in items)
                     {
                         <tr>
-                            <td>@(station.Name)</td>
-                            <td>@(station.HasLocation)</td>
+                            <td>@(item.Name)</td>
+                            <td>@(item.HasLocation)</td>
+                            <td><a href="station/@(item.StationId)">Szczegóły</a></td>
                         </tr>
                     }
                 }

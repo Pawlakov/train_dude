@@ -44,10 +44,12 @@ public sealed class SeedCommandHandler
         var radiiSeed = SeedLoader.Load<RadiusSeed>("radii_seed.yml");*/
         var tripsSeed = SeedLoader.Load<TripSeed>("trips_seed.yml");
 
+        var stationIdMap = new Dictionary<int, Guid>();
         foreach (var stationSeed in stationsSeed)
         {
             var stationId = Guid.NewGuid();
             this.session.Events.StartStream<Station>(stationId, new StationCreated(stationId, stationSeed.NameGerman));
+            stationIdMap[stationSeed.Id] = stationId;
 
             if (stationSeed is { Latitude: not null, Longitude: not null })
             {
@@ -72,6 +74,11 @@ public sealed class SeedCommandHandler
             foreach (var trip in lineSeed.Trips)
             {
                 this.session.Events.Append(lineId, new LineTripAssigned(tripIdMap[trip]));
+            }
+
+            foreach (var station in lineSeed.Stations)
+            {
+                this.session.Events.Append(lineId, new LineStationAppended(stationIdMap[station]));
             }
         }
 

@@ -1,7 +1,7 @@
 - number: 117
   letter: 'm'
-  root_station: 24
   stations:
+    - 24
     - 25
     - 26
     - 27
@@ -23,8 +23,8 @@
     - 491
 - number: 118
   letter: 'e'
-  root_station: 10
   stations:
+    - 10
     - 11
     - 12
     - 13
@@ -48,8 +48,8 @@
     - 419
 - number: 118
   letter: 'f'
-  root_station: 1
   stations:
+    - 1
     - 2
     - 3
     - 4
@@ -71,8 +71,8 @@
     - 482
 - number: 118
   letter: 't'
-  root_station: 1
   stations:
+    - 1
     - 33
     - 34
     - 35
@@ -93,8 +93,8 @@
     - 537
 - number: 119
   letter: 'e'
-  root_station: 17
   stations:
+    - 17
     - 18
     - 19
     - 18

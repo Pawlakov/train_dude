@@ -101,6 +101,14 @@ public sealed class DataModelProjector
                 lineTrips.Add(new Line.LineTrip { TripId = trip.Id, TripNumber = trip.TripNumber });
             }
 
+            var lineStations = new List<Line.LineStation>();
+            foreach (var stationId in line.Stations)
+            {
+                var station = await this.source.LoadAsync<Commands.Data.Documents.Station>(stationId, cancellationToken);
+
+                lineStations.Add(new Line.LineStation { StationId = station.Id, NameGerman = station.NameGerman });
+            }
+
             var lineAggregate = new Line
             {
                 LineId = line.Id,
@@ -108,6 +116,7 @@ public sealed class DataModelProjector
                 LineLetter = line.LineLetter,
                 LineDesignation = $"{line.LineNumber}{line.LineLetter}",
                 Trips = lineTrips.ToImmutableList(),
+                Stations = lineStations.ToImmutableList(),
             };
 
             this.linesTarget.Insert(line.Id, lineAggregate);

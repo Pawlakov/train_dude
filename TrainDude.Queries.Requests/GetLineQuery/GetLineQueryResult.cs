@@ -13,5 +13,7 @@ public class GetLineQueryResult
 {
     required public string LineDesignation { get; init; }
 
+    required public IEnumerable<GetLineQueryResultStationItem> Stations { get; init; }
+
     required public IEnumerable<GetLineQueryResultTripItem> Trips { get; init; }
 }

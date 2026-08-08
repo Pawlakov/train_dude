@@ -22,10 +22,19 @@ public class Line
 
     public IReadOnlyCollection<LineTrip> Trips { get; set; }
 
+    public IReadOnlyCollection<LineStation> Stations { get; set; }
+
     public class LineTrip
     {
         public Guid TripId { get; set; }
 
         public int TripNumber { get; set; }
+    }
+
+    public class LineStation
+    {
+        public Guid StationId { get; set; }
+
+        public string NameGerman { get; set; }
     }
 }
