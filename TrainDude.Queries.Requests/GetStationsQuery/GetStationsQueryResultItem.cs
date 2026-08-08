@@ -4,6 +4,8 @@
 
 namespace TrainDude.Queries.Requests.GetStationsQuery;
 
+using System;
+
 /// <summary>
 /// A summary of a train station.
 /// </summary>
@@ -12,12 +14,12 @@ public class GetStationsQueryResultItem
     /// <summary>
     /// Gets ID of the station in the database.
     /// </summary>
-    /*required public int StationId { get; init; }*/
+    required public Guid StationId { get; init; }
 
     /// <summary>
     /// Gets name of the station if present.
     /// </summary>
-    /*required public string? Name { get; init; }*/
+    required public string Name { get; init; }
 
     required public bool HasLocation { get; init; }
 }

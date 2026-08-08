@@ -6,6 +6,7 @@ namespace TrainDude.Queries.Requests.Base;
 
 using System.Text.Json.Serialization;
 
+using TrainDude.Queries.Requests.GetLinesQuery;
 using TrainDude.Queries.Requests.GetNetworkQuery;
 using TrainDude.Queries.Requests.GetRadiiQuery;
 using TrainDude.Queries.Requests.GetSegmentQuery;
@@ -18,6 +19,7 @@ using TrainDude.Queries.Requests.GetStationsQuery;
 [JsonDerivedType(typeof(GetNetworkQueryResult), nameof(GetNetworkQueryResult))]
 [JsonDerivedType(typeof(GetSegmentQueryResult), nameof(GetSegmentQueryResult))]
 [JsonDerivedType(typeof(GetSegmentsQueryResult), nameof(GetSegmentsQueryResult))]
+[JsonDerivedType(typeof(GetLinesQueryResult), nameof(GetLinesQueryResult))]
 public abstract class BasePolymorphicQueryResponse
 {
 }

@@ -21,7 +21,10 @@ public static class HostBuilderExtensions
             {
                 options.Connection(connectionString);
                 options.DatabaseSchemaName = "train_dude";
+
                 options.Projections.Snapshot<Station>(SnapshotLifecycle.Inline);
+                options.Projections.Snapshot<Line>(SnapshotLifecycle.Inline);
+
                 if (isDevelopment)
                 {
                     options.AutoCreateSchemaObjects = AutoCreate.All;

@@ -19,13 +19,15 @@ using TrainDude.Queries.Data.Aggregates;
 public sealed class DataModelProjector
 {
     private readonly IDocumentSession source;
+    private readonly ILiteCollection<Line> linesTarget;
     private readonly ILiteCollection<Radius> radiiTarget;
     private readonly ILiteCollection<Segment> segmentsTarget;
     private readonly ILiteCollection<Station> stationsTarget;
 
-    public DataModelProjector(IDocumentSession source, ILiteCollection<Radius> radiiTarget, ILiteCollection<Segment> segmentsTarget, ILiteCollection<Station> stationsTarget)
+    public DataModelProjector(IDocumentSession source, ILiteCollection<Line> linesTarget, ILiteCollection<Radius> radiiTarget, ILiteCollection<Segment> segmentsTarget, ILiteCollection<Station> stationsTarget)
     {
         this.source = source;
+        this.linesTarget = linesTarget;
         this.radiiTarget = radiiTarget;
         this.segmentsTarget = segmentsTarget;
         this.stationsTarget = stationsTarget;
@@ -35,6 +37,10 @@ public sealed class DataModelProjector
     {
         var stations = await this.source
             .Query<Commands.Data.Documents.Station>()
+            .ToListAsync(cancellationToken);
+
+        var lines = await this.source
+            .Query<Commands.Data.Documents.Line>()
             .ToListAsync(cancellationToken);
 
         /*var radii = await this.source.Radii
@@ -49,6 +55,7 @@ public sealed class DataModelProjector
 
         this.segmentsTarget.DeleteAll();
         this.stationsTarget.DeleteAll();
+        this.linesTarget.DeleteAll();
         this.radiiTarget.DeleteAll();
 
         foreach (var station in stations)
@@ -56,12 +63,25 @@ public sealed class DataModelProjector
             var stationAggregate = new Station
             {
                 StationId = station.Id,
-                /*NameGerman = station.NameGerman,
-                NameGermanNew = station.NameGermanNew,*/
+                NameGerman = station.NameGerman,
+                /*NameGermanNew = station.NameGermanNew,*/
                 Location = station.Location,
             };
 
             this.stationsTarget.Insert(station.Id, stationAggregate);
+        }
+
+        foreach (var line in lines)
+        {
+            var lineAggregate = new Line
+            {
+                LineId = line.Id,
+                LineNumber = line.LineNumber,
+                LineLetter = line.LineLetter,
+                LineDesignation = $"{line.LineNumber}{line.LineLetter}",
+            };
+
+            this.linesTarget.Insert(line.Id, lineAggregate);
         }
 
         /*foreach (var radius in radii)

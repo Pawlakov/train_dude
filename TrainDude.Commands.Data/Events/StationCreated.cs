@@ -6,4 +6,4 @@ namespace TrainDude.Commands.Data.Events;
 
 using System;
 
-public record class StationCreated(Guid StationId);
+public record class StationCreated(Guid StationId, string NameGerman);

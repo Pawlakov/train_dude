@@ -6,7 +6,7 @@ namespace TrainDude.Web.HostBuilders;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using TrainDude.Commands.Handlers.DropAndSeedCommand;
+using TrainDude.Commands.Handlers.SeedCommand;
 using TrainDude.Commands.Requests.DropAndSeedCommand;
 using TrainDude.Projections;
 using TrainDude.Queries.Handlers.GetNetworkQuery;

@@ -16,6 +16,7 @@ public static class HostBuilderExtensions
     {
         services.AddSingleton<ILiteDatabase>(new LiteDatabase(connectionString));
 
+        services.AddSingleton<ILiteCollection<Line>>(x => x.GetRequiredService<ILiteDatabase>().GetCollection<Line>("lines"));
         services.AddSingleton<ILiteCollection<Radius>>(x => x.GetRequiredService<ILiteDatabase>().GetCollection<Radius>("radii"));
         services.AddSingleton<ILiteCollection<Segment>>(x => x.GetRequiredService<ILiteDatabase>().GetCollection<Segment>("segments"));
         services.AddSingleton<ILiteCollection<Station>>(x => x.GetRequiredService<ILiteDatabase>().GetCollection<Station>("stations"));

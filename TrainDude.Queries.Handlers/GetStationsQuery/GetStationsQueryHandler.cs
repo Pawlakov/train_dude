@@ -32,14 +32,14 @@ public sealed class GetStationsQueryHandler
             .Query()
             .Select(x => new
             {
-                /*x.StationId,
-                Name = x.NameGermanNew ?? x.NameGerman,*/
+                x.StationId,
+                Name = x.NameGermanNew ?? x.NameGerman,
                 x.Location,
             })
             .ToList();
 
         var dtos = models
-            .Select(x => new GetStationsQueryResultItem { /*StationId = x.StationId, Name = x.Name,*/ HasLocation = x.Location != null })
+            .Select(x => new GetStationsQueryResultItem { StationId = x.StationId, Name = x.Name, HasLocation = x.Location != null })
             .ToList();
 
         return ValueTask.FromResult(new GetStationsQueryResult { Items = dtos });

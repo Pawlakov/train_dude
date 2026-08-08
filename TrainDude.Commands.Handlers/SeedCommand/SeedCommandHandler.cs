@@ -1,8 +1,8 @@
-﻿// <copyright file="DropAndSeedCommandHandler.cs" company="Pawlakov">
+﻿// <copyright file="SeedCommandHandler.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Commands.Handlers.DropAndSeedCommand;
+namespace TrainDude.Commands.Handlers.SeedCommand;
 
 using System;
 using System.Collections.Generic;
@@ -38,7 +38,7 @@ public sealed class SeedCommandHandler
     {
         await this.store.Advanced.Clean.CompletelyRemoveAllAsync(cancellationToken);
 
-        /*var linesSeed = SeedLoader.Load<LineSeed>("lines_seed.yml");*/
+        var linesSeed = SeedLoader.Load<LineSeed>("lines_seed.yml");
         var stationsSeed = SeedLoader.Load<StationSeed>("stations_seed.yml");
         /*var segmentsSeed = SeedLoader.Load<SegmentSeed>("segments_seed.yml");
         var radiiSeed = SeedLoader.Load<RadiusSeed>("radii_seed.yml");
@@ -50,23 +50,22 @@ public sealed class SeedCommandHandler
             var stationId = Guid.NewGuid();
             idDictionary[stationSeed.Id] = stationId;
 
-            this.session.Events.StartStream<Station>(stationId, new StationCreated(stationId));
+            this.session.Events.StartStream<Station>(stationId, new StationCreated(stationId, stationSeed.NameGerman));
 
-            var location = stationSeed is { Latitude: not null, Longitude: not null } ? new Location(stationSeed.Longitude.Value, stationSeed.Latitude.Value) : (Location?)null;
-            if (location.HasValue)
+            if (stationSeed is { Latitude: not null, Longitude: not null })
             {
-                this.session.Events.Append(stationId, new StationLocationSet(location.Value));
+                var location = new Location(stationSeed.Longitude.Value, stationSeed.Latitude.Value);
+                this.session.Events.Append(stationId, new StationLocationSet(location));
             }
         }
 
-        /*foreach (var lineSeed in linesSeed)
+        foreach (var lineSeed in linesSeed)
         {
-            var line = new Line(lineSeed.Number, lineSeed.Letter ?? '\0');
-
-            await this.db.Lines.AddAsync(line, cancellationToken);
+            var lineId = Guid.NewGuid();
+            this.session.Events.StartStream<Line>(lineId, new LineCreated(lineId, lineSeed.Number, lineSeed.Letter));
         }
 
-        foreach (var segmentSeed in segmentsSeed)
+        /*foreach (var segmentSeed in segmentsSeed)
         {
             var segment = new Segment(segmentSeed.Length);
             segment.AddExtremes(idDictionary[segmentSeed.A.StationId], idDictionary[segmentSeed.B.StationId]);

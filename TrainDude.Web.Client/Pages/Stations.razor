@@ -17,12 +17,12 @@
         <table class="table">
             <thead>
                 <tr>
-                    @* <th>Nazwa</th> *@
+                    <th>Nazwa</th>
                     <th>Położenie</th>
                 </tr>
             </thead>
             <tbody>
-                @if (this.stations == null)
+                @if (this.items == null)
                 {
                     <tr>
                         <td colspan="2"><em>Ładowanie...</em></td>
@@ -30,10 +30,10 @@
                 }
                 else
                 {
-                    @foreach (var station in stations)
+                    @foreach (var station in items)
                     {
                         <tr>
-                            @* <td>@(station.Name)</td> *@
+                            <td>@(station.Name)</td>
                             <td>@(station.HasLocation)</td>
                         </tr>
                     }
@@ -44,11 +44,11 @@
 </section>
 
 @code {
-    private IEnumerable<GetStationsQueryResultItem>? stations;
+    private IEnumerable<GetStationsQueryResultItem>? items;
 
     protected override async Task OnParametersSetAsync()
     {
         var result = await this.mediator.Send(new GetStationsQuery());
-        this.stations = result.Items.ToList();
+        this.items = result.Items.ToList();
     }
 }
