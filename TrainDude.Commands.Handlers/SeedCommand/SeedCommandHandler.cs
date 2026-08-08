@@ -44,12 +44,9 @@ public sealed class SeedCommandHandler
         var radiiSeed = SeedLoader.Load<RadiusSeed>("radii_seed.yml");*/
         var tripsSeed = SeedLoader.Load<TripSeed>("trips_seed.yml");
 
-        var idDictionary = new Dictionary<int, Guid>();
         foreach (var stationSeed in stationsSeed)
         {
             var stationId = Guid.NewGuid();
-            idDictionary[stationSeed.Id] = stationId;
-
             this.session.Events.StartStream<Station>(stationId, new StationCreated(stationId, stationSeed.NameGerman));
 
             if (stationSeed is { Latitude: not null, Longitude: not null })
@@ -59,10 +56,23 @@ public sealed class SeedCommandHandler
             }
         }
 
+        var tripIdMap = new Dictionary<int, Guid>();
+        foreach (var tripSeed in tripsSeed)
+        {
+            var tripId = Guid.NewGuid();
+            this.session.Events.StartStream<Trip>(tripId, new TripCreated(tripId, tripSeed.Number));
+            tripIdMap[tripSeed.Number] = tripId;
+        }
+
         foreach (var lineSeed in linesSeed)
         {
             var lineId = Guid.NewGuid();
             this.session.Events.StartStream<Line>(lineId, new LineCreated(lineId, lineSeed.Number, lineSeed.Letter));
+
+            foreach (var trip in lineSeed.Trips)
+            {
+                this.session.Events.Append(lineId, new LineTripAssigned(tripIdMap[trip]));
+            }
         }
 
         /*foreach (var segmentSeed in segmentsSeed)
@@ -80,13 +90,6 @@ public sealed class SeedCommandHandler
 
             await this.db.Radii.AddAsync(radius, cancellationToken);
         }*/
-
-        foreach (var tripSeed in tripsSeed)
-        {
-            var tripId = Guid.NewGuid();
-            this.session.Events.StartStream<Trip>(tripId, new TripCreated(tripId, tripSeed.Number));
-        }
-
         await this.session.SaveChangesAsync(cancellationToken);
 
         await this.publisher.Publish(new DataChangedNotification(), cancellationToken);

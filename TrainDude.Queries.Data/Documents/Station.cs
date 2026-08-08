@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Queries.Data.Aggregates;
+namespace TrainDude.Queries.Data.Documents;
 
 using System;
 

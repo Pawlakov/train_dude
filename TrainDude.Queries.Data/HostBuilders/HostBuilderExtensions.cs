@@ -8,7 +8,7 @@ using LiteDB;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using TrainDude.Queries.Data.Aggregates;
+using TrainDude.Queries.Data.Documents;
 
 public static class HostBuilderExtensions
 {

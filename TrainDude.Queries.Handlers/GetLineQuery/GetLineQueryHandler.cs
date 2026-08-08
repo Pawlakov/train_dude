@@ -5,6 +5,7 @@
 namespace TrainDude.Queries.Handlers.GetLineQuery;
 
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,7 +13,7 @@ using LiteDB;
 
 using Mediator;
 
-using TrainDude.Queries.Data.Aggregates;
+using TrainDude.Queries.Data.Documents;
 using TrainDude.Queries.Requests.GetLineQuery;
 
 public sealed class GetLineQueryHandler
@@ -36,6 +37,7 @@ public sealed class GetLineQueryHandler
         var result = new GetLineQueryResult
         {
             LineDesignation = queryResult.LineDesignation,
+            Trips = queryResult.Trips.Select(x => new GetLineQueryResultTripItem { TripId = x.TripId, TripNumber = x.TripNumber }).ToList(),
         };
 
         return ValueTask.FromResult(result);

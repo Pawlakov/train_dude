@@ -4,6 +4,8 @@
 
 namespace TrainDude.Projections;
 
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,7 +16,7 @@ using Marten;
 
 using TrainDude.Commands.Data;
 using TrainDude.Queries.Data;
-using TrainDude.Queries.Data.Aggregates;
+using TrainDude.Queries.Data.Documents;
 
 public sealed class DataModelProjector
 {
@@ -91,12 +93,21 @@ public sealed class DataModelProjector
 
         foreach (var line in lines)
         {
+            var lineTrips = new List<Line.LineTrip>();
+            foreach (var tripId in line.Trips)
+            {
+                var trip = await this.source.LoadAsync<Commands.Data.Documents.Trip>(tripId, cancellationToken);
+
+                lineTrips.Add(new Line.LineTrip { TripId = trip.Id, TripNumber = trip.TripNumber });
+            }
+
             var lineAggregate = new Line
             {
                 LineId = line.Id,
                 LineNumber = line.LineNumber,
                 LineLetter = line.LineLetter,
                 LineDesignation = $"{line.LineNumber}{line.LineLetter}",
+                Trips = lineTrips.ToImmutableList(),
             };
 
             this.linesTarget.Insert(line.Id, lineAggregate);

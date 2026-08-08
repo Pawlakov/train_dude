@@ -8,7 +8,7 @@ using FluentValidation;
 
 using LiteDB;
 
-using TrainDude.Queries.Data.Aggregates;
+using TrainDude.Queries.Data.Documents;
 using TrainDude.Queries.Handlers.Validation;
 using TrainDude.Queries.Requests.GetLineQuery;
 

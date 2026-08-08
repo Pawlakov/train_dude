@@ -13,7 +13,7 @@ using LiteDB;
 using Mediator;
 
 using TrainDude.Queries.Data;
-using TrainDude.Queries.Data.Aggregates;
+using TrainDude.Queries.Data.Documents;
 using TrainDude.Queries.Handlers.Extensions;
 using TrainDude.Queries.Requests.GetSegmentsQuery;
 
