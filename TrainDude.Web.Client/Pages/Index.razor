@@ -2,6 +2,7 @@
 @using Mediator
 @using TrainDude.Queries.Requests.GetNetworkQuery
 @using TrainDude.Web.Client.Layout
+@using TrainDude.Web.Client.Shared
 @layout BaseMapLayout
 @page "/"
 
@@ -10,6 +11,7 @@
 
 <PageTitle>Mapa</PageTitle>
 
+<NavMenu />
 <div class="modal @(this.loadingActive ? "is-active" : "")">
     <div class="modal-background"></div>
     <div class="modal-content">
@@ -57,31 +59,24 @@
 
     private string BuildGeoJson(GetNetworkQueryResult data)
     {
-        try
+        var stationsGeoJson = new List<string>();
+        var segmentsGeoJson = new List<string>();
+
+        foreach (var station in data.Stations)
         {
-            var stationsGeoJson = new List<string>();
-            var segmentsGeoJson = new List<string>();
-
-            foreach (var station in data.Stations)
-            {
-                stationsGeoJson.Add($"{{ \"type\": \"Point\", \"coordinates\": [{station.Longitude.ToString(CultureInfo.InvariantCulture)},{station.Latitude.ToString(CultureInfo.InvariantCulture)}] }}");
-            }
-
-            foreach (var segment in data.Segments)
-            {
-                var points = segment.Vertices.Prepend(segment.ALocation).Append(segment.BLocation);
-
-                var line = string.Join(',', points.Select(x => $"[{x.Longitude.ToString(CultureInfo.InvariantCulture)},{x.Latitude.ToString(CultureInfo.InvariantCulture)}]"));
-
-                segmentsGeoJson.Add($"{{ \"type\": \"LineString\", \"coordinates\": [{line}] }}");
-            }
-
-            return $"[{string.Join(',', segmentsGeoJson.Concat(stationsGeoJson))}]";
+            stationsGeoJson.Add($"{{ \"type\": \"Point\", \"coordinates\": [{station.Longitude.ToString(CultureInfo.InvariantCulture)},{station.Latitude.ToString(CultureInfo.InvariantCulture)}] }}");
         }
-        catch (Exception exception)
+
+        foreach (var segment in data.Segments)
         {
-            throw;
+            var points = segment.Vertices.Prepend(segment.ALocation).Append(segment.BLocation);
+
+            var line = string.Join(',', points.Select(x => $"[{x.Longitude.ToString(CultureInfo.InvariantCulture)},{x.Latitude.ToString(CultureInfo.InvariantCulture)}]"));
+
+            segmentsGeoJson.Add($"{{ \"type\": \"LineString\", \"coordinates\": [{line}] }}");
         }
+
+        return $"[{string.Join(',', segmentsGeoJson.Concat(stationsGeoJson))}]";
     }
 
 }

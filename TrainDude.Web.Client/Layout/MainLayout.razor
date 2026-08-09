@@ -1,8 +1,12 @@
 ﻿@inherits LayoutComponentBase
 @layout BaseMapLayout
 
-<main class="container is-max-desktop">
-    <div class="box">
-        @this.Body
+<div class="columns">
+    <div class="column is-half">
+        <main class="container">
+            <div class="box">
+                @this.Body
+            </div>
+        </main>
     </div>
-</main>
+</div>

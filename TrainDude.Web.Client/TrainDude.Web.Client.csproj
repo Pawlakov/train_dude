@@ -9,18 +9,16 @@
     <ItemGroup>
         <PackageReference Include="FluentValidation" Version="12.1.1" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.10"/>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="10.0.10" />
         <PackageReference Include="Microsoft.DotNet.HotReload.WebAssembly.Browser" Version="10.0.204" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <AdditionalFiles Include="Layout\MainLayout.razor" />
-      <AdditionalFiles Include="Layout\NavMenu.razor" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\TrainDude.Commands.Requests\TrainDude.Commands.Requests.csproj" />
       <ProjectReference Include="..\TrainDude.Queries.Requests\TrainDude.Queries.Requests.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\appsettings.json" />
     </ItemGroup>
 
 </Project>
