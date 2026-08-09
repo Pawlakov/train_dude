@@ -12,7 +12,7 @@ using TrainDude.Queries.Data.Documents;
 using TrainDude.Queries.Handlers.Validation;
 using TrainDude.Queries.Requests.GetStationQuery;
 
-public class GetStationQueryDataValidator
+public sealed class GetStationQueryDataValidator
     : AbstractReadDataValidator<GetStationQuery>
 {
     public GetStationQueryDataValidator(ILiteCollection<Station> stationRepository)

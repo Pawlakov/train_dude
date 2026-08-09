@@ -4,7 +4,7 @@
 @using TrainDude.Web.Client.Layout
 @layout BlockMapLayout
 
-@inject ISender mediator
+@inject ISender Mediator
 
 <PageTitle>Administracja</PageTitle>
 
@@ -30,7 +30,7 @@
         this.loadingActive = true;
         this.StateHasChanged();
         
-        await this.mediator.Send(new SeedCommand());
+        await this.Mediator.Send(new SeedCommand());
 
         this.loadingActive = false;
         this.StateHasChanged();

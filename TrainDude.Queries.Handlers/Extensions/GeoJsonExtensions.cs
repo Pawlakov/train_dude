@@ -1,4 +1,8 @@
-﻿namespace TrainDude.Queries.Handlers.Extensions;
+﻿// <copyright file="GeoJsonExtensions.cs" company="Pawlakov">
+// Copyright (c) Pawlakov. All rights reserved.
+// </copyright>
+
+namespace TrainDude.Queries.Handlers.Extensions;
 
 using System;
 using System.Collections.Generic;

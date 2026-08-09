@@ -15,7 +15,7 @@ using Mediator;
 using TrainDude.Queries.Data.Documents;
 using TrainDude.Queries.Requests.GetTripQuery;
 
-public class GetTripQueryHandler
+public sealed class GetTripQueryHandler
     : IQueryHandler<GetTripQuery, GetTripQueryResult>
 {
     private readonly ILiteCollection<Trip> tripRepository;

@@ -2,7 +2,7 @@
 @using Mediator
 @using TrainDude.Queries.Requests.GetSegmentsQuery
 
-@inject ISender mediator
+@inject ISender Mediator
 
 <PageTitle>Odcinki</PageTitle>
 
@@ -63,7 +63,7 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        var result = await this.mediator.Send(new GetSegmentsQuery());
+        var result = await this.Mediator.Send(new GetSegmentsQuery());
         this.segments = result.Items.ToList();
 
         await base.OnParametersSetAsync();

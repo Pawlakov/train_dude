@@ -14,7 +14,7 @@ using Mediator;
 using TrainDude.Queries.Data.Documents;
 using TrainDude.Queries.Requests.GetStationQuery;
 
-public class GetStationQueryHandler
+public sealed class GetStationQueryHandler
     : IQueryHandler<GetStationQuery, GetStationQueryResult>
 {
     private readonly ILiteCollection<Station> stationRepository;

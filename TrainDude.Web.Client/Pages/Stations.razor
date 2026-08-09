@@ -3,7 +3,7 @@
 
 @page "/stations"
 
-@inject ISender mediator
+@inject ISender Mediator
 
 <PageTitle>Stacje</PageTitle>
 
@@ -70,7 +70,7 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        var result = await this.mediator.Send(new GetStationsQuery());
+        var result = await this.Mediator.Send(new GetStationsQuery());
         this.items = result.Items.ToList();
     }
 }

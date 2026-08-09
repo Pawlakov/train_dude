@@ -2,7 +2,7 @@
 @using Mediator
 @using TrainDude.Queries.Requests.GetLinesQuery
 
-@inject ISender mediator
+@inject ISender Mediator
 
 <PageTitle>Linie</PageTitle>
 
@@ -67,7 +67,7 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        var result = await this.mediator.Send(new GetLinesQuery());
+        var result = await this.Mediator.Send(new GetLinesQuery());
         this.items = result.Items.ToList();
     }
 

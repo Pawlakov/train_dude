@@ -53,7 +53,7 @@ else
     }
 </section>
 <hr/>
-@if (queryResult == null && this.query.StationId != Guid.Empty)
+@if (this.queryResult == null)
 {
     <EditForm EditContext="this.formContext" OnValidSubmit="this.Submit" FormName="GetStationForm">
         <FluentValidationValidator @ref="this.validator" TModel="GetStationQuery"/>

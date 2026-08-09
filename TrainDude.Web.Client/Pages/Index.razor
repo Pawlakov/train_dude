@@ -5,8 +5,8 @@
 @layout BaseMapLayout
 @page "/"
 
-@inject ISender mediator
-@inject IJSRuntime js
+@inject ISender Mediator
+@inject IJSRuntime JS
 
 <PageTitle>Mapa</PageTitle>
 
@@ -28,15 +28,12 @@
     private bool dataPresent;
     private bool loadingActive;
 
-    [CascadingParameter]
-    private IJSObjectReference? CascadingModule { get; set; }
-
     protected override async Task OnParametersSetAsync()
     {
         this.loadingActive = true;
         this.StateHasChanged();
 
-        var result = await this.mediator.Send(new GetNetworkQuery());
+        var result = await this.Mediator.Send(new GetNetworkQuery());
         this.geoJson = this.BuildGeoJson(result);
     }
 
@@ -44,7 +41,7 @@
     {
         if (firstRender)
         {
-            this.scriptModule = await this.js.InvokeAsync<IJSObjectReference>("import", "./Layout/BaseMapLayout.razor.js");
+            this.scriptModule = await this.JS.InvokeAsync<IJSObjectReference>("import", "./Layout/BaseMapLayout.razor.js");
         }
 
         if (!dataPresent && this.geoJson != null)

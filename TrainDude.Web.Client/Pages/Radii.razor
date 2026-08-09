@@ -3,7 +3,7 @@
 
 @page "/radii"
 
-@inject ISender mediator
+@inject ISender Mediator
 
 <PageTitle>Promienie</PageTitle>
 
@@ -50,7 +50,7 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        var result = await this.mediator.Send(new GetRadiiQuery());
+        var result = await this.Mediator.Send(new GetRadiiQuery());
         this.radii = result.Items.ToList();
 
         await base.OnParametersSetAsync();

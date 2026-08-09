@@ -11,5 +11,5 @@ using TrainDude.Queries.Requests.Base;
 public sealed record class GetSegmentQuery
     : BasePolymorphicQuery, IQuery<GetSegmentQueryResult?>
 {
-    public int SegmentId { get; init; }
+    public int SegmentId { get; set; }
 }

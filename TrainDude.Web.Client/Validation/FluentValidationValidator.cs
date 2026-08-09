@@ -31,61 +31,61 @@ public class FluentValidationValidator<TModel>
 
     public void PopulateErrors(IEnumerable<ValidationFailure> errors)
     {
-        messages.Clear();
+        this.messages.Clear();
         foreach (var error in errors)
         {
-            messages.Add(CurrentEditContext.Field(error.PropertyName), error.ErrorMessage);
+            this.messages.Add(this.CurrentEditContext.Field(error.PropertyName), error.ErrorMessage);
         }
 
-        CurrentEditContext.NotifyValidationStateChanged();
+        this.CurrentEditContext.NotifyValidationStateChanged();
     }
 
     protected override void OnInitialized()
     {
-        if (CurrentEditContext == null)
+        if (this.CurrentEditContext == null)
         {
             throw new InvalidOperationException($"A cascading parameter of type EditContext is required.");
         }
 
-        messages = new ValidationMessageStore(CurrentEditContext);
-        CurrentEditContext.OnValidationRequested += ValidateModel;
-        CurrentEditContext.OnFieldChanged += ValidateField;
+        this.messages = new ValidationMessageStore(this.CurrentEditContext);
+        this.CurrentEditContext.OnValidationRequested += this.ValidateModel;
+        this.CurrentEditContext.OnFieldChanged += this.ValidateField;
     }
 
     private void ValidateModel(object sender, ValidationRequestedEventArgs eventArgs)
     {
-        if (Validators.Any())
+        if (this.Validators.Any())
         {
-            var context = new ValidationContext<TModel>(CurrentEditContext.Model as TModel);
-            var errors = Validators.SelectMany(validator => validator.Validate(context).Errors).ToList();
+            var context = new ValidationContext<TModel>(this.CurrentEditContext.Model as TModel);
+            var errors = this.Validators.SelectMany(validator => validator.Validate(context).Errors).ToList();
 
-            messages.Clear();
+            this.messages.Clear();
             foreach (var error in errors)
             {
-                messages.Add(CurrentEditContext.Field(error.PropertyName), error.ErrorMessage);
+                this.messages.Add(this.CurrentEditContext.Field(error.PropertyName), error.ErrorMessage);
             }
 
-            CurrentEditContext.NotifyValidationStateChanged();
+            this.CurrentEditContext.NotifyValidationStateChanged();
         }
     }
 
     private void ValidateField(object sender, FieldChangedEventArgs eventArgs)
     {
-        if (Validators.Any())
+        if (this.Validators.Any())
         {
             var fieldIdentifier = eventArgs.FieldIdentifier;
             var properties = new[] { fieldIdentifier.FieldName };
 
-            var context = new ValidationContext<TModel>(CurrentEditContext.Model as TModel, new PropertyChain(), new MemberNameValidatorSelector(properties));
-            var errors = Validators.SelectMany(validator => validator.Validate(context).Errors);
+            var context = new ValidationContext<TModel>(this.CurrentEditContext.Model as TModel, new PropertyChain(), new MemberNameValidatorSelector(properties));
+            var errors = this.Validators.SelectMany(validator => validator.Validate(context).Errors);
 
-            messages.Clear(fieldIdentifier);
+            this.messages.Clear(fieldIdentifier);
             foreach (var error in errors)
             {
-                messages.Add(fieldIdentifier, error.ErrorMessage);
+                this.messages.Add(fieldIdentifier, error.ErrorMessage);
             }
 
-            CurrentEditContext.NotifyValidationStateChanged();
+            this.CurrentEditContext.NotifyValidationStateChanged();
         }
     }
 
@@ -95,11 +95,11 @@ public class FluentValidationValidator<TModel>
 
     void IDisposable.Dispose()
     {
-        messages.Clear();
-        CurrentEditContext.OnFieldChanged -= ValidateField;
-        CurrentEditContext.OnValidationRequested -= ValidateModel;
-        CurrentEditContext.NotifyValidationStateChanged();
+        this.messages.Clear();
+        this.CurrentEditContext.OnFieldChanged -= this.ValidateField;
+        this.CurrentEditContext.OnValidationRequested -= this.ValidateModel;
+        this.CurrentEditContext.NotifyValidationStateChanged();
 
-        Dispose(true);
+        this.Dispose(true);
     }
 }

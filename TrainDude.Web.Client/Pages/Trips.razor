@@ -2,7 +2,7 @@
 @using Mediator
 @using TrainDude.Queries.Requests.GetTripsQuery
 
-@inject ISender mediator
+@inject ISender Mediator
 
 <PageTitle>Kursy</PageTitle>
 
@@ -67,7 +67,7 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        var result = await this.mediator.Send(new GetTripsQuery());
+        var result = await this.Mediator.Send(new GetTripsQuery());
         this.items = result.Items.ToList();
     }
 }

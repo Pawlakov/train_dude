@@ -12,7 +12,7 @@ using TrainDude.Queries.Data.Documents;
 using TrainDude.Queries.Handlers.Validation;
 using TrainDude.Queries.Requests.GetTripQuery;
 
-public class GetTripQueryDataValidator
+public sealed class GetTripQueryDataValidator
     : AbstractReadDataValidator<GetTripQuery>
 {
     public GetTripQueryDataValidator(ILiteCollection<Trip> tripRepository)
