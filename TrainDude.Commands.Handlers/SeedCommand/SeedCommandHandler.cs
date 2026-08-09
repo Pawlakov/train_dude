@@ -48,7 +48,7 @@ public sealed class SeedCommandHandler
         foreach (var stationSeed in stationsSeed)
         {
             var stationId = Guid.NewGuid();
-            this.session.Events.StartStream<Station>(stationId, new StationCreated(stationId, stationSeed.NameGerman));
+            this.session.Events.StartStream<Station>(stationId, new StationCreated(stationId, stationSeed.NameGerman, stationSeed.NameGermanNew, stationSeed.NamePolish, stationSeed.NameRussian));
             stationIdMap[stationSeed.Id] = stationId;
 
             if (stationSeed is { Latitude: not null, Longitude: not null })

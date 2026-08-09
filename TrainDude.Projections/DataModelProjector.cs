@@ -73,7 +73,9 @@ public sealed class DataModelProjector
             {
                 StationId = station.Id,
                 NameGerman = station.NameGerman,
-                /*NameGermanNew = station.NameGermanNew,*/
+                NameGermanNew = station.NameGermanNew,
+                NamePolish = station.NamePolish,
+                NameRussian = station.NameRussian,
                 Location = station.Location,
             };
 
@@ -105,8 +107,16 @@ public sealed class DataModelProjector
             foreach (var stationId in line.Stations)
             {
                 var station = await this.source.LoadAsync<Commands.Data.Documents.Station>(stationId, cancellationToken);
+                var lineStation = new Line.LineStation
+                {
+                    StationId = station.Id,
+                    NameGerman = station.NameGerman,
+                    NameGermanNew = station.NameGermanNew,
+                    NamePolish = station.NamePolish,
+                    NameRussian = station.NameRussian,
+                };
 
-                lineStations.Add(new Line.LineStation { StationId = station.Id, NameGerman = station.NameGerman });
+                lineStations.Add(lineStation);
             }
 
             var lineAggregate = new Line

@@ -28,18 +28,10 @@ public sealed class GetStationsQueryHandler
 
     public ValueTask<GetStationsQueryResult> Handle(GetStationsQuery request, CancellationToken cancellationToken)
     {
-        var models = this.stationRepository
-            .Query()
-            .Select(x => new
-            {
-                x.StationId,
-                Name = x.NameGermanNew ?? x.NameGerman,
-                x.Location,
-            })
-            .ToList();
+        var queryResult = this.stationRepository.FindAll();
 
-        var dtos = models
-            .Select(x => new GetStationsQueryResultItem { StationId = x.StationId, Name = x.Name, HasLocation = x.Location != null })
+        var dtos = queryResult
+            .Select(x => new GetStationsQueryResultItem { StationId = x.StationId, Name = x.NamePolish ?? x.NameRussian ?? "???", HasLocation = x.Location != null })
             .ToList();
 
         return ValueTask.FromResult(new GetStationsQueryResult { Items = dtos });

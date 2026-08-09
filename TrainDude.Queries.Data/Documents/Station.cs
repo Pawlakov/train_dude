@@ -19,5 +19,9 @@ public class Station
 
     public string? NameGermanNew { get; set; }
 
+    public string? NamePolish { get; set; }
+
+    public string? NameRussian { get; set; }
+
     public Location? Location { get; set; }
 }

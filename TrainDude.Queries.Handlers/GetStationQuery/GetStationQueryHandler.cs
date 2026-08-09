@@ -34,7 +34,7 @@ public sealed class GetStationQueryHandler
 
         var result = new GetStationQueryResult
         {
-            Name = queryResult.NameGerman,
+            Name = queryResult.NamePolish ?? queryResult.NameRussian ?? "???",
         };
 
         return ValueTask.FromResult(result);

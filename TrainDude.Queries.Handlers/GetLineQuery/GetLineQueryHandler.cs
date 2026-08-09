@@ -38,7 +38,7 @@ public sealed class GetLineQueryHandler
         {
             LineDesignation = queryResult.LineDesignation,
             Trips = queryResult.Trips.Select(x => new GetLineQueryResultTripItem { TripId = x.TripId, TripNumber = x.TripNumber }).ToList(),
-            Stations = queryResult.Stations.Select(x => new GetLineQueryResultStationItem { StationId = x.StationId, Name = x.NameGerman }).ToList(),
+            Stations = queryResult.Stations.Select(x => new GetLineQueryResultStationItem { StationId = x.StationId, Name = x.NamePolish ?? x.NameRussian ?? "???" }).ToList(),
         };
 
         return ValueTask.FromResult(result);
