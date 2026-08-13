@@ -1,4 +1,4 @@
-@page "/trip/{TripId:guid}"
+@page "/trip/{Id:guid}"
 @using FluentValidation
 @using Mediator
 @using TrainDude.Queries.Requests.Trips
@@ -15,7 +15,10 @@ else
     <PageTitle>Kurs</PageTitle>
 }
 
-<Breadcrumb />
+<Breadcrumb>
+    <BreadcrumbItem Active="false" IconClass="list" Label="Kursy" Href="/trips"/>
+    <BreadcrumbItem Active="true" IconClass="train" Label="Kurs" Href="@("/trip/" + this.Id)"/>
+</Breadcrumb>
 <section class="section">
     <h1 class="title">Kurs</h1>
     @if (this.queryResult != null)

@@ -9,6 +9,8 @@ using System.Collections.Generic;
 
 using LiteDB;
 
+using TrainDude.Shared.Values;
+
 public class Line
 {
     [BsonId]
@@ -42,5 +44,7 @@ public class Line
         public string? NamePolish { get; set; }
 
         public string? NameRussian { get; set; }
+
+        public Location? Location { get; set; }
     }
 }

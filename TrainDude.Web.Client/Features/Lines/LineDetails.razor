@@ -11,7 +11,10 @@ else
     <PageTitle>Linia</PageTitle>
 }
 
-<Breadcrumb />
+<Breadcrumb>
+    <BreadcrumbItem Active="false" IconClass="list" Label="Linie" Href="/lines"/>
+    <BreadcrumbItem Active="true" IconClass="route" Label="Linia" Href="@("/line/" + this.Id)"/>
+</Breadcrumb>
 <section class="section">
     <h1 class="title">Linia</h1>
     @if (this.queryResult != null)

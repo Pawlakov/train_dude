@@ -1,0 +1,22 @@
+<li class="@(this.Active ? "is-active" : null)">
+    <a href="@(this.Href)">
+        <span class="icon is-small">
+            <i class="fas fa-@(this.IconClass)" aria-hidden="true"></i>
+        </span>
+        <span>@(this.Label)</span>
+    </a>
+</li>
+
+@code {
+    [Parameter, EditorRequired]
+    public bool Active { get; set; }
+    
+    [Parameter, EditorRequired]
+    public string Href { get; set; }
+    
+    [Parameter, EditorRequired]
+    public string IconClass { get; set; }
+    
+    [Parameter, EditorRequired]
+    public string Label { get; set; }
+}

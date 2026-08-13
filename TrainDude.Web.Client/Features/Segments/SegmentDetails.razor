@@ -4,7 +4,10 @@
 
 <PageTitle>Odcinek</PageTitle>
 
-<Breadcrumb />
+<Breadcrumb>
+    <BreadcrumbItem Active="false" IconClass="list" Label="Odcinki" Href="/segments"/>
+    <BreadcrumbItem Active="true" IconClass="route" Label="Odcinek" Href="@("/segment/" + this.Id)"/>
+</Breadcrumb>
 <section class="section">
     <h1 class="title">Odcinek</h1>
     @if (this.queryResult != null)

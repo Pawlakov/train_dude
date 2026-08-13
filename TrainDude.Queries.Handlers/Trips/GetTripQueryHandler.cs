@@ -36,8 +36,8 @@ public sealed class GetTripQueryHandler
         var result = new GetTripQueryResult
         {
             TripNumber = queryResult.TripNumber,
-            StationPoints = null, // TODO
-            SegmentLineStrings = null,
+            StationPoints = [], // TODO
+            SegmentLineStrings = [], // TODO
         };
 
         return ValueTask.FromResult(result);
