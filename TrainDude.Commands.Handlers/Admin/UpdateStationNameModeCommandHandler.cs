@@ -41,14 +41,18 @@ public sealed class UpdateStationNameModeCommandHandler
 
             this.session.Store(settings);
         }
-        else if (allSettings.Count > 1 && command.SettingsId.HasValue)
+        else if (allSettings.Count > 0 && command.SettingsId.HasValue)
         {
             var settings = allSettings.Single(x => x.Id == command.SettingsId.Value);
 
             settings.UpdateStationNameMode(command.Mode);
 
-            this.session.Delete(allSettings.Skip(1));
             this.session.Store(settings);
+
+            if (allSettings.Count > 1)
+            {
+                this.session.Delete(allSettings.Skip(1));
+            }
         }
         else
         {

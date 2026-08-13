@@ -37,13 +37,7 @@ public class Line
     {
         public Guid StationId { get; set; }
 
-        public string NameGerman { get; set; }
-
-        public string? NameGermanNew { get; set; }
-
-        public string? NamePolish { get; set; }
-
-        public string? NameRussian { get; set; }
+        public string Name { get; set; }
 
         public Location? Location { get; set; }
     }

@@ -6,7 +6,7 @@
 
 @inject ISender Mediator
 
-@if (this.updateStationNameModeActive)
+@if (this.editActive)
 {
     <EditForm EditContext="this.formContext" OnValidSubmit="this.Submit" FormName="UpdateStationNameModeForm">
         <FluentValidationValidator @ref="this.validator" TModel="UpdateStationNameModeCommand"/>
@@ -47,19 +47,26 @@ else
         </a>
     </p>
     <p class="subtitle is-6">
-        @if (this.queryResult.Mode == StationNameMode.Modern)
+        @if (this.queryResult != null)
         {
-            <text>Współczesne</text>
+            if (this.queryResult.Mode == StationNameMode.Modern)
+            {
+                <text>Współczesne</text>
+            }
+            else
+            {
+                <text>Niemieckie</text>
+            }
         }
         else
         {
-            <text>Niemieckie</text>
+            <text>Ładowanie...</text>
         }
     </p>
 }
 
 @code {
-    private bool updateStationNameModeActive;
+    private bool editActive;
     private GetStationNameModeQueryResult? queryResult;
     private UpdateStationNameModeCommand? command;
     private EditContext? formContext;
@@ -72,14 +79,14 @@ else
 
     private Task ActivateEdit()
     {
-        this.updateStationNameModeActive = true;
+        this.editActive = true;
         this.formContext = new EditContext(this.command);
         return Task.CompletedTask;
     }
 
     private Task DeactivateEdit()
     {
-        this.updateStationNameModeActive = false;
+        this.editActive = false;
         this.formContext = null;
         return Task.CompletedTask;
     }

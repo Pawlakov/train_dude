@@ -17,6 +17,7 @@ using Marten;
 using TrainDude.Commands.Data;
 using TrainDude.Queries.Data;
 using TrainDude.Queries.Data.Documents;
+using TrainDude.Shared.Values;
 
 public sealed class DataModelProjector
 {
@@ -98,12 +99,17 @@ public sealed class DataModelProjector
             var stationAggregate = new Station
             {
                 StationId = station.Id,
-                NameGerman = station.NameGerman,
-                NameGermanNew = station.NameGermanNew,
-                NamePolish = station.NamePolish,
-                NameRussian = station.NameRussian,
                 Location = station.Location,
             };
+
+            if (settingsOne?.StationNameMode == StationNameMode.German)
+            {
+                stationAggregate.Name = station.NameGermanNew ?? station.NameGerman;
+            }
+            else
+            {
+                stationAggregate.Name = station.NamePolish ?? station.NameRussian ?? station.NameGerman;
+            }
 
             this.stationsTarget.Insert(station.Id, stationAggregate);
         }
@@ -136,11 +142,16 @@ public sealed class DataModelProjector
                 var lineStation = new Line.LineStation
                 {
                     StationId = station.Id,
-                    NameGerman = station.NameGerman,
-                    NameGermanNew = station.NameGermanNew,
-                    NamePolish = station.NamePolish,
-                    NameRussian = station.NameRussian,
                 };
+
+                if (settingsOne?.StationNameMode == StationNameMode.German)
+                {
+                    lineStation.Name = station.NameGermanNew ?? station.NameGerman;
+                }
+                else
+                {
+                    lineStation.Name = station.NamePolish ?? station.NameRussian ?? station.NameGerman;
+                }
 
                 lineStations.Add(lineStation);
             }

@@ -35,7 +35,7 @@ public sealed class GetStationQueryHandler
 
         var result = new GetStationQueryResult
         {
-            Name = queryResult.NamePolish ?? queryResult.NameRussian ?? "???",
+            Name = queryResult.Name,
             StationPoints = new[] { queryResult.Location }.Where(x => x.HasValue).Select(x => x.Value).ToList(),
             SegmentLineStrings = [],
         };
