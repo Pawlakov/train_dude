@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using TrainDude.Commands.Requests.HostBuilders;
 using TrainDude.Queries.Requests.HostBuilders;
+using TrainDude.Web.Client.Services;
 
 public static class Program
 {

@@ -1,0 +1,37 @@
+﻿@page "/segment/{Id:int}"
+@using TrainDude.Queries.Requests.Segments
+@inherits EntityLookupPageBase<GetSegmentQuery, GetSegmentQueryResult>
+
+<PageTitle>Odcinek</PageTitle>
+
+<Breadcrumb />
+<section class="section">
+    <h1 class="title">Odcinek</h1>
+    @if (this.queryResult != null)
+    {
+        <p class="subtitle">@(this.queryResult.AName) - @(this.queryResult.BName)</p>
+    }
+</section>
+<hr/>
+@if (this.queryResult == null)
+{
+    <EditForm EditContext="this.formContext" OnValidSubmit="this.Submit" FormName="GetSegmentForm">
+        <FluentValidationValidator @ref="this.validator" TModel="GetSegmentQuery"/>
+        <section class="section">
+            <div class="field">
+                <label class="label">ID</label>
+                <TemplatedValidationMessage For="() => this.query.Id" BaseClass="input">
+                    <InputTemplate Context="inputClasses">
+                        <input class="@(inputClasses)" value="@(this.query.Id)" disabled/>
+                    </InputTemplate>
+                </TemplatedValidationMessage>
+            </div>
+        </section>
+    </EditForm>
+}
+else
+{
+    <section class="section">
+
+    </section>
+}

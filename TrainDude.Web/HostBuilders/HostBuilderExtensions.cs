@@ -6,11 +6,11 @@ namespace TrainDude.Web.HostBuilders;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using TrainDude.Commands.Handlers.SeedCommand;
-using TrainDude.Commands.Requests.SeedCommand;
+using TrainDude.Commands.Handlers.Admin;
+using TrainDude.Commands.Requests.Admin;
 using TrainDude.Projections;
-using TrainDude.Queries.Handlers.GetNetworkQuery;
-using TrainDude.Queries.Requests.GetNetworkQuery;
+using TrainDude.Queries.Handlers.Network;
+using TrainDude.Queries.Requests.Network;
 using TrainDude.Shared.Notifications;
 using TrainDude.Web.Infrastructure;
 

@@ -8,10 +8,11 @@ using System.Text.Json.Serialization;
 
 using Mediator;
 
-using TrainDude.Commands.Requests.SeedCommand;
+using TrainDude.Commands.Requests.Admin;
 
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "$type")]
 [JsonDerivedType(typeof(SeedCommand), nameof(SeedCommand))]
+[JsonDerivedType(typeof(UpdateStationNameModeCommand), nameof(UpdateStationNameModeCommand))]
 public abstract record class BasePolymorphicCommand
     : IMessage
 {

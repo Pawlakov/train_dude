@@ -1,0 +1,97 @@
+<nav class="pagination is-centered" role="navigation" aria-label="pagination">
+    @if (this.PreviousButtonEnabled)
+    {
+        <button class="pagination-previous" @onclick="() => this.OnPageChange.InvokeAsync(this.PageIndex - 1)">PreviousPage</button>
+    }
+    else
+    {
+        <button class="pagination-previous is-disabled">PreviousPage</button>
+    }
+    @if (this.NextButtonEnabled)
+    {
+        <button class="pagination-next" @onclick="() => this.OnPageChange.InvokeAsync(this.PageIndex + 1)">NextPage</button>
+    }
+    else
+    {
+        <button class="pagination-next is-disabled">NextPage</button>
+    }
+    <ul class="pagination-list">
+        @if (this.FirstButtonEnabled)
+        {
+            <li>
+                <button class="pagination-link"
+                        aria-label="GoToPage1"
+                        @onclick="() => this.OnPageChange.InvokeAsync(0)">
+                    1
+                </button>
+            </li>
+        }
+        @if (this.PreviousEllipsisEnabled)
+        {
+            <li><span class="pagination-ellipsis">&hellip;</span></li>
+        }
+        @if (this.PreviousButtonEnabled)
+        {
+            <li>
+                <button class="pagination-link"
+                        aria-label="@($"GoToPage{this.PageIndex}")"
+                        @onclick="() => this.OnPageChange.InvokeAsync(this.PageIndex - 1)">
+                    @(this.PageIndex)
+                </button>
+            </li>
+        }
+        <li>
+            <button class="pagination-link is-current"
+                    aria-label="@($"Page{this.PageIndex + 1}")"
+                    aria-current="page">
+                @(this.PageIndex + 1)
+            </button>
+        </li>
+        @if (this.NextButtonEnabled)
+        {
+            <li>
+                <button href="#" class="pagination-link"
+                        aria-label="@($"GoToPage{this.PageIndex + 2}")"
+                        @onclick="() => this.OnPageChange.InvokeAsync(this.PageIndex + 1)">
+                    @(this.PageIndex + 2)
+                </button>
+            </li>
+        }
+        @if (this.NextEllipsisEnabled)
+        {
+            <li><span class="pagination-ellipsis">&hellip;</span></li>
+        }
+        @if (this.LastButtonEnabled)
+        {
+            <li>
+                <button href="#" class="pagination-link"
+                        aria-label="@($"GoToPage{this.PagesTotal}")"
+                        @onclick="() => this.OnPageChange.InvokeAsync(this.PagesTotal - 1)">
+                    @(this.PagesTotal)
+                </button>
+            </li>
+        }
+    </ul>
+</nav>
+
+@code {
+    private int PagesTotal => this.ItemsTotal / this.PageSize + (this.ItemsTotal % this.PageSize > 0 ? 1 : 0);
+    private bool FirstButtonEnabled => this.PageIndex > 1;
+    private bool PreviousEllipsisEnabled => this.PageIndex > 2;
+    private bool PreviousButtonEnabled => this.PageIndex > 0;
+    private bool NextButtonEnabled => this.PageIndex + 1 < this.PagesTotal;
+    private bool NextEllipsisEnabled => this.PageIndex + 3 < this.PagesTotal;
+    private bool LastButtonEnabled => this.PageIndex + 2 < this.PagesTotal;
+
+    [Parameter]
+    public int PageIndex { get; set; }
+
+    [Parameter]
+    public int PageSize { get; set; }
+
+    [Parameter]
+    public int ItemsTotal { get; set; }
+
+    [Parameter]
+    public EventCallback<int> OnPageChange { get; set; }
+}

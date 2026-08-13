@@ -10,9 +10,9 @@ using Mediator;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using TrainDude.Commands.Handlers.SeedCommand;
+using TrainDude.Commands.Handlers.Admin;
 using TrainDude.Commands.Handlers.Validation;
-using TrainDude.Commands.Requests.SeedCommand;
+using TrainDude.Commands.Requests.Admin;
 
 /// <summary>
 /// A container for extensions methods concerning services.

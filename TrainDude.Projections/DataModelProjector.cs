@@ -24,21 +24,34 @@ public sealed class DataModelProjector
     private readonly ILiteCollection<Line> linesTarget;
     private readonly ILiteCollection<Radius> radiiTarget;
     private readonly ILiteCollection<Segment> segmentsTarget;
+    private readonly ILiteCollection<Settings> settingsTarget;
     private readonly ILiteCollection<Station> stationsTarget;
     private readonly ILiteCollection<Trip> tripsTarget;
 
-    public DataModelProjector(IDocumentSession source, ILiteCollection<Line> linesTarget, ILiteCollection<Radius> radiiTarget, ILiteCollection<Segment> segmentsTarget, ILiteCollection<Station> stationsTarget, ILiteCollection<Trip> tripsTarget)
+    public DataModelProjector(
+        IDocumentSession source,
+        ILiteCollection<Line> linesTarget,
+        ILiteCollection<Radius> radiiTarget,
+        ILiteCollection<Segment> segmentsTarget,
+        ILiteCollection<Settings> settingsTarget,
+        ILiteCollection<Station> stationsTarget,
+        ILiteCollection<Trip> tripsTarget)
     {
         this.source = source;
         this.linesTarget = linesTarget;
         this.radiiTarget = radiiTarget;
         this.segmentsTarget = segmentsTarget;
+        this.settingsTarget = settingsTarget;
         this.stationsTarget = stationsTarget;
         this.tripsTarget = tripsTarget;
     }
 
     public async Task RebuildAsync(CancellationToken cancellationToken = default)
     {
+        var settings = await this.source
+            .Query<Commands.Data.Documents.Settings>()
+            .ToListAsync(cancellationToken);
+
         var stations = await this.source
             .Query<Commands.Data.Documents.Station>()
             .ToListAsync(cancellationToken);
@@ -66,6 +79,19 @@ public sealed class DataModelProjector
         this.stationsTarget.DeleteAll();
         this.linesTarget.DeleteAll();
         this.radiiTarget.DeleteAll();
+        this.settingsTarget.DeleteAll();
+
+        var settingsOne = settings.FirstOrDefault();
+        if (settingsOne != null)
+        {
+            var settingsAggregate = new Settings
+            {
+                SettingsId = settingsOne.Id,
+                StationNameMode = settingsOne.StationNameMode,
+            };
+
+            this.settingsTarget.Insert(settingsAggregate);
+        }
 
         foreach (var station in stations)
         {

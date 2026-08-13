@@ -30,7 +30,7 @@ public class QueryController
     }
 
     [HttpPost]
-    public async Task<ActionResult<BasePolymorphicQueryResponse>> Handle([FromBody] BasePolymorphicQuery request)
+    public async Task<ActionResult<BasePolymorphicQueryResult>> Handle([FromBody] BasePolymorphicQuery request)
     {
         var response = await this.mediator.Send(request);
         if (response is Unit)
@@ -38,7 +38,7 @@ public class QueryController
             return this.Ok(response);
         }
 
-        if (response is not BasePolymorphicQueryResponse polymorphicResponse)
+        if (response is not BasePolymorphicQueryResult polymorphicResponse)
         {
             if (response == null)
             {

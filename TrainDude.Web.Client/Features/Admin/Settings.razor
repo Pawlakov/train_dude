@@ -1,0 +1,114 @@
+@using FluentValidation
+@using Mediator
+@using TrainDude.Commands.Requests.Admin
+@using TrainDude.Queries.Requests.Admin
+@using TrainDude.Shared.Values
+
+@inject ISender Mediator
+
+@if (this.updateStationNameModeActive)
+{
+    <EditForm EditContext="this.formContext" OnValidSubmit="this.Submit" FormName="UpdateStationNameModeForm">
+        <FluentValidationValidator @ref="this.validator" TModel="UpdateStationNameModeCommand"/>
+        <p class="title is-6">
+            Nazwy stacji
+            <a class="icon" @onclick="this.Submit">
+                <i class="fas fa-check"></i>
+            </a>
+            <a class="icon" @onclick="this.DeactivateEdit">
+                <i class="fas fa-x"></i>
+            </a>
+        </p>
+        <TemplatedValidationMessage For="() => this.command.Mode" BaseClass="radios"
+                                    ControlClass="subtitle is-6">
+            <InputTemplate Context="inputClasses">
+                <div>
+                    <InputRadioGroup @bind-Value="this.command.Mode">
+                        <label class="radio">
+                            <InputRadio value="@(StationNameMode.Modern)"/>
+                            Współczesne
+                        </label>
+                        <label class="radio">
+                            <InputRadio value="@(StationNameMode.German)"/>
+                            Niemieckie
+                        </label>
+                    </InputRadioGroup>
+                </div>
+            </InputTemplate>
+        </TemplatedValidationMessage>
+    </EditForm>
+}
+else
+{
+    <p class="title is-6">
+        Nazwy stacji
+        <a class="icon" @onclick="this.ActivateEdit">
+            <i class="fas fa-pencil"></i>
+        </a>
+    </p>
+    <p class="subtitle is-6">
+        @if (this.queryResult.Mode == StationNameMode.Modern)
+        {
+            <text>Współczesne</text>
+        }
+        else
+        {
+            <text>Niemieckie</text>
+        }
+    </p>
+}
+
+@code {
+    private bool updateStationNameModeActive;
+    private GetStationNameModeQueryResult? queryResult;
+    private UpdateStationNameModeCommand? command;
+    private EditContext? formContext;
+    private FluentValidationValidator<UpdateStationNameModeCommand>? validator;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await this.Refresh();
+    }
+
+    private Task ActivateEdit()
+    {
+        this.updateStationNameModeActive = true;
+        this.formContext = new EditContext(this.command);
+        return Task.CompletedTask;
+    }
+
+    private Task DeactivateEdit()
+    {
+        this.updateStationNameModeActive = false;
+        this.formContext = null;
+        return Task.CompletedTask;
+    }
+
+    private async Task Refresh()
+    {
+        var query = new GetStationNameModeQuery();
+        this.queryResult = await this.Mediator.Send(query);
+        this.command = new UpdateStationNameModeCommand
+        {
+            SettingsId = this.queryResult.SettingsId,
+            Mode = this.queryResult.Mode,
+        };
+    }
+
+    private async Task Submit()
+    {
+        var valid = this.formContext.Validate();
+        if (valid)
+        {
+            try
+            {
+                await this.Mediator.Send(this.command);
+                await this.DeactivateEdit();
+            }
+            catch (ValidationException exception)
+            {
+                this.validator.PopulateErrors(exception.Errors);
+            }
+        }
+    }
+}

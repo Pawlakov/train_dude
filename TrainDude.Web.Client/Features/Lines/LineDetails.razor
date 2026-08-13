@@ -1,0 +1,83 @@
+@page "/line/{Id:guid}"
+@using TrainDude.Queries.Requests.Lines
+@inherits EntityLookupPageBase<GetLineQuery, GetLineQueryResult>
+
+@if (this.queryResult != null)
+{
+    <PageTitle>Linia @(this.queryResult.LineDesignation)</PageTitle>
+}
+else
+{
+    <PageTitle>Linia</PageTitle>
+}
+
+<Breadcrumb />
+<section class="section">
+    <h1 class="title">Linia</h1>
+    @if (this.queryResult != null)
+    {
+        <p class="subtitle">@(this.queryResult.LineDesignation)</p>
+    }
+</section>
+<hr/>
+@if (this.queryResult == null)
+{
+    <EditForm EditContext="this.formContext" OnValidSubmit="this.Submit" FormName="GetQueryForm">
+        <FluentValidationValidator @ref="this.validator" TModel="GetLineQuery"/>
+        <section class="section">
+            <div class="field">
+                <label class="label">ID</label>
+                <TemplatedValidationMessage For="() => this.query.Id" BaseClass="input">
+                    <InputTemplate Context="inputClasses">
+                        <input class="@(inputClasses)" value="@(this.query.Id)" disabled/>
+                    </InputTemplate>
+                </TemplatedValidationMessage>
+            </div>
+        </section>
+    </EditForm>
+}
+else
+{
+    <section class="section">
+        <div class="columns">
+            <div class="column">
+                <div class="table-container">
+                    <table class="table is-fullwidth">
+                        <thead>
+                        <tr>
+                            <th>Stacje</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var item in this.queryResult.Stations)
+                        {
+                            <tr>
+                                <td><a href="station/@(item.StationId)">@(item.Name)</a></td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="column">
+                <div class="table-container">
+                    <table class="table is-fullwidth">
+                        <thead>
+                        <tr>
+                            <th>Kursy</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var item in this.queryResult.Trips)
+                        {
+                            <tr>
+                                <td><a href="trip/@(item.TripId)">@(item.TripNumber)</a></td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+}

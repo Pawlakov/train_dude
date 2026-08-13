@@ -10,9 +10,9 @@ using Mediator;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using TrainDude.Queries.Handlers.GetNetworkQuery;
+using TrainDude.Queries.Handlers.Network;
 using TrainDude.Queries.Handlers.Validation;
-using TrainDude.Queries.Requests.GetNetworkQuery;
+using TrainDude.Queries.Requests.Network;
 
 /// <summary>
 /// A container for extensions methods concerning services.

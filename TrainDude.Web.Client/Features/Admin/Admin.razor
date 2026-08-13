@@ -1,0 +1,99 @@
+﻿@page "/admin"
+@using Mediator
+@using TrainDude.Commands.Requests.Admin
+@layout BlockMapLayout
+
+@inject ISender Mediator
+
+<PageTitle>Administracja</PageTitle>
+
+<nav class="breadcrumb" aria-label="breadcrumbs">
+    <ul>
+        <li>
+            <a href="/">
+                <span class="icon is-small">
+                    <i class="fas fa-map" aria-hidden="true"></i>
+                </span>
+                <span>Mapa</span>
+            </a>
+        </li>
+        <li class="is-active">
+            <a href="/admin">
+                <span class="icon is-small">
+                    <i class="fas fa-list" aria-hidden="true"></i>
+                </span>
+                <span>Administracja</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+<section class="section">
+    <h1 class="title">Administracja</h1>
+    <p class="subtitle">Narzędzia specjalnego przeznaczenia.</p>
+</section>
+<div class="tabs is-boxed">
+    <ul>
+        <li class="@(this.TabClass(Tab.Settings))">
+            <a @onclick="() => this.SwitchTab(Tab.Settings)">
+                Ustawienia
+            </a>
+        </li>
+        <li class="@(this.TabClass(Tab.Developer))">
+            <a @onclick="() => this.SwitchTab(Tab.Developer)">
+                Deweloper
+            </a>
+        </li>
+    </ul>
+</div>
+<section class="section">
+    @if (this.selectedTab is Tab.Settings)
+    {
+        <Settings/>
+    }
+    else if (this.selectedTab is Tab.Developer)
+    {
+        <button class="button is-danger @(this.loadingActive ? "is-loading" : "")" @onclick="this.HardReset">
+            Twardy Reset
+        </button>
+        <p class="help">Twardy reset usuwa całą zawartość!</p>
+    }
+</section>
+
+@code {
+    private bool loadingActive;
+    private Tab selectedTab;
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.selectedTab = Tab.Settings;
+    }
+
+    private async Task HardReset()
+    {
+        this.loadingActive = true;
+        this.StateHasChanged();
+
+        await this.Mediator.Send(new SeedCommand());
+
+        this.loadingActive = false;
+        this.StateHasChanged();
+    }
+
+    private Task SwitchTab(Tab tab)
+    {
+        this.selectedTab = tab;
+        return Task.CompletedTask;
+    }
+
+    private string TabClass(Tab tab)
+    {
+        return tab == this.selectedTab ? "is-active" : string.Empty;
+    }
+
+    private enum Tab
+    {
+        Settings,
+        Developer,
+    }
+
+}

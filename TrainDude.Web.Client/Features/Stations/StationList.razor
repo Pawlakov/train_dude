@@ -1,0 +1,48 @@
+﻿@page "/stations"
+@using Mediator
+@using TrainDude.Queries.Requests.Stations
+@inherits EntityListPageBase<GetStationsQuery, GetStationsQueryResult, GetStationsQueryResultItem>
+@layout BlockMapLayout
+
+@inject ISender Mediator
+
+<PageTitle>Stacje</PageTitle>
+
+<Breadcrumb />
+<section class="section">
+    <h1 class="title">Stacje</h1>
+    <p class="subtitle">Lista stacji.</p>
+</section>
+<hr />
+<section class="section">
+    <div class="table-container">
+        <table class="table is-fullwidth">
+            <thead>
+                <tr>
+                    <th>Nazwa</th>
+                    <th>Położenie</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (this.items == null)
+                {
+                    <tr>
+                        <td colspan="3"><em>Ładowanie...</em></td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var item in items)
+                    {
+                        <tr>
+                            <td>@(item.Name)</td>
+                            <td>@(item.HasLocation)</td>
+                            <td><a href="station/@(item.StationId)">Szczegóły</a></td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</section>

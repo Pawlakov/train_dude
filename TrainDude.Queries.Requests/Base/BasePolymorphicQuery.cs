@@ -8,21 +8,18 @@ using System.Text.Json.Serialization;
 
 using Mediator;
 
-using TrainDude.Queries.Requests.GetLineQuery;
-using TrainDude.Queries.Requests.GetLinesQuery;
-using TrainDude.Queries.Requests.GetNetworkQuery;
-using TrainDude.Queries.Requests.GetRadiiQuery;
-using TrainDude.Queries.Requests.GetSegmentQuery;
-using TrainDude.Queries.Requests.GetSegmentsQuery;
-using TrainDude.Queries.Requests.GetStationQuery;
-using TrainDude.Queries.Requests.GetStationsQuery;
-using TrainDude.Queries.Requests.GetTripQuery;
-using TrainDude.Queries.Requests.GetTripsQuery;
+using TrainDude.Queries.Requests.Admin;
+using TrainDude.Queries.Requests.Lines;
+using TrainDude.Queries.Requests.Network;
+using TrainDude.Queries.Requests.Radii;
+using TrainDude.Queries.Requests.Segments;
+using TrainDude.Queries.Requests.Stations;
+using TrainDude.Queries.Requests.Trips;
 
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "$type")]
 [JsonDerivedType(typeof(GetRadiiQuery), nameof(GetRadiiQuery))]
 [JsonDerivedType(typeof(GetStationsQuery), nameof(GetStationsQuery))]
-[JsonDerivedType(typeof(GetStationQuery), nameof(Requests.GetStationQuery))]
+[JsonDerivedType(typeof(GetStationQuery), nameof(GetStationQuery))]
 [JsonDerivedType(typeof(GetNetworkQuery), nameof(GetNetworkQuery))]
 [JsonDerivedType(typeof(GetSegmentQuery), nameof(GetSegmentQuery))]
 [JsonDerivedType(typeof(GetSegmentsQuery), nameof(GetSegmentsQuery))]
@@ -30,6 +27,7 @@ using TrainDude.Queries.Requests.GetTripsQuery;
 [JsonDerivedType(typeof(GetLineQuery), nameof(GetLineQuery))]
 [JsonDerivedType(typeof(GetTripsQuery), nameof(GetTripsQuery))]
 [JsonDerivedType(typeof(GetTripQuery), nameof(GetTripQuery))]
+[JsonDerivedType(typeof(GetStationNameModeQuery), nameof(GetStationNameModeQuery))]
 public abstract record class BasePolymorphicQuery
     : IMessage
 {

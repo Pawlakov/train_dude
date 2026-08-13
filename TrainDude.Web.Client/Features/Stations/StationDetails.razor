@@ -1,0 +1,48 @@
+@page "/station/{StationId:guid}"
+@using FluentValidation
+@using Mediator
+@using TrainDude.Queries.Requests.Stations
+@inherits EntityLookupPageBase<GetStationQuery, GetStationQueryResult>
+
+@inject ISender Mediator
+
+@if (this.queryResult != null)
+{
+    <PageTitle>Stacja @(this.queryResult.Name)</PageTitle>
+}
+else
+{
+    <PageTitle>Stacja</PageTitle>
+}
+
+<Breadcrumb/>
+<section class="section">
+    <h1 class="title">Stacja</h1>
+    @if (this.queryResult != null)
+    {
+        <p class="subtitle">@(this.queryResult.Name)</p>
+    }
+</section>
+<hr/>
+@if (this.queryResult == null)
+{
+    <EditForm EditContext="this.formContext" OnValidSubmit="this.Submit" FormName="GetStationForm">
+        <FluentValidationValidator @ref="this.validator" TModel="GetStationQuery"/>
+        <section class="section">
+            <div class="field">
+                <label class="label">ID</label>
+                <TemplatedValidationMessage For="() => this.query.Id" BaseClass="input">
+                    <InputTemplate Context="inputClasses">
+                        <input class="@(inputClasses)" value="@(this.query.Id)" disabled/>
+                    </InputTemplate>
+                </TemplatedValidationMessage>
+            </div>
+        </section>
+    </EditForm>
+}
+else
+{
+    <section class="section">
+
+    </section>
+}

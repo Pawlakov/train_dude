@@ -1,0 +1,26 @@
+﻿@using System.Globalization
+@using Mediator
+@layout BaseMapLayout
+@page "/"
+
+@inject ISender Mediator
+@inject IJSRuntime JS
+
+<PageTitle>Mapa</PageTitle>
+
+<div class="container">
+    <div class="box">
+        <NavMenu/>
+    </div>
+</div>
+<div class="modal @(this.loadingActive ? "is-active" : "")">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+        <section class="hero is-info">
+            <div class="hero-body">
+                <p class="title">Przetwarzanie</p>
+                <p class="subtitle">Proszę poczekać</p>
+            </div>
+        </section>
+    </div>
+</div>

@@ -1,0 +1,48 @@
+@page "/trip/{TripId:guid}"
+@using FluentValidation
+@using Mediator
+@using TrainDude.Queries.Requests.Trips
+@inherits EntityLookupPageBase<GetTripQuery, GetTripQueryResult>
+
+@inject ISender Mediator
+
+@if (this.queryResult != null)
+{
+    <PageTitle>Kurs @(this.queryResult.TripNumber)</PageTitle>
+}
+else
+{
+    <PageTitle>Kurs</PageTitle>
+}
+
+<Breadcrumb />
+<section class="section">
+    <h1 class="title">Kurs</h1>
+    @if (this.queryResult != null)
+    {
+        <p class="subtitle">@(this.queryResult.TripNumber)</p>
+    }
+</section>
+<hr/>
+@if (this.queryResult == null)
+{
+    <EditForm EditContext="this.formContext" OnValidSubmit="this.Submit" FormName="GetTripForm">
+        <FluentValidationValidator @ref="this.validator" TModel="GetTripQuery"/>
+        <section class="section">
+            <div class="field">
+                <label class="label">ID</label>
+                <TemplatedValidationMessage For="() => this.query.Id" BaseClass="input">
+                    <InputTemplate Context="inputClasses">
+                        <input class="@(inputClasses)" value="@(this.query.Id)" disabled/>
+                    </InputTemplate>
+                </TemplatedValidationMessage>
+            </div>
+        </section>
+    </EditForm>
+}
+else
+{
+    <section class="section">
+        
+    </section>
+}

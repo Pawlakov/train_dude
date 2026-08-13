@@ -21,6 +21,7 @@ public static class HostBuilderExtensions
         services.AddSingleton<ILiteCollection<Segment>>(x => x.GetRequiredService<ILiteDatabase>().GetCollection<Segment>("segments"));
         services.AddSingleton<ILiteCollection<Station>>(x => x.GetRequiredService<ILiteDatabase>().GetCollection<Station>("stations"));
         services.AddSingleton<ILiteCollection<Trip>>(x => x.GetRequiredService<ILiteDatabase>().GetCollection<Trip>("trips"));
+        services.AddSingleton<ILiteCollection<Settings>>(x => x.GetRequiredService<ILiteDatabase>().GetCollection<Settings>("settings"));
 
         return services;
     }
