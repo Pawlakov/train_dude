@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+      <ProjectReference Include="..\TrainDude.Domain.Events\TrainDude.Domain.Events.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Marten" Version="9.23.0" />
+    </ItemGroup>
+
+</Project>

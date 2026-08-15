@@ -32,7 +32,6 @@ public sealed class GetStationNameModeQueryHandler
         {
             var result = new GetStationNameModeQueryResult
             {
-                SettingsId = null,
                 Mode = StationNameMode.Modern,
             };
 
@@ -42,7 +41,6 @@ public sealed class GetStationNameModeQueryHandler
         {
             var result = new GetStationNameModeQueryResult
             {
-                SettingsId = queryResult.SettingsId,
                 Mode = queryResult.StationNameMode,
             };
 

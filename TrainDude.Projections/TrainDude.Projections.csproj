@@ -5,7 +5,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\TrainDude.Commands.Data\TrainDude.Commands.Data.csproj" />
+      <ProjectReference Include="..\TrainDude.Domain\TrainDude.Domain.csproj" />
       <ProjectReference Include="..\TrainDude.Queries.Data\TrainDude.Queries.Data.csproj" />
     </ItemGroup>
 

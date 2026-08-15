@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 using Mediator;
 
+using TrainDude.Domain.Events.Stations;
 using TrainDude.Shared.Notifications;
-using TrainDude.Shared.Notifications.Stations;
 
 public sealed class StationCreatedNotificationHandler
-    : INotificationHandler<StationCreatedNotification>
+    : INotificationHandler<StationCreated>
 {
     private readonly DataModelProjector projector;
 
@@ -23,7 +23,7 @@ public sealed class StationCreatedNotificationHandler
         this.projector = projector;
     }
 
-    public ValueTask Handle(StationCreatedNotification notification, CancellationToken cancellationToken)
+    public ValueTask Handle(StationCreated notification, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
 

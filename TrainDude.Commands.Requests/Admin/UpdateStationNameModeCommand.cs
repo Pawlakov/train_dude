@@ -14,7 +14,5 @@ using TrainDude.Shared.Values;
 public sealed record class UpdateStationNameModeCommand
     : BasePolymorphicCommand, ICommand
 {
-    required public Guid? SettingsId { get; set; }
-
     required public StationNameMode Mode { get; set; }
 }

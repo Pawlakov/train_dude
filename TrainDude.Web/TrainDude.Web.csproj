@@ -10,8 +10,8 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.10" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.10">
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.11" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.11">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
@@ -19,7 +19,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\TrainDude.Commands.Handlers\TrainDude.Commands.Handlers.csproj" />
-      <ProjectReference Include="..\TrainDude.Projections\TrainDude.Projections.csproj" />
       <ProjectReference Include="..\TrainDude.Queries.Handlers\TrainDude.Queries.Handlers.csproj" />
       <ProjectReference Include="..\TrainDude.Web.Client\TrainDude.Web.Client.csproj" />
     </ItemGroup>

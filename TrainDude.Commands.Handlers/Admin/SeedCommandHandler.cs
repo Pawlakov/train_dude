@@ -13,13 +13,9 @@ using Marten;
 
 using Mediator;
 
-using TrainDude.Commands.Data.Documents;
 using TrainDude.Commands.Handlers.Seed;
 using TrainDude.Commands.Requests.Admin;
-using TrainDude.Shared.Notifications;
-using TrainDude.Shared.Notifications.Lines;
-using TrainDude.Shared.Notifications.Stations;
-using TrainDude.Shared.Notifications.Trips;
+using TrainDude.Domain.Documents;
 using TrainDude.Shared.Values;
 
 public sealed class SeedCommandHandler
@@ -29,11 +25,17 @@ public sealed class SeedCommandHandler
     private readonly IDocumentSession session;
     private readonly IPublisher publisher;
 
+    private readonly Dictionary<int, Guid> stationIdMap;
+    private readonly Dictionary<int, Guid> tripIdMap;
+
     public SeedCommandHandler(IDocumentStore store, IDocumentSession session, IPublisher publisher)
     {
         this.store = store;
         this.session = session;
         this.publisher = publisher;
+
+        this.stationIdMap = new Dictionary<int, Guid>();
+        this.tripIdMap = new Dictionary<int, Guid>();
     }
 
     public async ValueTask<Unit> Handle(SeedCommand request, CancellationToken cancellationToken)
@@ -46,97 +48,128 @@ public sealed class SeedCommandHandler
         var radiiSeed = SeedLoader.Load<RadiusSeed>("radii_seed.yml");
         var tripsSeed = SeedLoader.Load<TripSeed>("trips_seed.yml");
 
-        var stationIdMap = new Dictionary<int, Guid>();
         foreach (var stationSeed in stationsSeed)
         {
-            var stationId = Guid.NewGuid();
-            stationIdMap[stationSeed.Id] = stationId;
-
-            var station = Station.Create(stationId, stationSeed.NameGerman, stationSeed.NameGermanNew, stationSeed.NamePolish, stationSeed.NameRussian);
-            if (stationSeed is { Latitude: not null, Longitude: not null })
-            {
-                var location = new Location(stationSeed.Longitude.Value, stationSeed.Latitude.Value);
-                station.SetLocation(location);
-            }
-
-            this.session.Events.StartStream<Station>(stationId, station.UncommittedEvents);
-            await this.session.SaveChangesAsync(cancellationToken);
-            foreach (var notification in station.UncommittedEvents)
-            {
-                await this.publisher.Publish(notification, cancellationToken);
-            }
-
-            station.ClearUncommittedEvents();
+            await this.SeedStation(stationSeed, cancellationToken);
         }
 
-        var tripIdMap = new Dictionary<int, Guid>();
         foreach (var tripSeed in tripsSeed)
         {
-            var tripId = Guid.NewGuid();
-            tripIdMap[tripSeed.Number] = tripId;
-
-            var trip = Trip.Create(tripId, tripSeed.Number);
-
-            this.session.Events.StartStream<Trip>(tripId, trip.UncommittedEvents);
-            await this.session.SaveChangesAsync(cancellationToken);
-            foreach (var notification in trip.UncommittedEvents)
-            {
-                await this.publisher.Publish(notification, cancellationToken);
-            }
-
-            trip.ClearUncommittedEvents();
+            await this.SeedTrip(tripSeed, cancellationToken);
         }
 
         foreach (var lineSeed in linesSeed)
         {
-            var lineId = Guid.NewGuid();
-
-            var line = Line.Create(lineId, lineSeed.Number, lineSeed.Letter);
-            foreach (var trip in lineSeed.Trips)
-            {
-                this.session.Events.Append(lineId, new LineTripAssignedNotification(lineId, tripIdMap[trip]));
-            }
-
-            foreach (var station in lineSeed.Stations)
-            {
-                this.session.Events.Append(lineId, new LineStationAppendedNotification(lineId, stationIdMap[station]));
-            }
-
-            this.session.Events.StartStream<Line>(lineId, line.UncommittedEvents);
-            await this.session.SaveChangesAsync(cancellationToken);
-            foreach (var notification in line.UncommittedEvents)
-            {
-                await this.publisher.Publish(notification, cancellationToken);
-            }
-
-            line.ClearUncommittedEvents();
+            await this.SeedLine(lineSeed, cancellationToken);
         }
 
-        /*foreach (var segmentSeed in segmentsSeed)
+        foreach (var segmentSeed in segmentsSeed)
         {
-            var segment = new Segment(segmentSeed.Length);
-            segment.AddExtremes(idDictionary[segmentSeed.A.StationId], idDictionary[segmentSeed.B.StationId]);
-            segment.AddVertices(segmentSeed.Vertices?.Select(x => new Location(x.Longitude, x.Latitude)) ?? []);
-
-            await this.db.Segments.AddAsync(segment, cancellationToken);
-        }*/
+            await this.SeedSegment(segmentSeed, cancellationToken);
+        }
 
         foreach (var radiusSeed in radiiSeed)
         {
-            var radiusId = Guid.NewGuid();
-
-            var radius = Radius.Create(radiusId, radiusSeed.Speed, radiusSeed.Minimum);
-
-            this.session.Events.StartStream<Radius>(radiusId, radius.UncommittedEvents);
-            await this.session.SaveChangesAsync(cancellationToken);
-            foreach (var notification in radius.UncommittedEvents)
-            {
-                await this.publisher.Publish(notification, cancellationToken);
-            }
-
-            radius.ClearUncommittedEvents();
+            await this.SeedRadius(radiusSeed, cancellationToken);
         }
 
         return Unit.Value;
+    }
+
+    private async Task SeedLine(LineSeed seed, CancellationToken cancellationToken = default)
+    {
+        var lineId = Guid.NewGuid();
+
+        var created = Line.Make(lineId, seed.Number, seed.Letter);
+
+        this.session.Events.StartStream<Line>(lineId, created);
+        await this.session.SaveChangesAsync(cancellationToken);
+        await this.publisher.Publish(created, cancellationToken);
+
+        var stream = await this.session.Events.FetchForWriting<Line>(lineId, cancellationToken);
+        foreach (var trip in seed.Trips)
+        {
+            var tripAssigned = stream.Aggregate.AssignTrip(this.tripIdMap[trip]);
+
+            stream.AppendOne(tripAssigned);
+            await this.session.SaveChangesAsync(cancellationToken);
+            await this.publisher.Publish(tripAssigned, cancellationToken);
+        }
+
+        foreach (var station in seed.Stations)
+        {
+            var stationAppended = stream.Aggregate.AppendStation(this.stationIdMap[station]);
+
+            stream.AppendOne(stationAppended);
+            await this.session.SaveChangesAsync(cancellationToken);
+            await this.publisher.Publish(stationAppended, cancellationToken);
+        }
+    }
+
+    private async Task SeedRadius(RadiusSeed seed, CancellationToken cancellationToken = default)
+    {
+        var radiusId = Guid.NewGuid();
+
+        var created = Radius.Make(radiusId, seed.Speed, seed.Minimum);
+
+        this.session.Events.StartStream<Radius>(radiusId, created);
+        await this.session.SaveChangesAsync(cancellationToken);
+        await this.publisher.Publish(created, cancellationToken);
+    }
+
+    private async Task SeedStation(StationSeed seed, CancellationToken cancellationToken = default)
+    {
+        var stationId = Guid.NewGuid();
+        this.stationIdMap[seed.Id] = stationId;
+
+        var created = Station.Make(stationId, seed.NameGerman, seed.NameGermanNew, seed.NamePolish, seed.NameRussian);
+
+        this.session.Events.StartStream<Station>(stationId, created);
+        await this.session.SaveChangesAsync(cancellationToken);
+        await this.publisher.Publish(created, cancellationToken);
+
+        var stream = await this.session.Events.FetchForWriting<Station>(stationId, cancellationToken);
+        if (seed is { Latitude: not null, Longitude: not null })
+        {
+            var location = new Location(seed.Longitude.Value, seed.Latitude.Value);
+            var locationSet = stream.Aggregate.SetLocation(location);
+
+            stream.AppendOne(locationSet);
+            await this.session.SaveChangesAsync(cancellationToken);
+            await this.publisher.Publish(locationSet, cancellationToken);
+        }
+
+        for (var i = 0; i < seed.AxleCount; ++i)
+        {
+            stream.Aggregate.AddAxle();
+        }
+    }
+
+    private async Task SeedSegment(SegmentSeed seed, CancellationToken cancellationToken = default)
+    {
+        var segmentId = Guid.NewGuid();
+
+        var created = Segment.Make(segmentId);
+
+        this.session.Events.StartStream<Trip>(segmentId, created);
+        await this.session.SaveChangesAsync(cancellationToken);
+        await this.publisher.Publish(created, cancellationToken);
+
+        // TODO przywrócić segmenty do dawnej chwały
+        /*var stream = await this.session.Events.FetchForWriting<SegmentSeed>(segmentId, cancellationToken);
+        segment.AddExtremes(idDictionary[seed.A.StationId], idDictionary[seed.B.StationId]);
+        segment.AddVertices(seed.Vertices?.Select(x => new Location(x.Longitude, x.Latitude)) ?? []);*/
+    }
+
+    private async Task SeedTrip(TripSeed seed, CancellationToken cancellationToken = default)
+    {
+        var tripId = Guid.NewGuid();
+        this.tripIdMap[seed.Number] = tripId;
+
+        var created = Trip.Make(tripId, seed.Number);
+
+        this.session.Events.StartStream<Trip>(tripId, created);
+        await this.session.SaveChangesAsync(cancellationToken);
+        await this.publisher.Publish(created, cancellationToken);
     }
 }

@@ -3,12 +3,13 @@
     <ItemGroup>
         <PackageReference Include="FluentValidation" Version="12.1.1"/>
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1"/>
+        <PackageReference Include="Marten" Version="9.23.0" />
         <PackageReference Include="YamlDotNet" Version="18.1.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\TrainDude.Commands.Requests\TrainDude.Commands.Requests.csproj" />
-      <ProjectReference Include="..\TrainDude.Commands.Data\TrainDude.Commands.Data.csproj" />
+      <ProjectReference Include="..\TrainDude.Domain\TrainDude.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>

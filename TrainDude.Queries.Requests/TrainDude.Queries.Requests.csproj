@@ -5,7 +5,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\TrainDude.Shared\TrainDude.Shared.csproj"/>
+        <ProjectReference Include="..\TrainDude.Domain.Events\TrainDude.Domain.Events.csproj" />
     </ItemGroup>
 
 </Project>

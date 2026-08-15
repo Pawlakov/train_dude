@@ -12,7 +12,5 @@ using TrainDude.Shared.Values;
 public class GetStationNameModeQueryResult
     : BasePolymorphicQueryResult
 {
-    required public Guid? SettingsId { get; init; }
-
     required public StationNameMode Mode { get; init; }
 }

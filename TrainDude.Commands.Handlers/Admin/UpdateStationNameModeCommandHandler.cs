@@ -13,51 +13,44 @@ using Marten;
 
 using Mediator;
 
-using TrainDude.Commands.Data.Documents;
 using TrainDude.Commands.Requests.Admin;
-using TrainDude.Shared.Notifications;
+using TrainDude.Domain.Documents;
 using TrainDude.Shared.Values;
 
 public sealed class UpdateStationNameModeCommandHandler
     : ICommandHandler<UpdateStationNameModeCommand>
 {
     private readonly IDocumentSession session;
-    private readonly IPublisher publisher;
 
-    public UpdateStationNameModeCommandHandler(IDocumentSession session, IPublisher publisher)
+    public UpdateStationNameModeCommandHandler(IDocumentSession session)
     {
         this.session = session;
-        this.publisher = publisher;
     }
 
     public async ValueTask<Unit> Handle(UpdateStationNameModeCommand command, CancellationToken cancellationToken)
     {
-        var settingsId = command.SettingsId ?? Guid.NewGuid();
-
-        var allSettings = await this.session.Query<Settings>().ToListAsync(cancellationToken);
-        var settings = (allSettings.Count, command.SettingsId) switch
+        var allSettingsIds = await this.session.Query<Settings>().Select(x => x.Id).ToListAsync(cancellationToken);
+        if (allSettingsIds.Count < 1)
         {
-            (0, null) => Settings.Create(settingsId, StationNameMode.Modern),
-            (> 0, not null) => allSettings.Single(x => x.Id == command.SettingsId.Value),
-            _ => throw new ApplicationException("If this exception was thrown it means that the validation has failed."),
-        };
+            var newSettingsId = Guid.NewGuid();
+            var created = Settings.Make(newSettingsId, StationNameMode.Modern);
 
-        foreach (var fakeSettings in allSettings.Where(x => x.Id != settingsId))
+            this.session.Events.StartStream<Settings>(newSettingsId, created);
+            await this.session.SaveChangesAsync(cancellationToken);
+        }
+        else if (allSettingsIds.Count > 1)
         {
-            this.session.Delete(fakeSettings);
+            // TODO fix this for good by ensuring only one command can be handled at a time.
+            throw new ApplicationException("Too many settings were created");
         }
 
-        settings.UpdateStationNameMode(command.Mode);
+        var settingsId = await this.session.Query<Settings>().Select(x => x.Id).SingleAsync(cancellationToken);
+        var stream = await this.session.Events.FetchForWriting<Settings>(settingsId, cancellationToken);
 
-        // TODO nie zawsze start stream, co jak już jest
-        this.session.Events.StartStream<Settings>(settingsId, settings.UncommittedEvents);
+        var stationNameModeUpdated = stream.Aggregate.UpdateStationNameMode(command.Mode);
+
+        stream.AppendOne(stationNameModeUpdated);
         await this.session.SaveChangesAsync(cancellationToken);
-        foreach (var notification in settings.UncommittedEvents)
-        {
-            await this.publisher.Publish(notification, cancellationToken);
-        }
-
-        settings.ClearUncommittedEvents();
 
         return Unit.Value;
     }

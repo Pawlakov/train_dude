@@ -97,7 +97,6 @@ else
         this.queryResult = await this.Mediator.Send(query);
         this.command = new UpdateStationNameModeCommand
         {
-            SettingsId = this.queryResult.SettingsId,
             Mode = this.queryResult.Mode,
         };
     }

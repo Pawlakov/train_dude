@@ -15,7 +15,7 @@ using FluentValidation.Results;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 
-using TrainDude.Shared.Validation;
+using TrainDude.Web.Client.Validation;
 
 public class FluentValidationValidator<TModel>
     : ComponentBase, IDisposable

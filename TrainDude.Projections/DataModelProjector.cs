@@ -14,7 +14,7 @@ using LiteDB;
 
 using Marten;
 
-using TrainDude.Commands.Data;
+using TrainDude.Domain;
 using TrainDude.Queries.Data;
 using TrainDude.Queries.Data.Documents;
 using TrainDude.Shared.Values;
@@ -50,19 +50,19 @@ public sealed class DataModelProjector
     public async Task RebuildAsync(CancellationToken cancellationToken = default)
     {
         var settings = await this.source
-            .Query<Commands.Data.Documents.Settings>()
+            .Query<Domain.Documents.Settings>()
             .ToListAsync(cancellationToken);
 
         var stations = await this.source
-            .Query<Commands.Data.Documents.Station>()
+            .Query<Domain.Documents.Station>()
             .ToListAsync(cancellationToken);
 
         var trips = await this.source
-            .Query<Commands.Data.Documents.Trip>()
+            .Query<Domain.Documents.Trip>()
             .ToListAsync(cancellationToken);
 
         var lines = await this.source
-            .Query<Commands.Data.Documents.Line>()
+            .Query<Domain.Documents.Line>()
             .ToListAsync(cancellationToken);
 
         /*var radii = await this.source.Radii
@@ -130,7 +130,7 @@ public sealed class DataModelProjector
             var lineTrips = new List<Line.LineTrip>();
             foreach (var tripId in line.Trips)
             {
-                var trip = await this.source.LoadAsync<Commands.Data.Documents.Trip>(tripId, cancellationToken);
+                var trip = await this.source.LoadAsync<Domain.Documents.Trip>(tripId, cancellationToken);
 
                 lineTrips.Add(new Line.LineTrip { TripId = trip.Id, TripNumber = trip.TripNumber });
             }
@@ -138,7 +138,7 @@ public sealed class DataModelProjector
             var lineStations = new List<Line.LineStation>();
             foreach (var stationId in line.Stations)
             {
-                var station = await this.source.LoadAsync<Commands.Data.Documents.Station>(stationId, cancellationToken);
+                var station = await this.source.LoadAsync<Domain.Documents.Station>(stationId, cancellationToken);
                 var lineStation = new Line.LineStation
                 {
                     StationId = station.Id,

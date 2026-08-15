@@ -12,9 +12,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-using TrainDude.Commands.Data.HostBuilders;
 using TrainDude.Commands.Handlers.HostBuilders;
-using TrainDude.Projections.HostBuilders;
+using TrainDude.Commands.Requests.Admin;
 using TrainDude.Queries.Data.HostBuilders;
 using TrainDude.Queries.Handlers.HostBuilders;
 using TrainDude.Web.Components;
@@ -45,7 +44,6 @@ public static class Program
         builder.Services
             .AddReadDataServices(readConnectionString)
             .AddWriteDataServices(writeConnectionString, isDevelopment)
-            .AddDataModelProjections()
             .AddReadDataValidation()
             .AddWriteDataValidation()
             .AddRequestHandlers()
