@@ -1,4 +1,4 @@
-// <copyright file="Trip.cs" company="Pawlakov">
+// <copyright file="Segment.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
@@ -10,25 +10,22 @@ using System.Text.Json.Serialization;
 using Mediator;
 
 using TrainDude.Shared.Notifications;
-using TrainDude.Shared.Notifications.Trips;
+using TrainDude.Shared.Notifications.Segments;
 
-public class Trip
+public class Segment
     : Aggregate
 {
     [JsonConstructor]
-    private Trip(Guid id, int tripNumber)
+    private Segment(Guid id)
         : base(id)
     {
-        this.TripNumber = tripNumber;
     }
 
-    public int TripNumber { get; private set; }
-
-    public static Trip Create(Guid tripId, int tripNumber)
+    public static Segment Create(Guid segmentId)
     {
-        var trip = new Trip(tripId, tripNumber);
-        trip.AddEvent(new TripCreatedNotification(trip.Id, trip.TripNumber));
-        return trip;
+        var segment = new Segment(segmentId);
+        segment.AddEvent(new SegmentCreatedNotification(segmentId));
+        return segment;
     }
 
     protected override void Apply(INotification notification)

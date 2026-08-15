@@ -9,24 +9,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
 
-using TrainDude.Commands.Data.Events;
+using Mediator;
+
+using TrainDude.Shared.Notifications;
+using TrainDude.Shared.Notifications.Lines;
 
 public class Line
+    : Aggregate
 {
     private readonly List<Guid> trips;
     private readonly List<Guid> stations;
 
     [JsonConstructor]
     private Line(Guid id, int lineNumber, char? lineLetter, ICollection<Guid> trips, ICollection<Guid> stations)
+        : base(id)
     {
-        this.Id = id;
         this.LineNumber = lineNumber;
         this.LineLetter = lineLetter;
         this.trips = (trips ?? []).ToList();
         this.stations = (stations ?? []).ToList();
     }
-
-    public Guid Id { get; private set; }
 
     public int LineNumber { get; private set; }
 
@@ -36,24 +38,43 @@ public class Line
 
     public ICollection<Guid> Stations => this.stations.AsReadOnly();
 
-    public static Line Create(LineCreated e)
+    public static Line Create(Guid lineId, int lineNumber, char? lineLetter)
     {
-        return new Line(e.LineId, e.LineNumber, e.LineLetter, [], []);
+        var line = new Line(lineId, lineNumber, lineLetter, [], []);
+        line.AddEvent(new LineCreatedNotification(lineId, lineNumber, lineLetter));
+        return line;
     }
 
-    public void Apply(LineTripAssigned e)
+    private void AssignTrip(Guid tripId)
     {
-        if (!this.trips.Contains(e.TripId))
-        {
-            this.trips.Add(e.TripId);
-        }
+        this.AddEvent(new LineTripAssignedNotification(this.Id, tripId));
     }
 
-    public void Apply(LineStationAppended e)
+    private void AppendStation(Guid stationId)
     {
-        if (this.stations.Count == 0 || this.stations.Last() != e.StationId)
+        this.AddEvent(new LineStationAppendedNotification(this.Id, stationId));
+    }
+
+    protected override void Apply(INotification notification)
+    {
+        switch (notification)
         {
-            this.stations.Add(e.StationId);
+            case LineTripAssignedNotification e:
+                if (!this.trips.Contains(e.TripId))
+                {
+                    this.trips.Add(e.TripId);
+                }
+
+                break;
+            case LineStationAppendedNotification e:
+                if (this.stations.Count == 0 || this.stations.Last() != e.StationId)
+                {
+                    this.stations.Add(e.StationId);
+                }
+
+                break;
+            default:
+                throw new NotSupportedException("This event type is not meant for this aggregate.");
         }
     }
 }

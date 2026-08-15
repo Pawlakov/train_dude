@@ -8,10 +8,10 @@ using Microsoft.Extensions.DependencyInjection;
 
 using TrainDude.Commands.Handlers.Admin;
 using TrainDude.Commands.Requests.Admin;
-using TrainDude.Projections;
+using TrainDude.Projections.Handlers;
 using TrainDude.Queries.Handlers.Network;
 using TrainDude.Queries.Requests.Network;
-using TrainDude.Shared.Notifications;
+using TrainDude.Shared.Notifications.Stations;
 using TrainDude.Web.Infrastructure;
 
 public static class HostBuilderExtensions
@@ -27,8 +27,8 @@ public static class HostBuilderExtensions
                     typeof(GetNetworkQueryHandler),
                     typeof(SeedCommand),
                     typeof(SeedCommandHandler),
-                    typeof(DataChangedNotification),
-                    typeof(DataChangedNotificationHandler),
+                    typeof(StationCreatedNotification),
+                    typeof(StationCreatedNotificationHandler),
                 ];
                 options.ServiceLifetime = ServiceLifetime.Scoped;
             });

@@ -32,36 +32,32 @@ public sealed class UpdateStationNameModeCommandHandler
 
     public async ValueTask<Unit> Handle(UpdateStationNameModeCommand command, CancellationToken cancellationToken)
     {
+        var settingsId = command.SettingsId ?? Guid.NewGuid();
+
         var allSettings = await this.session.Query<Settings>().ToListAsync(cancellationToken);
-        if (allSettings.Count == 0 && command.SettingsId == null)
+        var settings = (allSettings.Count, command.SettingsId) switch
         {
-            var settings = Settings.Create(Guid.NewGuid(), StationNameMode.Modern);
+            (0, null) => Settings.Create(settingsId, StationNameMode.Modern),
+            (> 0, not null) => allSettings.Single(x => x.Id == command.SettingsId.Value),
+            _ => throw new ApplicationException("If this exception was thrown it means that the validation has failed."),
+        };
 
-            settings.UpdateStationNameMode(command.Mode);
-
-            this.session.Store(settings);
-        }
-        else if (allSettings.Count > 0 && command.SettingsId.HasValue)
+        foreach (var fakeSettings in allSettings.Where(x => x.Id != settingsId))
         {
-            var settings = allSettings.Single(x => x.Id == command.SettingsId.Value);
-
-            settings.UpdateStationNameMode(command.Mode);
-
-            this.session.Store(settings);
-
-            if (allSettings.Count > 1)
-            {
-                this.session.Delete(allSettings.Skip(1));
-            }
-        }
-        else
-        {
-            throw new ApplicationException("If this exception was thrown it means that the validation has failed.");
+            this.session.Delete(fakeSettings);
         }
 
+        settings.UpdateStationNameMode(command.Mode);
+
+        // TODO nie zawsze start stream, co jak już jest
+        this.session.Events.StartStream<Settings>(settingsId, settings.UncommittedEvents);
         await this.session.SaveChangesAsync(cancellationToken);
+        foreach (var notification in settings.UncommittedEvents)
+        {
+            await this.publisher.Publish(notification, cancellationToken);
+        }
 
-        await this.publisher.Publish(new DataChangedNotification(), cancellationToken);
+        settings.ClearUncommittedEvents();
 
         return Unit.Value;
     }

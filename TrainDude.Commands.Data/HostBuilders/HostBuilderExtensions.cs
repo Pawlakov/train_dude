@@ -22,8 +22,11 @@ public static class HostBuilderExtensions
                 options.Connection(connectionString);
                 options.DatabaseSchemaName = "train_dude";
 
-                options.Projections.Snapshot<Station>(SnapshotLifecycle.Inline);
                 options.Projections.Snapshot<Line>(SnapshotLifecycle.Inline);
+                options.Projections.Snapshot<Radius>(SnapshotLifecycle.Inline);
+                options.Projections.Snapshot<Segment>(SnapshotLifecycle.Inline);
+                options.Projections.Snapshot<Settings>(SnapshotLifecycle.Inline);
+                options.Projections.Snapshot<Station>(SnapshotLifecycle.Inline);
                 options.Projections.Snapshot<Trip>(SnapshotLifecycle.Inline);
 
                 if (isDevelopment)
