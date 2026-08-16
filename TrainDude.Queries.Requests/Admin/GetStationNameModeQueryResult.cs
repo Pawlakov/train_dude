@@ -4,10 +4,8 @@
 
 namespace TrainDude.Queries.Requests.Admin;
 
-using System;
-
+using TrainDude.Integration.Values;
 using TrainDude.Queries.Requests.Base;
-using TrainDude.Shared.Values;
 
 public class GetStationNameModeQueryResult
     : BasePolymorphicQueryResult

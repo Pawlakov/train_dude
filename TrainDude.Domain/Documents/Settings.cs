@@ -8,7 +8,7 @@ using System;
 using System.Text.Json.Serialization;
 
 using TrainDude.Domain.Events.Admin;
-using TrainDude.Shared.Values;
+using TrainDude.Integration.Values;
 
 public class Settings
     : AggregateBase

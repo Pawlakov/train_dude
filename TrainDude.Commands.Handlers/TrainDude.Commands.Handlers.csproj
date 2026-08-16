@@ -1,14 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     
     <ItemGroup>
-        <PackageReference Include="FluentValidation" Version="12.1.1"/>
-        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1"/>
-        <PackageReference Include="Marten" Version="9.24.0" />
+        <PackageReference Include="FluentValidation"/>
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions"/>
+        <PackageReference Include="Marten" />
+        <PackageReference Include="WolverineFx.Marten" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\TrainDude.Commands.Requests\TrainDude.Commands.Requests.csproj" />
       <ProjectReference Include="..\TrainDude.Domain\TrainDude.Domain.csproj" />
+      <ProjectReference Include="..\TrainDude.Integration.Events\TrainDude.Integration.Events.csproj" />
     </ItemGroup>
 
 </Project>

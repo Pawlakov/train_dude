@@ -6,6 +6,6 @@ namespace TrainDude.Domain.Events.Stations;
 
 using System;
 
-using TrainDude.Shared.Values;
+using TrainDude.Integration.Values;
 
 public sealed record class StationLocationSet(Guid Id, Location Location) : IDomainEvent;

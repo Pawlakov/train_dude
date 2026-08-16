@@ -4,12 +4,14 @@
 
 namespace TrainDude.Commands.Requests.Trips;
 
-using Mediator;
+using System;
 
 using TrainDude.Commands.Requests.Base;
 
 public sealed record class CreateTripCommand
-    : BasePolymorphicCommand, ICommand<CreateTripCommandResult>
+    : BasePolymorphicCommand
 {
+    public Guid Id { get; set; }
+
     public int Number { get; set; }
 }

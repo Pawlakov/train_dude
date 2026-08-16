@@ -8,7 +8,7 @@ using System;
 using System.Text.Json.Serialization;
 
 using TrainDude.Domain.Events.Stations;
-using TrainDude.Shared.Values;
+using TrainDude.Integration.Values;
 
 public class Station
     : AggregateBase

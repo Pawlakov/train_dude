@@ -1,11 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <ItemGroup>
-        <PackageReference Include="FluentValidation" Version="12.1.1"/>
-        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1"/>
+        <PackageReference Include="FluentValidation"/>
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions"/>
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\TrainDude.Integration.Events\TrainDude.Integration.Events.csproj" />
         <ProjectReference Include="..\TrainDude.Queries.Requests\TrainDude.Queries.Requests.csproj"/>
         <ProjectReference Include="..\TrainDude.Queries.Data\TrainDude.Queries.Data.csproj"/>
     </ItemGroup>

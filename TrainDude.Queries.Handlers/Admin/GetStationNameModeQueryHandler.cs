@@ -11,9 +11,9 @@ using LiteDB;
 
 using Mediator;
 
+using TrainDude.Integration.Values;
 using TrainDude.Queries.Data.Documents;
 using TrainDude.Queries.Requests.Admin;
-using TrainDude.Shared.Values;
 
 public sealed class GetStationNameModeQueryHandler
     : IQueryHandler<GetStationNameModeQuery, GetStationNameModeQueryResult>

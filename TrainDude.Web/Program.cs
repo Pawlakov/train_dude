@@ -4,20 +4,21 @@
 
 namespace TrainDude.Web;
 
-using System;
-using System.IO;
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using TrainDude.Commands.Handlers.HostBuilders;
-using TrainDude.Commands.Requests.Admin;
+using TrainDude.Integration.Events.Admin;
+using TrainDude.Integration.Events.Trips;
 using TrainDude.Queries.Data.HostBuilders;
 using TrainDude.Queries.Handlers.HostBuilders;
+using TrainDude.Queries.Handlers.Projections.Trips;
 using TrainDude.Web.Components;
 using TrainDude.Web.HostBuilders;
+
+using Wolverine;
 
 /// <summary>
 /// The main class.
@@ -50,6 +51,19 @@ public static class Program
             .AddExceptionHandlers();
 
         var app = builder.Build();
+
+        builder.Host.UseWolverine(opts =>
+        {
+            opts.Policies.AutoApplyTransactions();
+
+            opts.Discovery.IncludeAssembly(typeof(TripCreatedProjectionHandler).Assembly);
+
+            opts.PublishMessage<DroppedIntegrationEvent>().ToLocalQueue("train-dude-projection").Durably();
+            opts.PublishMessage<TripCreatedIntegrationEvent>().ToLocalQueue("train-dude-projection").Durably();
+
+            // TODO some day we will do it this way
+            // opts.PublishMessage<TripCreatedIntegrationEvent>().ToRabbitQueue("train-dude-projection").UseDurableOutbox();
+        });
 
         app.UseExceptionHandler("/Error");
 

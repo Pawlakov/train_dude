@@ -6,7 +6,7 @@ namespace TrainDude.Queries.Requests.Network;
 
 using System.Collections.Generic;
 
-using TrainDude.Shared.Values;
+using TrainDude.Integration.Values;
 
 public class GetNetworkQueryResultSegmentItem
 {

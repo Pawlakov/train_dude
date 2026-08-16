@@ -4,10 +4,7 @@
 
 namespace TrainDude.Queries.Requests.Segments;
 
-using System.Collections.Generic;
-
 using TrainDude.Queries.Requests.Base;
-using TrainDude.Shared.Values;
 
 public class GetSegmentQueryResult
     : BaseEntityLookupQueryResult

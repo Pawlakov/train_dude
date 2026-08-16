@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Shared.Values;
+namespace TrainDude.Integration.Values;
 
 public enum TrainClass
 {

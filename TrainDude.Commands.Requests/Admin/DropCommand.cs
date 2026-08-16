@@ -9,6 +9,6 @@ using Mediator;
 using TrainDude.Commands.Requests.Base;
 
 public sealed record class DropCommand
-    : BasePolymorphicCommand, ICommand
+    : BasePolymorphicCommand
 {
 }

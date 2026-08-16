@@ -6,8 +6,8 @@ namespace TrainDude.Queries.Requests.Network;
 
 using System.Collections.Generic;
 
+using TrainDude.Integration.Values;
 using TrainDude.Queries.Requests.Base;
-using TrainDude.Shared.Values;
 
 public class GetNetworkQueryResult
     : BasePolymorphicQueryResult

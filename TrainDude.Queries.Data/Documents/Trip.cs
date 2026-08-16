@@ -13,5 +13,7 @@ public class Trip
     [BsonId]
     public Guid TripId { get; set; }
 
+    public long Version { get; set; }
+
     public int TripNumber { get; set; }
 }

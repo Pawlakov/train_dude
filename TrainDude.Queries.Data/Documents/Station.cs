@@ -8,7 +8,7 @@ using System;
 
 using LiteDB;
 
-using TrainDude.Shared.Values;
+using TrainDude.Integration.Values;
 
 public class Station
 {

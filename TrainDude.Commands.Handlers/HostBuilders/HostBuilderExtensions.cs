@@ -7,6 +7,7 @@ namespace TrainDude.Commands.Handlers.HostBuilders;
 using FluentValidation;
 
 using JasperFx;
+using JasperFx.Events.Daemon;
 using JasperFx.Events.Projections;
 
 using Marten;
@@ -19,7 +20,8 @@ using TrainDude.Commands.Handlers.Admin;
 using TrainDude.Commands.Handlers.Projections;
 using TrainDude.Commands.Handlers.Validation;
 using TrainDude.Commands.Requests.Admin;
-using TrainDude.Domain.Documents;
+
+using Wolverine.Marten;
 
 /// <summary>
 /// A container for extensions methods concerning services.
@@ -45,7 +47,9 @@ public static class HostBuilderExtensions
                     options.AutoCreateSchemaObjects = AutoCreate.All;
                 }
             })
-            .UseLightweightSessions();
+            .UseLightweightSessions()
+            .IntegrateWithWolverine()
+            .AddAsyncDaemon(DaemonMode.HotCold);
 
         return services;
     }

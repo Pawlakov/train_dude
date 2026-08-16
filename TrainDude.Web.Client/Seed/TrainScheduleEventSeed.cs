@@ -2,9 +2,9 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Commands.Handlers.Seed;
+namespace TrainDude.Web.Client.Seed;
 
-using TrainDude.Shared.Values;
+using TrainDude.Integration.Values;
 
 internal class TrainScheduleEventSeed
 {

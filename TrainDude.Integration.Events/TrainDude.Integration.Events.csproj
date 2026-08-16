@@ -1,0 +1,5 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\TrainDude.Integration.Values\TrainDude.Integration.Values.csproj" />
+  </ItemGroup>
+</Project>

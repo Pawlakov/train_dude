@@ -156,12 +156,13 @@ public class SeedService
 
     private async Task SeedTrip(TripSeed seed, CancellationToken cancellationToken = default)
     {
+        var tripId = Guid.NewGuid();
         var command = new CreateTripCommand
         {
             Number = seed.Number,
         };
 
-        var result = await this.mediator.Send(command, cancellationToken);
-        this.tripIdMap[seed.Number] = result.Id;
+        await this.mediator.Send(command, cancellationToken);
+        this.tripIdMap[seed.Number] = tripId;
     }
 }

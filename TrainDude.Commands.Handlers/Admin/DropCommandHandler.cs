@@ -1,31 +1,24 @@
 // <copyright file="DropCommandHandler.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
-namespace TrainDude.Commands.Handlers.Admin;
 
-using System.Threading;
-using System.Threading.Tasks;
+namespace TrainDude.Commands.Handlers.Admin;
 
 using Marten;
 
-using Mediator;
-
 using TrainDude.Commands.Requests.Admin;
+using TrainDude.Integration.Events.Admin;
 
-public sealed class DropCommandHandler
-    : ICommandHandler<DropCommand>
+using Wolverine;
+
+public static class DropCommandHandler
 {
-    private readonly IDocumentStore store;
-
-    public DropCommandHandler(IDocumentStore store)
+    public static OutgoingMessages Handle(DropCommand command, IDocumentStore store)
     {
-        this.store = store;
-    }
+        store.Advanced.Clean.CompletelyRemoveAllAsync().Wait();
 
-    public async ValueTask<Unit> Handle(DropCommand command, CancellationToken cancellationToken)
-    {
-        await this.store.Advanced.Clean.CompletelyRemoveAllAsync(cancellationToken);
+        var integrationEvent = new DroppedIntegrationEvent();
 
-        return Unit.Value;
+        return new OutgoingMessages { integrationEvent };
     }
 }

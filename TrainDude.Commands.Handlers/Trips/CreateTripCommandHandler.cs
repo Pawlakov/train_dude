@@ -5,38 +5,25 @@
 namespace TrainDude.Commands.Handlers.Trips;
 
 using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 using Marten;
 
-using Mediator;
-
 using TrainDude.Commands.Requests.Trips;
 using TrainDude.Domain.Documents;
+using TrainDude.Integration.Events.Trips;
 
-public sealed class CreateTripCommandHandler
-    : ICommandHandler<CreateTripCommand, CreateTripCommandResult>
+using Wolverine;
+
+public static class CreateTripCommandHandler
 {
-    private readonly IDocumentSession session;
-
-    public CreateTripCommandHandler(IDocumentSession session)
+    public static OutgoingMessages Handle(CreateTripCommand command, IDocumentSession session)
     {
-        this.session = session;
-    }
+        var created = Trip.Make(command.Id, command.Number);
 
-    public async ValueTask<CreateTripCommandResult> Handle(CreateTripCommand command, CancellationToken cancellationToken)
-    {
-        var tripId = Guid.NewGuid();
+        session.Events.StartStream<Trip>(command.Id, created);
 
-        var created = Trip.Make(tripId, command.Number);
+        var integrationEvent = new TripCreatedIntegrationEvent(command.Id, 1L, command.Number);
 
-        this.session.Events.StartStream<Trip>(tripId, created);
-        await this.session.SaveChangesAsync(cancellationToken);
-
-        return new CreateTripCommandResult
-        {
-            Id = tripId,
-        };
+        return new OutgoingMessages { integrationEvent };
     }
 }

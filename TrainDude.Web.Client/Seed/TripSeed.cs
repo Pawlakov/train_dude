@@ -2,9 +2,10 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Commands.Handlers.Seed;
+namespace TrainDude.Web.Client.Seed;
 
-using TrainDude.Shared.Values;
+using TrainDude.Commands.Handlers.Seed;
+using TrainDude.Integration.Values;
 
 internal class TripSeed
 {

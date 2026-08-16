@@ -4,15 +4,11 @@
 
 namespace TrainDude.Commands.Requests.Admin;
 
-using System;
-
-using Mediator;
-
 using TrainDude.Commands.Requests.Base;
-using TrainDude.Shared.Values;
+using TrainDude.Integration.Values;
 
 public sealed record class UpdateStationNameModeCommand
-    : BasePolymorphicCommand, ICommand
+    : BasePolymorphicCommand
 {
     required public StationNameMode Mode { get; set; }
 }

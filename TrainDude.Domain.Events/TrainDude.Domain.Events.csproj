@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     
     <ItemGroup>
-      <PackageReference Include="FluentValidation" Version="12.1.1" />
+      <PackageReference Include="FluentValidation" />
     </ItemGroup>
     
     <ItemGroup>
-      <ProjectReference Include="..\TrainDude.Values\TrainDude.Values.csproj" />
+      <ProjectReference Include="..\TrainDude.Integration.Values\TrainDude.Integration.Values.csproj" />
     </ItemGroup>
     
 </Project>

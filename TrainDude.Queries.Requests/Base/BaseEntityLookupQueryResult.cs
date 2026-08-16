@@ -6,7 +6,7 @@ namespace TrainDude.Queries.Requests.Base;
 
 using System.Collections.Generic;
 
-using TrainDude.Shared.Values;
+using TrainDude.Integration.Values;
 
 public abstract class BaseEntityLookupQueryResult
     : BasePolymorphicQueryResult

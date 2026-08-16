@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 using LiteDB;
 
-using TrainDude.Shared.Values;
+using TrainDude.Integration.Values;
 
 public class Line
 {

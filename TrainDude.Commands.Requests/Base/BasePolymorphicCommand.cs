@@ -16,6 +16,6 @@ using TrainDude.Commands.Requests.Trips;
 [JsonDerivedType(typeof(UpdateStationNameModeCommand), nameof(UpdateStationNameModeCommand))]
 [JsonDerivedType(typeof(CreateTripCommand), nameof(CreateTripCommand))]
 public abstract record class BasePolymorphicCommand
-    : IMessage
+    : ICommand
 {
 }
