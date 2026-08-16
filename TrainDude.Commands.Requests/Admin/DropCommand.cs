@@ -1,4 +1,4 @@
-﻿// <copyright file="SeedCommand.cs" company="Pawlakov">
+// <copyright file="DropCommand.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
@@ -8,10 +8,7 @@ using Mediator;
 
 using TrainDude.Commands.Requests.Base;
 
-/// <summary>
-/// A command which seeds basic network data.
-/// </summary>
-public sealed record class SeedCommand
+public sealed record class DropCommand
     : BasePolymorphicCommand, ICommand
 {
 }

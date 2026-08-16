@@ -8,5 +8,4 @@ using System;
 
 public interface IDomainEvent
 {
-    public Guid Id { get; }
 }

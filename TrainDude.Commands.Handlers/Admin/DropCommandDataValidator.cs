@@ -1,4 +1,4 @@
-// <copyright file="SeedCommandDataValidator.cs" company="Pawlakov">
+// <copyright file="DropCommandDataValidator.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
@@ -11,10 +11,10 @@ using Microsoft.Extensions.Hosting;
 using TrainDude.Commands.Handlers.Validation;
 using TrainDude.Commands.Requests.Admin;
 
-public class SeedCommandDataValidator
-    : AbstractWriteDataValidator<SeedCommand>
+public class DropCommandDataValidator
+    : AbstractWriteDataValidator<DropCommand>
 {
-    public SeedCommandDataValidator(IHostEnvironment environment)
+    public DropCommandDataValidator(IHostEnvironment environment)
     {
         this.RuleFor(x => x)
             .Must(_ => environment.IsDevelopment())

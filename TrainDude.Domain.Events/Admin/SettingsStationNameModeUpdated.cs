@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Domain.Events.Settings;
+namespace TrainDude.Domain.Events.Admin;
 
 using System;
 

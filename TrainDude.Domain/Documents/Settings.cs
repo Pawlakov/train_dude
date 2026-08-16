@@ -7,7 +7,7 @@ namespace TrainDude.Domain.Documents;
 using System;
 using System.Text.Json.Serialization;
 
-using TrainDude.Domain.Events.Settings;
+using TrainDude.Domain.Events.Admin;
 using TrainDude.Shared.Values;
 
 public class Settings

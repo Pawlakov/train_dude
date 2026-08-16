@@ -24,8 +24,8 @@ public static class HostBuilderExtensions
                 [
                     typeof(GetNetworkQuery),
                     typeof(GetNetworkQueryHandler),
-                    typeof(SeedCommand),
-                    typeof(SeedCommandHandler),
+                    typeof(UpdateStationNameModeCommand),
+                    typeof(UpdateStationNameModeCommandHandler),
                 ];
                 options.ServiceLifetime = ServiceLifetime.Scoped;
             });

@@ -1,9 +1,7 @@
 ﻿@page "/admin"
-@using Mediator
-@using TrainDude.Commands.Requests.Admin
 @layout BlockMapLayout
 
-@inject ISender Mediator
+@inject SeedService Service
 
 <PageTitle>Administracja</PageTitle>
 
@@ -56,7 +54,7 @@
         this.loadingActive = true;
         this.StateHasChanged();
 
-        await this.Mediator.Send(new SeedCommand());
+        await this.Service.Handle();
 
         this.loadingActive = false;
         this.StateHasChanged();

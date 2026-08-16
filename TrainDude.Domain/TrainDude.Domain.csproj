@@ -5,7 +5,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Marten" Version="9.23.0" />
+      <PackageReference Include="Marten" Version="9.24.0" />
     </ItemGroup>
 
 </Project>

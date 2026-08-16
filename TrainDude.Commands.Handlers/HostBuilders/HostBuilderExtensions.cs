@@ -53,8 +53,8 @@ public static class HostBuilderExtensions
     public static IServiceCollection AddWriteDataValidation(this IServiceCollection services)
     {
         services
-            .AddValidatorsFromAssembly(typeof(SeedCommand).Assembly)
-            .AddValidatorsFromAssembly(typeof(SeedCommandHandler).Assembly)
+            .AddValidatorsFromAssembly(typeof(UpdateStationNameModeCommand).Assembly)
+            .AddValidatorsFromAssembly(typeof(UpdateStationNameModeCommandHandler).Assembly)
             .AddScoped(typeof(IPipelineBehavior<,>), typeof(WriteValidationBehavior<,>));
 
         return services;

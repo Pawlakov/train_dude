@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
 using TrainDude.Web.Client.HostBuilders;
+using TrainDude.Web.Client.Seed;
 using TrainDude.Web.Client.Services;
 
 public static class Program
@@ -30,6 +31,9 @@ public static class Program
         builder.Services.AddScoped<ISender, HttpMediator>();
         builder.Services.AddQueryInputValidation();
         builder.Services.AddCommandInputValidation();
+
+        builder.Services.AddScoped<SeedService>();
+        builder.Services.AddScoped<SeedLoader>();
 
         await builder.Build().RunAsync();
     }

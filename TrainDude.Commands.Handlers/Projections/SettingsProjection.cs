@@ -11,7 +11,7 @@ using JasperFx.Events;
 using Marten.Events.Aggregation;
 
 using TrainDude.Domain.Documents;
-using TrainDude.Domain.Events.Settings;
+using TrainDude.Domain.Events.Admin;
 
 public partial class SettingsProjection
     : SingleStreamProjection<Settings, Guid>
