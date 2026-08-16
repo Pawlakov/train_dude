@@ -16,6 +16,7 @@ using Mediator;
 using Microsoft.Extensions.DependencyInjection;
 
 using TrainDude.Commands.Handlers.Admin;
+using TrainDude.Commands.Handlers.Projections;
 using TrainDude.Commands.Handlers.Validation;
 using TrainDude.Commands.Requests.Admin;
 using TrainDude.Domain.Documents;
@@ -32,12 +33,12 @@ public static class HostBuilderExtensions
                 options.Connection(connectionString);
                 options.DatabaseSchemaName = "train_dude";
 
-                options.Projections.Snapshot<Line>(SnapshotLifecycle.Inline);
-                options.Projections.Snapshot<Radius>(SnapshotLifecycle.Inline);
-                options.Projections.Snapshot<Segment>(SnapshotLifecycle.Inline);
-                options.Projections.Snapshot<Settings>(SnapshotLifecycle.Inline);
-                options.Projections.Snapshot<Station>(SnapshotLifecycle.Inline);
-                options.Projections.Snapshot<Trip>(SnapshotLifecycle.Inline);
+                options.Projections.Add<LineProjection>(ProjectionLifecycle.Inline);
+                options.Projections.Add<RadiusProjection>(ProjectionLifecycle.Inline);
+                options.Projections.Add<SegmentProjection>(ProjectionLifecycle.Inline);
+                options.Projections.Add<SettingsProjection>(ProjectionLifecycle.Inline);
+                options.Projections.Add<StationProjection>(ProjectionLifecycle.Inline);
+                options.Projections.Add<TripProjection>(ProjectionLifecycle.Inline);
 
                 if (isDevelopment)
                 {
