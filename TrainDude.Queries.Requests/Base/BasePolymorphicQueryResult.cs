@@ -1,4 +1,4 @@
-// <copyright file="BasePolymorphicQueryResponse.cs" company="Pawlakov">
+// <copyright file="BasePolymorphicQueryResult.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 

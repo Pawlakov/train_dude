@@ -1,10 +1,10 @@
-﻿// <copyright file="TrainClass.cs" company="Pawlakov">
+﻿// <copyright file="CarriageClass.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
 namespace TrainDude.Integration.Values;
 
-public enum TrainClass
+public enum CarriageClass
 {
     First,
     Second,

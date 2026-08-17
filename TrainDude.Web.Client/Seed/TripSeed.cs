@@ -4,18 +4,17 @@
 
 namespace TrainDude.Web.Client.Seed;
 
-using TrainDude.Commands.Handlers.Seed;
 using TrainDude.Integration.Values;
 
 internal class TripSeed
 {
     public int Number { get; set; }
 
-    public TrainType Type { get; set; }
+    public TripType Type { get; set; }
 
     public bool? LimitedStorage { get; set; }
 
-    public TrainClass[]? Classes { get; set; }
+    public CarriageClass[]? Classes { get; set; }
 
-    public TrainScheduleSeed[]? Schedules { get; set; }
+    public TripScheduleSeed[]? Schedules { get; set; }
 }

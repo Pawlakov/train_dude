@@ -1,4 +1,4 @@
-﻿// <copyright file="TrainScheduleEventSeed.cs" company="Pawlakov">
+﻿// <copyright file="TripScheduleEventSeed.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
@@ -6,9 +6,9 @@ namespace TrainDude.Web.Client.Seed;
 
 using TrainDude.Integration.Values;
 
-internal class TrainScheduleEventSeed
+internal class TripScheduleEventSeed
 {
-    public TrainScheduleEventType Type { get; set; }
+    public TripScheduleEventType Type { get; set; }
 
     public int Station { get; set; }
 

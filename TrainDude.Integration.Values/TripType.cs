@@ -1,10 +1,10 @@
-﻿// <copyright file="TrainType.cs" company="Pawlakov">
+﻿// <copyright file="TripType.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
 namespace TrainDude.Integration.Values;
 
-public enum TrainType
+public enum TripType
 {
     Local,
 }
