@@ -76,8 +76,7 @@ public class Station
 
     public void Apply(StationAxleAdded e)
     {
-        throw new NotImplementedException();
-
+        // TODO Actually implement this after we restore segments I guess
         this.Version++;
     }
 }

@@ -17,8 +17,6 @@ using System.Threading.Tasks;
 using FluentValidation;
 using FluentValidation.Results;
 
-using Mediator;
-
 using TrainDude.Commands.Requests.Base;
 
 public class HttpCommandSender

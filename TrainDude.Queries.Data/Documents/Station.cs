@@ -15,6 +15,8 @@ public class Station
     [BsonId]
     public Guid StationId { get; set; }
 
+    public long Version { get; set; }
+
     public string Name { get; set; }
 
     public Location? Location { get; set; }

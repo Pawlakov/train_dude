@@ -4,6 +4,7 @@
 
 namespace TrainDude.Queries.Handlers.Projections.Trips;
 
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,10 +16,10 @@ using TrainDude.Queries.Data.Documents;
 
 public static class TripCreatedProjectionHandler
 {
-    public static async Task Handle(TripCreatedIntegrationEvent @event, ILiteCollection<Trip> repository, CancellationToken cancellationToken = default)
+    public static Task Handle(TripCreatedIntegrationEvent @event, ILiteCollection<Trip> repository, CancellationToken cancellationToken = default)
     {
         var existing = repository.Find(x => x.TripId == @event.Id).FirstOrDefault();
-        if (existing is null || existing.Version < @event.Version)
+        if (existing is null)
         {
             var readModel = new Trip
             {
@@ -27,7 +28,13 @@ public static class TripCreatedProjectionHandler
                 Version = @event.Version,
             };
 
-            repository.Upsert(readModel);
+            repository.Insert(readModel);
         }
+        else
+        {
+            throw new Exception("I'm sure that Wolverine has a neat way of handling this.");
+        }
+
+        return Task.CompletedTask;
     }
 }

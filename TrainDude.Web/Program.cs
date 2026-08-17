@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 
 using TrainDude.Commands.Handlers.HostBuilders;
 using TrainDude.Integration.Events.Admin;
+using TrainDude.Integration.Events.Stations;
 using TrainDude.Integration.Events.Trips;
 using TrainDude.Queries.Data.HostBuilders;
 using TrainDude.Queries.Handlers.HostBuilders;
@@ -61,6 +62,9 @@ public static class Program
 
             opts.Policies.UseDurableLocalQueues();
             opts.PublishMessage<DroppedIntegrationEvent>().ToLocalQueue("train-dude-projection").UseDurableInbox();
+            opts.PublishMessage<StationCreatedIntegrationEvent>().ToLocalQueue("train-dude-projection").UseDurableInbox();
+            opts.PublishMessage<StationLocationSetIntegrationEvent>().ToLocalQueue("train-dude-projection").UseDurableInbox();
+            opts.PublishMessage<StationAxleAddedIntegrationEvent>().ToLocalQueue("train-dude-projection").UseDurableInbox();
             opts.PublishMessage<TripCreatedIntegrationEvent>().ToLocalQueue("train-dude-projection").UseDurableInbox();
 
             // TODO some day we will do it this way

@@ -6,24 +6,31 @@ namespace TrainDude.Commands.Handlers.Trips;
 
 using System;
 
-using Marten;
-
 using TrainDude.Commands.Requests.Trips;
 using TrainDude.Domain.Documents;
 using TrainDude.Integration.Events.Trips;
 
 using Wolverine;
+using Wolverine.Marten;
 
 public static class CreateTripCommandHandler
 {
-    public static OutgoingMessages Handle(CreateTripCommand command, IDocumentSession session)
+    public static void Validate(CreateTripCommand command)
     {
-        var created = Trip.Make(command.Id, command.Number);
+        if (command.Number == default)
+        {
+            throw new InvalidOperationException("A valid trip number is required.");
+        }
+    }
 
-        session.Events.StartStream<Trip>(command.Id, created);
+    public static (IStartStream, OutgoingMessages) Handle(CreateTripCommand command)
+    {
+        var domainEvent = Trip.Make(command.Id, command.Number);
+
+        var startStream = MartenOps.StartStream<Trip>(command.Id, domainEvent);
 
         var integrationEvent = new TripCreatedIntegrationEvent(command.Id, 1L, command.Number);
 
-        return new OutgoingMessages { integrationEvent };
+        return (startStream, new OutgoingMessages { integrationEvent });
     }
 }
