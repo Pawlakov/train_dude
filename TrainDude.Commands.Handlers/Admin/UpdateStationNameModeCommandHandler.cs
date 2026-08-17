@@ -24,7 +24,7 @@ public static class UpdateStationNameModeCommandHandler
         if (allSettingsIds.Count < 1)
         {
             var newSettingsId = Guid.NewGuid();
-            var created = Settings.Make(newSettingsId, StationNameMode.Modern);
+            var created = Settings.Make(newSettingsId);
 
             session.Events.StartStream<Settings>(newSettingsId, created);
             session.SaveChangesAsync().Wait(); // This requires no integration. Read model doesn't need to know about this mess.

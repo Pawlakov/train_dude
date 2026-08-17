@@ -4,9 +4,11 @@
 
 namespace TrainDude.Queries.Requests.Radii;
 
+using System;
+
 public class GetRadiiQueryResultItem
 {
-    required public int RadiusId { get; init; }
+    required public Guid RadiusId { get; init; }
 
     required public int Speed { get; init; }
 

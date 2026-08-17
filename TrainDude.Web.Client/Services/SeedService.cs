@@ -159,6 +159,7 @@ public class SeedService
         var tripId = Guid.NewGuid();
         var command = new CreateTripCommand
         {
+            Id = tripId,
             Number = seed.Number,
         };
 

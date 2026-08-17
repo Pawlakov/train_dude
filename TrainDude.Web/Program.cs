@@ -4,6 +4,10 @@
 
 namespace TrainDude.Web;
 
+using JasperFx;
+using JasperFx.CodeGeneration;
+using JasperFx.Events.Daemon;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -50,20 +54,21 @@ public static class Program
             .AddRequestHandlers()
             .AddExceptionHandlers();
 
-        var app = builder.Build();
-
         builder.Host.UseWolverine(opts =>
         {
             opts.Policies.AutoApplyTransactions();
 
             opts.Discovery.IncludeAssembly(typeof(TripCreatedProjectionHandler).Assembly);
 
-            opts.PublishMessage<DroppedIntegrationEvent>().ToLocalQueue("train-dude-projection").Durably();
-            opts.PublishMessage<TripCreatedIntegrationEvent>().ToLocalQueue("train-dude-projection").Durably();
+            opts.Policies.UseDurableLocalQueues();
+            opts.PublishMessage<DroppedIntegrationEvent>().ToLocalQueue("train-dude-projection").UseDurableInbox();
+            opts.PublishMessage<TripCreatedIntegrationEvent>().ToLocalQueue("train-dude-projection").UseDurableInbox();
 
             // TODO some day we will do it this way
-            // opts.PublishMessage<TripCreatedIntegrationEvent>().ToRabbitQueue("train-dude-projection").UseDurableOutbox();
+            // opts.PublishMessage<TripCreatedIntegrationEvent>().ToRabbitQueue("train-dude-projection").UseDurableInbox();
         });
+
+        var app = builder.Build();
 
         app.UseExceptionHandler("/Error");
 

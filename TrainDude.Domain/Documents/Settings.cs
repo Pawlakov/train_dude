@@ -28,7 +28,7 @@ public class Settings
 
     public StationNameMode StationNameMode { get; private set; }
 
-    public static SettingsCreated Make(Guid settingsId, StationNameMode stationNameMode)
+    public static SettingsCreated Make(Guid settingsId)
     {
         return new SettingsCreated(settingsId);
     }

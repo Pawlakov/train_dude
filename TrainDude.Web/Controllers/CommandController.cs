@@ -6,6 +6,8 @@ namespace TrainDude.Web.Controllers;
 
 using System.Threading.Tasks;
 
+using Mediator;
+
 using Microsoft.AspNetCore.Mvc;
 
 using TrainDude.Commands.Requests.Base;
@@ -27,7 +29,8 @@ public class CommandController
     [HttpPost]
     public async Task<ActionResult> Handle([FromBody] BasePolymorphicCommand request)
     {
-        await this.bus.InvokeForTenantAsync(request);
-        return this.Ok();
+        await this.bus.InvokeAsync(request);
+
+        return this.Ok(Unit.Value);
     }
 }

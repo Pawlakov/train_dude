@@ -39,6 +39,11 @@ public class HttpMediator
             throw new NotSupportedException($"This request type is not supporting polymorphic JSON serialization. The type is {command.GetType()}.");
         }
 
+        if (default(TResponse) is not Unit)
+        {
+            throw new NotSupportedException("Commands that return a result are no longer supported.");
+        }
+
         var response = await this.http.PostAsJsonAsync("api/mediator/command", polymorphicRequest, cancellationToken);
         await EnsureSuccessAsync(response, cancellationToken);
 

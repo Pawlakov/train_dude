@@ -4,9 +4,11 @@
 
 namespace TrainDude.Queries.Requests.Segments;
 
+using System;
+
 public class GetSegmentsQueryResultItem
 {
-    required public int SegmentId { get; init; }
+    required public Guid SegmentId { get; init; }
 
     required public string AName { get; init; }
 

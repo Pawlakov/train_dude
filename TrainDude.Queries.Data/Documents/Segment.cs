@@ -4,6 +4,7 @@
 
 namespace TrainDude.Queries.Data.Documents;
 
+using System;
 using System.Collections.Generic;
 
 using LiteDB;
@@ -13,7 +14,7 @@ using TrainDude.Integration.Values;
 public class Segment
 {
     [BsonId]
-    public int SegmentId { get; set; }
+    public Guid SegmentId { get; set; }
 
     public double? NominalLength { get; set; }
 

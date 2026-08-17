@@ -26,8 +26,6 @@ public class Radius
     {
     }
 
-    public Guid Id { get; private set; }
-
     public int Speed { get; private set; }
 
     public int Minimum { get; private set; }

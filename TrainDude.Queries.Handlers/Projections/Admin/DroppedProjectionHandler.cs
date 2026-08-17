@@ -11,8 +11,9 @@ using TrainDude.Integration.Events.Admin;
 
 public static class DroppedProjectionHandler
 {
-    public static async Task Handle(DroppedIntegrationEvent @event, CancellationToken cancellationToken = default)
+    public static Task Handle(DroppedIntegrationEvent @event, CancellationToken cancellationToken = default)
     {
         // TODO Obliterate the database.
+        return Task.CompletedTask;
     }
 }

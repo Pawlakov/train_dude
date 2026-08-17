@@ -4,12 +4,14 @@
 
 namespace TrainDude.Queries.Data.Documents;
 
+using System;
+
 using LiteDB;
 
 public class Radius
 {
     [BsonId]
-    public int RadiusId { get; set; }
+    public Guid RadiusId { get; set; }
 
     public int Speed { get; set; }
 
