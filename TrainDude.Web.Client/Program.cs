@@ -29,11 +29,11 @@ public static class Program
         });
 
         builder.Services.AddScoped<ISender, HttpMediator>();
-        builder.Services.AddQueryInputValidation();
-        builder.Services.AddCommandInputValidation();
-
+        builder.Services.AddScoped<HttpCommandSender>();
         builder.Services.AddScoped<SeedService>();
         builder.Services.AddScoped<SeedLoader>();
+        builder.Services.AddQueryInputValidation();
+        builder.Services.AddCommandInputValidation();
 
         await builder.Build().RunAsync();
     }

@@ -21,10 +21,10 @@ public class SeedService
     private readonly Dictionary<int, Guid> stationIdMap;
     private readonly Dictionary<int, Guid> tripIdMap;
 
-    private readonly ISender mediator;
+    private readonly HttpCommandSender mediator;
     private readonly SeedLoader loader;
 
-    public SeedService(ISender mediator, SeedLoader loader)
+    public SeedService(HttpCommandSender mediator, SeedLoader loader)
     {
         this.stationIdMap = new Dictionary<int, Guid>();
         this.tripIdMap = new Dictionary<int, Guid>();

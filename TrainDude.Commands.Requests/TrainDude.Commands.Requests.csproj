@@ -1,11 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <ItemGroup>
-        <ProjectReference Include="..\TrainDude.Domain.Events\TrainDude.Domain.Events.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Include="Mediator.Abstractions" />
+        <ProjectReference Include="..\TrainDude.Integration.Values\TrainDude.Integration.Values.csproj" />
     </ItemGroup>
 
 </Project>

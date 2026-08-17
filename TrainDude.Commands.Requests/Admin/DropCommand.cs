@@ -4,8 +4,6 @@
 
 namespace TrainDude.Commands.Requests.Admin;
 
-using Mediator;
-
 using TrainDude.Commands.Requests.Base;
 
 public sealed record class DropCommand

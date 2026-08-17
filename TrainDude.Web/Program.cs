@@ -50,7 +50,6 @@ public static class Program
             .AddReadDataServices(readConnectionString)
             .AddWriteDataServices(writeConnectionString, isDevelopment)
             .AddReadDataValidation()
-            .AddWriteDataValidation()
             .AddRequestHandlers()
             .AddExceptionHandlers();
 

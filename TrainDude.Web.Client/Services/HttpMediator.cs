@@ -32,25 +32,6 @@ public class HttpMediator
         this.http = http;
     }
 
-    public async ValueTask<TResponse> Send<TResponse>(ICommand<TResponse> command, CancellationToken cancellationToken = default)
-    {
-        if (command is not BasePolymorphicCommand polymorphicRequest)
-        {
-            throw new NotSupportedException($"This request type is not supporting polymorphic JSON serialization. The type is {command.GetType()}.");
-        }
-
-        if (default(TResponse) is not Unit)
-        {
-            throw new NotSupportedException("Commands that return a result are no longer supported.");
-        }
-
-        var response = await this.http.PostAsJsonAsync("api/mediator/command", polymorphicRequest, cancellationToken);
-        await EnsureSuccessAsync(response, cancellationToken);
-
-        var result = await response.Content.ReadFromJsonAsync<TResponse>();
-        return result ?? throw new InvalidOperationException("Missing response.");
-    }
-
     public async ValueTask<TResponse> Send<TResponse>(IQuery<TResponse> query, CancellationToken cancellationToken = new CancellationToken())
     {
         if (query is not BasePolymorphicQuery polymorphicRequest)
@@ -67,9 +48,14 @@ public class HttpMediator
 
     /* Savage fields below. */
 
+    public ValueTask<TResponse> Send<TResponse>(ICommand<TResponse> command, CancellationToken cancellationToken = default)
+    {
+        throw new NotSupportedException("Commands using Mediator are no longer supported. Use HttpCommandSender.");
+    }
+
     public ValueTask<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default)
     {
-        throw new NotSupportedException("IRequest is not supported. Use ICommand or IQuery.");
+        throw new NotSupportedException("IRequest is not supported. Use IQuery.");
     }
 
     public ValueTask<object?> Send(object message, CancellationToken cancellationToken = default)

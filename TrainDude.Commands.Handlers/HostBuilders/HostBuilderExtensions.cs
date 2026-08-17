@@ -4,22 +4,15 @@
 
 namespace TrainDude.Commands.Handlers.HostBuilders;
 
-using FluentValidation;
-
 using JasperFx;
 using JasperFx.Events.Daemon;
 using JasperFx.Events.Projections;
 
 using Marten;
 
-using Mediator;
-
 using Microsoft.Extensions.DependencyInjection;
 
-using TrainDude.Commands.Handlers.Admin;
 using TrainDude.Commands.Handlers.Projections;
-using TrainDude.Commands.Handlers.Validation;
-using TrainDude.Commands.Requests.Admin;
 
 using Wolverine.Marten;
 
@@ -50,16 +43,6 @@ public static class HostBuilderExtensions
             .UseLightweightSessions()
             .IntegrateWithWolverine()
             .AddAsyncDaemon(DaemonMode.HotCold);
-
-        return services;
-    }
-
-    public static IServiceCollection AddWriteDataValidation(this IServiceCollection services)
-    {
-        services
-            .AddValidatorsFromAssembly(typeof(UpdateStationNameModeCommand).Assembly)
-            .AddValidatorsFromAssembly(typeof(UpdateStationNameModeCommandHandler).Assembly)
-            .AddScoped(typeof(IPipelineBehavior<,>), typeof(WriteValidationBehavior<,>));
 
         return services;
     }

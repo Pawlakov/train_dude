@@ -9,9 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
 
-using FluentValidation;
-
 using TrainDude.Domain.Events.Lines;
+using TrainDude.Domain.Exceptions;
 
 public class Line
     : AggregateBase
@@ -52,7 +51,7 @@ public class Line
     {
         if (this.trips.Contains(tripId))
         {
-            throw new ValidationException("This trip is already associated with this line.");
+            throw new LineDuplicateTripException(this.Id, tripId);
         }
 
         return new LineTripAssigned(this.Id, tripId);
@@ -62,7 +61,7 @@ public class Line
     {
         if (this.stations.Count != 0 && this.stations.Last() == stationId)
         {
-            throw new ValidationException("This station is already on this line.");
+            throw new LineDuplicateStationException(this.Id, stationId);
         }
 
         return new LineStationAppended(this.Id, stationId);

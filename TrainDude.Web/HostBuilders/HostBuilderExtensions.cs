@@ -24,8 +24,6 @@ public static class HostBuilderExtensions
                 [
                     typeof(GetNetworkQuery),
                     typeof(GetNetworkQueryHandler),
-                    typeof(UpdateStationNameModeCommand),
-                    typeof(UpdateStationNameModeCommandHandler),
                 ];
                 options.ServiceLifetime = ServiceLifetime.Scoped;
             });
@@ -35,6 +33,7 @@ public static class HostBuilderExtensions
 
     public static IServiceCollection AddExceptionHandlers(this IServiceCollection services)
     {
+        services.AddExceptionHandler<DomainExceptionHandler>();
         services.AddExceptionHandler<ValidationExceptionHandler>();
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();

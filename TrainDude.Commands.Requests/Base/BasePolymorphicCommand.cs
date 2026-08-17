@@ -6,8 +6,6 @@ namespace TrainDude.Commands.Requests.Base;
 
 using System.Text.Json.Serialization;
 
-using Mediator;
-
 using TrainDude.Commands.Requests.Admin;
 using TrainDude.Commands.Requests.Trips;
 
@@ -16,6 +14,5 @@ using TrainDude.Commands.Requests.Trips;
 [JsonDerivedType(typeof(UpdateStationNameModeCommand), nameof(UpdateStationNameModeCommand))]
 [JsonDerivedType(typeof(CreateTripCommand), nameof(CreateTripCommand))]
 public abstract record class BasePolymorphicCommand
-    : ICommand
 {
 }
