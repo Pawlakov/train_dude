@@ -7,13 +7,19 @@ namespace TrainDude.Queries.Handlers.Projections.Admin;
 using System.Threading;
 using System.Threading.Tasks;
 
+using LiteDB;
+
 using TrainDude.Integration.Events.Admin;
 
 public static class DroppedProjectionHandler
 {
-    public static Task Handle(DroppedIntegrationEvent @event, CancellationToken cancellationToken = default)
+    public static Task Handle(DroppedIntegrationEvent @event, ILiteDatabase db, CancellationToken cancellationToken = default)
     {
-        // TODO Obliterate the database.
+        foreach (var collectionName in db.GetCollectionNames())
+        {
+            db.GetCollection(collectionName).DeleteAll();
+        }
+
         return Task.CompletedTask;
     }
 }
