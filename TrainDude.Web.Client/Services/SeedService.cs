@@ -13,6 +13,7 @@ using Mediator;
 
 using TrainDude.Commands.Handlers.Seed;
 using TrainDude.Commands.Requests.Admin;
+using TrainDude.Commands.Requests.Lines;
 using TrainDude.Commands.Requests.Stations;
 using TrainDude.Commands.Requests.Trips;
 using TrainDude.Domain.Events.Stations;
@@ -52,13 +53,13 @@ public class SeedService
             await this.SeedTrip(tripSeed, cancellationToken);
         }
 
-        /*var linesSeed = this.loader.Load<LineSeed>("lines_seed.yml");
+        var linesSeed = await this.loader.LoadAsync<LineSeed>("lines_seed.yml");
         foreach (var lineSeed in linesSeed)
         {
             await this.SeedLine(lineSeed, cancellationToken);
         }
 
-        var segmentsSeed = this.loader.Load<SegmentSeed>("segments_seed.yml");
+        /*var segmentsSeed = this.loader.Load<SegmentSeed>("segments_seed.yml");
         foreach (var segmentSeed in segmentsSeed)
         {
             await this.SeedSegment(segmentSeed, cancellationToken);
@@ -71,37 +72,45 @@ public class SeedService
         }*/
     }
 
-    /*private async Task SeedLine(LineSeed seed, CancellationToken cancellationToken = default)
+    private async Task SeedLine(LineSeed seed, CancellationToken cancellationToken = default)
     {
         var lineId = Guid.NewGuid();
+        var createCommand = new CreateLineCommand
+        {
+            Id = lineId,
+            Number = seed.Number,
+            Letter = seed.Letter,
+        };
 
-        var created = Line.Make(lineId, seed.Number, seed.Letter);
+        await this.mediator.Send(createCommand, cancellationToken);
+        var version = 1L;
 
-        this.session.Events.StartStream<Line>(lineId, created);
-        await this.session.SaveChangesAsync(cancellationToken);
-        await this.publisher.Publish(created, cancellationToken);
-
-        var stream = await this.session.Events.FetchForWriting<Line>(lineId, cancellationToken);
         foreach (var trip in seed.Trips)
         {
-            var tripAssigned = stream.Aggregate.AssignTrip(this.tripIdMap[trip]);
+            var assignTripCommand = new AssignTripCommand
+            {
+                Id = lineId,
+                Version = version++,
+                TripId = this.tripIdMap[trip],
+            };
 
-            stream.AppendOne(tripAssigned);
-            await this.session.SaveChangesAsync(cancellationToken);
-            await this.publisher.Publish(tripAssigned, cancellationToken);
+            await this.mediator.Send(assignTripCommand, cancellationToken);
         }
 
         foreach (var station in seed.Stations)
         {
-            var stationAppended = stream.Aggregate.AppendStation(this.stationIdMap[station]);
+            var appendStationCommand = new AppendStationCommand
+            {
+                Id = lineId,
+                Version = version++,
+                StationId = this.stationIdMap[station],
+            };
 
-            stream.AppendOne(stationAppended);
-            await this.session.SaveChangesAsync(cancellationToken);
-            await this.publisher.Publish(stationAppended, cancellationToken);
+            await this.mediator.Send(appendStationCommand, cancellationToken);
         }
     }
 
-    private async Task SeedRadius(RadiusSeed seed, CancellationToken cancellationToken = default)
+    /*private async Task SeedRadius(RadiusSeed seed, CancellationToken cancellationToken = default)
     {
         var radiusId = Guid.NewGuid();
 

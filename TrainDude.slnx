@@ -9,6 +9,7 @@
   <Project Path="TrainDude.Domain.Events\TrainDude.Domain.Events.csproj" />
   <Project Path="TrainDude.Domain\TrainDude.Domain.csproj" />
   <Project Path="TrainDude.Integration.Events/TrainDude.Integration.Events.csproj" />
+  <Project Path="TrainDude.Integration.Projections/TrainDude.Integration.Projections.csproj" />
   <Project Path="TrainDude.Integration.Values\TrainDude.Integration.Values.csproj" />
   <Project Path="TrainDude.Queries.Data/TrainDude.Queries.Data.csproj" />
   <Project Path="TrainDude.Queries.Handlers/TrainDude.Queries.Handlers.csproj" />

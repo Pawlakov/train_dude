@@ -6,7 +6,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\TrainDude.Integration.Events\TrainDude.Integration.Events.csproj" />
         <ProjectReference Include="..\TrainDude.Queries.Requests\TrainDude.Queries.Requests.csproj"/>
         <ProjectReference Include="..\TrainDude.Queries.Data\TrainDude.Queries.Data.csproj"/>
     </ItemGroup>

@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using TrainDude.Commands.Handlers.HostBuilders;
+using TrainDude.Domain.Exceptions;
 using TrainDude.Integration.Events.Admin;
 using TrainDude.Integration.Events.Stations;
 using TrainDude.Integration.Events.Trips;
@@ -24,6 +25,7 @@ using TrainDude.Web.Components;
 using TrainDude.Web.HostBuilders;
 
 using Wolverine;
+using Wolverine.ErrorHandling;
 
 /// <summary>
 /// The main class.
@@ -57,10 +59,11 @@ public static class Program
         builder.Host.UseWolverine(opts =>
         {
             opts.Policies.AutoApplyTransactions();
+            opts.Policies.UseDurableLocalQueues();
+            opts.Policies.OnException<DomainException>().MoveToErrorQueue();
 
             opts.Discovery.IncludeAssembly(typeof(TripCreatedProjectionHandler).Assembly);
 
-            opts.Policies.UseDurableLocalQueues();
             opts.PublishMessage<DroppedIntegrationEvent>().ToLocalQueue("train-dude-projection").UseDurableInbox();
             opts.PublishMessage<StationCreatedIntegrationEvent>().ToLocalQueue("train-dude-projection").UseDurableInbox();
             opts.PublishMessage<StationLocationSetIntegrationEvent>().ToLocalQueue("train-dude-projection").UseDurableInbox();

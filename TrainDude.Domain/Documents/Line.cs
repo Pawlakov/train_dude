@@ -32,6 +32,8 @@ public class Line
 
     public Line()
     {
+        this.trips = new List<Guid>();
+        this.stations = new List<Guid>();
     }
 
     public int LineNumber { get; private set; }

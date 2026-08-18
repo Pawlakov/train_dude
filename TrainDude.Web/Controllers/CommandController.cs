@@ -28,7 +28,6 @@ public class CommandController
     public async Task<ActionResult> Handle([FromBody] BasePolymorphicCommand request)
     {
         await this.bus.InvokeAsync(request);
-
-        return this.Ok();
+        return this.Accepted();
     }
 }

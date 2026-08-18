@@ -16,6 +16,8 @@ public class Line
     [BsonId]
     public Guid LineId { get; set; }
 
+    public long Version { get; set; }
+
     public int LineNumber { get; set; }
 
     public char? LineLetter { get; set; }

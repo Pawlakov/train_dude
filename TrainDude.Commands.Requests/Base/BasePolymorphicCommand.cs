@@ -7,6 +7,7 @@ namespace TrainDude.Commands.Requests.Base;
 using System.Text.Json.Serialization;
 
 using TrainDude.Commands.Requests.Admin;
+using TrainDude.Commands.Requests.Lines;
 using TrainDude.Commands.Requests.Stations;
 using TrainDude.Commands.Requests.Trips;
 
@@ -17,6 +18,9 @@ using TrainDude.Commands.Requests.Trips;
 [JsonDerivedType(typeof(SetLocationCommand), nameof(SetLocationCommand))]
 [JsonDerivedType(typeof(AddAxleCommand), nameof(AddAxleCommand))]
 [JsonDerivedType(typeof(CreateTripCommand), nameof(CreateTripCommand))]
+[JsonDerivedType(typeof(CreateLineCommand), nameof(CreateLineCommand))]
+[JsonDerivedType(typeof(AssignTripCommand), nameof(AssignTripCommand))]
+[JsonDerivedType(typeof(AppendStationCommand), nameof(AppendStationCommand))]
 public abstract record class BasePolymorphicCommand
 {
 }
