@@ -36,12 +36,12 @@ public sealed class GetSegmentQueryHandler
 
         var dto = new GetSegmentQueryResult
         {
-            AName = queryResult.AName,
-            BName = queryResult.BName,
-            StationPoints = new[] { queryResult.ALocation, queryResult.BLocation }.Where(x => x.HasValue).Select(x => x.Value).ToList(),
+            AName = queryResult.A?.Name ?? string.Empty,
+            BName = queryResult.B?.Name ?? string.Empty,
+            StationPoints = new[] { queryResult.A?.Location, queryResult.B?.Location }.Where(x => x.HasValue).Select(x => x.Value).ToList(),
             SegmentLineStrings = new[] { (queryResult.Vertices ?? []).ToList() },
         };
 
-        return ValueTask.FromResult<GetSegmentQueryResult?>(dto);
+        return ValueTask.FromResult<GetSegmentQueryResult>(dto);
     }
 }

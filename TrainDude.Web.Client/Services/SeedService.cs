@@ -172,6 +172,7 @@ public class SeedService
         var createCommand = new CreateSegmentCommand
         {
             Id = segmentId,
+            NominalLength = seed.Length,
         };
 
         await this.mediator.Send(createCommand, cancellationToken);

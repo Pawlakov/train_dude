@@ -36,13 +36,13 @@ public sealed class GetNetworkQueryHandler
 
         var segments = this.segmentRepository
             .Query()
-            .Where(x => x.ALocation.HasValue && x.BLocation.HasValue)
+            .Where(x => x.A.Location != null && x.B.Location != null)
             .Select(x => new
             {
-                x.AStationId,
-                ALocation = x.ALocation!.Value,
-                x.BStationId,
-                BLocation = x.BLocation!.Value,
+                AStationId = x.A.StationId,
+                ALocation = x.A.Location!.Value,
+                BStationId = x.B.StationId,
+                BLocation = x.B.Location!.Value,
                 x.Vertices,
             })
             .ToList();

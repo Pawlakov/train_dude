@@ -12,4 +12,6 @@ public sealed record class CreateSegmentCommand
     : BasePolymorphicCommand
 {
     public Guid Id { get; set; }
+
+    public double? NominalLength { get; set; }
 }

@@ -25,6 +25,7 @@ public static class SegmentCreatedProjectionHandler
             {
                 SegmentId = @event.Id,
                 Version = @event.Version,
+                NominalLength = @event.NominalLength,
             };
 
             repository.Insert(readModel);

@@ -35,12 +35,12 @@ public sealed class GetSegmentsQueryHandler
             {
                 x.SegmentId,
                 x.NominalLength,
-                x.AStationId,
-                x.ALocation,
-                x.AName,
-                x.BStationId,
-                x.BLocation,
-                x.BName,
+                AStationId = x.A.StationId,
+                ALocation = x.A.Location,
+                AName = x.A.Name,
+                BStationId = x.B.StationId,
+                BLocation = x.B.Location,
+                BName = x.B.Name,
                 x.Vertices,
             })
             .ToList();

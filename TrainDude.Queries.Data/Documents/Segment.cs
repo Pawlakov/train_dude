@@ -20,17 +20,18 @@ public class Segment
 
     public double? NominalLength { get; set; }
 
-    public int AStationId { get; set; }
+    public SegmentStation A { get; set; }
 
-    public string AName { get; set; }
-
-    public Location? ALocation { get; set; }
-
-    public int BStationId { get; set; }
-
-    public string BName { get; set; }
-
-    public Location? BLocation { get; set; }
+    public SegmentStation B { get; set; }
 
     public ICollection<Location> Vertices { get; set; }
+
+    public class SegmentStation
+    {
+        public Guid StationId { get; set; }
+
+        public string Name { get; set; }
+
+        public Location? Location { get; set; }
+    }
 }
