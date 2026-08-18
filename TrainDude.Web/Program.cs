@@ -18,9 +18,9 @@ using TrainDude.Domain.Exceptions;
 using TrainDude.Integration.Events.Admin;
 using TrainDude.Integration.Events.Stations;
 using TrainDude.Integration.Events.Trips;
+using TrainDude.Integration.Projections.Trips;
 using TrainDude.Queries.Data.HostBuilders;
 using TrainDude.Queries.Handlers.HostBuilders;
-using TrainDude.Queries.Handlers.Projections.Trips;
 using TrainDude.Web.Components;
 using TrainDude.Web.HostBuilders;
 

@@ -13,6 +13,8 @@ public class Radius
     [BsonId]
     public Guid RadiusId { get; set; }
 
+    public long Version { get; set; }
+
     public int Speed { get; set; }
 
     public int Minimum { get; set; }

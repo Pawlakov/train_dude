@@ -14,6 +14,7 @@ using Mediator;
 using TrainDude.Commands.Handlers.Seed;
 using TrainDude.Commands.Requests.Admin;
 using TrainDude.Commands.Requests.Lines;
+using TrainDude.Commands.Requests.Radii;
 using TrainDude.Commands.Requests.Stations;
 using TrainDude.Commands.Requests.Trips;
 using TrainDude.Domain.Events.Stations;
@@ -63,13 +64,13 @@ public class SeedService
         foreach (var segmentSeed in segmentsSeed)
         {
             await this.SeedSegment(segmentSeed, cancellationToken);
-        }
+        }*/
 
-        var radiiSeed = this.loader.Load<RadiusSeed>("radii_seed.yml");
+        var radiiSeed = await this.loader.LoadAsync<RadiusSeed>("radii_seed.yml");
         foreach (var radiusSeed in radiiSeed)
         {
             await this.SeedRadius(radiusSeed, cancellationToken);
-        }*/
+        }
     }
 
     private async Task SeedLine(LineSeed seed, CancellationToken cancellationToken = default)
@@ -110,16 +111,18 @@ public class SeedService
         }
     }
 
-    /*private async Task SeedRadius(RadiusSeed seed, CancellationToken cancellationToken = default)
+    private async Task SeedRadius(RadiusSeed seed, CancellationToken cancellationToken = default)
     {
         var radiusId = Guid.NewGuid();
+        var createCommand = new CreateRadiusCommand
+        {
+            Id = radiusId,
+            Speed = seed.Speed,
+            Minimum = seed.Minimum,
+        };
 
-        var created = Radius.Make(radiusId, seed.Speed, seed.Minimum);
-
-        this.session.Events.StartStream<Radius>(radiusId, created);
-        await this.session.SaveChangesAsync(cancellationToken);
-        await this.publisher.Publish(created, cancellationToken);
-    }*/
+        await this.mediator.Send(createCommand, cancellationToken);
+    }
 
     private async Task SeedStation(StationSeed seed, CancellationToken cancellationToken = default)
     {

@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Queries.Handlers.Projections.Trips;
+namespace TrainDude.Integration.Projections.Trips;
 
 using System;
 using System.Linq;

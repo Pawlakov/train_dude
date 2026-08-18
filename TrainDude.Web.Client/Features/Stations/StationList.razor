@@ -1,10 +1,7 @@
 ﻿@page "/stations"
-@using Mediator
 @using TrainDude.Queries.Requests.Stations
 @inherits EntityListPageBase<GetStationsQuery, GetStationsQueryResult, GetStationsQueryResultItem>
 @layout BlockMapLayout
-
-@inject ISender Mediator
 
 <PageTitle>Stacje</PageTitle>
 

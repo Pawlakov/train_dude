@@ -1,8 +1,7 @@
-﻿@using Mediator
+﻿@page "/radii"
 @using TrainDude.Queries.Requests.Radii
 @inherits EntityListPageBase<GetRadiiQuery, GetRadiiQueryResult, GetRadiiQueryResultItem>
-
-@page "/radii"
+@layout BlockMapLayout
 
 <PageTitle>Promienie</PageTitle>
 
@@ -16,32 +15,32 @@
 <hr/>
 <section class="section">
     <div class="table-container">
-        <table class="table">
+        <table class="table is-fullwidth">
             <thead>
-            <tr>
-                <th>Prędkość maksymalna</th>
-                <th>Minimalny promień łuku</th>
-                <th>Maksymalny antypromień łuku</th>
-            </tr>
+                <tr>
+                    <th>Prędkość maksymalna</th>
+                    <th>Minimalny promień łuku</th>
+                    <th>Maksymalny antypromień łuku</th>
+                </tr>
             </thead>
             <tbody>
-            @if (this.items == null)
-            {
-                <tr>
-                    <td colspan="3"><em>Loading...</em></td>
-                </tr>
-            }
-            else
-            {
-                @foreach (var radius in this.items)
+                @if (this.items == null)
                 {
                     <tr>
-                        <td>@($"{radius.Speed}") km/h</td>
-                        <td>@($"{radius.Minimum}") km</td>
-                        <td>@($"{radius.MaximumAntiradius:0.00}") 1/Mm</td>
+                        <td colspan="3"><em>Loading...</em></td>
                     </tr>
                 }
-            }
+                else
+                {
+                    @foreach (var radius in this.items)
+                    {
+                        <tr>
+                            <td>@($"{radius.Speed}") km/h</td>
+                            <td>@($"{radius.Minimum}") km</td>
+                            <td>@($"{radius.MaximumAntiradius:0.00}") 1/Mm</td>
+                        </tr>
+                    }
+                }
             </tbody>
         </table>
     </div>
