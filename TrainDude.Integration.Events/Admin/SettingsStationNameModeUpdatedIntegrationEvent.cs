@@ -4,6 +4,9 @@
 
 namespace TrainDude.Integration.Events.Admin;
 
+using System;
+using System.Collections.Generic;
+
 using TrainDude.Integration.Values;
 
-public sealed record class SettingsStationNameModeUpdatedIntegrationEvent(StationNameMode StationNameMode);
+public sealed record class SettingsStationNameModeUpdatedIntegrationEvent(StationNameMode StationNameMode, Dictionary<Guid, string> NewNames);

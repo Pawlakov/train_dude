@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Queries.Handlers.Projections.Admin;
+namespace TrainDude.Integration.Projections.Admin;
 
 using System.Threading;
 using System.Threading.Tasks;

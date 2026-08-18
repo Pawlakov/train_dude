@@ -12,6 +12,18 @@ using TrainDude.Integration.Values;
 
 public class Station
 {
+    public Station()
+    {
+    }
+
+    public Station(Station source)
+    {
+        this.StationId = source.StationId;
+        this.Version = source.Version;
+        this.Name = source.Name;
+        this.Location = source.Location;
+    }
+
     [BsonId]
     public Guid StationId { get; set; }
 

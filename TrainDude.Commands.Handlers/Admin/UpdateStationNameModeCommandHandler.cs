@@ -20,7 +20,7 @@ public static class UpdateStationNameModeCommandHandler
 {
     public static OutgoingMessages Handle(UpdateStationNameModeCommand command, IDocumentSession session)
     {
-        var allSettingsIds = session.Query<Settings>().Select(x => x.Id).ToList();
+        var allSettingsIds = session.Query<Settings>().Select(x => x.Id).ToListAsync().Result;
         if (allSettingsIds.Count < 1)
         {
             var newSettingsId = Guid.NewGuid();
@@ -35,14 +35,22 @@ public static class UpdateStationNameModeCommandHandler
             throw new ApplicationException("Too many settings were created");
         }
 
-        var settingsId = session.Query<Settings>().Select(x => x.Id).Single();
+        var settingsId = session.Query<Settings>().Select(x => x.Id).SingleAsync().Result;
         var stream = session.Events.FetchForWriting<Settings>(settingsId).Result;
 
         var stationNameModeUpdated = stream.Aggregate.UpdateStationNameMode(command.Mode);
 
         stream.AppendOne(stationNameModeUpdated);
 
-        var integrationEvent = new SettingsStationNameModeUpdatedIntegrationEvent(command.Mode);
+        var allSations = session.Query<Station>().ToListAsync().Result;
+        Func<Station, string> nameSelector = command.Mode switch
+        {
+            StationNameMode.German => (station) => station.NameGermanNew ?? station.NameGerman,
+            _ => (station) => station.NamePolish ?? station.NameRussian ?? "???",
+        };
+        var newNameDictionary = allSations.ToDictionary(x => x.Id, nameSelector);
+
+        var integrationEvent = new SettingsStationNameModeUpdatedIntegrationEvent(command.Mode, newNameDictionary);
 
         return new OutgoingMessages { integrationEvent };
     }

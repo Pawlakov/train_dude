@@ -4,7 +4,8 @@
 @using TrainDude.Integration.Values
 @using TrainDude.Queries.Requests.Admin
 
-@inject ISender Mediator
+@inject ISender QueryMediator
+@inject HttpCommandSender CommandMediator
 
 @if (this.editActive)
 {
@@ -94,7 +95,7 @@ else
     private async Task Refresh()
     {
         var query = new GetStationNameModeQuery();
-        this.queryResult = await this.Mediator.Send(query);
+        this.queryResult = await this.QueryMediator.Send(query);
         this.command = new UpdateStationNameModeCommand
         {
             Mode = this.queryResult.Mode,
@@ -108,7 +109,7 @@ else
         {
             try
             {
-                await this.Mediator.Send(this.command);
+                await this.CommandMediator.Send(this.command);
                 await this.DeactivateEdit();
             }
             catch (ValidationException exception)
