@@ -13,12 +13,14 @@ public class Segment
     : AggregateBase
 {
     [JsonConstructor]
-    private Segment(Guid id, long version, double? nominalLength)
+    private Segment(Guid id, long version, double? nominalLength, Guid aId, Guid bId)
     {
         this.Id = id;
         this.Version = version;
 
         this.NominalLength = nominalLength;
+        this.AId = aId;
+        this.BId = bId;
     }
 
     public Segment()
@@ -27,15 +29,21 @@ public class Segment
 
     public double? NominalLength { get; private set; }
 
-    public static SegmentCreated Make(Guid id, double? nominalLength)
+    public Guid AId { get; private set; }
+
+    public Guid BId { get; private set; }
+
+    public static SegmentCreated Make(Guid id, double? nominalLength, Guid aId, Guid bId)
     {
-        return new SegmentCreated(id, nominalLength);
+        return new SegmentCreated(id, nominalLength, aId, bId);
     }
 
     public void Apply(SegmentCreated e)
     {
         this.Id = e.Id;
         this.NominalLength = e.NominalLength;
+        this.AId = e.AId;
+        this.BId = e.BId;
 
         this.Version++;
     }

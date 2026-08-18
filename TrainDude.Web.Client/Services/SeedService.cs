@@ -173,14 +173,14 @@ public class SeedService
         {
             Id = segmentId,
             NominalLength = seed.Length,
+            AId = this.stationIdMap[seed.A.StationId],
+            BId = this.stationIdMap[seed.B.StationId],
         };
 
         await this.mediator.Send(createCommand, cancellationToken);
 
         // TODO przywrócić segmenty do dawnej chwały
-        /*var stream = await this.session.Events.FetchForWriting<SegmentSeed>(segmentId, cancellationToken);
-        segment.AddExtremes(idDictionary[seed.A.StationId], idDictionary[seed.B.StationId]);
-        segment.AddVertices(seed.Vertices?.Select(x => new Location(x.Longitude, x.Latitude)) ?? []);*/
+        /*segment.AddVertices(seed.Vertices?.Select(x => new Location(x.Longitude, x.Latitude)) ?? []);*/
     }
 
     private async Task SeedTrip(TripSeed seed, CancellationToken cancellationToken = default)

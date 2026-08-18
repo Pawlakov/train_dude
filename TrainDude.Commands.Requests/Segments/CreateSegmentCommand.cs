@@ -14,4 +14,8 @@ public sealed record class CreateSegmentCommand
     public Guid Id { get; set; }
 
     public double? NominalLength { get; set; }
+
+    public Guid AId { get; set; }
+
+    public Guid BId { get; set; }
 }

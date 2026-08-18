@@ -15,11 +15,11 @@ public static class CreateSegmentCommandHandler
 {
     public static (IStartStream, OutgoingMessages) Handle(CreateSegmentCommand command)
     {
-        var domainEvent = Segment.Make(command.Id, command.NominalLength);
+        var domainEvent = Segment.Make(command.Id, command.NominalLength, command.AId, command.BId);
 
         var startStream = MartenOps.StartStream<Segment>(domainEvent.Id, domainEvent);
 
-        var integrationEvent = new SegmentCreatedIntegrationEvent(domainEvent.Id, 1L, domainEvent.NominalLength);
+        var integrationEvent = new SegmentCreatedIntegrationEvent(domainEvent.Id, 1L, domainEvent.NominalLength, domainEvent.AId, domainEvent.BId);
 
         return (startStream, new OutgoingMessages { integrationEvent });
     }

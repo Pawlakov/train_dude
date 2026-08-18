@@ -6,4 +6,4 @@ namespace TrainDude.Integration.Events.Segments;
 
 using System;
 
-public sealed record class SegmentCreatedIntegrationEvent(Guid Id, long Version, double? NominalLength);
+public sealed record class SegmentCreatedIntegrationEvent(Guid Id, long Version, double? NominalLength, Guid AId, Guid BId);
