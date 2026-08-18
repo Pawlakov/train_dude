@@ -16,6 +16,8 @@ public class Segment
     [BsonId]
     public Guid SegmentId { get; set; }
 
+    public long Version { get; set; }
+
     public double? NominalLength { get; set; }
 
     public int AStationId { get; set; }

@@ -1,9 +1,7 @@
 ﻿@page "/segments"
-@using Mediator
 @using TrainDude.Queries.Requests.Segments
 @inherits EntityListPageBase<GetSegmentsQuery, GetSegmentsQueryResult, GetSegmentsQueryResultItem>
-
-@inject ISender Mediator
+@layout BlockMapLayout
 
 <PageTitle>Odcinki</PageTitle>
 
@@ -17,7 +15,7 @@
 <hr />
 <section class="section">
     <div class="table-container">
-        <table class="table">
+        <table class="table is-fullwidth">
             <thead>
                 <tr>
                     <th>A</th>

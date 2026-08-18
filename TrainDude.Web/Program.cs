@@ -65,10 +65,6 @@ public static class Program
             opts.Discovery.IncludeAssembly(typeof(TripCreatedProjectionHandler).Assembly);
 
             opts.PublishMessage<DroppedIntegrationEvent>().ToLocalQueue("train-dude-projection").UseDurableInbox();
-            opts.PublishMessage<StationCreatedIntegrationEvent>().ToLocalQueue("train-dude-projection").UseDurableInbox();
-            opts.PublishMessage<StationLocationSetIntegrationEvent>().ToLocalQueue("train-dude-projection").UseDurableInbox();
-            opts.PublishMessage<StationAxleAddedIntegrationEvent>().ToLocalQueue("train-dude-projection").UseDurableInbox();
-            opts.PublishMessage<TripCreatedIntegrationEvent>().ToLocalQueue("train-dude-projection").UseDurableInbox();
 
             // TODO some day we will do it this way
             // opts.PublishMessage<TripCreatedIntegrationEvent>().ToRabbitQueue("train-dude-projection").UseDurableInbox();

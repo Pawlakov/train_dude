@@ -15,6 +15,7 @@ using TrainDude.Commands.Handlers.Seed;
 using TrainDude.Commands.Requests.Admin;
 using TrainDude.Commands.Requests.Lines;
 using TrainDude.Commands.Requests.Radii;
+using TrainDude.Commands.Requests.Segments;
 using TrainDude.Commands.Requests.Stations;
 using TrainDude.Commands.Requests.Trips;
 using TrainDude.Domain.Events.Stations;
@@ -42,6 +43,12 @@ public class SeedService
     {
         await this.mediator.Send(new DropCommand(), cancellationToken);
 
+        var radiiSeed = await this.loader.LoadAsync<RadiusSeed>("radii_seed.yml", cancellationToken);
+        foreach (var radiusSeed in radiiSeed)
+        {
+            await this.SeedRadius(radiusSeed, cancellationToken);
+        }
+
         var stationsSeed = await this.loader.LoadAsync<StationSeed>("stations_seed.yml", cancellationToken);
         foreach (var stationSeed in stationsSeed)
         {
@@ -54,22 +61,16 @@ public class SeedService
             await this.SeedTrip(tripSeed, cancellationToken);
         }
 
-        var linesSeed = await this.loader.LoadAsync<LineSeed>("lines_seed.yml");
-        foreach (var lineSeed in linesSeed)
-        {
-            await this.SeedLine(lineSeed, cancellationToken);
-        }
-
-        /*var segmentsSeed = this.loader.Load<SegmentSeed>("segments_seed.yml");
+        var segmentsSeed = await this.loader.LoadAsync<SegmentSeed>("segments_seed.yml", cancellationToken);
         foreach (var segmentSeed in segmentsSeed)
         {
             await this.SeedSegment(segmentSeed, cancellationToken);
-        }*/
+        }
 
-        var radiiSeed = await this.loader.LoadAsync<RadiusSeed>("radii_seed.yml");
-        foreach (var radiusSeed in radiiSeed)
+        var linesSeed = await this.loader.LoadAsync<LineSeed>("lines_seed.yml", cancellationToken);
+        foreach (var lineSeed in linesSeed)
         {
-            await this.SeedRadius(radiusSeed, cancellationToken);
+            await this.SeedLine(lineSeed, cancellationToken);
         }
     }
 
@@ -165,21 +166,21 @@ public class SeedService
         }
     }
 
-    /*private async Task SeedSegment(SegmentSeed seed, CancellationToken cancellationToken = default)
+    private async Task SeedSegment(SegmentSeed seed, CancellationToken cancellationToken = default)
     {
         var segmentId = Guid.NewGuid();
+        var createCommand = new CreateSegmentCommand
+        {
+            Id = segmentId,
+        };
 
-        var created = Segment.Make(segmentId);
-
-        this.session.Events.StartStream<Trip>(segmentId, created);
-        await this.session.SaveChangesAsync(cancellationToken);
-        await this.publisher.Publish(created, cancellationToken);
+        await this.mediator.Send(createCommand, cancellationToken);
 
         // TODO przywrócić segmenty do dawnej chwały
-        var stream = await this.session.Events.FetchForWriting<SegmentSeed>(segmentId, cancellationToken);
+        /*var stream = await this.session.Events.FetchForWriting<SegmentSeed>(segmentId, cancellationToken);
         segment.AddExtremes(idDictionary[seed.A.StationId], idDictionary[seed.B.StationId]);
-        segment.AddVertices(seed.Vertices?.Select(x => new Location(x.Longitude, x.Latitude)) ?? []);
-    }*/
+        segment.AddVertices(seed.Vertices?.Select(x => new Location(x.Longitude, x.Latitude)) ?? []);*/
+    }
 
     private async Task SeedTrip(TripSeed seed, CancellationToken cancellationToken = default)
     {
