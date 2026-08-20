@@ -9,9 +9,9 @@ using System.Collections.Generic;
 using TrainDude.Integration.Values;
 
 public abstract class BaseEntityLookupQueryResult
-    : BasePolymorphicQueryResult
+    : BasePolymorphicQueryResult, IMapQueryResult
 {
-    required public IEnumerable<Location> StationPoints { get; init; }
+    required public IReadOnlyList<Location> StationPoints { get; init; }
 
-    required public IEnumerable<IEnumerable<Location>> SegmentLineStrings { get; init; }
+    required public IReadOnlyList<IReadOnlyList<Location>> SegmentLineStrings { get; init; }
 }

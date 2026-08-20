@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 
 using TrainDude.Queries.Requests.Base;
+using TrainDude.Web.Client.Services;
 
 public abstract class EntityLookupPageBase<TQuery, TQueryResult>
     : ComponentBase
@@ -30,16 +31,10 @@ public abstract class EntityLookupPageBase<TQuery, TQueryResult>
     protected FluentValidationValidator<TQuery> validator;
     protected TQueryResult? queryResult = null;
 
-    private IJSObjectReference scriptModule;
-    private string? geoJson;
-    private bool dataPresent;
     private bool loadingActive;
 
     [Parameter]
     public Guid Id { get; set; }
-
-    [Inject]
-    public IJSRuntime JS { get; set; }
 
     [Inject]
     public ISender Mediator { get; set; }
@@ -55,24 +50,6 @@ public abstract class EntityLookupPageBase<TQuery, TQueryResult>
     {
         this.query.Id = this.Id;
         await this.Submit();
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            this.scriptModule = await this.JS.InvokeAsync<IJSObjectReference>("import", "./Layout/BaseMapLayout.razor.js");
-        }
-
-        if (!dataPresent && this.geoJson != null)
-        {
-            await this.scriptModule.InvokeVoidAsync("clearGeoJson");
-            await this.scriptModule.InvokeVoidAsync("addGeoJson", this.geoJson);
-
-            this.dataPresent = true;
-            this.loadingActive = false;
-            this.StateHasChanged();
-        }
     }
 
     protected async Task Submit()
@@ -91,29 +68,11 @@ public abstract class EntityLookupPageBase<TQuery, TQueryResult>
             {
                 this.validator.PopulateErrors(exception.Errors);
             }
-
-            this.loadingActive = false;
-            this.StateHasChanged();
+            finally
+            {
+                this.loadingActive = false;
+                this.StateHasChanged();
+            }
         }
-    }
-
-    protected string BuildGeoJson()
-    {
-        var stationsGeoJson = new List<string>();
-        var segmentsGeoJson = new List<string>();
-
-        foreach (var station in this.queryResult.StationPoints)
-        {
-            stationsGeoJson.Add($"{{ \"type\": \"Point\", \"coordinates\": [{station.Longitude.ToString(CultureInfo.InvariantCulture)},{station.Latitude.ToString(CultureInfo.InvariantCulture)}] }}");
-        }
-
-        foreach (var segment in this.queryResult.SegmentLineStrings)
-        {
-            var line = string.Join(',', segment.Select(x => $"[{x.Longitude.ToString(CultureInfo.InvariantCulture)},{x.Latitude.ToString(CultureInfo.InvariantCulture)}]"));
-
-            segmentsGeoJson.Add($"{{ \"type\": \"LineString\", \"coordinates\": [{line}] }}");
-        }
-
-        return $"[{string.Join(',', segmentsGeoJson.Concat(stationsGeoJson))}]";
     }
 }

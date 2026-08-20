@@ -4,6 +4,7 @@
 
 namespace TrainDude.Queries.Handlers.Network;
 
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -49,14 +50,9 @@ public sealed class GetNetworkQueryHandler
 
         return new GetNetworkQueryResult
         {
-            Stations = stations,
-            Segments = segments
-                .Select(x => new GetNetworkQueryResultSegmentItem
-                {
-                    ALocation = x.ALocation,
-                    BLocation = x.BLocation,
-                    Vertices = x.Vertices?.ToList() ?? [],
-                })
+            StationPoints = stations,
+            SegmentLineStrings = segments
+                .Select(x => (x.Vertices ?? []).Prepend(x.ALocation).Prepend(x.BLocation).ToList())
                 .ToList(),
         };
     }

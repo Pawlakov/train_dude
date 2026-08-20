@@ -7,23 +7,20 @@ namespace TrainDude.Web.Client.Components.Layout;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
+
+using TrainDude.Web.Client.Services;
 
 public partial class BaseMapLayout
     : LayoutComponentBase
 {
     [Inject]
-    public IJSRuntime JSRuntime { get; set; }
-
-    private IJSObjectReference? scriptModule;
+    public MapService MapService { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            this.scriptModule = await this.JSRuntime.InvokeAsync<IJSObjectReference>("import", "./Components/Layout/BaseMapLayout.razor.js");
-
-            await this.scriptModule.InvokeVoidAsync("initMap", "map", 54.218000, 21.725389, 12);
+            await this.MapService.InitializeAsync();
         }
     }
 }

@@ -10,9 +10,9 @@ using TrainDude.Integration.Values;
 using TrainDude.Queries.Requests.Base;
 
 public class GetNetworkQueryResult
-    : BasePolymorphicQueryResult
+    : BasePolymorphicQueryResult, IMapQueryResult
 {
-    required public ICollection<Location> Stations { get; init; }
+    required public IReadOnlyList<Location> StationPoints { get; init; }
 
-    required public ICollection<GetNetworkQueryResultSegmentItem> Segments { get; init; }
+    required public IReadOnlyList<IReadOnlyList<Location>> SegmentLineStrings { get; init; }
 }

@@ -4,7 +4,11 @@
 
 namespace TrainDude.Queries.Requests.Stations;
 
+using System.Collections.Generic;
+
+using TrainDude.Integration.Values;
 using TrainDude.Queries.Requests.Base;
+using TrainDude.Queries.Requests.Network;
 
 public class GetStationQueryResult
     : BaseEntityLookupQueryResult
