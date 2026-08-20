@@ -1,24 +1,27 @@
 // <copyright file="MapService.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
+
 namespace TrainDude.Web.Client.Services;
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
+using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.JSInterop;
 
 using TrainDude.Queries.Requests.Base;
+using TrainDude.Web.Client.GeoJson;
 
 public sealed class MapService
     : IAsyncDisposable
 {
     private readonly IJSRuntime js;
-    private readonly TaskCompletionSource initialized = new(TaskCreationOptions.RunContinuationsAsynchronously);
     private IJSObjectReference? scriptModule;
+    private Task? initialized;
 
     public MapService(IJSRuntime js)
     {
@@ -27,54 +30,32 @@ public sealed class MapService
 
     public IMapQueryResult? CurrentData { get; private set; }
 
-    public async Task InitializeAsync()
+    public Task InitializeAsync(CancellationToken cancellationToken = default)
     {
-        if (this.scriptModule is not null)
-        {
-            return;
-        }
-
-        this.scriptModule = await this.js.InvokeAsync<IJSObjectReference>("import", "./Components/Layout/BaseMapLayout.razor.js");
-        if (this.scriptModule != null)
-        {
-            await this.scriptModule.InvokeVoidAsync("initMap", "map", 54.218000, 21.725389, 12);
-        }
-
-        this.initialized.SetResult();
+        return this.initialized ??= this.InitializeCoreAsync(cancellationToken);
     }
 
-    public async Task ShowAsync(IMapQueryResult data)
+    public async Task ShowAsync(IMapQueryResult data, CancellationToken cancellationToken = default)
     {
-        await this.initialized.Task;
-        if (this.scriptModule == null)
+        if (this.initialized is not null)
+        {
+            await this.initialized;
+        }
+
+        if (this.scriptModule is null)
         {
             throw new InvalidOperationException("Map has not been initialized.");
         }
 
-        if (data == this.CurrentData)
+        if (ReferenceEquals(data, this.CurrentData))
         {
             return;
         }
 
-        var stationsGeoJson = new List<string>();
-        var segmentsGeoJson = new List<string>();
+        var featureCollection = BuildGeoJson(data);
 
-        foreach (var station in data.StationPoints)
-        {
-            stationsGeoJson.Add($"{{ \"type\": \"Point\", \"coordinates\": [{station.Longitude.ToString(CultureInfo.InvariantCulture)},{station.Latitude.ToString(CultureInfo.InvariantCulture)}] }}");
-        }
-
-        foreach (var segment in data.SegmentLineStrings)
-        {
-            var line = string.Join(',', segment.Select(x => $"[{x.Longitude.ToString(CultureInfo.InvariantCulture)},{x.Latitude.ToString(CultureInfo.InvariantCulture)}]"));
-
-            segmentsGeoJson.Add($"{{ \"type\": \"LineString\", \"coordinates\": [{line}] }}");
-        }
-
-        var geoJson = $"[{string.Join(',', segmentsGeoJson.Concat(stationsGeoJson))}]";
-
-        await this.scriptModule.InvokeVoidAsync("clearGeoJson");
-        await this.scriptModule.InvokeVoidAsync("addGeoJson", geoJson);
+        await this.scriptModule.InvokeVoidAsync("clearGeoJson", cancellationToken);
+        await this.scriptModule.InvokeVoidAsync("addGeoJson", cancellationToken, featureCollection);
 
         this.CurrentData = data;
     }
@@ -91,5 +72,35 @@ public sealed class MapService
             {
             }
         }
+    }
+
+    private async Task InitializeCoreAsync(CancellationToken cancellationToken = default)
+    {
+        this.scriptModule = await this.js.InvokeAsync<IJSObjectReference>("import", cancellationToken, "./Components/Layout/BaseMapLayout.razor.js");
+        if (this.scriptModule != null)
+        {
+            await this.scriptModule.InvokeVoidAsync("initMap", cancellationToken, "map", 54.218000, 21.725389, 12);
+        }
+    }
+
+    private static GeoJsonFeatureCollection BuildGeoJson(IMapQueryResult data)
+    {
+        var features = new List<GeoJsonFeature>(data.StationPoints.Count + data.SegmentLineStrings.Count);
+
+        foreach (var station in data.StationPoints)
+        {
+            features.Add(new GeoJsonFeature("Feature", new GeoJsonPoint(new[] { station.Longitude, station.Latitude, })));
+        }
+
+        foreach (var segment in data.SegmentLineStrings)
+        {
+            var coordinates = segment
+                .Select(point => new[] { point.Longitude, point.Latitude, })
+                .ToArray();
+
+            features.Add(new GeoJsonFeature("Feature", new GeoJsonLineString(coordinates)));
+        }
+
+        return new GeoJsonFeatureCollection("FeatureCollection", features);
     }
 }
