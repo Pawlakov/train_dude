@@ -30,6 +30,8 @@ public sealed class GetLinesQueryHandler
         var models = this.lineRepository.Query().ToList();
 
         var items = models
+            .OrderBy(x => x.LineNumber)
+            .ThenBy(x => x.LineLetter)
             .Select(x => new GetLinesQueryResultItem { LineId = x.Id, LineDesignation = x.LineDesignation })
             .ToList();
 

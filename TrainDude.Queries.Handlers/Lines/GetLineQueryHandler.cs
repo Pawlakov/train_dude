@@ -40,7 +40,7 @@ public sealed class GetLineQueryHandler
             Trips = queryResult.Trips.Select(x => new GetLineQueryResultTripItem { TripId = x.TripId, TripNumber = x.TripNumber }).ToList(),
             Stations = queryResult.Stations.Select(x => new GetLineQueryResultStationItem { StationId = x.StationId, Name = x.Name }).ToList(),
             StationPoints = queryResult.Stations.Where(x => x.Location.HasValue).Select(x => x.Location.Value).ToList(),
-            SegmentLineStrings = null, // TODO
+            SegmentLineStrings = [],
         };
 
         return ValueTask.FromResult(result);

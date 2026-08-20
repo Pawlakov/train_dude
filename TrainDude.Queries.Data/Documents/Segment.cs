@@ -22,7 +22,7 @@ public class Segment
 
     public SegmentStation B { get; set; }
 
-    public ICollection<Location> Vertices { get; set; }
+    public IEnumerable<Location> Vertices { get; set; }
 
     public class SegmentStation
     {

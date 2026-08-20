@@ -27,7 +27,9 @@ public sealed class GetTripsQueryHandler
 
     public ValueTask<GetTripsQueryResult> Handle(GetTripsQuery request, CancellationToken cancellationToken)
     {
-        var models = this.tripRepository.Query().ToList();
+        var models = this.tripRepository.Query()
+            .OrderBy(x => x.TripNumber)
+            .ToList();
 
         var items = models
             .Select(x => new GetTripsQueryResultItem { TripId = x.Id, TripNumber = x.TripNumber })

@@ -4,6 +4,7 @@
 
 namespace TrainDude.Integration.Projections.Lines;
 
+using System.Linq;
 using System.Threading.Tasks;
 
 using LiteDB;
@@ -30,7 +31,7 @@ public static class StationAppendedProjectionHandler
         };
 
         existing.Version = @event.Version;
-        existing.Stations = existing.Stations.Add(stationModel);
+        existing.Stations = [.. existing.Stations, stationModel];
 
         repository.Update(existing);
 

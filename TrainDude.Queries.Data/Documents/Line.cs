@@ -5,6 +5,7 @@
 namespace TrainDude.Queries.Data.Documents;
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 
 using TrainDude.Integration.Values;
@@ -22,9 +23,9 @@ public class Line
 
     public string LineDesignation { get; set; }
 
-    public ImmutableList<LineTrip> Trips { get; set; }
+    public IEnumerable<LineTrip> Trips { get; set; }
 
-    public ImmutableList<LineStation> Stations { get; set; }
+    public IEnumerable<LineStation> Stations { get; set; }
 
     public class LineTrip
     {

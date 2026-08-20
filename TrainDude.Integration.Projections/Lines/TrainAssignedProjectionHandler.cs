@@ -32,7 +32,7 @@ public static class TrainAssignedProjectionHandler
         };
 
         existing.Version = @event.Version;
-        existing.Trips = existing.Trips.Add(tripModel);
+        existing.Trips = [.. existing.Trips, tripModel];
 
         repository.Update(existing);
 

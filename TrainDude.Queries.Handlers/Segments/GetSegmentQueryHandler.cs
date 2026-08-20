@@ -13,6 +13,7 @@ using LiteDB;
 
 using Mediator;
 
+using TrainDude.Integration.Values;
 using TrainDude.Queries.Data.Documents;
 using TrainDude.Queries.Requests.Segments;
 
@@ -34,12 +35,20 @@ public sealed class GetSegmentQueryHandler
             throw new ApplicationException("No aggregate with this ID. If this exception is thrown it means that validation has failed.");
         }
 
+        var vertices = (queryResult.Vertices ?? [])
+            .Cast<Location?>()
+            .Prepend(queryResult.A.Location)
+            .Append(queryResult.B.Location)
+            .Where(x => x != null)
+            .Select(x => x.Value)
+            .ToList();
+
         var dto = new GetSegmentQueryResult
         {
             AName = queryResult.A?.Name ?? string.Empty,
             BName = queryResult.B?.Name ?? string.Empty,
             StationPoints = new[] { queryResult.A?.Location, queryResult.B?.Location }.Where(x => x.HasValue).Select(x => x.Value).ToList(),
-            SegmentLineStrings = new[] { (queryResult.Vertices ?? []).ToList() },
+            SegmentLineStrings = [vertices],
         };
 
         return ValueTask.FromResult<GetSegmentQueryResult>(dto);

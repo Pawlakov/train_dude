@@ -27,9 +27,11 @@ public sealed class GetStationsQueryHandler
 
     public ValueTask<GetStationsQueryResult> Handle(GetStationsQuery request, CancellationToken cancellationToken)
     {
-        var queryResult = this.stationRepository.FindAll();
+        var queryResult = this.stationRepository.Query()
+            .ToList();
 
         var dtos = queryResult
+            .OrderBy(x => x.Name)
             .Select(x => new GetStationsQueryResultItem { StationId = x.Id, Name = x.Name, HasLocation = x.Location != null })
             .ToList();
 

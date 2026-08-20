@@ -1,6 +1,6 @@
 @page "/line/{Id:guid}"
 @using TrainDude.Queries.Requests.Lines
-@inherits EntityLookupPageBase<GetLineQuery, GetLineQueryResult>
+@inherits MapEntityLookupPageBase<GetLineQuery, GetLineQueryResult>
 
 @if (this.queryResult != null)
 {
