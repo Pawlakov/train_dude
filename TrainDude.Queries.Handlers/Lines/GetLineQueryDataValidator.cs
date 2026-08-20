@@ -18,7 +18,7 @@ public sealed class GetLineQueryDataValidator
     public GetLineQueryDataValidator(ILiteCollection<Line> lineRepository)
     {
         this.RuleFor(query => query.Id)
-            .Must(id => lineRepository.Exists(x => x.LineId == id))
+            .Must(id => lineRepository.Exists(x => x.Id == id))
             .WithMessage("There is no line with this ID.");
     }
 }

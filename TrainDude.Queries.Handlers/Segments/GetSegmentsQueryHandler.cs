@@ -33,7 +33,7 @@ public sealed class GetSegmentsQueryHandler
         var models = this.segmentRepository.Query()
             .Select(x => new
             {
-                x.SegmentId,
+                x.Id,
                 x.NominalLength,
                 AStationId = x.A.StationId,
                 ALocation = x.A.Location,
@@ -48,7 +48,7 @@ public sealed class GetSegmentsQueryHandler
         var dtos = models
             .Select(x => new GetSegmentsQueryResultItem
             {
-                SegmentId = x.SegmentId,
+                SegmentId = x.Id,
                 Length = x.NominalLength,
                 AName = x.AName,
                 BName = x.BName,

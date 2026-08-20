@@ -16,25 +16,23 @@ using TrainDude.Queries.Data.Documents;
 
 public static class RadiusCreatedProjectionHandler
 {
-    public static Task Handle(RadiusCreatedIntegrationEvent @event, ILiteCollection<Radius> repository, CancellationToken cancellationToken = default)
+    public static Task Handle(RadiusCreatedIntegrationEvent @event, ILiteCollection<Radius> repository)
     {
-        var existing = repository.Find(x => x.RadiusId == @event.Id).FirstOrDefault();
-        if (existing is null)
+        var existing = repository.Find(x => x.Id == @event.Id).FirstOrDefault();
+        if (existing is not null && existing.Version >= @event.Version)
         {
-            var readModel = new Radius
-            {
-                RadiusId = @event.Id,
-                Version = @event.Version,
-                Speed = @event.Speed,
-                Minimum = @event.Minimum,
-            };
+            return Task.CompletedTask;
+        }
 
-            repository.Insert(readModel);
-        }
-        else
+        var readModel = new Radius
         {
-            throw new Exception("I'm sure that Wolverine has a neat way of handling this.");
-        }
+            Id = @event.Id,
+            Version = @event.Version,
+            Speed = @event.Speed,
+            Minimum = @event.Minimum,
+        };
+
+        repository.Upsert(readModel);
 
         return Task.CompletedTask;
     }

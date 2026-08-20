@@ -6,49 +6,31 @@ namespace TrainDude.Commands.Handlers.Admin;
 
 using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 using Marten;
 
+using TrainDude.Commands.Handlers.Services;
 using TrainDude.Commands.Requests.Admin;
 using TrainDude.Domain.Documents;
 using TrainDude.Integration.Events.Admin;
-using TrainDude.Integration.Values;
 
 using Wolverine;
 
 public static class UpdateStationNameModeCommandHandler
 {
-    public static OutgoingMessages Handle(UpdateStationNameModeCommand command, IDocumentSession session)
+    public static async Task<OutgoingMessages> HandleAsync(UpdateStationNameModeCommand command, IDocumentSession session, CancellationToken cancellationToken = default)
     {
-        var allSettingsIds = session.Query<Settings>().Select(x => x.Id).ToListAsync().Result;
-        if (allSettingsIds.Count < 1)
-        {
-            var newSettingsId = Guid.NewGuid();
-            var created = Settings.Make(newSettingsId);
+        var (stream, aggregate) = await SettingsService.FetchForWriting(session, cancellationToken);
 
-            session.Events.StartStream<Settings>(newSettingsId, created);
-            session.SaveChangesAsync().Wait(); // This requires no integration. Read model doesn't need to know about this mess.
-        }
-        else if (allSettingsIds.Count > 1)
-        {
-            // TODO fix this for good by ensuring only one command can be handled at a time.
-            throw new ApplicationException("Too many settings were created");
-        }
-
-        var settingsId = session.Query<Settings>().Select(x => x.Id).SingleAsync().Result;
-        var stream = session.Events.FetchForWriting<Settings>(settingsId).Result;
-
-        var stationNameModeUpdated = stream.Aggregate.UpdateStationNameMode(command.Mode);
-
+        var stationNameModeUpdated = aggregate.UpdateStationNameMode(command.Mode);
         stream.AppendOne(stationNameModeUpdated);
 
-        var allSations = session.Query<Station>().ToListAsync().Result;
-        Func<Station, string> nameSelector = command.Mode switch
-        {
-            StationNameMode.German => (station) => station.NameGermanNew ?? station.NameGerman,
-            _ => (station) => station.NamePolish ?? station.NameRussian ?? "???",
-        };
-        var newNameDictionary = allSations.ToDictionary(x => x.Id, nameSelector);
+        Func<Station, string> nameSelector = SettingsService.BuildNameSelector(command.Mode);
+
+        var allStations = await session.Query<Station>().ToListAsync(cancellationToken);
+        var newNameDictionary = allStations.ToDictionary(x => x.Id, nameSelector);
 
         var integrationEvent = new SettingsStationNameModeUpdatedIntegrationEvent(command.Mode, newNameDictionary);
 

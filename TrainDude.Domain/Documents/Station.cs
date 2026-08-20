@@ -7,11 +7,12 @@ namespace TrainDude.Domain.Documents;
 using System;
 using System.Text.Json.Serialization;
 
+using TrainDude.Domain.Events.Base;
 using TrainDude.Domain.Events.Stations;
 using TrainDude.Integration.Values;
 
 public class Station
-    : AggregateBase
+    : AggregateBase, IHasAlternativeNames
 {
     [JsonConstructor]
     private Station(Guid id, long version, Location? location, string nameGerman, string? nameGermanNew, string? namePolish, string? nameRussian)

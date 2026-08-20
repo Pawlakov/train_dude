@@ -4,9 +4,6 @@
 
 namespace TrainDude.Integration.Projections.Trips;
 
-using System;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 using LiteDB;
@@ -16,24 +13,22 @@ using TrainDude.Queries.Data.Documents;
 
 public static class TripCreatedProjectionHandler
 {
-    public static Task Handle(TripCreatedIntegrationEvent @event, ILiteCollection<Trip> repository, CancellationToken cancellationToken = default)
+    public static Task Handle(TripCreatedIntegrationEvent @event, ILiteCollection<Trip> repository)
     {
-        var existing = repository.Find(x => x.TripId == @event.Id).FirstOrDefault();
-        if (existing is null)
+        var existing = repository.FindById(@event.Id);
+        if (existing is not null && existing.Version >= @event.Version)
         {
-            var readModel = new Trip
-            {
-                TripId = @event.Id,
-                TripNumber = @event.Number,
-                Version = @event.Version,
-            };
+            return Task.CompletedTask; // No accidental rollbacks allowed
+        }
 
-            repository.Insert(readModel);
-        }
-        else
+        var readModel = new Trip
         {
-            throw new Exception("I'm sure that Wolverine has a neat way of handling this.");
-        }
+            Id = @event.Id,
+            TripNumber = @event.Number,
+            Version = @event.Version,
+        };
+
+        repository.Upsert(readModel); // projections should IDEMPOTENT
 
         return Task.CompletedTask;
     }

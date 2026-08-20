@@ -6,4 +6,6 @@ namespace TrainDude.Domain.Events.Stations;
 
 using System;
 
-public sealed record class StationCreated(Guid Id, string NameGerman, string? NameGermanNew, string? NamePolish, string? NameRussian) : IDomainEvent;
+using TrainDude.Domain.Events.Base;
+
+public sealed record class StationCreated(Guid Id, string NameGerman, string? NameGermanNew, string? NamePolish, string? NameRussian) : IDomainEvent, IHasAlternativeNames;

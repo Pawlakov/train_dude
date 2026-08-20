@@ -9,9 +9,10 @@ using System;
 using LiteDB;
 
 public class Radius
+    : IVersionedDocument
 {
     [BsonId]
-    public Guid RadiusId { get; set; }
+    public Guid Id { get; set; }
 
     public long Version { get; set; }
 

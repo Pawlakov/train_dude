@@ -12,9 +12,10 @@ using LiteDB;
 using TrainDude.Integration.Values;
 
 public class Segment
+    : IVersionedDocument
 {
     [BsonId]
-    public Guid SegmentId { get; set; }
+    public Guid Id { get; set; }
 
     public long Version { get; set; }
 

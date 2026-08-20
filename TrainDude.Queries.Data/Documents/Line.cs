@@ -6,15 +6,17 @@ namespace TrainDude.Queries.Data.Documents;
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 
 using LiteDB;
 
 using TrainDude.Integration.Values;
 
 public class Line
+    : IVersionedDocument
 {
     [BsonId]
-    public Guid LineId { get; set; }
+    public Guid Id { get; set; }
 
     public long Version { get; set; }
 
@@ -24,9 +26,9 @@ public class Line
 
     public string LineDesignation { get; set; }
 
-    public IReadOnlyCollection<LineTrip> Trips { get; set; }
+    public ImmutableList<LineTrip> Trips { get; set; }
 
-    public IReadOnlyCollection<LineStation> Stations { get; set; }
+    public ImmutableList<LineStation> Stations { get; set; }
 
     public class LineTrip
     {

@@ -30,7 +30,7 @@ public sealed class GetLinesQueryHandler
         var models = this.lineRepository.Query().ToList();
 
         var items = models
-            .Select(x => new GetLinesQueryResultItem { LineId = x.LineId, LineDesignation = x.LineDesignation })
+            .Select(x => new GetLinesQueryResultItem { LineId = x.Id, LineDesignation = x.LineDesignation })
             .ToList();
 
         return ValueTask.FromResult(new GetLinesQueryResult { Items = items });

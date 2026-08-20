@@ -34,7 +34,7 @@ public sealed class GetRadiiQueryHandler
         var dtos = models
             .Select(x => new GetRadiiQueryResultItem
             {
-                RadiusId = x.RadiusId,
+                RadiusId = x.Id,
                 Speed = x.Speed,
                 Minimum = x.Minimum,
                 MaximumAntiradius = 1000 / (double)x.Minimum,

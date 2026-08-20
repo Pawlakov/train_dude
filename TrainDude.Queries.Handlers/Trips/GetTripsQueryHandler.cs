@@ -30,7 +30,7 @@ public sealed class GetTripsQueryHandler
         var models = this.tripRepository.Query().ToList();
 
         var items = models
-            .Select(x => new GetTripsQueryResultItem { TripId = x.TripId, TripNumber = x.TripNumber })
+            .Select(x => new GetTripsQueryResultItem { TripId = x.Id, TripNumber = x.TripNumber })
             .ToList();
 
         return ValueTask.FromResult(new GetTripsQueryResult { Items = items });

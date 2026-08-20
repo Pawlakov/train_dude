@@ -4,6 +4,9 @@
 
 namespace TrainDude.Commands.Handlers.Admin;
 
+using System.Threading;
+using System.Threading.Tasks;
+
 using Marten;
 
 using TrainDude.Commands.Requests.Admin;
@@ -13,9 +16,9 @@ using Wolverine;
 
 public static class DropCommandHandler
 {
-    public static OutgoingMessages Handle(DropCommand command, IDocumentStore store)
+    public static async Task<OutgoingMessages> HandleAsync(DropCommand command, IDocumentStore store, CancellationToken cancellationToken = default)
     {
-        store.Advanced.Clean.CompletelyRemoveAllAsync().Wait();
+        await store.Advanced.Clean.CompletelyRemoveAllAsync(cancellationToken);
 
         var integrationEvent = new DroppedIntegrationEvent();
 

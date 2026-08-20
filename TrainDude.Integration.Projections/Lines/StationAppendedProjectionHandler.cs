@@ -4,41 +4,35 @@
 
 namespace TrainDude.Integration.Projections.Lines;
 
-using System;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 using LiteDB;
 
 using TrainDude.Integration.Events.Lines;
+using TrainDude.Integration.Projections.Exceptions;
 using TrainDude.Queries.Data.Documents;
 
 public static class StationAppendedProjectionHandler
 {
-    public static Task Handle(LineStationAppendedIntegrationEvent @event, ILiteCollection<Line> repository, ILiteCollection<Station> stationRepository, CancellationToken cancellationToken = default)
+    public static Task Handle(LineStationAppendedIntegrationEvent @event, ILiteCollection<Line> repository)
     {
-        var existing = repository.Find(x => x.LineId == @event.Id).FirstOrDefault();
-        if (existing is not null && @event.Version - existing.Version == 1L)
+        var existing = repository.GetByVersionedEvent(@event);
+        if (existing == null)
         {
-            var station = stationRepository.Find(x => x.StationId == @event.StationId).Single(); // TODO This will cause a problem if for example station's location changes
-            var stationModel = new Line.LineStation
-            {
-                StationId = station.StationId,
-                Name = station.Name,
-                Location = station.Location,
-            };
-
-            existing.Version = @event.Version;
-            existing.Stations = existing.Stations.Append(stationModel).ToImmutableList();
-
-            repository.Update(existing);
+            return Task.CompletedTask;
         }
-        else
+
+        var stationModel = new Line.LineStation
         {
-            throw new Exception("I'm sure that Wolverine has a neat way of handling this.");
-        }
+            StationId = @event.Appended.Id,
+            Name = @event.Appended.Name,
+            Location = @event.Appended.Location,
+        };
+
+        existing.Version = @event.Version;
+        existing.Stations = existing.Stations.Add(stationModel);
+
+        repository.Update(existing);
 
         return Task.CompletedTask;
     }

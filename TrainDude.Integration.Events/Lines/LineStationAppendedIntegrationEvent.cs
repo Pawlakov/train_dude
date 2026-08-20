@@ -6,4 +6,9 @@ namespace TrainDude.Integration.Events.Lines;
 
 using System;
 
-public sealed record class LineStationAppendedIntegrationEvent(Guid Id, long Version, Guid StationId);
+using TrainDude.Integration.Values;
+
+public sealed record class LineStationAppendedIntegrationEvent(Guid Id, long Version, LineStationAppendedIntegrationEvent.Station Appended) : IVersionedEvent
+{
+    public sealed record class Station(Guid Id, string Name, Location? Location);
+}

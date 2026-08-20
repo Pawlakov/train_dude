@@ -18,7 +18,7 @@ public sealed class GetStationQueryDataValidator
     public GetStationQueryDataValidator(ILiteCollection<Station> stationRepository)
     {
         this.RuleFor(query => query.Id)
-            .Must(id => stationRepository.Exists(x => x.StationId == id))
+            .Must(id => stationRepository.Exists(x => x.Id == id))
             .WithMessage("There is no station with this ID.");
     }
 }

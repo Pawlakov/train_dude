@@ -15,11 +15,11 @@ using TrainDude.Queries.Data.Documents;
 
 public static class SettingsStationNameModeUpdatedProjectionHandler
 {
-    public static Task Handle(SettingsStationNameModeUpdatedIntegrationEvent @event, ILiteCollection<Station> stationRepository, CancellationToken cancellationToken = default)
+    public static Task Handle(SettingsStationNameModeUpdatedIntegrationEvent @event, ILiteCollection<Station> stationRepository)
     {
         foreach (var station in stationRepository.FindAll())
         {
-            station.Name = @event.NewNames[station.StationId];
+            station.Name = @event.NewNames[station.Id];
             stationRepository.Update(station);
         }
 

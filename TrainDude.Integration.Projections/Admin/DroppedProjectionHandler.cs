@@ -13,7 +13,7 @@ using TrainDude.Integration.Events.Admin;
 
 public static class DroppedProjectionHandler
 {
-    public static Task Handle(DroppedIntegrationEvent @event, ILiteDatabase db, CancellationToken cancellationToken = default)
+    public static Task Handle(DroppedIntegrationEvent @event, ILiteDatabase db)
     {
         foreach (var collectionName in db.GetCollectionNames())
         {

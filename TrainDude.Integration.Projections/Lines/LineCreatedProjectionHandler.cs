@@ -16,28 +16,26 @@ using TrainDude.Queries.Data.Documents;
 
 public static class LineCreatedProjectionHandler
 {
-    public static Task Handle(LineCreatedIntegrationEvent @event, ILiteCollection<Line> repository, CancellationToken cancellationToken = default)
+    public static Task Handle(LineCreatedIntegrationEvent @event, ILiteCollection<Line> repository)
     {
-        var existing = repository.Find(x => x.LineId == @event.Id).FirstOrDefault();
-        if (existing is null)
+        var existing = repository.FindById(@event.Id);
+        if (existing is not null && existing.Version >= @event.Version)
         {
-            var readModel = new Line()
-            {
-                LineId = @event.Id,
-                Version = @event.Version,
-                LineNumber = @event.Number,
-                LineLetter = @event.Letter,
-                LineDesignation = $"{@event.Number}{@event.Letter}",
-                Trips = [],
-                Stations = [],
-            };
+            return Task.CompletedTask;
+        }
 
-            repository.Insert(readModel);
-        }
-        else
+        var readModel = new Line()
         {
-            throw new Exception("I'm sure that Wolverine has a neat way of handling this.");
-        }
+            Id = @event.Id,
+            Version = @event.Version,
+            LineNumber = @event.Number,
+            LineLetter = @event.Letter,
+            LineDesignation = $"{@event.Number}{@event.Letter}",
+            Trips = [],
+            Stations = [],
+        };
+
+        repository.Upsert(readModel);
 
         return Task.CompletedTask;
     }

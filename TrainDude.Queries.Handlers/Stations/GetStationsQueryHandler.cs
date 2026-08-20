@@ -30,7 +30,7 @@ public sealed class GetStationsQueryHandler
         var queryResult = this.stationRepository.FindAll();
 
         var dtos = queryResult
-            .Select(x => new GetStationsQueryResultItem { StationId = x.StationId, Name = x.Name, HasLocation = x.Location != null })
+            .Select(x => new GetStationsQueryResultItem { StationId = x.Id, Name = x.Name, HasLocation = x.Location != null })
             .ToList();
 
         return ValueTask.FromResult(new GetStationsQueryResult { Items = dtos });

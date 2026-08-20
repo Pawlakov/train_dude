@@ -2,11 +2,8 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Queries.Handlers.Projections.Stations;
+namespace TrainDude.Integration.Projections.Stations;
 
-using System;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 using LiteDB;
@@ -16,25 +13,23 @@ using TrainDude.Queries.Data.Documents;
 
 public static class StationCreatedProjectionHandler
 {
-    public static Task Handle(StationCreatedIntegrationEvent @event, ILiteCollection<Station> repository, CancellationToken cancellationToken = default)
+    public static Task Handle(StationCreatedIntegrationEvent @event, ILiteCollection<Station> repository)
     {
-        var existing = repository.Find(x => x.StationId == @event.Id).FirstOrDefault();
-        if (existing is null)
+        var existing = repository.FindById(@event.Id);
+        if (existing is not null && existing.Version >= @event.Version)
         {
-            var readModel = new Station()
-            {
-                StationId = @event.Id,
-                Version = @event.Version,
-                Name = @event.NameGermanNew ?? @event.NameGerman, // TODO restore settings into operation
-                Location = null,
-            };
+            return Task.CompletedTask;
+        }
 
-            repository.Insert(readModel);
-        }
-        else
+        var readModel = new Station()
         {
-            throw new Exception("I'm sure that Wolverine has a neat way of handling this.");
-        }
+            Id = @event.Id,
+            Version = @event.Version,
+            Name = @event.Name,
+            Location = null,
+        };
+
+        repository.Upsert(readModel);
 
         return Task.CompletedTask;
     }

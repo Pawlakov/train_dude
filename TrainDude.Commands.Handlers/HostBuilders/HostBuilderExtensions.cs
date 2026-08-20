@@ -13,6 +13,7 @@ using Marten;
 using Microsoft.Extensions.DependencyInjection;
 
 using TrainDude.Commands.Handlers.Projections;
+using TrainDude.Commands.Handlers.Services;
 
 using Wolverine.Marten;
 
@@ -23,6 +24,7 @@ public static class HostBuilderExtensions
 {
     public static IServiceCollection AddWriteDataServices(this IServiceCollection services, string connectionString, bool isDevelopment)
     {
+        services.AddScoped<SettingsService>();
         services.AddMarten(options =>
             {
                 options.Connection(connectionString);

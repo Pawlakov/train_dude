@@ -11,21 +11,10 @@ using LiteDB;
 using TrainDude.Integration.Values;
 
 public class Station
+    : IVersionedDocument
 {
-    public Station()
-    {
-    }
-
-    public Station(Station source)
-    {
-        this.StationId = source.StationId;
-        this.Version = source.Version;
-        this.Name = source.Name;
-        this.Location = source.Location;
-    }
-
     [BsonId]
-    public Guid StationId { get; set; }
+    public Guid Id { get; set; }
 
     public long Version { get; set; }
 

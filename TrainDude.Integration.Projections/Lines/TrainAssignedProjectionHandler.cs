@@ -4,7 +4,6 @@
 
 namespace TrainDude.Integration.Projections.Lines;
 
-using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
@@ -13,31 +12,29 @@ using System.Threading.Tasks;
 using LiteDB;
 
 using TrainDude.Integration.Events.Lines;
+using TrainDude.Integration.Projections.Exceptions;
 using TrainDude.Queries.Data.Documents;
 
 public static class TrainAssignedProjectionHandler
 {
-    public static Task Handle(LineTripAssignedIntegrationEvent @event, ILiteCollection<Line> repository, ILiteCollection<Trip> tripRepository, CancellationToken cancellationToken = default)
+    public static Task Handle(LineTripAssignedIntegrationEvent @event, ILiteCollection<Line> repository)
     {
-        var existing = repository.Find(x => x.LineId == @event.Id).FirstOrDefault();
-        if (existing is not null && @event.Version - existing.Version == 1L)
+        var existing = repository.GetByVersionedEvent(@event);
+        if (existing == null)
         {
-            var trip = tripRepository.Find(x => x.TripId == @event.TripId).Single();
-            var tripModel = new Line.LineTrip
-            {
-                TripId = trip.TripId,
-                TripNumber = trip.TripNumber,
-            };
-
-            existing.Version = @event.Version;
-            existing.Trips = existing.Trips.Append(tripModel).ToImmutableList();
-
-            repository.Update(existing);
+            return Task.CompletedTask;
         }
-        else
+
+        var tripModel = new Line.LineTrip
         {
-            throw new Exception("I'm sure that Wolverine has a neat way of handling this.");
-        }
+            TripId = @event.Assigned.Id,
+            TripNumber = @event.Assigned.Number,
+        };
+
+        existing.Version = @event.Version;
+        existing.Trips = existing.Trips.Add(tripModel);
+
+        repository.Update(existing);
 
         return Task.CompletedTask;
     }

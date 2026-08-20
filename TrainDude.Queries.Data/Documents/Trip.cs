@@ -9,9 +9,10 @@ using System;
 using LiteDB;
 
 public class Trip
+    : IVersionedDocument
 {
     [BsonId]
-    public Guid TripId { get; set; }
+    public Guid Id { get; set; }
 
     public long Version { get; set; }
 

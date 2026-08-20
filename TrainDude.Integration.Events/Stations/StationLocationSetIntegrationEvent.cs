@@ -8,4 +8,4 @@ using System;
 
 using TrainDude.Integration.Values;
 
-public sealed record class StationLocationSetIntegrationEvent(Guid Id, long Version, Location Location);
+public sealed record class StationLocationSetIntegrationEvent(Guid Id, long Version, Location Location) : IVersionedEvent;

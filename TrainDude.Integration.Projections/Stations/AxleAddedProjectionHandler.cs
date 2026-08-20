@@ -1,7 +1,8 @@
 // <copyright file="AxleAddedProjectionHandler.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
-namespace TrainDude.Queries.Handlers.Projections.Stations;
+
+namespace TrainDude.Integration.Projections.Stations;
 
 using System;
 using System.Linq;
@@ -11,23 +12,22 @@ using System.Threading.Tasks;
 using LiteDB;
 
 using TrainDude.Integration.Events.Stations;
+using TrainDude.Integration.Projections.Exceptions;
 using TrainDude.Queries.Data.Documents;
 
 public static class AxleAddedProjectionHandler
 {
-    public static Task Handle(StationAxleAddedIntegrationEvent @event, ILiteCollection<Station> repository, CancellationToken cancellationToken = default)
+    public static Task Handle(StationAxleAddedIntegrationEvent @event, ILiteCollection<Station> repository)
     {
-        var existing = repository.Find(x => x.StationId == @event.Id).FirstOrDefault();
-        if (existing is not null && @event.Version - existing.Version == 1L)
+        var existing = repository.GetByVersionedEvent(@event);
+        if (existing == null)
         {
-            existing.Version = @event.Version;
+            return Task.CompletedTask;
+        }
 
-            repository.Update(existing);
-        }
-        else
-        {
-            throw new Exception("I'm sure that Wolverine has a neat way of handling this.");
-        }
+        existing.Version = @event.Version;
+
+        repository.Update(existing);
 
         return Task.CompletedTask;
     }

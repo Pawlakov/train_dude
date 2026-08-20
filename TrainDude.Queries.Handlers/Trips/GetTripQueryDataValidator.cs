@@ -18,7 +18,7 @@ public sealed class GetTripQueryDataValidator
     public GetTripQueryDataValidator(ILiteCollection<Trip> tripRepository)
     {
         this.RuleFor(query => query.Id)
-            .Must(id => tripRepository.Exists(x => x.TripId == id))
+            .Must(id => tripRepository.Exists(x => x.Id == id))
             .WithMessage("There is no trip with this ID.");
     }
 }
