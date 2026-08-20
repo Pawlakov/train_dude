@@ -4,8 +4,6 @@
 
 namespace TrainDude.Integration.Projections;
 
-using System.Threading.Tasks;
-
 using LiteDB;
 
 using TrainDude.Integration.Events;

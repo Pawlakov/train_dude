@@ -2,7 +2,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\TrainDude.Integration.Events\TrainDude.Integration.Events.csproj" />
-      <ProjectReference Include="..\TrainDude.Queries.Data\TrainDude.Queries.Data.csproj" />
+      <ProjectReference Include="..\TrainDude.Queries.Handlers\TrainDude.Queries.Handlers.csproj" />
     </ItemGroup>
 
 </Project>

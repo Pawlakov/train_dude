@@ -6,12 +6,9 @@ namespace TrainDude.Queries.Data.Documents;
 
 using System;
 
-using LiteDB;
-
 public class Radius
     : IVersionedDocument
 {
-    [BsonId]
     public Guid Id { get; set; }
 
     public long Version { get; set; }

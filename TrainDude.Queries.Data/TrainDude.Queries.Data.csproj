@@ -1,11 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <ItemGroup>
-        <PackageReference Include="LiteDB" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\TrainDude.Integration.Values\TrainDude.Integration.Values.csproj" />
     </ItemGroup>
     

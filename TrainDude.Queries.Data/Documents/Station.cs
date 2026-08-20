@@ -6,14 +6,11 @@ namespace TrainDude.Queries.Data.Documents;
 
 using System;
 
-using LiteDB;
-
 using TrainDude.Integration.Values;
 
 public class Station
     : IVersionedDocument
 {
-    [BsonId]
     public Guid Id { get; set; }
 
     public long Version { get; set; }

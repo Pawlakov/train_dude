@@ -5,17 +5,13 @@
 namespace TrainDude.Queries.Data.Documents;
 
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
-
-using LiteDB;
 
 using TrainDude.Integration.Values;
 
 public class Line
     : IVersionedDocument
 {
-    [BsonId]
     public Guid Id { get; set; }
 
     public long Version { get; set; }

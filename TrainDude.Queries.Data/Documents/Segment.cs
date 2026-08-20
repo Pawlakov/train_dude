@@ -7,14 +7,11 @@ namespace TrainDude.Queries.Data.Documents;
 using System;
 using System.Collections.Generic;
 
-using LiteDB;
-
 using TrainDude.Integration.Values;
 
 public class Segment
     : IVersionedDocument
 {
-    [BsonId]
     public Guid Id { get; set; }
 
     public long Version { get; set; }

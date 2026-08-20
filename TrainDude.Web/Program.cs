@@ -4,10 +4,6 @@
 
 namespace TrainDude.Web;
 
-using JasperFx;
-using JasperFx.CodeGeneration;
-using JasperFx.Events.Daemon;
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,10 +12,7 @@ using Microsoft.Extensions.Hosting;
 using TrainDude.Commands.Handlers.HostBuilders;
 using TrainDude.Domain.Exceptions;
 using TrainDude.Integration.Events.Admin;
-using TrainDude.Integration.Events.Stations;
-using TrainDude.Integration.Events.Trips;
 using TrainDude.Integration.Projections.Trips;
-using TrainDude.Queries.Data.HostBuilders;
 using TrainDude.Queries.Handlers.HostBuilders;
 using TrainDude.Web.Components;
 using TrainDude.Web.HostBuilders;
@@ -88,14 +81,14 @@ public static class Program
         app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
         app.UseHttpsRedirection();
 
-        app.MapControllers();
-
         app.UseAntiforgery();
 
         app.MapStaticAssets();
         app.MapRazorComponents<App>()
             .AddInteractiveWebAssemblyRenderMode()
             .AddAdditionalAssemblies(typeof(Client._Imports).Assembly);
+
+        app.MapControllers();
 
         app.Run();
     }

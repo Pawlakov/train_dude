@@ -6,14 +6,11 @@ namespace TrainDude.Queries.Data.Documents;
 
 using System;
 
-using LiteDB;
-
 using TrainDude.Integration.Values;
 
 public class Settings
 {
-    [BsonId]
-    public Guid SettingsId { get; set; }
+    public Guid Id { get; set; }
 
     public StationNameMode StationNameMode { get; set; }
 }
