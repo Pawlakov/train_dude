@@ -1,34 +1,32 @@
-﻿<nav class="navbar" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-        <a role="button" class="@this.burgerClass" aria-label="menu" aria-expanded="false" @onclick="this.ToggleNavMenu">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-        </a>
-    </div>
-    <div class="@this.menuClass">
-        <div class="navbar-start">
-            <a class="navbar-item" href="">
-                Mapa
-            </a>
-            <a class="navbar-item" href="lines">
-                Linie
-            </a>
-            <a class="navbar-item" href="stations">
-                Stacje
-            </a>
-            <a class="navbar-item" href="segments">
-                Odcinki
-            </a>
-            <a class="navbar-item" href="radii">
-                Promienie
-            </a>
-            <a class="navbar-item" href="trips">
-                Kursy
-            </a>
-            <a class="navbar-item" href="admin">
-                Administracja
-            </a>
+﻿<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" href="">Mapa</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="lines">Linie</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="stations">Stacje</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="segments">Odcinki</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="radii">Promienie</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="trips">Kursy</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="admin">Administracja</a>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>
