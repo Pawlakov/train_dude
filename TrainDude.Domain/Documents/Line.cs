@@ -46,7 +46,7 @@ public class Line
 
     public static LineCreated Make(Guid id, int lineNumber, char? lineLetter)
     {
-        return new LineCreated(id, lineNumber, lineLetter);
+        return new LineCreated(id, DateTime.UtcNow, lineNumber, lineLetter);
     }
 
     public LineTripAssigned AssignTrip(Guid tripId)
@@ -56,7 +56,7 @@ public class Line
             throw new LineDuplicateTripException(this.Id, tripId);
         }
 
-        return new LineTripAssigned(this.Id, tripId);
+        return new LineTripAssigned(this.Id, DateTime.UtcNow, tripId);
     }
 
     public LineStationAppended AppendStation(Guid stationId)
@@ -66,7 +66,7 @@ public class Line
             throw new LineDuplicateStationException(this.Id, stationId);
         }
 
-        return new LineStationAppended(this.Id, stationId);
+        return new LineStationAppended(this.Id, DateTime.UtcNow, stationId);
     }
 
     public void Apply(LineCreated e)

@@ -6,4 +6,6 @@ namespace TrainDude.Domain.Events.Trips;
 
 using System;
 
-public sealed record class TripCreated(Guid Id, int TripNumber) : IDomainEvent;
+using TrainDude.Domain.Events.Base;
+
+public sealed record class TripCreated(Guid Id, DateTime When, int TripNumber) : BaseAggregateEvent(Id, When);

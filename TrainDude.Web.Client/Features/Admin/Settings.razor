@@ -10,7 +10,7 @@
 @if (this.editActive)
 {
     <EditForm EditContext="this.formContext" OnValidSubmit="this.Submit" FormName="UpdateStationNameModeForm">
-        <FluentValidationValidator @ref="this.validator" TModel="UpdateStationNameModeCommand"/>
+        <FluentValidationValidator @ref="this.validator" TModel="SetNameModeCommand"/>
         <p class="title is-6">
             Nazwy stacji
             <a class="icon" @onclick="this.Submit">
@@ -69,9 +69,9 @@ else
 @code {
     private bool editActive;
     private GetStationNameModeQueryResult? queryResult;
-    private UpdateStationNameModeCommand? command;
+    private SetNameModeCommand? command;
     private EditContext? formContext;
-    private FluentValidationValidator<UpdateStationNameModeCommand>? validator;
+    private FluentValidationValidator<SetNameModeCommand>? validator;
 
     protected override async Task OnInitializedAsync()
     {
@@ -96,7 +96,7 @@ else
     {
         var query = new GetStationNameModeQuery();
         this.queryResult = await this.QueryMediator.Send(query);
-        this.command = new UpdateStationNameModeCommand
+        this.command = new SetNameModeCommand
         {
             Mode = this.queryResult.Mode,
         };

@@ -22,6 +22,8 @@ using TrainDude.Domain.Events.Stations;
 using TrainDude.Integration.Values;
 using TrainDude.Web.Client.Seed;
 
+using CreateCommand=TrainDude.Commands.Requests.Radii.CreateCommand;
+
 public class SeedService
 {
     private readonly Dictionary<int, Guid> stationIdMap;
@@ -77,7 +79,7 @@ public class SeedService
     private async Task SeedLine(LineSeed seed, CancellationToken cancellationToken = default)
     {
         var lineId = Guid.NewGuid();
-        var createCommand = new CreateLineCommand
+        var createCommand = new Commands.Requests.Lines.CreateCommand
         {
             Id = lineId,
             Number = seed.Number,
@@ -115,7 +117,7 @@ public class SeedService
     private async Task SeedRadius(RadiusSeed seed, CancellationToken cancellationToken = default)
     {
         var radiusId = Guid.NewGuid();
-        var createCommand = new CreateRadiusCommand
+        var createCommand = new CreateCommand
         {
             Id = radiusId,
             Speed = seed.Speed,
@@ -128,7 +130,7 @@ public class SeedService
     private async Task SeedStation(StationSeed seed, CancellationToken cancellationToken = default)
     {
         var stationId = Guid.NewGuid();
-        var createCommand = new CreateStationCommand
+        var createCommand = new Commands.Requests.Stations.CreateCommand
         {
             Id = stationId,
             NameGerman = seed.NameGerman,
@@ -169,7 +171,7 @@ public class SeedService
     private async Task SeedSegment(SegmentSeed seed, CancellationToken cancellationToken = default)
     {
         var segmentId = Guid.NewGuid();
-        var createCommand = new CreateSegmentCommand
+        var createCommand = new Commands.Requests.Segments.CreateCommand
         {
             Id = segmentId,
             NominalLength = seed.Length,
@@ -186,7 +188,7 @@ public class SeedService
     private async Task SeedTrip(TripSeed seed, CancellationToken cancellationToken = default)
     {
         var tripId = Guid.NewGuid();
-        var createCommand = new CreateTripCommand
+        var createCommand = new Commands.Requests.Trips.CreateCommand
         {
             Id = tripId,
             Number = seed.Number,

@@ -6,6 +6,7 @@ namespace TrainDude.Domain.Events.Admin;
 
 using System;
 
+using TrainDude.Domain.Events.Base;
 using TrainDude.Integration.Values;
 
-public sealed record class SettingsStationNameModeUpdated(Guid Id, StationNameMode StationNameMode) : IDomainEvent;
+public sealed record class SettingsStationNameModeUpdated(Guid Id, DateTime When, StationNameMode StationNameMode) : BaseAggregateEvent(Id, When);

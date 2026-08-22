@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <PackageReference Include="WolverineFx"/>
+        <PackageReference Include="WolverineFx.Http" />
+        <PackageReference Include="WolverineFx.Http.FluentValidation" />
+        <PackageReference Include="WolverineFx.Marten" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\TrainDude.Commands.Requests\TrainDude.Commands.Requests.csproj" />
+      <ProjectReference Include="..\TrainDude.Domain\TrainDude.Domain.csproj" />
+      <ProjectReference Include="..\TrainDude.Integration.Events\TrainDude.Integration.Events.csproj" />
+    </ItemGroup>
+
+</Project>

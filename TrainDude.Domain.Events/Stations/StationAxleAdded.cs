@@ -6,4 +6,6 @@ namespace TrainDude.Domain.Events.Stations;
 
 using System;
 
-public sealed record class StationAxleAdded(Guid Id) : IDomainEvent;
+using TrainDude.Domain.Events.Base;
+
+public sealed record class StationAxleAdded(Guid Id, DateTime When) : BaseAggregateEvent(Id, When);

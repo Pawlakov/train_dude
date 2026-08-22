@@ -42,7 +42,7 @@ public class Radius
             throw new ArgumentOutOfRangeException(nameof(minimum));
         }
 
-        return new RadiusCreated(id, speed, minimum);
+        return new RadiusCreated(id, DateTime.UtcNow, speed, minimum);
     }
 
     public void Apply(RadiusCreated e)

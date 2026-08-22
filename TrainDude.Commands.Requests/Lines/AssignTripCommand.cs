@@ -9,11 +9,18 @@ using System;
 using TrainDude.Commands.Requests.Base;
 
 public sealed record class AssignTripCommand
-    : BasePolymorphicCommand
+    : BaseRoutedCommand
 {
+    public const string Route = "line/trip/assign";
+
+    public AssignTripCommand()
+        : base(Route)
+    {
+    }
+
     public Guid Id { get; set; }
 
     public long Version { get; set; }
-    
+
     public Guid TripId { get; set; }
 }

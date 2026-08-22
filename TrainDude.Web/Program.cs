@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-using TrainDude.Commands.Handlers.HostBuilders;
+using TrainDude.Commands.Endpoints.HostBuilders;
 using TrainDude.Domain.Exceptions;
 using TrainDude.Integration.Events.Admin;
 using TrainDude.Integration.Projections.Trips;
@@ -19,6 +19,9 @@ using TrainDude.Web.HostBuilders;
 
 using Wolverine;
 using Wolverine.ErrorHandling;
+using Wolverine.FluentValidation;
+using Wolverine.Http;
+using Wolverine.Http.FluentValidation;
 
 /// <summary>
 /// The main class.
@@ -33,42 +36,36 @@ public static class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Add services to the container.
-        builder.Services.AddRazorComponents()
+        var isDevelopment = builder.Environment.IsDevelopment();
+        var readConnectionString = builder.Configuration.GetConnectionString("Read");
+
+        var writeConnectionString = builder.Configuration.GetConnectionString("Write");
+
+        builder.Services
+            .AddRazorComponents()
             .AddInteractiveWebAssemblyComponents();
 
-        builder.Services.AddControllers();
+        builder.Services
+            .AddControllers();
 
-        var readConnectionString = builder.Configuration.GetConnectionString("Read");
-        var writeConnectionString = builder.Configuration.GetConnectionString("Write");
-        var isDevelopment = builder.Environment.IsDevelopment();
+        builder.Services
+            .AddProblemDetails();
+
         builder.Services
             .AddReadDataServices(readConnectionString)
-            .AddWriteDataServices(writeConnectionString, isDevelopment)
+            .AddWriteServices(writeConnectionString, isDevelopment)
             .AddReadDataValidation()
             .AddRequestHandlers()
-            .AddExceptionHandlers();
+            .AddReadExceptionHandlers();
 
-        builder.Host.UseWolverine(opts =>
-        {
-            opts.Policies.AutoApplyTransactions();
-            opts.Policies.UseDurableLocalQueues();
-            opts.Policies.OnException<DomainException>().MoveToErrorQueue();
-
-            opts.Discovery.IncludeAssembly(typeof(TripCreatedProjectionHandler).Assembly);
-
-            opts.PublishMessage<DroppedIntegrationEvent>().ToLocalQueue("train-dude-projection").UseDurableInbox();
-
-            // TODO some day we will do it this way
-            // opts.PublishMessage<TripCreatedIntegrationEvent>().ToRabbitQueue("train-dude-projection").UseDurableInbox();
-        });
+        builder.Host
+            .UseWriteServices();
 
         var app = builder.Build();
 
         app.UseExceptionHandler("/Error");
 
-        // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
+        if (isDevelopment)
         {
             app.UseWebAssemblyDebugging();
         }
@@ -89,6 +86,7 @@ public static class Program
             .AddAdditionalAssemblies(typeof(Client._Imports).Assembly);
 
         app.MapControllers();
+        app.MapWolverineEndpoints(opts => { opts.UseFluentValidationProblemDetailMiddleware(); });
 
         app.Run();
     }

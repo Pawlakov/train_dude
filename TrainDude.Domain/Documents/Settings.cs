@@ -30,12 +30,12 @@ public class Settings
 
     public static SettingsCreated Make(Guid settingsId)
     {
-        return new SettingsCreated(settingsId);
+        return new SettingsCreated(settingsId, DateTime.UtcNow);
     }
 
     public SettingsStationNameModeUpdated UpdateStationNameMode(StationNameMode stationNameMode)
     {
-        return new SettingsStationNameModeUpdated(this.Id, stationNameMode);
+        return new SettingsStationNameModeUpdated(this.Id, DateTime.UtcNow, stationNameMode);
     }
 
     public void Apply(SettingsCreated e)

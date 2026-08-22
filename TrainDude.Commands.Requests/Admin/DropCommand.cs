@@ -7,6 +7,12 @@ namespace TrainDude.Commands.Requests.Admin;
 using TrainDude.Commands.Requests.Base;
 
 public sealed record class DropCommand
-    : BasePolymorphicCommand
+    : BaseRoutedCommand
 {
+    public const string Route = "admin/drop";
+
+    public DropCommand()
+        : base(Route)
+    {
+    }
 }

@@ -6,4 +6,6 @@ namespace TrainDude.Domain.Events.Segments;
 
 using System;
 
-public sealed record class SegmentCreated(Guid Id, double? NominalLength, Guid AId, Guid BId) : IDomainEvent;
+using TrainDude.Domain.Events.Base;
+
+public sealed record class SegmentCreated(Guid Id, DateTime When, double? NominalLength, Guid AId, Guid BId) : BaseAggregateEvent(Id, When);

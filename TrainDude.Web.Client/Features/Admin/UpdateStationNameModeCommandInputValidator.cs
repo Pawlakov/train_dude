@@ -10,7 +10,7 @@ using TrainDude.Commands.Requests.Admin;
 using TrainDude.Web.Client.Validation;
 
 public class UpdateStationNameModeCommandInputValidator
-    : AbstractInputValidator<UpdateStationNameModeCommand>
+    : AbstractInputValidator<SetNameModeCommand>
 {
     public UpdateStationNameModeCommandInputValidator()
     {

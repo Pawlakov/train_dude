@@ -43,17 +43,22 @@ public class Station
 
     public static StationCreated Make(Guid stationId, string nameGerman, string? nameGermanNew, string? namePolish, string? nameRussian)
     {
-        return new StationCreated(stationId, nameGerman, nameGermanNew, namePolish, nameRussian);
+        if (string.IsNullOrWhiteSpace(nameGerman))
+        {
+            throw new ArgumentException("A valid name is required.", nameof(nameGerman));
+        }
+
+        return new StationCreated(stationId, DateTime.UtcNow, nameGerman, nameGermanNew, namePolish, nameRussian);
     }
 
     public StationLocationSet SetLocation(Location location)
     {
-        return new StationLocationSet(this.Id, location);
+        return new StationLocationSet(this.Id, DateTime.UtcNow, location);
     }
 
     public StationAxleAdded AddAxle()
     {
-        return new StationAxleAdded(this.Id);
+        return new StationAxleAdded(this.Id, DateTime.UtcNow);
     }
 
     public void Apply(StationCreated e)

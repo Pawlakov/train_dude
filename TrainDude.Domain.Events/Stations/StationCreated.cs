@@ -8,4 +8,4 @@ using System;
 
 using TrainDude.Domain.Events.Base;
 
-public sealed record class StationCreated(Guid Id, string NameGerman, string? NameGermanNew, string? NamePolish, string? NameRussian) : IDomainEvent, IHasAlternativeNames;
+public sealed record class StationCreated(Guid Id, DateTime When, string NameGerman, string? NameGermanNew, string? NamePolish, string? NameRussian) : BaseAggregateEvent(Id, When), IHasAlternativeNames;

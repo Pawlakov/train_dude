@@ -10,8 +10,15 @@ using TrainDude.Commands.Requests.Base;
 using TrainDude.Integration.Values;
 
 public sealed record class SetLocationCommand
-    : BasePolymorphicCommand
+    : BaseRoutedCommand
 {
+    public const string Route = "station/location/set";
+
+    public SetLocationCommand()
+        : base(Route)
+    {
+    }
+
     public Guid Id { get; set; }
 
     public long Version { get; set; }

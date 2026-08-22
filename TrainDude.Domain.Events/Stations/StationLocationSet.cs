@@ -6,6 +6,7 @@ namespace TrainDude.Domain.Events.Stations;
 
 using System;
 
+using TrainDude.Domain.Events.Base;
 using TrainDude.Integration.Values;
 
-public sealed record class StationLocationSet(Guid Id, Location Location) : IDomainEvent;
+public sealed record class StationLocationSet(Guid Id, DateTime When, Location Location) : BaseAggregateEvent(Id, When);

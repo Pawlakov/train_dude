@@ -28,9 +28,10 @@ public class HttpCommandSender
         this.http = http;
     }
 
-    public async Task Send(BasePolymorphicCommand command, CancellationToken cancellationToken = default)
+    public async Task Send<TCommand>(TCommand command, CancellationToken cancellationToken = default)
+    where TCommand : BaseRoutedCommand
     {
-        var response = await this.http.PostAsJsonAsync("api/mediator/command", command, cancellationToken);
+        var response = await this.http.PostAsJsonAsync(command.Route, command, cancellationToken);
 
         if (response.IsSuccessStatusCode)
         {

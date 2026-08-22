@@ -6,4 +6,6 @@ namespace TrainDude.Domain.Events.Radii;
 
 using System;
 
-public sealed record class RadiusCreated(Guid Id, int Speed, int Minimum) : IDomainEvent;
+using TrainDude.Domain.Events.Base;
+
+public sealed record class RadiusCreated(Guid Id, DateTime When, int Speed, int Minimum) : BaseAggregateEvent(Id, When);

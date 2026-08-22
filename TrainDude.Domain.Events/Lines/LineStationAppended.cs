@@ -6,4 +6,6 @@ namespace TrainDude.Domain.Events.Lines;
 
 using System;
 
-public sealed record class LineStationAppended(Guid Id, Guid StationId) : IDomainEvent;
+using TrainDude.Domain.Events.Base;
+
+public sealed record class LineStationAppended(Guid Id, DateTime When, Guid StationId) : BaseAggregateEvent(Id, When);

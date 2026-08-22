@@ -35,7 +35,7 @@ public class Segment
 
     public static SegmentCreated Make(Guid id, double? nominalLength, Guid aId, Guid bId)
     {
-        return new SegmentCreated(id, nominalLength, aId, bId);
+        return new SegmentCreated(id, DateTime.UtcNow, nominalLength, aId, bId);
     }
 
     public void Apply(SegmentCreated e)

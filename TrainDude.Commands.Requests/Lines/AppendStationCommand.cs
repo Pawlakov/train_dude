@@ -9,8 +9,15 @@ using System;
 using TrainDude.Commands.Requests.Base;
 
 public sealed record class AppendStationCommand
-    : BasePolymorphicCommand
+    : BaseRoutedCommand
 {
+    public const string Route = "line/station/assign";
+
+    public AppendStationCommand()
+        : base(Route)
+    {
+    }
+
     public Guid Id { get; set; }
 
     public long Version { get; set; }

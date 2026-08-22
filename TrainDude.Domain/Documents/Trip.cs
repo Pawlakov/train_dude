@@ -29,7 +29,7 @@ public class Trip
 
     public static TripCreated Make(Guid tripId, int tripNumber)
     {
-        return new TripCreated(tripId, tripNumber);
+        return new TripCreated(tripId, DateTime.UtcNow, tripNumber);
     }
 
     public void Apply(TripCreated e)

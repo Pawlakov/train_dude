@@ -11,19 +11,15 @@ using Microsoft.AspNetCore.Http;
 public abstract class DomainException
     : Exception
 {
-    public string Code { get; }
+    public abstract int StatusCode { get; }
 
-    public virtual int StatusCode => StatusCodes.Status400BadRequest;
-
-    protected DomainException(string code, string message)
+    protected DomainException(string message)
         : base(message)
     {
-        this.Code = code;
     }
 
-    protected DomainException(string code, string message, Exception innerException)
+    protected DomainException(string message, Exception innerException)
         : base(message, innerException)
     {
-        this.Code = code;
     }
 }

@@ -11,12 +11,11 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server"/>
-        <PackageReference Include="WolverineFx"/>
         <PackageReference Include="WolverineFx.RuntimeCompilation" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\TrainDude.Commands.Handlers\TrainDude.Commands.Handlers.csproj" />
+      <ProjectReference Include="..\TrainDude.Commands.Endpoints\TrainDude.Commands.Endpoints.csproj" />
       <ProjectReference Include="..\TrainDude.Integration.Projections\TrainDude.Integration.Projections.csproj" />
       <ProjectReference Include="..\TrainDude.Queries.Handlers\TrainDude.Queries.Handlers.csproj" />
       <ProjectReference Include="..\TrainDude.Web.Client\TrainDude.Web.Client.csproj" />
