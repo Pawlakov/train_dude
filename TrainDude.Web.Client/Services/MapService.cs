@@ -7,12 +7,12 @@ namespace TrainDude.Web.Client.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.JSInterop;
 
+using TrainDude.Integration.Values;
 using TrainDude.Queries.Requests.Base;
 using TrainDude.Web.Client.GeoJson;
 
@@ -54,8 +54,11 @@ public sealed class MapService
 
         var featureCollection = BuildGeoJson(data);
 
-        await this.scriptModule.InvokeVoidAsync("clearGeoJson", cancellationToken);
-        await this.scriptModule.InvokeVoidAsync("addGeoJson", cancellationToken, featureCollection);
+        if (FeatureFlags.MapEnabled)
+        {
+            await this.scriptModule.InvokeVoidAsync("clearGeoJson", cancellationToken);
+            await this.scriptModule.InvokeVoidAsync("addGeoJson", cancellationToken, featureCollection);
+        }
 
         this.CurrentData = data;
     }
@@ -79,7 +82,10 @@ public sealed class MapService
         this.scriptModule = await this.js.InvokeAsync<IJSObjectReference>("import", cancellationToken, "./Components/Layout/BaseMapLayout.razor.js");
         if (this.scriptModule != null)
         {
-            await this.scriptModule.InvokeVoidAsync("initMap", cancellationToken, "map", 54.218000, 21.725389, 12);
+            if (FeatureFlags.MapEnabled)
+            {
+                await this.scriptModule.InvokeVoidAsync("initMap", cancellationToken, "map", 54.218000, 21.725389, 12);
+            }
         }
     }
 

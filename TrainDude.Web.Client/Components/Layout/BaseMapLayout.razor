@@ -1,4 +1,8 @@
+@using TrainDude.Integration.Values
 @inherits LayoutComponentBase
 
-<div id="map"></div>
+@if (FeatureFlags.MapEnabled)
+{
+    <div id="map"></div>
+}
 @this.Body
