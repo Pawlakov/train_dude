@@ -6,5 +6,5 @@ namespace TrainDude.Shared.Values;
 
 public static class FeatureFlags
 {
-    public const bool MapEnabled = false;
+    public const bool MapEnabled = true;
 }

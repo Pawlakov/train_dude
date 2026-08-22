@@ -7,3 +7,8 @@
     top:0;
     bottom:0;
 }
+
+.cs-content-wrapper {
+    position: relative;
+    z-index: 1;
+}
