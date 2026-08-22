@@ -1,7 +1,7 @@
 @page "/trip/{Id:guid}"
 @using FluentValidation
 @using Mediator
-@using TrainDude.Queries.Requests.Trips
+@using TrainDude.Queries.Contracts.Trips
 @inherits MapEntityLookupPageBase<GetTripQuery, GetTripQueryResult>
 
 @inject ISender Mediator

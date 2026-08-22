@@ -7,15 +7,11 @@ namespace TrainDude.Web.Controllers;
 using System;
 using System.Threading.Tasks;
 
-using FluentValidation;
-
 using Mediator;
 
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-using TrainDude.Commands.Requests.Base;
-using TrainDude.Queries.Requests.Base;
+using TrainDude.Queries.Contracts.Base;
 
 [Route("api/mediator/[controller]")]
 [ApiController]

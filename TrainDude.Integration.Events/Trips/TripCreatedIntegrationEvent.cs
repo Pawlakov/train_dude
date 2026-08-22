@@ -6,4 +6,4 @@ namespace TrainDude.Integration.Events.Trips;
 
 using System;
 
-public sealed record class TripCreatedIntegrationEvent(Guid Id, long Version, int Number);
+public sealed record class TripCreatedIntegrationEvent(Guid Id, long Version, int Number) : IVersionedEvent;

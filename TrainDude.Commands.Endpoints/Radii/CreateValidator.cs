@@ -7,17 +7,14 @@ using System;
 
 using FluentValidation;
 
-using TrainDude.Commands.Requests.Radii;
+using TrainDude.Commands.Contracts.Radii;
+using TrainDude.Commands.Endpoints.Base;
 
-public class CreateValidator
-    : AbstractValidator<CreateCommand>
+public sealed class CreateValidator
+    : BaseDomainValidator<CreateCommand>
 {
     public CreateValidator()
     {
-        this.RuleFor(x => x.Id)
-            .NotEqual(Guid.Empty)
-            .WithMessage("A valid id is required.");
-
         this.RuleFor(x => x.Speed)
             .GreaterThan(0)
             .WithMessage("A valid speed is required.");

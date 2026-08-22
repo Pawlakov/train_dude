@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 using LiteDB;
 
-using TrainDude.Integration.Events.Admin;
+using TrainDude.Integration.Events.Settings;
 
 public static class DroppedProjectionHandler
 {

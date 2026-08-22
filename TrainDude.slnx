@@ -1,19 +1,19 @@
 <Solution>
   <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
     <File Path="Directory.Build.props" />
     <File Path="Directory.Packages.props" />
     <File Path="stylecop.json" />
   </Folder>
+  <Project Path="TrainDude.Commands.Contracts\TrainDude.Commands.Contracts.csproj" />
   <Project Path="TrainDude.Commands.Endpoints/TrainDude.Commands.Endpoints.csproj" />
-  <Project Path="TrainDude.Commands.Requests/TrainDude.Commands.Requests.csproj" />
-  <Project Path="TrainDude.Domain.Events\TrainDude.Domain.Events.csproj" />
   <Project Path="TrainDude.Domain\TrainDude.Domain.csproj" />
   <Project Path="TrainDude.Integration.Events/TrainDude.Integration.Events.csproj" />
   <Project Path="TrainDude.Integration.Projections/TrainDude.Integration.Projections.csproj" />
-  <Project Path="TrainDude.Integration.Values\TrainDude.Integration.Values.csproj" />
+  <Project Path="TrainDude.Queries.Contracts\TrainDude.Queries.Contracts.csproj" />
   <Project Path="TrainDude.Queries.Data/TrainDude.Queries.Data.csproj" />
   <Project Path="TrainDude.Queries.Handlers/TrainDude.Queries.Handlers.csproj" />
-  <Project Path="TrainDude.Queries.Requests/TrainDude.Queries.Requests.csproj" />
+  <Project Path="TrainDude.Shared.Values\TrainDude.Shared.Values.csproj" />
   <Project Path="TrainDude.Web.Client/TrainDude.Web.Client.csproj" />
   <Project Path="TrainDude.Web/TrainDude.Web.csproj" />
 </Solution>

@@ -10,11 +10,10 @@ using JasperFx.Events;
 
 using Marten.Events.Aggregation;
 
-using TrainDude.Domain.Documents;
-using TrainDude.Domain.Events.Trips;
+using TrainDude.Domain.Trips;
 
 public partial class TripProjection
-    : SingleStreamProjection<Trip, Guid>
+    : SingleStreamProjection<TripAggregate, Guid>
 {
-    public void Apply(IEvent<TripCreated> e, Trip trip) => trip.Apply(e.Data);
+    public void Apply(IEvent<TripCreated> e, TripAggregate aggregate) => aggregate.Apply(e.Data);
 }

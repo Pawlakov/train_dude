@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 using FluentValidation;
 using FluentValidation.Results;
 
-using TrainDude.Commands.Requests.Base;
+using TrainDude.Commands.Contracts.Base;
 
 public class HttpCommandSender
 {

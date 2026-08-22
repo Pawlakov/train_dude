@@ -14,7 +14,7 @@ using LiteDB;
 using Mediator;
 
 using TrainDude.Queries.Data.Documents;
-using TrainDude.Queries.Requests.Lines;
+using TrainDude.Queries.Contracts.Lines;
 
 public sealed class GetLineQueryHandler
     : IQueryHandler<GetLineQuery, GetLineQueryResult>

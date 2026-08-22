@@ -8,17 +8,14 @@ using System;
 
 using FluentValidation;
 
-using TrainDude.Commands.Requests.Stations;
+using TrainDude.Commands.Contracts.Stations;
+using TrainDude.Commands.Endpoints.Base;
 
 public sealed class CreateValidator
-    : AbstractValidator<CreateCommand>
+    : BaseDomainValidator<CreateCommand>
 {
     public CreateValidator()
     {
-        this.RuleFor(x => x.Id)
-            .NotEqual(Guid.Empty)
-            .WithMessage("A valid id is required.");
-
         this.RuleFor(x => x.NameGerman)
             .NotEmpty()
             .WithMessage("A valid name is required.")

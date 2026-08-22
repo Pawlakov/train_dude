@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using TrainDude.Integration.Values;
+using TrainDude.Shared.Values;
 
 internal static class GeoJsonExtensions
 {

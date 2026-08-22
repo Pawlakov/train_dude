@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 using Marten;
 
-using TrainDude.Commands.Requests.Admin;
-using TrainDude.Commands.Requests.Generic;
-using TrainDude.Integration.Events.Admin;
+using TrainDude.Commands.Contracts.Admin;
+using TrainDude.Commands.Contracts.Generic;
+using TrainDude.Integration.Events.Settings;
 
 using Wolverine;
 using Wolverine.Http;

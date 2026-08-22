@@ -8,7 +8,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\TrainDude.Commands.Requests\TrainDude.Commands.Requests.csproj" />
+      <ProjectReference Include="..\TrainDude.Commands.Contracts\TrainDude.Commands.Contracts.csproj" />
       <ProjectReference Include="..\TrainDude.Domain\TrainDude.Domain.csproj" />
       <ProjectReference Include="..\TrainDude.Integration.Events\TrainDude.Integration.Events.csproj" />
     </ItemGroup>

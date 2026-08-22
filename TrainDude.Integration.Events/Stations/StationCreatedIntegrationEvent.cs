@@ -6,4 +6,4 @@ namespace TrainDude.Integration.Events.Stations;
 
 using System;
 
-public sealed record class StationCreatedIntegrationEvent(Guid Id, long Version, string Name);
+public sealed record class StationCreatedIntegrationEvent(Guid Id, long Version, string Name) : IVersionedEvent;

@@ -6,8 +6,8 @@ namespace TrainDude.Web.HostBuilders;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using TrainDude.Queries.Contracts.Network;
 using TrainDude.Queries.Handlers.Network;
-using TrainDude.Queries.Requests.Network;
 using TrainDude.Web.Infrastructure;
 
 public static class HostBuilderExtensions

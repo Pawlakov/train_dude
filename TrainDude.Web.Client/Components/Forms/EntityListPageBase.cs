@@ -12,7 +12,7 @@ using Mediator;
 
 using Microsoft.AspNetCore.Components;
 
-using TrainDude.Queries.Requests.Base;
+using TrainDude.Queries.Contracts.Base;
 
 public abstract class EntityListPageBase<TQuery, TQueryResult, TQueryResultItem>
     : ComponentBase

@@ -19,8 +19,8 @@ using FluentValidation.Results;
 
 using Mediator;
 
-using TrainDude.Commands.Requests.Base;
-using TrainDude.Queries.Requests.Base;
+using TrainDude.Commands.Contracts.Base;
+using TrainDude.Queries.Contracts.Base;
 
 public class HttpMediator
     : ISender

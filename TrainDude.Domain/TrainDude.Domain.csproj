@@ -1,12 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-    <ItemGroup>
-      <ProjectReference Include="..\TrainDude.Domain.Events\TrainDude.Domain.Events.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Include="Marten" />
-      <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" />
-    </ItemGroup>
-
+  <ItemGroup>
+    <ProjectReference Include="..\TrainDude.Shared.Values\TrainDude.Shared.Values.csproj" />
+  </ItemGroup>
 </Project>

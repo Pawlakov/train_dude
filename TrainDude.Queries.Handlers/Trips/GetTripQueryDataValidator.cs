@@ -10,7 +10,7 @@ using LiteDB;
 
 using TrainDude.Queries.Data.Documents;
 using TrainDude.Queries.Handlers.Validation;
-using TrainDude.Queries.Requests.Trips;
+using TrainDude.Queries.Contracts.Trips;
 
 public sealed class GetTripQueryDataValidator
     : AbstractReadDataValidator<GetTripQuery>

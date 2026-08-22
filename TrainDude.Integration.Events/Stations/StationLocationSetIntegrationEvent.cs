@@ -6,6 +6,6 @@ namespace TrainDude.Integration.Events.Stations;
 
 using System;
 
-using TrainDude.Integration.Values;
+using TrainDude.Shared.Values;
 
 public sealed record class StationLocationSetIntegrationEvent(Guid Id, long Version, Location Location) : IVersionedEvent;

@@ -6,9 +6,9 @@ namespace TrainDude.Commands.Endpoints.Trips;
 
 using System.Threading.Tasks;
 
-using TrainDude.Commands.Requests.Generic;
-using TrainDude.Commands.Requests.Trips;
-using TrainDude.Domain.Documents;
+using TrainDude.Commands.Contracts.Generic;
+using TrainDude.Commands.Contracts.Trips;
+using TrainDude.Domain.Trips;
 using TrainDude.Integration.Events.Trips;
 
 using Wolverine;
@@ -18,14 +18,14 @@ using Wolverine.Marten;
 public static class CreateEndpoint
 {
     [WolverinePost(CreateCommand.Route)]
-    public static Task<(CreatedResponse, IStartStream, OutgoingMessages)> Post(CreateCommand command, IMessageBus bus)
+    public static Task<(CreatedResponse, IStartStream, OutgoingMessages)> Post(CreateCommand command)
     {
-        var domainEvent = Trip.Make(command.Id, command.Number);
+        var domainEvent = TripAggregate.Make(command.Id, command.Number);
 
-        IStartStream startStream = MartenOps.StartStream<Trip>(command.Id, domainEvent);
+        IStartStream startStream = MartenOps.StartStream<TripAggregate>(domainEvent.Id, domainEvent);
 
         var response = new CreatedResponse(domainEvent.Id);
-        var integrationEvent = new TripCreatedIntegrationEvent(command.Id, 1L, command.Number);
+        var integrationEvent = new TripCreatedIntegrationEvent(domainEvent.Id, 1L, domainEvent.TripNumber);
 
         return Task.FromResult((response, startStream, new OutgoingMessages { integrationEvent }));
     }

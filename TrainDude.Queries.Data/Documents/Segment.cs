@@ -7,7 +7,7 @@ namespace TrainDude.Queries.Data.Documents;
 using System;
 using System.Collections.Generic;
 
-using TrainDude.Integration.Values;
+using TrainDude.Shared.Values;
 
 public class Segment
     : IVersionedDocument

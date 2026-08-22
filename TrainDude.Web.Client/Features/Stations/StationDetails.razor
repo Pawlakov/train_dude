@@ -1,7 +1,7 @@
 @page "/station/{Id:guid}"
 @using FluentValidation
 @using Mediator
-@using TrainDude.Queries.Requests.Stations
+@using TrainDude.Queries.Contracts.Stations
 @inherits MapEntityLookupPageBase<GetStationQuery, GetStationQueryResult>
 
 @inject ISender Mediator

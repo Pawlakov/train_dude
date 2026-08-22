@@ -14,8 +14,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\TrainDude.Commands.Requests\TrainDude.Commands.Requests.csproj" />
-      <ProjectReference Include="..\TrainDude.Queries.Requests\TrainDude.Queries.Requests.csproj" />
+      <ProjectReference Include="..\TrainDude.Commands.Contracts\TrainDude.Commands.Contracts.csproj" />
+      <ProjectReference Include="..\TrainDude.Queries.Contracts\TrainDude.Queries.Contracts.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Commands.Handlers.Seed;
+namespace TrainDude.Web.Client.Seed;
 
 using System.Collections.Generic;
 

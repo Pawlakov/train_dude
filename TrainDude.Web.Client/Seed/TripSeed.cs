@@ -4,7 +4,7 @@
 
 namespace TrainDude.Web.Client.Seed;
 
-using TrainDude.Integration.Values;
+using TrainDude.Shared.Values;
 
 internal class TripSeed
 {

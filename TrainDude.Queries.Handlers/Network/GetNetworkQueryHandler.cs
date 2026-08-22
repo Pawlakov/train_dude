@@ -14,7 +14,7 @@ using LiteDB;
 using Mediator;
 
 using TrainDude.Queries.Data.Documents;
-using TrainDude.Queries.Requests.Network;
+using TrainDude.Queries.Contracts.Network;
 
 public sealed class GetNetworkQueryHandler
     : IQueryHandler<GetNetworkQuery, GetNetworkQueryResult>

@@ -13,7 +13,7 @@ using LiteDB;
 using Mediator;
 
 using TrainDude.Queries.Data.Documents;
-using TrainDude.Queries.Requests.Stations;
+using TrainDude.Queries.Contracts.Stations;
 
 public sealed class GetStationQueryHandler
     : IQueryHandler<GetStationQuery, GetStationQueryResult>

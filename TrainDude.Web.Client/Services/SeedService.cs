@@ -9,20 +9,13 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Mediator;
-
-using TrainDude.Commands.Handlers.Seed;
-using TrainDude.Commands.Requests.Admin;
-using TrainDude.Commands.Requests.Lines;
-using TrainDude.Commands.Requests.Radii;
-using TrainDude.Commands.Requests.Segments;
-using TrainDude.Commands.Requests.Stations;
-using TrainDude.Commands.Requests.Trips;
-using TrainDude.Domain.Events.Stations;
-using TrainDude.Integration.Values;
+using TrainDude.Commands.Contracts.Admin;
+using TrainDude.Commands.Contracts.Lines;
+using TrainDude.Commands.Contracts.Stations;
+using TrainDude.Shared.Values;
 using TrainDude.Web.Client.Seed;
 
-using CreateCommand=TrainDude.Commands.Requests.Radii.CreateCommand;
+using CreateCommand=TrainDude.Commands.Contracts.Radii.CreateCommand;
 
 public class SeedService
 {
@@ -79,7 +72,7 @@ public class SeedService
     private async Task SeedLine(LineSeed seed, CancellationToken cancellationToken = default)
     {
         var lineId = Guid.NewGuid();
-        var createCommand = new Commands.Requests.Lines.CreateCommand
+        var createCommand = new Commands.Contracts.Lines.CreateCommand
         {
             Id = lineId,
             Number = seed.Number,
@@ -130,7 +123,7 @@ public class SeedService
     private async Task SeedStation(StationSeed seed, CancellationToken cancellationToken = default)
     {
         var stationId = Guid.NewGuid();
-        var createCommand = new Commands.Requests.Stations.CreateCommand
+        var createCommand = new Commands.Contracts.Stations.CreateCommand
         {
             Id = stationId,
             NameGerman = seed.NameGerman,
@@ -171,7 +164,7 @@ public class SeedService
     private async Task SeedSegment(SegmentSeed seed, CancellationToken cancellationToken = default)
     {
         var segmentId = Guid.NewGuid();
-        var createCommand = new Commands.Requests.Segments.CreateCommand
+        var createCommand = new Commands.Contracts.Segments.CreateCommand
         {
             Id = segmentId,
             NominalLength = seed.Length,
@@ -188,7 +181,7 @@ public class SeedService
     private async Task SeedTrip(TripSeed seed, CancellationToken cancellationToken = default)
     {
         var tripId = Guid.NewGuid();
-        var createCommand = new Commands.Requests.Trips.CreateCommand
+        var createCommand = new Commands.Contracts.Trips.CreateCommand
         {
             Id = tripId,
             Number = seed.Number,

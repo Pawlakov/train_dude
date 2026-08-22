@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Components;
 
-using TrainDude.Queries.Requests.Base;
+using TrainDude.Queries.Contracts.Base;
 using TrainDude.Web.Client.Services;
 
 public abstract class MapEntityLookupPageBase<TQuery, TQueryResult>

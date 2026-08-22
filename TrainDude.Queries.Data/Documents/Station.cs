@@ -6,7 +6,7 @@ namespace TrainDude.Queries.Data.Documents;
 
 using System;
 
-using TrainDude.Integration.Values;
+using TrainDude.Shared.Values;
 
 public class Station
     : IVersionedDocument

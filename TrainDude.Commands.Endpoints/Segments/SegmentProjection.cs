@@ -10,11 +10,10 @@ using JasperFx.Events;
 
 using Marten.Events.Aggregation;
 
-using TrainDude.Domain.Documents;
-using TrainDude.Domain.Events.Segments;
+using TrainDude.Domain.Segments;
 
 public partial class SegmentProjection
-    : SingleStreamProjection<Segment, Guid>
+    : SingleStreamProjection<SegmentAggregate, Guid>
 {
-    public void Apply(IEvent<SegmentCreated> e, Segment segment) => segment.Apply(e.Data);
+    public void Apply(IEvent<SegmentCreated> e, SegmentAggregate segmentAggregate) => segmentAggregate.Apply(e.Data);
 }

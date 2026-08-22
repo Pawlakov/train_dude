@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
 
-using TrainDude.Commands.Requests.Base;
-using TrainDude.Commands.Requests.Generic;
-using TrainDude.Commands.Requests.Lines;
-using TrainDude.Domain.Documents;
+using TrainDude.Commands.Contracts.Base;
+using TrainDude.Commands.Contracts.Generic;
+using TrainDude.Commands.Contracts.Lines;
+using TrainDude.Domain.Lines;
 using TrainDude.Integration.Events.Lines;
 
 using Wolverine;
@@ -21,11 +21,11 @@ using Wolverine.Marten;
 public static class CreateEndpoint
 {
     [WolverinePost(CreateCommand.Route)]
-    public static Task<(CreatedResponse, IStartStream, OutgoingMessages)> Post(CreateCommand command, IMessageBus bus)
+    public static Task<(CreatedResponse, IStartStream, OutgoingMessages)> Post(CreateCommand command)
     {
-        var domainEvent = Line.Make(command.Id, command.Number, command.Letter);
+        var domainEvent = LineAggregate.Make(command.Id, command.Number, command.Letter);
 
-        IStartStream startStream = MartenOps.StartStream<Line>(command.Id, domainEvent);
+        IStartStream startStream = MartenOps.StartStream<LineAggregate>(domainEvent.Id, domainEvent);
 
         var response = new CreatedResponse(domainEvent.Id);
         var integrationEvent = new LineCreatedIntegrationEvent(domainEvent.Id, 1L, domainEvent.LineNumber, domainEvent.LineLetter);

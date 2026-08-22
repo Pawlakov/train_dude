@@ -8,10 +8,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 using TrainDude.Commands.Endpoints.HostBuilders;
-using TrainDude.Domain.Exceptions;
-using TrainDude.Integration.Events.Admin;
 using TrainDude.Integration.Projections.Trips;
 using TrainDude.Queries.Handlers.HostBuilders;
 using TrainDude.Web.Components;
@@ -37,9 +36,12 @@ public static class Program
         var builder = WebApplication.CreateBuilder(args);
 
         var isDevelopment = builder.Environment.IsDevelopment();
-        var readConnectionString = builder.Configuration.GetConnectionString("Read");
 
+        var readConnectionString = builder.Configuration.GetConnectionString("Read");
         var writeConnectionString = builder.Configuration.GetConnectionString("Write");
+
+        builder.Services
+            .AddLogging(logging => logging.AddConsole());
 
         builder.Services
             .AddRazorComponents()
@@ -52,8 +54,8 @@ public static class Program
             .AddProblemDetails();
 
         builder.Services
-            .AddReadDataServices(readConnectionString)
-            .AddWriteServices(writeConnectionString, isDevelopment)
+            .AddReadDataServices(readConnectionString!)
+            .AddWriteServices(writeConnectionString!, isDevelopment)
             .AddReadDataValidation()
             .AddRequestHandlers()
             .AddReadExceptionHandlers();

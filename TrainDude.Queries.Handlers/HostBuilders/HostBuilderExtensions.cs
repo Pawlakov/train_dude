@@ -4,6 +4,8 @@
 
 namespace TrainDude.Queries.Handlers.HostBuilders;
 
+using System;
+
 using FluentValidation;
 
 using LiteDB;
@@ -15,7 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TrainDude.Queries.Data.Documents;
 using TrainDude.Queries.Handlers.Network;
 using TrainDude.Queries.Handlers.Validation;
-using TrainDude.Queries.Requests.Network;
+using TrainDude.Queries.Contracts.Network;
 
 /// <summary>
 /// A container for extensions methods concerning services.
@@ -34,6 +36,8 @@ public static class HostBuilderExtensions
 
     public static IServiceCollection AddReadDataServices(this IServiceCollection services, string connectionString)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(connectionString, nameof(connectionString));
+
         services.AddSingleton<ILiteDatabase>(new LiteDatabase(connectionString));
 
         services.AddSingleton<ILiteCollection<Line>>(x => x.GetRequiredService<ILiteDatabase>().GetCollection<Line>("lines"));

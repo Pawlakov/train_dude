@@ -7,17 +7,14 @@ using System;
 
 using FluentValidation;
 
-using TrainDude.Commands.Requests.Lines;
+using TrainDude.Commands.Contracts.Lines;
+using TrainDude.Commands.Endpoints.Base;
 
-public class CreateValidator
-    : AbstractValidator<CreateCommand>
+public sealed class CreateValidator
+    : BaseDomainValidator<CreateCommand>
 {
     public CreateValidator()
     {
-        this.RuleFor(x => x.Id)
-            .NotEqual(Guid.Empty)
-            .WithMessage("A valid id is required.");
-
         this.RuleFor(x => x.Number)
             .GreaterThan(0)
             .WithMessage("A valid number is required.");

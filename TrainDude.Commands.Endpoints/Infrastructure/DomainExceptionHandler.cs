@@ -11,19 +11,21 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
-using TrainDude.Domain.Exceptions;
+using TrainDude.Domain;
+using TrainDude.Domain.Base;
 
 public class DomainExceptionHandler
     : IExceptionHandler
 {
     private readonly IProblemDetailsService service;
-    /*private readonly ILogger logger;*/
+    private readonly ILogger<DomainExceptionHandler> logger;
 
-    public DomainExceptionHandler(IProblemDetailsService service /*, ILogger logger*/)
+    public DomainExceptionHandler(IProblemDetailsService service, ILogger<DomainExceptionHandler> logger)
     {
         this.service = service;
-        /*this.logger = logger;*/
+        this.logger = logger;
     }
 
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
@@ -33,10 +35,15 @@ public class DomainExceptionHandler
             return false;
         }
 
-        // TODO once some kind of logging is added
-        /*this.logger.LogWarning(domainException, "Domain rule violated: {Code}", domainException.Code);*/
+        this.logger.LogWarning(domainException, "Domain rule violated: {Name}", domainException.GetType().Name);
 
-        httpContext.Response.StatusCode = domainException.StatusCode;
+        var statusCode = domainException.StatusCode switch
+        {
+            ErrorKind.Conflict => StatusCodes.Status409Conflict,
+            _ => StatusCodes.Status500InternalServerError,
+        };
+
+        httpContext.Response.StatusCode = statusCode;
         return await this.service.TryWriteAsync(
         new ProblemDetailsContext
         {
@@ -44,7 +51,7 @@ public class DomainExceptionHandler
             Exception = domainException,
             ProblemDetails = new ProblemDetails
             {
-                Status = domainException.StatusCode,
+                Status = statusCode,
                 Title = "Domain rule violated",
                 Detail = domainException.Message,
             },

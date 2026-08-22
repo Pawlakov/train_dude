@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 using LiteDB;
 
-using TrainDude.Integration.Events.Admin;
+using TrainDude.Integration.Events.Settings;
 using TrainDude.Queries.Data.Documents;
 
 public static class SettingsStationNameModeUpdatedProjectionHandler

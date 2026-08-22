@@ -12,8 +12,8 @@ using System.Threading.Tasks;
 
 using Microsoft.JSInterop;
 
-using TrainDude.Integration.Values;
-using TrainDude.Queries.Requests.Base;
+using TrainDude.Queries.Contracts.Base;
+using TrainDude.Shared.Values;
 using TrainDude.Web.Client.GeoJson;
 
 public sealed class MapService

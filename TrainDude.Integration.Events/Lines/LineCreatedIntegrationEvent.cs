@@ -6,4 +6,4 @@ namespace TrainDude.Integration.Events.Lines;
 
 using System;
 
-public sealed record class LineCreatedIntegrationEvent(Guid Id, long Version, int Number, char? Letter);
+public sealed record class LineCreatedIntegrationEvent(Guid Id, long Version, int Number, char? Letter) : IVersionedEvent;

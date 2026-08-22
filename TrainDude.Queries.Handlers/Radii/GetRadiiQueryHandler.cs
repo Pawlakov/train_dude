@@ -13,7 +13,7 @@ using LiteDB;
 using Mediator;
 
 using TrainDude.Queries.Data.Documents;
-using TrainDude.Queries.Requests.Radii;
+using TrainDude.Queries.Contracts.Radii;
 
 public sealed class GetRadiiQueryHandler
     : IQueryHandler<GetRadiiQuery, GetRadiiQueryResult>

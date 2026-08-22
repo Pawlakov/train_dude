@@ -10,11 +10,10 @@ using JasperFx.Events;
 
 using Marten.Events.Aggregation;
 
-using TrainDude.Domain.Documents;
-using TrainDude.Domain.Events.Radii;
+using TrainDude.Domain.Radii;
 
 public partial class RadiusProjection
-    : SingleStreamProjection<Radius, Guid>
+    : SingleStreamProjection<RadiusAggregate, Guid>
 {
-    public void Apply(IEvent<RadiusCreated> e, Radius radius) => radius.Apply(e.Data);
+    public void Apply(IEvent<RadiusCreated> e, RadiusAggregate aggregate) => aggregate.Apply(e.Data);
 }

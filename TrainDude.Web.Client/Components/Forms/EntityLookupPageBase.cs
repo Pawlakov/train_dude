@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 
-using TrainDude.Queries.Requests.Base;
+using TrainDude.Queries.Contracts.Base;
 using TrainDude.Web.Client.Services;
 
 public abstract class EntityLookupPageBase<TQuery, TQueryResult>

@@ -8,26 +8,18 @@ using System;
 
 using FluentValidation;
 
-using Microsoft.AspNetCore.Mvc;
+using TrainDude.Commands.Contracts.Stations;
+using TrainDude.Commands.Endpoints.Base;
+using TrainDude.Shared.Values;
 
-using TrainDude.Commands.Requests.Stations;
-using TrainDude.Integration.Values;
-
-public class SetLocationValidator
-    : AbstractValidator<SetLocationCommand>
+public sealed class SetLocationValidator
+    : BaseVersionedDomainValidator<SetLocationCommand>
 {
     public SetLocationValidator()
+    : base()
     {
-        this.RuleFor(x => x.Id)
-            .NotEqual(Guid.Empty)
-            .WithMessage("A valid id is required.");
-
         this.RuleFor(x => x.Location)
             .NotEqual(default(Location))
             .WithMessage("A valid location id is required.");
-
-        this.RuleFor(x => x.Version)
-            .GreaterThan(0)
-            .WithMessage("A valid stream version is required.");
     }
 }

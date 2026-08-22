@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
-using TrainDude.Integration.Values;
+using TrainDude.Shared.Values;
 
 public class Line
     : IVersionedDocument

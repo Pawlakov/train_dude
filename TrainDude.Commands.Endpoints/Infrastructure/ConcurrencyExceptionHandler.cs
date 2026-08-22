@@ -13,17 +13,18 @@ using JasperFx;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 public class ConcurrencyExceptionHandler
     : IExceptionHandler
 {
     private readonly IProblemDetailsService service;
-    /*private readonly ILogger logger;*/
+    private readonly ILogger<ConcurrencyExceptionHandler> logger;
 
-    public ConcurrencyExceptionHandler(IProblemDetailsService service /*, ILogger logger*/)
+    public ConcurrencyExceptionHandler(IProblemDetailsService service, ILogger<ConcurrencyExceptionHandler> logger)
     {
         this.service = service;
-        /*this.logger = logger;*/
+        this.logger = logger;
     }
 
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
@@ -33,8 +34,7 @@ public class ConcurrencyExceptionHandler
             return false;
         }
 
-        // TODO once some kind of logging is added
-        /*this.logger.LogWarning(concurrencyException, "Domain rule violated: {Code}", concurrencyException.Code);*/
+        this.logger.LogWarning(concurrencyException, "Event order violated by concurrency.");
 
         httpContext.Response.StatusCode = StatusCodes.Status409Conflict;
         return await this.service.TryWriteAsync(

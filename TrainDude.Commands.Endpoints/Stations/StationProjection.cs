@@ -10,15 +10,14 @@ using JasperFx.Events;
 
 using Marten.Events.Aggregation;
 
-using TrainDude.Domain.Documents;
-using TrainDude.Domain.Events.Stations;
+using TrainDude.Domain.Stations;
 
 public partial class StationProjection
-    : SingleStreamProjection<Station, Guid>
+    : SingleStreamProjection<StationAggregate, Guid>
 {
-    public void Apply(IEvent<StationCreated> e, Station station) => station.Apply(e.Data);
+    public void Apply(IEvent<StationCreated> e, StationAggregate aggregate) => aggregate.Apply(e.Data);
 
-    public void Apply(IEvent<StationLocationSet> e, Station station) => station.Apply(e.Data);
+    public void Apply(IEvent<StationLocationSet> e, StationAggregate aggregate) => aggregate.Apply(e.Data);
 
-    public void Apply(IEvent<StationAxleAdded> e, Station station) => station.Apply(e.Data);
+    public void Apply(IEvent<StationAxleAdded> e, StationAggregate aggregate) => aggregate.Apply(e.Data);
 }

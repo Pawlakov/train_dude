@@ -10,7 +10,7 @@ using LiteDB;
 
 using TrainDude.Queries.Data.Documents;
 using TrainDude.Queries.Handlers.Validation;
-using TrainDude.Queries.Requests.Lines;
+using TrainDude.Queries.Contracts.Lines;
 
 public sealed class GetLineQueryDataValidator
     : AbstractReadDataValidator<GetLineQuery>

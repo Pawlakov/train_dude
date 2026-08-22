@@ -6,4 +6,4 @@ namespace TrainDude.Integration.Events.Radii;
 
 using System;
 
-public sealed record class RadiusCreatedIntegrationEvent(Guid Id, long Version, int Speed, int Minimum);
+public sealed record class RadiusCreatedIntegrationEvent(Guid Id, long Version, int Speed, int Minimum) : IVersionedEvent;

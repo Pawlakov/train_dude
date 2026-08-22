@@ -13,9 +13,9 @@ using LiteDB;
 
 using Mediator;
 
-using TrainDude.Integration.Values;
 using TrainDude.Queries.Data.Documents;
-using TrainDude.Queries.Requests.Segments;
+using TrainDude.Queries.Contracts.Segments;
+using TrainDude.Shared.Values;
 
 public sealed class GetSegmentQueryHandler
     : IQueryHandler<GetSegmentQuery, GetSegmentQueryResult>

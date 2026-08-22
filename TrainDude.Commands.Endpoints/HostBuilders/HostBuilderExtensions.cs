@@ -4,6 +4,8 @@
 
 namespace TrainDude.Commands.Endpoints.HostBuilders;
 
+using System;
+
 using JasperFx;
 using JasperFx.Events.Daemon;
 using JasperFx.Events.Projections;
@@ -18,11 +20,10 @@ using TrainDude.Commands.Endpoints.Infrastructure;
 using TrainDude.Commands.Endpoints.Lines;
 using TrainDude.Commands.Endpoints.Radii;
 using TrainDude.Commands.Endpoints.Segments;
-using TrainDude.Commands.Endpoints.Services;
+using TrainDude.Commands.Endpoints.Settings;
 using TrainDude.Commands.Endpoints.Stations;
 using TrainDude.Commands.Endpoints.Trips;
-using TrainDude.Domain.Exceptions;
-using TrainDude.Integration.Events.Admin;
+using TrainDude.Domain.Base;
 
 using Wolverine;
 using Wolverine.ErrorHandling;
@@ -61,7 +62,8 @@ public static class HostBuilderExtensions
 {
     public static IServiceCollection AddWriteServices(this IServiceCollection services, string connectionString, bool isDevelopment)
     {
-        services.AddScoped<SettingsService>();
+        ArgumentException.ThrowIfNullOrWhiteSpace(connectionString, nameof(connectionString));
+
         services.AddMarten(options =>
             {
                 options.Connection(connectionString);
@@ -100,8 +102,6 @@ public static class HostBuilderExtensions
             opts.Policies.OnException<DomainException>().MoveToErrorQueue();
 
             opts.UseFluentValidation();
-
-            opts.PublishMessage<DroppedIntegrationEvent>().ToLocalQueue("train-dude-projection").UseDurableInbox();
 
             // TODO some day we will do it this way
             // opts.PublishMessage<TripCreatedIntegrationEvent>().ToRabbitQueue("train-dude-projection").UseDurableInbox();
