@@ -5,6 +5,7 @@
 namespace TrainDude.Commands.Endpoints.HostBuilders;
 
 using System;
+using System.Reflection;
 
 using JasperFx;
 using JasperFx.Events.Daemon;
@@ -93,10 +94,16 @@ public static class HostBuilderExtensions
         return services;
     }
 
-    public static IHostBuilder UseWriteServices(this IHostBuilder host)
+    public static IHostBuilder UseWriteServices(this IHostBuilder host, Assembly hostAssembly, Assembly projectionAssembly)
     {
         host.UseWolverine(opts =>
         {
+            opts.ApplicationAssembly = hostAssembly;
+            opts.Discovery.IncludeAssembly(projectionAssembly);
+            opts.Discovery.IncludeAssembly(typeof(DropEndpoint).Assembly);
+
+            opts.DescribeHandlerMatch(typeof(DropEndpoint));
+
             opts.Policies.AutoApplyTransactions();
             opts.Policies.UseDurableLocalQueues();
             opts.Policies.OnException<DomainException>().MoveToErrorQueue();

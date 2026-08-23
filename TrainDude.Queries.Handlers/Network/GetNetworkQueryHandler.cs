@@ -52,7 +52,7 @@ public sealed class GetNetworkQueryHandler
         {
             StationPoints = stations,
             SegmentLineStrings = segments
-                .Select(x => (x.Vertices ?? []).Prepend(x.ALocation).Prepend(x.BLocation).ToList())
+                .Select(x => (x.Vertices ?? []).Prepend(x.ALocation).Append(x.BLocation).ToList())
                 .ToList(),
         };
     }

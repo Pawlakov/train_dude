@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 using TrainDude.Commands.Endpoints.HostBuilders;
+using TrainDude.Integration.Projections.Admin;
 using TrainDude.Integration.Projections.Trips;
 using TrainDude.Queries.Handlers.HostBuilders;
 using TrainDude.Web.Components;
@@ -61,7 +62,7 @@ public static class Program
             .AddReadExceptionHandlers();
 
         builder.Host
-            .UseWriteServices();
+            .UseWriteServices(typeof(Program).Assembly, typeof(DroppedProjectionHandler).Assembly);
 
         var app = builder.Build();
 
