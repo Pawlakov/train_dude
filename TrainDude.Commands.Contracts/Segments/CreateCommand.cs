@@ -21,6 +21,8 @@ public sealed record class CreateCommand
 
     public double? NominalLength { get; set; }
 
+    public int Tracks { get; set; }
+
     public Guid AId { get; set; }
 
     public Guid BId { get; set; }

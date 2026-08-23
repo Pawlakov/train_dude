@@ -35,7 +35,7 @@ public sealed class GetSegmentQueryHandler
             throw new ApplicationException("No aggregate with this ID. If this exception is thrown it means that validation has failed.");
         }
 
-        var vertices = (queryResult.Vertices ?? [])
+        var vertices = (queryResult.Course ?? [])
             .Cast<Location?>()
             .Prepend(queryResult.A.Location)
             .Append(queryResult.B.Location)

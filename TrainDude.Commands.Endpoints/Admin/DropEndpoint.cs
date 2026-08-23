@@ -10,6 +10,7 @@ using Marten;
 
 using TrainDude.Commands.Contracts.Admin;
 using TrainDude.Commands.Contracts.Generic;
+using TrainDude.Integration.Events.Admin;
 using TrainDude.Integration.Events.Settings;
 
 using Wolverine;

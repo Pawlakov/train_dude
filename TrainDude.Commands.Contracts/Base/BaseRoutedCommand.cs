@@ -6,9 +6,8 @@ namespace TrainDude.Commands.Contracts.Base;
 
 using System.Text.Json.Serialization;
 
-using TrainDude.Commands.Contracts.Admin;
-
 public abstract record class BaseRoutedCommand<TResponse>
+    : BasePolymorphicCommand
     where TResponse : BaseCommandResponse
 {
     protected BaseRoutedCommand(string route)

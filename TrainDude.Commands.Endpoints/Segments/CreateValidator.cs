@@ -16,6 +16,10 @@ public sealed class CreateValidator
 {
     public CreateValidator()
     {
+        this.RuleFor(x => x.Tracks)
+            .GreaterThan(0)
+            .WithMessage("A valid number of tracks is required");
+
         this.RuleFor(x => x.AId)
             .NotEqual(Guid.Empty)
             .WithMessage("A valid A id is required.");

@@ -27,6 +27,8 @@ public static class SegmentCreatedProjectionHandler
             Id = @event.Id,
             Version = @event.Version,
             NominalLength = @event.NominalLength,
+            Haversine = @event.Haversine,
+            Tracks = @event.Tracks,
             A = LoadStationModel(@event.A),
             B = LoadStationModel(@event.B),
         };

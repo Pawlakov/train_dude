@@ -8,9 +8,9 @@ using System.Collections.Generic;
 
 internal class SegmentSeed
 {
-    required public ExtremeSeed A { get; set; }
+    public required ExtremeSeed A { get; set; }
 
-    required public ExtremeSeed B { get; set; }
+    public required ExtremeSeed B { get; set; }
 
     public double Length { get; set; }
 

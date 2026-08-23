@@ -2,10 +2,8 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Integration.Projections.Admin;
+namespace TrainDude.Integration.Projections.Settings;
 
-using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 using LiteDB;

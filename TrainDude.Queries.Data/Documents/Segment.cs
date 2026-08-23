@@ -18,11 +18,15 @@ public class Segment
 
     public double? NominalLength { get; set; }
 
+    public double? Haversine { get; set; }
+
+    public int Tracks { get; set; }
+
     public SegmentStation A { get; set; }
 
     public SegmentStation B { get; set; }
 
-    public IEnumerable<Location> Vertices { get; set; }
+    public IEnumerable<Location> Course { get; set; }
 
     public class SegmentStation
     {

@@ -33,7 +33,7 @@ public class HttpCommandSender
     public async Task<TResponse> Send<TResponse>(BaseRoutedCommand<TResponse> command, CancellationToken cancellationToken = default)
         where TResponse : BaseCommandResponse
     {
-        var response = await this.http.PostAsJsonAsync(command.Route, command, cancellationToken).ConfigureAwait(false);
+        var response = await this.http.PostAsJsonAsync(command.Route, (BasePolymorphicCommand)command, cancellationToken).ConfigureAwait(false);
 
         if (response.IsSuccessStatusCode)
         {

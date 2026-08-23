@@ -13,7 +13,6 @@ using LiteDB;
 using Mediator;
 
 using TrainDude.Queries.Data.Documents;
-using TrainDude.Queries.Handlers.Extensions;
 using TrainDude.Queries.Contracts.Segments;
 
 public sealed class GetSegmentsQueryHandler
@@ -35,13 +34,9 @@ public sealed class GetSegmentsQueryHandler
             {
                 x.Id,
                 x.NominalLength,
-                AStationId = x.A.StationId,
-                ALocation = x.A.Location,
                 AName = x.A.Name,
-                BStationId = x.B.StationId,
-                BLocation = x.B.Location,
                 BName = x.B.Name,
-                x.Vertices,
+                x.Haversine,
             })
             .ToList();
 
@@ -52,7 +47,7 @@ public sealed class GetSegmentsQueryHandler
                 Length = x.NominalLength,
                 AName = x.AName,
                 BName = x.BName,
-                Haversine = (x.ALocation.HasValue && x.BLocation.HasValue) ? (x.Vertices ?? []).Prepend(x.ALocation.Value).Append(x.BLocation.Value).ToList().Segments().Haversine() : null,
+                Haversine = x.Haversine,
             })
             .ToList();
 

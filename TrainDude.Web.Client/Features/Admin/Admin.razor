@@ -33,7 +33,7 @@
     }
     else if (this.selectedTab is Tab.Developer)
     {
-        <button class="button is-danger @(this.loadingActive ? "is-loading" : "")" @onclick="this.HardReset">
+        <button type="button" class="btn btn-danger @(this.loadingActive ? "disabled" : "")" @onclick="this.HardReset">
             Twardy Reset
         </button>
         <p class="help">Twardy reset usuwa całą zawartość!</p>

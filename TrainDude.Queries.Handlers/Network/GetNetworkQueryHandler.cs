@@ -44,7 +44,7 @@ public sealed class GetNetworkQueryHandler
                 ALocation = x.A.Location!.Value,
                 BStationId = x.B.StationId,
                 BLocation = x.B.Location!.Value,
-                x.Vertices,
+                Vertices = x.Course,
             })
             .ToList();
 

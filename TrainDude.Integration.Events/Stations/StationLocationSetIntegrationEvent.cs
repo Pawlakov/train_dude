@@ -8,4 +8,5 @@ using System;
 
 using TrainDude.Shared.Values;
 
+// TODO recalculate haversines
 public sealed record class StationLocationSetIntegrationEvent(Guid Id, long Version, Location Location) : IVersionedEvent;

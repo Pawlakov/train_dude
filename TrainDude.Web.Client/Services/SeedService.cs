@@ -5,12 +5,15 @@
 namespace TrainDude.Web.Client.Services;
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 using TrainDude.Commands.Contracts.Admin;
 using TrainDude.Commands.Contracts.Lines;
+using TrainDude.Commands.Contracts.Segments;
 using TrainDude.Commands.Contracts.Stations;
 using TrainDude.Shared.Values;
 using TrainDude.Web.Client.Seed;
@@ -19,16 +22,16 @@ using CreateCommand=TrainDude.Commands.Contracts.Radii.CreateCommand;
 
 public class SeedService
 {
-    private readonly Dictionary<int, Guid> stationIdMap;
-    private readonly Dictionary<int, Guid> tripIdMap;
+    private readonly ConcurrentDictionary<int, Guid> stationIdMap;
+    private readonly ConcurrentDictionary<int, Guid> tripIdMap;
 
     private readonly HttpCommandSender mediator;
     private readonly SeedLoader loader;
 
     public SeedService(HttpCommandSender mediator, SeedLoader loader)
     {
-        this.stationIdMap = new Dictionary<int, Guid>();
-        this.tripIdMap = new Dictionary<int, Guid>();
+        this.stationIdMap = new ConcurrentDictionary<int, Guid>();
+        this.tripIdMap = new ConcurrentDictionary<int, Guid>();
 
         this.mediator = mediator;
         this.loader = loader;
@@ -38,35 +41,32 @@ public class SeedService
     {
         await this.mediator.Send(new DropCommand(), cancellationToken);
 
-        var radiiSeed = await this.loader.LoadAsync<RadiusSeed>("radii_seed.yml", cancellationToken);
-        foreach (var radiusSeed in radiiSeed)
+        var options = new ParallelOptions
         {
-            await this.SeedRadius(radiusSeed, cancellationToken);
-        }
+            CancellationToken = cancellationToken,
+            MaxDegreeOfParallelism = 4,
+        };
 
-        var stationsSeed = await this.loader.LoadAsync<StationSeed>("stations_seed.yml", cancellationToken);
-        foreach (var stationSeed in stationsSeed)
-        {
-            await this.SeedStation(stationSeed, cancellationToken);
-        }
+        var stationsSeedTask = this.loader.LoadAsync<StationSeed>("stations_seed.yml", cancellationToken);
+        var radiiSeedTask = this.loader.LoadAsync<RadiusSeed>("radii_seed.yml", cancellationToken);
+        var tripsSeedTask = this.loader.LoadAsync<TripSeed>("trips_seed.yml", cancellationToken);
+        var segmentsSeedTask = this.loader.LoadAsync<SegmentSeed>("segments_seed.yml", cancellationToken);
+        var linesSeedTask = this.loader.LoadAsync<LineSeed>("lines_seed.yml", cancellationToken);
 
-        var tripsSeed = await this.loader.LoadAsync<TripSeed>("trips_seed.yml", cancellationToken);
-        foreach (var tripSeed in tripsSeed)
-        {
-            await this.SeedTrip(tripSeed, cancellationToken);
-        }
+        var stationsSeed = await stationsSeedTask;
+        var stationsTask = Parallel.ForEachAsync(stationsSeed, options, async (x, ct) => await this.SeedStation(x, ct));
+        var radiiSeed = await radiiSeedTask;
+        var radiiTask = Parallel.ForEachAsync(radiiSeed, options, async (x, ct) => await this.SeedRadius(x, ct));
+        var tripsSeed = await tripsSeedTask;
+        var tripsTask = Parallel.ForEachAsync(tripsSeed, options, async (x, ct) => await this.SeedTrip(x, ct));
+        var segmentsSeed = await segmentsSeedTask;
+        await stationsTask;
+        var segmentsTask = Parallel.ForEachAsync(segmentsSeed, options, async (x, ct) => await this.SeedSegment(x, ct));
+        var linesSeed = await linesSeedTask;
+        await tripsTask;
+        var linesTask = Parallel.ForEachAsync(linesSeed, options, async (x, ct) => await this.SeedLine(x, ct));
 
-        var segmentsSeed = await this.loader.LoadAsync<SegmentSeed>("segments_seed.yml", cancellationToken);
-        foreach (var segmentSeed in segmentsSeed)
-        {
-            await this.SeedSegment(segmentSeed, cancellationToken);
-        }
-
-        var linesSeed = await this.loader.LoadAsync<LineSeed>("lines_seed.yml", cancellationToken);
-        foreach (var lineSeed in linesSeed)
-        {
-            await this.SeedLine(lineSeed, cancellationToken);
-        }
+        await Task.WhenAll(radiiTask, segmentsTask, linesTask);
     }
 
     private async Task SeedLine(LineSeed seed, CancellationToken cancellationToken = default)
@@ -168,13 +168,27 @@ public class SeedService
         {
             Id = Guid.NewGuid(),
             NominalLength = seed.Length,
+            Tracks = seed.Tracks,
             AId = this.stationIdMap[seed.A.StationId],
             BId = this.stationIdMap[seed.B.StationId],
         };
 
-        await this.mediator.Send(createCommand, cancellationToken);
+        var createdResponse = await this.mediator.Send(createCommand, cancellationToken);
+        var version = 1L;
 
-        /*segment.AddVertices(seed.Vertices?.Select(x => new Location(x.Longitude, x.Latitude)) ?? []);*/
+        if (seed.Vertices is not null && seed.Vertices is not [])
+        {
+            var locations = (seed.Vertices?.Select(x => new Location(x.Longitude, x.Latitude)) ?? []).ToList();
+            var setCourseCommand = new SetCourseCommand
+            {
+                Id = createdResponse.Id,
+                Version = version,
+                Course = locations,
+            };
+
+            var updatedResponse = await this.mediator.Send(setCourseCommand, cancellationToken);
+            version = updatedResponse.Version;
+        }
     }
 
     private async Task SeedTrip(TripSeed seed, CancellationToken cancellationToken = default)

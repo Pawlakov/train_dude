@@ -32,15 +32,17 @@ public class SeedLoader
     {
         var fileName = $"seed/{resourceNameSuffix}";
         var response = await this.http.GetAsync(fileName, cancellationToken);
-
-        await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
-        if (stream == null)
+        await using (var stream = await response.Content.ReadAsStreamAsync(cancellationToken))
         {
-            throw new FileNotFoundException("Static resource not found.", fileName);
-        }
+            if (stream == null)
+            {
+                throw new FileNotFoundException("Static resource not found.", fileName);
+            }
 
-        using var reader = new StreamReader(stream);
-        var result = await reader.ReadToEndAsync(cancellationToken);
-        return this.deserializer.Deserialize<List<T>>(result);
+            using (var reader = new StreamReader(stream))
+            {
+                return this.deserializer.Deserialize<List<T>>(reader);
+            }
+        }
     }
 }

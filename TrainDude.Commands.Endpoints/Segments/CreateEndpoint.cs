@@ -15,6 +15,7 @@ using TrainDude.Domain;
 using TrainDude.Domain.Segments;
 using TrainDude.Domain.Stations;
 using TrainDude.Integration.Events.Segments;
+using TrainDude.Shared.Values;
 
 using Wolverine;
 using Wolverine.Http;
@@ -31,7 +32,7 @@ public static class CreateEndpoint
         IDocumentSession session,
         CancellationToken cancellationToken = default)
     {
-        var domainEvent = SegmentAggregate.Make(command.Id, command.NominalLength, a.Id, b.Id);
+        var domainEvent = SegmentAggregate.Make(command.Id, command.NominalLength, command.Tracks, a.Id, b.Id);
 
         IStartStream startStream = MartenOps.StartStream<SegmentAggregate>(domainEvent.Id, domainEvent);
         var nameMode = await SettingsAccessor.GetNameMode(session, cancellationToken);
@@ -39,8 +40,14 @@ public static class CreateEndpoint
         var aName = nameSelector(a);
         var bName = nameSelector(b);
 
+        double? haversine = (a.Location, b.Location) switch
+        {
+            ({} aLocation, {} bLocation) => aLocation.Haversine(bLocation),
+            _ => null,
+        };
+
         var response = new CreatedResponse(domainEvent.Id);
-        var integrationEvent = new SegmentCreatedIntegrationEvent(domainEvent.Id, 1L, domainEvent.NominalLength, new(a.Id, aName, a.Location), new(b.Id, bName, b.Location));
+        var integrationEvent = new SegmentCreatedIntegrationEvent(domainEvent.Id, 1L, domainEvent.NominalLength, haversine, domainEvent.Tracks, new(a.Id, aName, a.Location), new(b.Id, bName, b.Location));
 
         return (response, startStream, new OutgoingMessages { integrationEvent });
     }

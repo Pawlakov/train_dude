@@ -12,7 +12,7 @@ using TrainDude.Commands.Contracts.Generic;
 public sealed record class AppendStationCommand
     : BaseUpdateCommand
 {
-    public const string Route = "/line/station/assign";
+    public const string Route = "/line/station/append";
 
     public AppendStationCommand()
         : base(Route)

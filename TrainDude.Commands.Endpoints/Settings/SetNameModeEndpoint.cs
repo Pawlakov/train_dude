@@ -26,10 +26,15 @@ public static class SetNameModeEndpoint
     [WolverinePost(SetNameModeCommand.Route)]
     public static async Task<(EmptyResponse, OutgoingMessages)> Post(SetNameModeCommand command, IDocumentSession session, CancellationToken cancellationToken = default)
     {
-        var (stream, aggregate) = await SettingsAccessor.FetchForWriting(session, cancellationToken);
-
-        var stationNameModeUpdated = aggregate.UpdateStationNameMode(command.Mode);
-        stream.AppendOne(stationNameModeUpdated);
+        await SettingsAccessor.ExecuteWithSettings(
+        session,
+        (stream, aggregate) =>
+        {
+            var stationNameModeUpdated = aggregate.UpdateStationNameMode(command.Mode);
+            stream.AppendOne(stationNameModeUpdated);
+            return Task.CompletedTask;
+        },
+        cancellationToken);
 
         Func<StationAggregate, string> nameSelector = StationNameResolver.BuildNameSelector(command.Mode);
 
