@@ -71,48 +71,48 @@ public class SeedService
 
     private async Task SeedLine(LineSeed seed, CancellationToken cancellationToken = default)
     {
-        var lineId = Guid.NewGuid();
         var createCommand = new Commands.Contracts.Lines.CreateCommand
         {
-            Id = lineId,
+            Id = Guid.NewGuid(),
             Number = seed.Number,
             Letter = seed.Letter,
         };
 
-        await this.mediator.Send(createCommand, cancellationToken);
+        var createdResponse = await this.mediator.Send(createCommand, cancellationToken);
         var version = 1L;
 
         foreach (var trip in seed.Trips)
         {
             var assignTripCommand = new AssignTripCommand
             {
-                Id = lineId,
-                Version = version++,
+                Id = createdResponse.Id,
+                Version = version,
                 TripId = this.tripIdMap[trip],
             };
 
-            await this.mediator.Send(assignTripCommand, cancellationToken);
+            var updatedResult = await this.mediator.Send(assignTripCommand, cancellationToken);
+            version = updatedResult.Version;
         }
 
         foreach (var station in seed.Stations)
         {
             var appendStationCommand = new AppendStationCommand
             {
-                Id = lineId,
-                Version = version++,
+                Id = createdResponse.Id,
+                Version = version,
                 StationId = this.stationIdMap[station],
             };
 
-            await this.mediator.Send(appendStationCommand, cancellationToken);
+            var updatedResult = await this.mediator.Send(appendStationCommand, cancellationToken);
+            version = updatedResult.Version;
         }
     }
 
     private async Task SeedRadius(RadiusSeed seed, CancellationToken cancellationToken = default)
     {
-        var radiusId = Guid.NewGuid();
         var createCommand = new CreateCommand
         {
-            Id = radiusId,
+            Id = Guid.NewGuid(),
             Speed = seed.Speed,
             Minimum = seed.Minimum,
         };
@@ -122,18 +122,17 @@ public class SeedService
 
     private async Task SeedStation(StationSeed seed, CancellationToken cancellationToken = default)
     {
-        var stationId = Guid.NewGuid();
         var createCommand = new Commands.Contracts.Stations.CreateCommand
         {
-            Id = stationId,
+            Id = Guid.NewGuid(),
             NameGerman = seed.NameGerman,
             NameGermanNew = seed.NameGermanNew,
             NamePolish = seed.NamePolish,
             NameRussian = seed.NameRussian,
         };
 
-        await this.mediator.Send(createCommand, cancellationToken);
-        this.stationIdMap[seed.Id] = stationId;
+        var createdResponse = await this.mediator.Send(createCommand, cancellationToken);
+        this.stationIdMap[seed.Id] = createdResponse.Id;
         var version = 1L;
 
         if (seed is { Latitude: not null, Longitude: not null })
@@ -141,32 +140,33 @@ public class SeedService
             var location = new Location(seed.Longitude.Value, seed.Latitude.Value);
             var setLocationCommand = new SetLocationCommand
             {
-                Id = stationId,
-                Version = version++,
+                Id = createdResponse.Id,
+                Version = version,
                 Location = location,
             };
 
-            await this.mediator.Send(setLocationCommand, cancellationToken);
+            var updatedResponse = await this.mediator.Send(setLocationCommand, cancellationToken);
+            version = updatedResponse.Version;
         }
 
         for (var i = 0; i < seed.AxleCount; ++i)
         {
             var addAxleCommand = new AddAxleCommand
             {
-                Id = stationId,
-                Version = version++,
+                Id = createdResponse.Id,
+                Version = version,
             };
 
-            await this.mediator.Send(addAxleCommand, cancellationToken);
+            var updatedResponse = await this.mediator.Send(addAxleCommand, cancellationToken);
+            version = updatedResponse.Version;
         }
     }
 
     private async Task SeedSegment(SegmentSeed seed, CancellationToken cancellationToken = default)
     {
-        var segmentId = Guid.NewGuid();
         var createCommand = new Commands.Contracts.Segments.CreateCommand
         {
-            Id = segmentId,
+            Id = Guid.NewGuid(),
             NominalLength = seed.Length,
             AId = this.stationIdMap[seed.A.StationId],
             BId = this.stationIdMap[seed.B.StationId],
@@ -174,20 +174,18 @@ public class SeedService
 
         await this.mediator.Send(createCommand, cancellationToken);
 
-        // TODO przywrócić segmenty do dawnej chwały
         /*segment.AddVertices(seed.Vertices?.Select(x => new Location(x.Longitude, x.Latitude)) ?? []);*/
     }
 
     private async Task SeedTrip(TripSeed seed, CancellationToken cancellationToken = default)
     {
-        var tripId = Guid.NewGuid();
         var createCommand = new Commands.Contracts.Trips.CreateCommand
         {
-            Id = tripId,
+            Id = Guid.NewGuid(),
             Number = seed.Number,
         };
 
-        await this.mediator.Send(createCommand, cancellationToken);
-        this.tripIdMap[seed.Number] = tripId;
+        var createdResponse = await this.mediator.Send(createCommand, cancellationToken);
+        this.tripIdMap[seed.Number] = createdResponse.Id;
     }
 }

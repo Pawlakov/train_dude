@@ -17,7 +17,7 @@ public abstract class MapEntityLookupPageBase<TQuery, TQueryResult>
     where TQueryResult : BaseEntityLookupQueryResult, IMapQueryResult
 {
     [Inject]
-    public MapService MapService { get; set; }
+    public MapService? MapService { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

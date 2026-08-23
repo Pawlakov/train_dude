@@ -54,10 +54,15 @@
         this.loadingActive = true;
         this.StateHasChanged();
 
-        await this.Service.Handle();
-
-        this.loadingActive = false;
-        this.StateHasChanged();
+        try
+        {
+            await this.Service.Handle();
+        }
+        finally
+        {
+            this.loadingActive = false;
+            this.StateHasChanged();
+        }
     }
 
     private Task SwitchTab(Tab tab)

@@ -24,7 +24,7 @@ public class FluentValidationValidator<TModel>
     private ValidationMessageStore messages;
 
     [Inject]
-    private IEnumerable<IInputValidator<TModel>> Validators { get; set; }
+    private IEnumerable<IInputValidator<TModel>>? Validators { get; set; }
 
     [CascadingParameter]
     private EditContext CurrentEditContext { get; set; }

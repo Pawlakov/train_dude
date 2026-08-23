@@ -7,9 +7,10 @@ namespace TrainDude.Commands.Contracts.Trips;
 using System;
 
 using TrainDude.Commands.Contracts.Base;
+using TrainDude.Commands.Contracts.Generic;
 
 public sealed record class CreateCommand
-    : BaseRoutedCommand, IDomainCommand
+    : BaseCreateCommand
 {
     public const string Route = "/trip/create";
 
@@ -17,8 +18,6 @@ public sealed record class CreateCommand
         : base(Route)
     {
     }
-
-    public Guid Id { get; set; }
 
     public int Number { get; set; }
 }

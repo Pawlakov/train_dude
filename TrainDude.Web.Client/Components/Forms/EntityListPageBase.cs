@@ -22,7 +22,7 @@ public abstract class EntityListPageBase<TQuery, TQueryResult, TQueryResultItem>
     protected IEnumerable<TQueryResultItem>? items;
 
     [Inject]
-    public ISender Mediator { get; set; }
+    public ISender? Mediator { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {

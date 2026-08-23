@@ -7,18 +7,17 @@ namespace TrainDude.Commands.Contracts.Lines;
 using System;
 
 using TrainDude.Commands.Contracts.Base;
+using TrainDude.Commands.Contracts.Generic;
 
 public sealed record class CreateCommand
-    : BaseRoutedCommand, IDomainCommand
+    : BaseCreateCommand
 {
     public const string Route = "/line/create";
-    
+
     public CreateCommand()
         : base(Route)
     {
     }
-
-    public Guid Id { get; set; }
 
     public int Number { get; set; }
 

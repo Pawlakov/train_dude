@@ -4,8 +4,6 @@
 @using TrainDude.Queries.Contracts.Trips
 @inherits MapEntityLookupPageBase<GetTripQuery, GetTripQueryResult>
 
-@inject ISender Mediator
-
 @if (this.queryResult != null)
 {
     <PageTitle>Kurs @(this.queryResult.TripNumber)</PageTitle>
@@ -46,6 +44,6 @@ else
 else
 {
     <section class="section">
-        
+
     </section>
 }

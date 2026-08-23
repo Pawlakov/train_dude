@@ -5,9 +5,10 @@
 namespace TrainDude.Commands.Contracts.Admin;
 
 using TrainDude.Commands.Contracts.Base;
+using TrainDude.Commands.Contracts.Generic;
 
 public sealed record class DropCommand
-    : BaseRoutedCommand
+    : BaseRoutedCommand<EmptyResponse>
 {
     public const string Route = "/admin/drop";
 

@@ -37,7 +37,7 @@ public abstract class EntityLookupPageBase<TQuery, TQueryResult>
     public Guid Id { get; set; }
 
     [Inject]
-    public ISender Mediator { get; set; }
+    public ISender? Mediator { get; set; }
 
     protected override Task OnInitializedAsync()
     {

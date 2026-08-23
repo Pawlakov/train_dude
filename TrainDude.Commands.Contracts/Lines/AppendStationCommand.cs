@@ -7,9 +7,10 @@ namespace TrainDude.Commands.Contracts.Lines;
 using System;
 
 using TrainDude.Commands.Contracts.Base;
+using TrainDude.Commands.Contracts.Generic;
 
 public sealed record class AppendStationCommand
-    : BaseRoutedCommand, IVersionedDomainCommand
+    : BaseUpdateCommand
 {
     public const string Route = "/line/station/assign";
 
@@ -17,10 +18,6 @@ public sealed record class AppendStationCommand
         : base(Route)
     {
     }
-
-    public Guid Id { get; set; }
-
-    public long Version { get; set; }
 
     public Guid StationId { get; set; }
 }

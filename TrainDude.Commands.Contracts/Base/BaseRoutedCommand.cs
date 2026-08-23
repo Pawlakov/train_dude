@@ -8,7 +8,8 @@ using System.Text.Json.Serialization;
 
 using TrainDude.Commands.Contracts.Admin;
 
-public abstract record class BaseRoutedCommand
+public abstract record class BaseRoutedCommand<TResponse>
+    where TResponse : BaseCommandResponse
 {
     protected BaseRoutedCommand(string route)
     {

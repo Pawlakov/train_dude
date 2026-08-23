@@ -4,8 +4,6 @@
 @using TrainDude.Queries.Contracts.Stations
 @inherits MapEntityLookupPageBase<GetStationQuery, GetStationQueryResult>
 
-@inject ISender Mediator
-
 @if (this.queryResult != null)
 {
     <PageTitle>Stacja @(this.queryResult.Name)</PageTitle>

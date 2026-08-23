@@ -7,9 +7,10 @@ namespace TrainDude.Commands.Contracts.Stations;
 using System;
 
 using TrainDude.Commands.Contracts.Base;
+using TrainDude.Commands.Contracts.Generic;
 
 public sealed record class AddAxleCommand
-    : BaseRoutedCommand, IVersionedDomainCommand
+    : BaseUpdateCommand
 {
     public const string Route = "/station/axle/add";
 
@@ -17,8 +18,4 @@ public sealed record class AddAxleCommand
         : base(Route)
     {
     }
-
-    public Guid Id { get; set; }
-
-    public long Version { get; set; }
 }

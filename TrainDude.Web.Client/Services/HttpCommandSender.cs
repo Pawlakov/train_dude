@@ -30,14 +30,15 @@ public class HttpCommandSender
         this.http = http;
     }
 
-    public async Task Send<TCommand>(TCommand command, CancellationToken cancellationToken = default)
-        where TCommand : BaseRoutedCommand
+    public async Task<TResponse> Send<TResponse>(BaseRoutedCommand<TResponse> command, CancellationToken cancellationToken = default)
+        where TResponse : BaseCommandResponse
     {
         var response = await this.http.PostAsJsonAsync(command.Route, command, cancellationToken).ConfigureAwait(false);
 
         if (response.IsSuccessStatusCode)
         {
-            return;
+            var result = await response.Content.ReadFromJsonAsync<TResponse>(cancellationToken);
+            return result;
         }
 
         var body = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);

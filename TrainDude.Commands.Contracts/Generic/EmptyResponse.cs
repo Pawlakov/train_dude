@@ -4,4 +4,6 @@
 
 namespace TrainDude.Commands.Contracts.Generic;
 
-public sealed record class EmptyResponse();
+using TrainDude.Commands.Contracts.Base;
+
+public sealed record class EmptyResponse() : BaseCommandResponse();

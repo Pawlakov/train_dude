@@ -7,10 +7,11 @@ namespace TrainDude.Commands.Contracts.Stations;
 using System;
 
 using TrainDude.Commands.Contracts.Base;
+using TrainDude.Commands.Contracts.Generic;
 using TrainDude.Shared.Values;
 
 public sealed record class SetLocationCommand
-    : BaseRoutedCommand, IVersionedDomainCommand
+    : BaseUpdateCommand
 {
     public const string Route = "/station/location/set";
 
@@ -18,10 +19,6 @@ public sealed record class SetLocationCommand
         : base(Route)
     {
     }
-
-    public Guid Id { get; set; }
-
-    public long Version { get; set; }
 
     public Location Location { get; set; }
 }
