@@ -32,7 +32,19 @@ public static class CreateEndpoint
         IDocumentSession session,
         CancellationToken cancellationToken = default)
     {
-        var domainEvent = SegmentAggregate.Make(command.Id, command.NominalLength, command.Tracks, a.Id, b.Id);
+        var aEnd = new SegmentEnd(a.Id, command.AAxle, command.APole);
+        var bEnd = new SegmentEnd(b.Id, command.BAxle, command.BPole);
+        if (command.AAxle >= a.AxleCount)
+        {
+            throw new SegmentNoStationAxleException(command.Id, command.AAxle, a.Id, a.AxleCount);
+        }
+
+        if (command.BAxle >= b.AxleCount)
+        {
+            throw new SegmentNoStationAxleException(command.Id, command.BAxle, b.Id, b.AxleCount);
+        }
+
+        var domainEvent = SegmentAggregate.Make(command.Id, command.NominalLength, command.Tracks, aEnd, bEnd);
 
         IStartStream startStream = MartenOps.StartStream<SegmentAggregate>(domainEvent.Id, domainEvent);
         var nameMode = await SettingsAccessor.GetNameMode(session, cancellationToken);
@@ -42,7 +54,7 @@ public static class CreateEndpoint
 
         double? haversine = (a.Location, b.Location) switch
         {
-            ({} aLocation, {} bLocation) => aLocation.Haversine(bLocation),
+            ({ } aLocation, { } bLocation) => aLocation.Haversine(bLocation),
             _ => null,
         };
 

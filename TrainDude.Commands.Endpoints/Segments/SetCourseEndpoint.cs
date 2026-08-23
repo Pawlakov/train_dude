@@ -28,8 +28,8 @@ public static class SetCourseEndpoint
     {
         var domainEvent = aggregate.SetCourse(command.Course);
 
-        var a = await session.Events.FetchLatest<StationAggregate>(aggregate.AId);
-        var b = await session.Events.FetchLatest<StationAggregate>(aggregate.BId);
+        var a = await session.Events.FetchLatest<StationAggregate>(aggregate.A.Id);
+        var b = await session.Events.FetchLatest<StationAggregate>(aggregate.B.Id);
         double? haversine = (a?.Location, b?.Location) switch
         {
             ({} aLocation, {} bLocation) => command.Course.Prepend(aLocation).Append(bLocation).Haversine(),

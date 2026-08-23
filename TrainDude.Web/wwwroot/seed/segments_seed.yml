@@ -1,30 +1,24 @@
 ﻿- a:
     station_id: 1
-    axle: 0
     pole: true
   b:
     station_id: 2
-    axle: 0
     pole: false
   length: 4.8
   tracks: 1
 - a:
     station_id: 2
-    axle: 0
     pole: true
   b:
     station_id: 3
-    axle: 0
     pole: false
   length: 7.3
   tracks: 1
 - a:
     station_id: 3
-    axle: 0
     pole: true
   b:
     station_id: 4
-    axle: 0
     pole: false
   length: 6.1
   tracks: 1
@@ -68,7 +62,7 @@
     pole: false
   length: 7.5
   tracks: 1
-  vertices:
+  course:
     - latitude: 54.2740
       longitude: 22.2468
     - latitude: 54.2849
@@ -105,149 +99,197 @@
       longitude: 22.2875
 - a:
     station_id: 10
+    pole: false
   b:
     station_id: 11
+    pole: true
   length: 7.5
   tracks: 1
 - a:
     station_id: 11
+    pole: false
   b:
     station_id: 12
+    pole: true
   length: 3.8
   tracks: 1
 - a:
     station_id: 12
+    pole: false
   b:
     station_id: 13
+    pole: true
   length: 6.2
   tracks: 1
 - a:
     station_id: 13
+    pole: false
   b:
     station_id: 14
+    pole: true
   length: 5.6
   tracks: 1
 - a:
     station_id: 14
+    pole: false
   b:
     station_id: 15
+    pole: true
   length: 3.4
   tracks: 1
 - a:
     station_id: 15
+    pole: false
   b:
     station_id: 16
+    pole: true
   length: 6.3
   tracks: 1
 - a:
     station_id: 16
+    pole: false
   b:
     station_id: 1
+    pole: true
   length: 4.2
   tracks: 2
 - a:
     station_id: 17
+    pole: false
   b:
     station_id: 18
+    pole: true
   length: 3.6
   tracks: 1
 - a:
     station_id: 18
+    pole: false
   b:
     station_id: 19
+    pole: true
   length: 7.9
   tracks: 1
 - a:
     station_id: 19
+    pole: false
   b:
     station_id: 20
+    pole: true
   length: 4.6
   tracks: 1
 - a:
     station_id: 20
+    pole: false
   b:
     station_id: 21
+    pole: true
   length: 2.5
   tracks: 1
 - a:
     station_id: 21
+    pole: false
   b:
     station_id: 22
+    pole: true
   length: 5.4
   tracks: 1
 - a:
     station_id: 22
+    pole: false
   b:
     station_id: 23
+    pole: true
   length: 4.6
   tracks: 1
 - a:
     station_id: 23
+    pole: false
   b:
     station_id: 16
+    pole: true
   length: 4.6
   tracks: 1
 - a:
     station_id: 24
+    pole: false
   b:
     station_id: 25
+    pole: true
   length: 2.3
   tracks: 1
 - a:
     station_id: 25
+    pole: false
   b:
     station_id: 26
+    pole: true
   length: 2.7
   tracks: 1
 - a:
     station_id: 26
+    pole: false
   b:
     station_id: 27
+    pole: true
   length: 1.6
   tracks: 1
 - a:
     station_id: 27
+    pole: false
   b:
     station_id: 28
+    pole: true
   length: 0.9
   tracks: 1
 - a:
     station_id: 28
+    pole: false
   b:
     station_id: 29
+    pole: true
   length: 2.4
   tracks: 1
 - a:
     station_id: 29
+    pole: false
   b:
     station_id: 30
+    pole: true
   length: 6.4
   tracks: 1
 - a:
     station_id: 30
+    pole: false
   b:
     station_id: 31
+    pole: true
   length: 4.9
   tracks: 1
 - a:
     station_id: 31
+    pole: false
   b:
     station_id: 32
+    pole: true
   length: 6.2
   tracks: 1
 - a:
     station_id: 32
+    pole: false
   b:
     station_id: 1
+    pole: true
   length: 5.9
   tracks: 1
 - a:
     station_id: 1
+    pole: false
   b:
     station_id: 33
+    pole: true
   length: 8
   tracks: 1
-  vertices:
+  course:
     - longitude: 21.7285
       latitude: 54.2178
     - longitude: 21.7338
@@ -328,37 +370,49 @@
       latitude: 54.2201
 - a:
     station_id: 33
+    pole: false
   b:
     station_id: 34
+    pole: true
   length: 6.8
   tracks: 1
 - a:
     station_id: 34
+    pole: false
   b:
     station_id: 35
+    pole: true
   length: 3.9
   tracks: 1
 - a:
     station_id: 35
+    pole: false
   b:
     station_id: 36
+    pole: true
   length: 3.4
   tracks: 1
 - a:
     station_id: 36
+    pole: false
   b:
     station_id: 37
+    pole: true
   length: 2.8
   tracks: 1
 - a:
     station_id: 37
+    pole: false
   b:
     station_id: 38
+    pole: true
   length: 4.3
   tracks: 1
 - a:
     station_id: 38
+    pole: false
   b:
     station_id: 39
+    pole: true
   length: 5.4
   tracks: 1

@@ -6,7 +6,6 @@ namespace TrainDude.Domain.Segments;
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Text.Json.Serialization;
 
@@ -19,15 +18,15 @@ public class SegmentAggregate
     private readonly List<Location> course;
 
     [JsonConstructor]
-    private SegmentAggregate(Guid id, long version, double? nominalLength, int tracks, Guid aId, Guid bId, ICollection<Location> course)
+    private SegmentAggregate(Guid id, long version, double? nominalLength, int tracks, SegmentEnd a, SegmentEnd b, ICollection<Location> course)
     {
         this.Id = id;
         this.Version = version;
 
         this.NominalLength = nominalLength;
         this.Tracks = tracks;
-        this.AId = aId;
-        this.BId = bId;
+        this.A = a;
+        this.B = b;
         this.course = (course ?? []).ToList();
     }
 
@@ -40,15 +39,15 @@ public class SegmentAggregate
 
     public int Tracks { get; private set; }
 
-    public Guid AId { get; private set; }
+    public SegmentEnd A { get; private set; }
 
-    public Guid BId { get; private set; }
+    public SegmentEnd B { get; private set; }
 
     public ICollection<Location> Course => this.course.AsReadOnly();
 
-    public static SegmentCreated Make(Guid id, double? nominalLength, int tracks, Guid aId, Guid bId)
+    public static SegmentCreated Make(Guid id, double? nominalLength, int tracks, SegmentEnd a, SegmentEnd b)
     {
-        return new SegmentCreated(id, DateTime.UtcNow, nominalLength, tracks, aId, bId);
+        return new SegmentCreated(id, DateTime.UtcNow, nominalLength, tracks, a, b);
     }
 
     public SegmentCourseSet SetCourse(IEnumerable<Location> course)
@@ -61,8 +60,8 @@ public class SegmentAggregate
         this.Id = e.Id;
         this.NominalLength = e.NominalLength;
         this.Tracks = e.Tracks;
-        this.AId = e.AId;
-        this.BId = e.BId;
+        this.A = e.A;
+        this.B = e.B;
 
         this.Version++;
     }

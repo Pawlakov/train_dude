@@ -14,11 +14,12 @@ public class StationAggregate
     : BaseAggregate, IHasAlternativeNames
 {
     [JsonConstructor]
-    private StationAggregate(Guid id, long version, Location? location, string nameGerman, string? nameGermanNew, string? namePolish, string? nameRussian)
+    private StationAggregate(Guid id, long version, int axleCount, Location? location, string nameGerman, string? nameGermanNew, string? namePolish, string? nameRussian)
     {
         this.Id = id;
         this.Version = version;
 
+        this.AxleCount = axleCount;
         this.Location = location;
         this.NameGerman = nameGerman;
         this.NameGermanNew = nameGermanNew;
@@ -29,6 +30,8 @@ public class StationAggregate
     public StationAggregate()
     {
     }
+
+    public int AxleCount { get; private set; }
 
     public Location? Location { get; private set; }
 
@@ -42,11 +45,6 @@ public class StationAggregate
 
     public static StationCreated Make(Guid stationId, string nameGerman, string? nameGermanNew, string? namePolish, string? nameRussian)
     {
-        if (string.IsNullOrWhiteSpace(nameGerman))
-        {
-            throw new ArgumentException("A valid name is required.", nameof(nameGerman));
-        }
-
         return new StationCreated(stationId, DateTime.UtcNow, nameGerman, nameGermanNew, namePolish, nameRussian);
     }
 
@@ -81,7 +79,8 @@ public class StationAggregate
 
     public void Apply(StationAxleAdded e)
     {
-        // TODO Actually implement this after we restore segments I guess
+        this.AxleCount += 1;
+
         this.Version++;
     }
 }

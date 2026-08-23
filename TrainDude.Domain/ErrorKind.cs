@@ -6,5 +6,6 @@ namespace TrainDude.Domain;
 
 public enum ErrorKind
 {
+    NotFound = 404,
     Conflict = 409,
 }

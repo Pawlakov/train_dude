@@ -16,7 +16,7 @@ internal class SegmentSeed
 
     public int Tracks { get; set; }
 
-    public List<VertexSeed>? Vertices { get; set; }
+    public List<VertexSeed>? Course { get; set; }
 
     internal class ExtremeSeed
     {

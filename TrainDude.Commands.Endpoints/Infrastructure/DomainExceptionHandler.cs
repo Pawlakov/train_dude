@@ -39,6 +39,7 @@ public class DomainExceptionHandler
 
         var statusCode = domainException.StatusCode switch
         {
+            ErrorKind.NotFound => StatusCodes.Status404NotFound,
             ErrorKind.Conflict => StatusCodes.Status409Conflict,
             _ => StatusCodes.Status500InternalServerError,
         };

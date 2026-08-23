@@ -25,5 +25,13 @@ public sealed record class CreateCommand
 
     public Guid AId { get; set; }
 
+    public int AAxle { get; set; }
+
+    public bool APole { get; set; }
+
     public Guid BId { get; set; }
+
+    public int BAxle { get; set; }
+
+    public bool BPole { get; set; }
 }

@@ -149,7 +149,8 @@ public class SeedService
             version = updatedResponse.Version;
         }
 
-        for (var i = 0; i < seed.AxleCount; ++i)
+        var axleCount = seed.AxleCount ?? 1;
+        for (var i = 0; i < axleCount; ++i)
         {
             var addAxleCommand = new AddAxleCommand
             {
@@ -170,15 +171,19 @@ public class SeedService
             NominalLength = seed.Length,
             Tracks = seed.Tracks,
             AId = this.stationIdMap[seed.A.StationId],
+            AAxle = seed.A.Axle ?? 0,
+            APole = seed.A.Pole,
             BId = this.stationIdMap[seed.B.StationId],
+            BAxle = seed.B.Axle ?? 0,
+            BPole = seed.B.Pole,
         };
 
         var createdResponse = await this.mediator.Send(createCommand, cancellationToken);
         var version = 1L;
 
-        if (seed.Vertices is not null && seed.Vertices is not [])
+        if (seed.Course is not null && seed.Course is not [])
         {
-            var locations = (seed.Vertices?.Select(x => new Location(x.Longitude, x.Latitude)) ?? []).ToList();
+            var locations = (seed.Course?.Select(x => new Location(x.Longitude, x.Latitude)) ?? []).ToList();
             var setCourseCommand = new SetCourseCommand
             {
                 Id = createdResponse.Id,
