@@ -11,7 +11,7 @@
 <h1 tabindex="-1">Odcinek</h1>
 @if (this.queryResult != null)
 {
-    <p class="lead">@(this.queryResult.AName) - @(this.queryResult.BName)</p>
+    <p class="lead">@(this.queryResult.A.Name) - @(this.queryResult.B.Name)</p>
 }
 <hr/>
 @if (this.queryResult == null)
@@ -34,7 +34,7 @@ else
 {
     <div class="row text-center">
         <div class="col-3 align-self-center">
-            <a href="/station/@(this.queryResult.AId)">@(this.queryResult.AName)</a>
+            <a href="/station/@(this.queryResult.A.Id)">@(this.queryResult.A.Name)</a>
         </div>
         <div class="col align-self-center">
             <LengthDisplay Haversine="this.queryResult.Haversine" Length="this.queryResult.NominalLength"/>
@@ -42,7 +42,22 @@ else
             <span>tory: @(this.queryResult.Tracks)</span>
         </div>
         <div class="col-3 align-self-center">
-            <a href="/station/@(this.queryResult.BId)">@(this.queryResult.BName)</a>
+            <a href="/station/@(this.queryResult.B.Id)">@(this.queryResult.B.Name)</a>
         </div>
     </div>
+    <hr/>
+    @foreach (var item in this.queryResult.Trips)
+    {
+        <div class="row text-center">
+            <div class="col-3 align-self-center">
+                12:00
+            </div>
+            <div class="col align-self-center">
+                <a href="/trips/@(item.Id)">@(item.Number)</a>
+            </div>
+            <div class="col-3 align-self-center">
+                12:00
+            </div>
+        </div>
+    }
 }

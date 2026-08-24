@@ -5,23 +5,36 @@
 namespace TrainDude.Queries.Contracts.Segments;
 
 using System;
+using System.Collections.Generic;
 
 using TrainDude.Queries.Contracts.Base;
 
 public class GetSegmentQueryResult
     : BaseEntityLookupQueryResult
 {
-    public required int Tracks { get; set; }
+    public required int Tracks { get; init; }
 
-    public required double NominalLength { get; set; }
+    public required double NominalLength { get; init; }
 
-    public required double? Haversine { get; set; }
+    public required double? Haversine { get; init; }
 
-    public required Guid AId { get; init; }
+    public required SegmentEnd A { get; init; }
 
-    public required string AName { get; init; }
+    public required SegmentEnd B { get; init; }
 
-    public required Guid BId { get; init; }
+    public required IEnumerable<SegmentTrip> Trips { get; init; }
 
-    public required string BName { get; init; }
+    public class SegmentEnd
+    {
+        public required Guid Id { get; init; }
+
+        public required string Name { get; init; }
+    }
+
+    public class SegmentTrip
+    {
+        public required Guid Id { get; init; }
+
+        public required int Number { get; init; }
+    }
 }

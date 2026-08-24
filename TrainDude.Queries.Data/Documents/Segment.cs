@@ -28,6 +28,8 @@ public class Segment
 
     public IEnumerable<Location> Course { get; set; }
 
+    public IEnumerable<SegmentTrip> Trips { get; set; }
+
     public class SegmentStation
     {
         public Guid StationId { get; set; }
@@ -35,5 +37,12 @@ public class Segment
         public string Name { get; set; }
 
         public Location? Location { get; set; }
+    }
+
+    public class SegmentTrip
+    {
+        public Guid TripId { get; set; }
+
+        public int Number { get; set; }
     }
 }

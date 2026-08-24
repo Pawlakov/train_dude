@@ -13,6 +13,7 @@ using TrainDude.Queries.Data.Documents;
 
 public static class TripCreatedProjectionHandler
 {
+    // TODO zapisywanie w odcinkach
     public static Task Handle(TripCreatedIntegrationEvent @event, ILiteCollection<Trip> repository)
     {
         var existing = repository.FindById(@event.Id);
