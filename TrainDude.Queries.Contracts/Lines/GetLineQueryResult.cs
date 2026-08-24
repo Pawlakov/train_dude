@@ -11,9 +11,9 @@ using TrainDude.Queries.Contracts.Base;
 public class GetLineQueryResult
     : BaseEntityLookupQueryResult
 {
-    required public string LineDesignation { get; init; }
+    public required string LineDesignation { get; init; }
 
-    required public IEnumerable<GetLineQueryResultStationItem> Stations { get; init; }
+    public required IEnumerable<GetLineQueryResultStationItem> Stations { get; init; }
 
-    required public IEnumerable<GetLineQueryResultTripItem> Trips { get; init; }
+    public required IEnumerable<GetLineQueryResultTripItem> Trips { get; init; }
 }

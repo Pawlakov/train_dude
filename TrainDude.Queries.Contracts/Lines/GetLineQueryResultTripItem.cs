@@ -8,7 +8,7 @@ using System;
 
 public class GetLineQueryResultTripItem
 {
-    required public Guid TripId { get; init; }
+    public required Guid TripId { get; init; }
 
-    required public int TripNumber { get; init; }
+    public required int TripNumber { get; init; }
 }

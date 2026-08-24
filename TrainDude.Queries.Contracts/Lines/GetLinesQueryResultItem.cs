@@ -8,7 +8,7 @@ using System;
 
 public class GetLinesQueryResultItem
 {
-    required public Guid LineId { get; init; }
+    public required Guid LineId { get; init; }
 
-    required public string LineDesignation { get; init; }
+    public required string LineDesignation { get; init; }
 }

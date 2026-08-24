@@ -16,7 +16,7 @@ public class Segment
 
     public long Version { get; set; }
 
-    public double? NominalLength { get; set; }
+    public double NominalLength { get; set; }
 
     public double? Haversine { get; set; }
 

@@ -4,12 +4,24 @@
 
 namespace TrainDude.Queries.Contracts.Segments;
 
+using System;
+
 using TrainDude.Queries.Contracts.Base;
 
 public class GetSegmentQueryResult
     : BaseEntityLookupQueryResult
 {
-    required public string AName { get; init; }
+    public required int Tracks { get; set; }
 
-    required public string BName { get; init; }
+    public required double NominalLength { get; set; }
+
+    public required double? Haversine { get; set; }
+
+    public required Guid AId { get; init; }
+
+    public required string AName { get; init; }
+
+    public required Guid BId { get; init; }
+
+    public required string BName { get; init; }
 }

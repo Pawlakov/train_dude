@@ -8,11 +8,11 @@ using System;
 
 public class GetRadiiQueryResultItem
 {
-    required public Guid RadiusId { get; init; }
+    public required Guid RadiusId { get; init; }
 
-    required public int Speed { get; init; }
+    public required int Speed { get; init; }
 
-    required public int Minimum { get; init; }
+    public required int Minimum { get; init; }
 
-    required public double MaximumAntiradius { get; init; }
+    public required double MaximumAntiradius { get; init; }
 }

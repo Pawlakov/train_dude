@@ -8,13 +8,11 @@
     <BreadcrumbItem Active="false" IconClass="list" Label="Odcinki" Href="/segments"/>
     <BreadcrumbItem Active="true" IconClass="route" Label="Odcinek" Href="@("/segment/" + this.Id)"/>
 </Breadcrumb>
-<section class="section">
-    <h1 class="title">Odcinek</h1>
-    @if (this.queryResult != null)
-    {
-        <p class="subtitle">@(this.queryResult.AName) - @(this.queryResult.BName)</p>
-    }
-</section>
+<h1 tabindex="-1">Odcinek</h1>
+@if (this.queryResult != null)
+{
+    <p class="lead">@(this.queryResult.AName) - @(this.queryResult.BName)</p>
+}
 <hr/>
 @if (this.queryResult == null)
 {
@@ -34,7 +32,17 @@
 }
 else
 {
-    <section class="section">
-
-    </section>
+    <div class="row text-center">
+        <div class="col-3 align-self-center">
+            <a href="/station/@(this.queryResult.AId)">@(this.queryResult.AName)</a>
+        </div>
+        <div class="col align-self-center">
+            <LengthDisplay Haversine="this.queryResult.Haversine" Length="this.queryResult.NominalLength"/>
+            <hr/>
+            <span>tory: @(this.queryResult.Tracks)</span>
+        </div>
+        <div class="col-3 align-self-center">
+            <a href="/station/@(this.queryResult.BId)">@(this.queryResult.BName)</a>
+        </div>
+    </div>
 }

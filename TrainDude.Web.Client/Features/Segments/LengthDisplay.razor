@@ -1,0 +1,35 @@
+@if (this.Length is null)
+{
+    <span class="placeholder placeholder-wave col"></span>
+}
+else
+{
+    if (this.Haversine is null)
+    {
+        <span>@($"{this.Length:0.00}") km</span>
+    }
+    else
+    {
+        var difference = this.Haversine - this.Length;
+        <span>@($"{this.Length:0.00}") km
+            @if (difference <= 0)
+            {
+                <span>(@($"{difference:0.00}") km)</span>
+            }
+            else
+            {
+                <span class="text-danger">(+@($"{difference:0.00}") km)</span>
+            }
+        </span>
+    }
+}
+
+@code {
+
+    [Parameter]
+    public double? Length { get; set; }
+
+    [Parameter]
+    public double? Haversine { get; set; }
+
+}

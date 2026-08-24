@@ -19,7 +19,7 @@ public sealed record class CreateCommand
     {
     }
 
-    public double? NominalLength { get; set; }
+    public double NominalLength { get; set; }
 
     public int Tracks { get; set; }
 

@@ -1,4 +1,4 @@
-<li class="@(this.Active ? "breadcrumb-item active" : "breadcrumb-item")" @(this.Active ? "aria-current=\"page\"" : "")>
+<li class="@(this.Active ? "breadcrumb-item active" : "breadcrumb-item")" aria-current="@(this.Active ? "page" : "")">
     <a href="@(this.Href)">@(this.Label)</a>
 </li>
 

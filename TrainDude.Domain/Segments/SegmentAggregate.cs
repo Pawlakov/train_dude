@@ -45,7 +45,7 @@ public class SegmentAggregate
 
     public ICollection<Location> Course => this.course.AsReadOnly();
 
-    public static SegmentCreated Make(Guid id, double? nominalLength, int tracks, SegmentEnd a, SegmentEnd b)
+    public static SegmentCreated Make(Guid id, double nominalLength, int tracks, SegmentEnd a, SegmentEnd b)
     {
         return new SegmentCreated(id, DateTime.UtcNow, nominalLength, tracks, a, b);
     }

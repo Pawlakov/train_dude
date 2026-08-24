@@ -11,7 +11,7 @@ using TrainDude.Shared.Values;
 public abstract class BaseEntityLookupQueryResult
     : BasePolymorphicQueryResult, IMapQueryResult
 {
-    required public IReadOnlyList<Location> StationPoints { get; init; }
+    public required IReadOnlyList<Location> StationPoints { get; init; }
 
-    required public IReadOnlyList<IReadOnlyList<Location>> SegmentLineStrings { get; init; }
+    public required IReadOnlyList<IReadOnlyList<Location>> SegmentLineStrings { get; init; }
 }

@@ -8,7 +8,7 @@ using System;
 
 public class GetLineQueryResultStationItem
 {
-    required public Guid StationId { get; init; }
+    public required Guid StationId { get; init; }
 
-    required public string Name { get; init; }
+    public required string Name { get; init; }
 }

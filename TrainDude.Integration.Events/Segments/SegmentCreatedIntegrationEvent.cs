@@ -8,7 +8,7 @@ using System;
 
 using TrainDude.Shared.Values;
 
-public sealed record class SegmentCreatedIntegrationEvent(Guid Id, long Version, double? NominalLength, double? Haversine, int Tracks, SegmentCreatedIntegrationEvent.Station A, SegmentCreatedIntegrationEvent.Station B) : IVersionedEvent
+public sealed record class SegmentCreatedIntegrationEvent(Guid Id, long Version, double NominalLength, double? Haversine, int Tracks, SegmentCreatedIntegrationEvent.Station A, SegmentCreatedIntegrationEvent.Station B) : IVersionedEvent
 {
     public sealed record class Station(Guid Id, string Name, Location? Location);
 }

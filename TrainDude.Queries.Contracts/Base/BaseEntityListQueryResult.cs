@@ -9,5 +9,5 @@ using System.Collections.Generic;
 public abstract class BaseEntityListQueryResult<TItem>
     : BasePolymorphicQueryResult
 {
-    required public IEnumerable<TItem> Items { get; init; }
+    public required IEnumerable<TItem> Items { get; init; }
 }

@@ -45,7 +45,12 @@ public sealed class GetSegmentQueryHandler
 
         var dto = new GetSegmentQueryResult
         {
+            Tracks = queryResult.Tracks,
+            NominalLength = queryResult.NominalLength,
+            Haversine = queryResult.Haversine,
+            AId = queryResult.A.StationId,
             AName = queryResult.A?.Name ?? string.Empty,
+            BId = queryResult.B.StationId,
             BName = queryResult.B?.Name ?? string.Empty,
             StationPoints = new[] { queryResult.A?.Location, queryResult.B?.Location }.Where(x => x.HasValue).Select(x => x.Value).ToList(),
             SegmentLineStrings = [vertices],

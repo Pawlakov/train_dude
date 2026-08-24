@@ -8,13 +8,13 @@ using System;
 
 public class GetSegmentsQueryResultItem
 {
-    required public Guid SegmentId { get; init; }
+    public required Guid SegmentId { get; init; }
 
-    required public string AName { get; init; }
+    public required string AName { get; init; }
 
-    required public string BName { get; init; }
+    public required string BName { get; init; }
 
-    required public double? Length { get; init; }
+    public required double? Length { get; init; }
 
-    required public double? Haversine { get; init; }
+    public required double? Haversine { get; init; }
 }

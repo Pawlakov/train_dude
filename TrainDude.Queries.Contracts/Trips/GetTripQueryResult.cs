@@ -9,5 +9,5 @@ using TrainDude.Queries.Contracts.Base;
 public class GetTripQueryResult
     : BaseEntityLookupQueryResult
 {
-    required public int TripNumber { get; init; }
+    public required int TripNumber { get; init; }
 }
