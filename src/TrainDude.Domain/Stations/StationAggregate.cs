@@ -13,9 +13,12 @@ using TrainDude.Shared.Values;
 public class StationAggregate
     : BaseAggregate, IHasAlternativeNames
 {
+    private bool initialized;
+
     [JsonConstructor]
     private StationAggregate(Guid id, long version, int axleCount, Location? location, string nameGerman, string? nameGermanNew, string? namePolish, string? nameRussian)
     {
+        this.initialized = true;
         this.Id = id;
         this.Version = version;
 
@@ -29,6 +32,7 @@ public class StationAggregate
 
     public StationAggregate()
     {
+        this.initialized = false;
     }
 
     public int AxleCount { get; private set; }
@@ -50,16 +54,28 @@ public class StationAggregate
 
     public StationLocationSet SetLocation(Location location)
     {
+        if (!this.initialized)
+        {
+            throw new UninitializedAggregateException<StationAggregate>(nameof(this.SetLocation));
+        }
+
         return new StationLocationSet(this.Id, DateTime.UtcNow, location);
     }
 
     public StationAxleAdded AddAxle()
     {
+        if (!this.initialized)
+        {
+            throw new UninitializedAggregateException<StationAggregate>(nameof(this.AddAxle));
+        }
+
         return new StationAxleAdded(this.Id, DateTime.UtcNow);
     }
 
     public void Apply(StationCreated e)
     {
+        this.initialized = true;
+
         this.Id = e.Id;
         this.Location = null;
         this.NameGerman = e.NameGerman;

@@ -1,19 +1,30 @@
 <Solution>
+  <Folder Name="/Analyzers/">
+    <Project Path="analyzers/TrainDude.Architecture.Analyzers.Tests/TrainDude.Architecture.Analyzers.Tests.csproj" />
+    <Project Path="analyzers/TrainDude.Architecture.Analyzers/TrainDude.Architecture.Analyzers.csproj" />
+  </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />
     <File Path="Directory.Build.props" />
+    <File Path="Directory.Build.targets" />
     <File Path="Directory.Packages.props" />
     <File Path="stylecop.json" />
   </Folder>
-  <Project Path="src/TrainDude.Commands.Contracts/TrainDude.Commands.Contracts.csproj" />
-  <Project Path="src/TrainDude.Commands.Endpoints/TrainDude.Commands.Endpoints.csproj" />
-  <Project Path="src/TrainDude.Domain/TrainDude.Domain.csproj" />
-  <Project Path="src/TrainDude.Integration.Events/TrainDude.Integration.Events.csproj" />
-  <Project Path="src/TrainDude.Integration.Projections/TrainDude.Integration.Projections.csproj" />
-  <Project Path="src/TrainDude.Queries.Contracts/TrainDude.Queries.Contracts.csproj" />
-  <Project Path="src/TrainDude.Queries.Data/TrainDude.Queries.Data.csproj" />
-  <Project Path="src/TrainDude.Queries.Handlers/TrainDude.Queries.Handlers.csproj" />
-  <Project Path="src/TrainDude.Shared.Values/TrainDude.Shared.Values.csproj" />
-  <Project Path="src/TrainDude.Web.Client/TrainDude.Web.Client.csproj" />
-  <Project Path="src/TrainDude.Web/TrainDude.Web.csproj" />
+  <Folder Name="/Source/">
+    <Project Path="src/TrainDude.Commands.Contracts/TrainDude.Commands.Contracts.csproj" />
+    <Project Path="src/TrainDude.Commands.Endpoints/TrainDude.Commands.Endpoints.csproj" />
+    <Project Path="src/TrainDude.Domain/TrainDude.Domain.csproj" />
+    <Project Path="src/TrainDude.Integration.Events/TrainDude.Integration.Events.csproj" />
+    <Project Path="src/TrainDude.Integration.Projections/TrainDude.Integration.Projections.csproj" />
+    <Project Path="src/TrainDude.Queries.Contracts/TrainDude.Queries.Contracts.csproj" />
+    <Project Path="src/TrainDude.Queries.Data/TrainDude.Queries.Data.csproj" />
+    <Project Path="src/TrainDude.Queries.Handlers/TrainDude.Queries.Handlers.csproj" />
+    <Project Path="src/TrainDude.Shared.Values/TrainDude.Shared.Values.csproj" />
+    <Project Path="src/TrainDude.Web.Client/TrainDude.Web.Client.csproj" />
+    <Project Path="src/TrainDude.Web/TrainDude.Web.csproj" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="tests/TrainDude.Domain.Tests/TrainDude.Domain.Tests.csproj" />
+    <Project Path="tests/TrainDude.Architecture.Tests/TrainDude.Architecture.Tests.csproj" />
+  </Folder>
 </Solution>

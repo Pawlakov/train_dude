@@ -4,7 +4,12 @@ root = true
 indent_style = space
 trim_trailing_whitespace = true
 
-[*.cs]
-charset = utf-8
+[*.{cs,csproj,slnx}]
 end_of_line = lf
+charset = utf-8
+
+[*.cs]
 indent_size = 4
+
+[*.csproj]
+indent_size = 2
