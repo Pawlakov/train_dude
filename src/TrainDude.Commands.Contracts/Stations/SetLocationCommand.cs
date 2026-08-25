@@ -8,6 +8,7 @@ using System;
 
 using TrainDude.Commands.Contracts.Base;
 using TrainDude.Commands.Contracts.Generic;
+using TrainDude.Shared;
 using TrainDude.Shared.Values;
 
 public sealed record class SetLocationCommand

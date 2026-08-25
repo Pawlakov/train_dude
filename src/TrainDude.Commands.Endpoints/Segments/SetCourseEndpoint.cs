@@ -11,6 +11,7 @@ using Marten;
 
 using TrainDude.Commands.Contracts.Generic;
 using TrainDude.Commands.Contracts.Segments;
+using TrainDude.Domain;
 using TrainDude.Domain.Segments;
 using TrainDude.Domain.Stations;
 using TrainDude.Integration.Events.Segments;

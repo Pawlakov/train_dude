@@ -7,6 +7,7 @@ namespace TrainDude.Queries.Contracts.Network;
 using System.Collections.Generic;
 
 using TrainDude.Queries.Contracts.Base;
+using TrainDude.Shared;
 using TrainDude.Shared.Values;
 
 public class GetNetworkQueryResult

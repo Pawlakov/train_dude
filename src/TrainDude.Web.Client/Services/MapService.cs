@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Microsoft.JSInterop;
 
 using TrainDude.Queries.Contracts.Base;
+using TrainDude.Shared;
 using TrainDude.Shared.Values;
 using TrainDude.Web.Client.GeoJson;
 

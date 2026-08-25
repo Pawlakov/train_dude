@@ -7,6 +7,7 @@ namespace TrainDude.Commands.Contracts.Segments;
 using System.Collections.Generic;
 
 using TrainDude.Commands.Contracts.Base;
+using TrainDude.Shared;
 using TrainDude.Shared.Values;
 
 public sealed record class SetCourseCommand

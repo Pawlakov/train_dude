@@ -5,7 +5,8 @@
 namespace TrainDude.Queries.Contracts.Admin;
 
 using TrainDude.Queries.Contracts.Base;
-using TrainDude.Shared.Values;
+using TrainDude.Shared;
+using TrainDude.Shared.Enums;
 
 public class GetStationNameModeQueryResult
     : BasePolymorphicQueryResult

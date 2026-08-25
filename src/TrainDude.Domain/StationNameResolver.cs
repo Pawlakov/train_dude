@@ -7,7 +7,8 @@ namespace TrainDude.Domain;
 using System;
 
 using TrainDude.Domain.Base;
-using TrainDude.Shared.Values;
+using TrainDude.Shared;
+using TrainDude.Shared.Enums;
 
 public class StationNameResolver
 {

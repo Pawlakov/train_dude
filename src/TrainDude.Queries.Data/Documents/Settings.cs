@@ -6,7 +6,8 @@ namespace TrainDude.Queries.Data.Documents;
 
 using System;
 
-using TrainDude.Shared.Values;
+using TrainDude.Shared;
+using TrainDude.Shared.Enums;
 
 public class Settings
 {

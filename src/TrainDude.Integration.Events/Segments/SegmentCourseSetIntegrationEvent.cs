@@ -7,6 +7,7 @@ namespace TrainDude.Integration.Events.Segments;
 using System;
 using System.Collections.Generic;
 
+using TrainDude.Shared;
 using TrainDude.Shared.Values;
 
 public sealed record class SegmentCourseSetIntegrationEvent(Guid Id, long Version, IEnumerable<Location> Course, double? Haversine) : IVersionedEvent;

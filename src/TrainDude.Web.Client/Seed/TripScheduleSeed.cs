@@ -4,7 +4,7 @@
 
 namespace TrainDude.Web.Client.Seed;
 
-using TrainDude.Shared.Values;
+using TrainDude.Shared.Enums;
 
 internal class TripScheduleSeed
 {

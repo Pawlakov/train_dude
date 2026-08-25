@@ -13,6 +13,7 @@ using Mediator;
 
 using TrainDude.Queries.Data.Documents;
 using TrainDude.Queries.Contracts.Admin;
+using TrainDude.Shared.Enums;
 using TrainDude.Shared.Values;
 
 public sealed class GetStationNameModeQueryHandler

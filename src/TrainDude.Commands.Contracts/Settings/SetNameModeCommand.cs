@@ -6,7 +6,8 @@ namespace TrainDude.Commands.Contracts.Settings;
 
 using TrainDude.Commands.Contracts.Base;
 using TrainDude.Commands.Contracts.Generic;
-using TrainDude.Shared.Values;
+using TrainDude.Shared;
+using TrainDude.Shared.Enums;
 
 public sealed record class SetNameModeCommand
     : BaseRoutedCommand<EmptyResponse>

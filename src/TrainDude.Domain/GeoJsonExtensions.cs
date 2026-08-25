@@ -2,11 +2,13 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Shared.Values;
+namespace TrainDude.Domain;
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
+
+using TrainDude.Shared;
+using TrainDude.Shared.Values;
 
 public static class GeoJsonExtensions
 {

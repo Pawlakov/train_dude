@@ -6,6 +6,7 @@ namespace TrainDude.Integration.Events.Stations;
 
 using System;
 
+using TrainDude.Shared;
 using TrainDude.Shared.Values;
 
 // TODO recalculate haversines

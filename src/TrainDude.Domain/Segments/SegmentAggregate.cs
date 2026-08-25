@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text.Json.Serialization;
 
 using TrainDude.Domain.Base;
+using TrainDude.Shared;
 using TrainDude.Shared.Values;
 
 public class SegmentAggregate

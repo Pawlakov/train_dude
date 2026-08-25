@@ -6,6 +6,7 @@ namespace TrainDude.Queries.Data.Documents;
 
 using System;
 
+using TrainDude.Shared;
 using TrainDude.Shared.Values;
 
 public class Station

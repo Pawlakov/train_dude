@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
+using TrainDude.Shared;
 using TrainDude.Shared.Values;
 
 public class Line

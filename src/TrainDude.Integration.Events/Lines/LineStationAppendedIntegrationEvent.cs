@@ -6,6 +6,7 @@ namespace TrainDude.Integration.Events.Lines;
 
 using System;
 
+using TrainDude.Shared;
 using TrainDude.Shared.Values;
 
 public sealed record class LineStationAppendedIntegrationEvent(Guid Id, long Version, LineStationAppendedIntegrationEvent.Station Appended) : IVersionedEvent

@@ -6,6 +6,7 @@ namespace TrainDude.Queries.Contracts.Base;
 
 using System.Collections.Generic;
 
+using TrainDude.Shared;
 using TrainDude.Shared.Values;
 
 public abstract class BaseEntityLookupQueryResult

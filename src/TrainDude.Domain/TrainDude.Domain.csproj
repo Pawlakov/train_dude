@@ -3,6 +3,6 @@
     <ProjectReference Include="..\..\analyzers\TrainDude.Architecture.Analyzers\TrainDude.Architecture.Analyzers.csproj"
                       OutputItemType="Analyzer"
                       ReferenceOutputAssembly="false"/>
-    <ProjectReference Include="..\TrainDude.Shared.Values\TrainDude.Shared.Values.csproj"/>
+    <ProjectReference Include="..\TrainDude.Shared\TrainDude.Shared.csproj" />
   </ItemGroup>
 </Project>

@@ -7,6 +7,7 @@ namespace TrainDude.Integration.Events.Settings;
 using System;
 using System.Collections.Generic;
 
-using TrainDude.Shared.Values;
+using TrainDude.Shared;
+using TrainDude.Shared.Enums;
 
 public sealed record class SettingsStationNameModeUpdatedIntegrationEvent(StationNameMode StationNameMode, Dictionary<Guid, string> NewNames);

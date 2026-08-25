@@ -13,6 +13,7 @@ using JasperFx.Events;
 using Marten;
 
 using TrainDude.Domain.Settings;
+using TrainDude.Shared.Enums;
 using TrainDude.Shared.Values;
 
 public static class SettingsAccessor

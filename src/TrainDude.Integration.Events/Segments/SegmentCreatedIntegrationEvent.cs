@@ -6,6 +6,7 @@ namespace TrainDude.Integration.Events.Segments;
 
 using System;
 
+using TrainDude.Shared;
 using TrainDude.Shared.Values;
 
 public sealed record class SegmentCreatedIntegrationEvent(Guid Id, long Version, double NominalLength, double? Haversine, int Tracks, SegmentCreatedIntegrationEvent.Station A, SegmentCreatedIntegrationEvent.Station B) : IVersionedEvent
