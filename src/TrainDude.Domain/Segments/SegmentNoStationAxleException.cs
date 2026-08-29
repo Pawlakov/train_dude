@@ -7,6 +7,7 @@ namespace TrainDude.Domain.Segments;
 using System;
 
 using TrainDude.Domain.Base;
+using TrainDude.Domain.Stations;
 
 public sealed class SegmentNoStationAxleException
     : DomainException

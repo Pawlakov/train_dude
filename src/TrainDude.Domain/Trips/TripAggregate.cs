@@ -14,14 +14,13 @@ public class TripAggregate
 {
     [JsonConstructor]
     private TripAggregate(Guid id, long version, int tripNumber)
+        : base(id, version)
     {
-        this.Id = id;
-        this.Version = version;
-
         this.TripNumber = tripNumber;
     }
 
     public TripAggregate()
+        : base()
     {
     }
 
@@ -32,10 +31,17 @@ public class TripAggregate
         return new TripCreated(tripId, DateTime.UtcNow, tripNumber);
     }
 
-    public void Apply(TripCreated e)
+    public void Apply(BaseAggregateEvent<TripAggregate> @event)
     {
-        this.Id = e.Id;
-        this.TripNumber = e.TripNumber;
+        switch (@event)
+        {
+            case TripCreated e:
+                this.Id = e.Id;
+                this.TripNumber = e.TripNumber;
+                break;
+            default:
+                throw new NotSupportedException("Unknown event type.");
+        }
 
         this.Version++;
     }

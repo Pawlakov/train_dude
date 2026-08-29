@@ -8,6 +8,8 @@ using System.Collections.Generic;
 
 internal class SegmentSeed
 {
+    public int Id { get; set; }
+
     public required ExtremeSeed A { get; set; }
 
     public required ExtremeSeed B { get; set; }

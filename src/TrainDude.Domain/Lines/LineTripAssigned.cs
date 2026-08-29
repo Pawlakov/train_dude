@@ -7,5 +7,6 @@ namespace TrainDude.Domain.Lines;
 using System;
 
 using TrainDude.Domain.Base;
+using TrainDude.Domain.Trips;
 
-public sealed record class LineTripAssigned(Guid Id, DateTime When, Guid TripId) : BaseAggregateEvent(Id, When);
+public sealed record class LineTripAssigned(Guid Id, DateTime When, Guid TripId) : BaseAggregateEvent<LineAggregate>(Id, When);

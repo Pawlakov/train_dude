@@ -6,4 +6,6 @@ namespace TrainDude.Domain.Segments;
 
 using System;
 
+using TrainDude.Domain.Stations;
+
 public record struct SegmentEnd(Guid Id, int Axle, bool Pole);

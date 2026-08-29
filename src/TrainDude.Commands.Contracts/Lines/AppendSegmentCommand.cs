@@ -1,4 +1,4 @@
-// <copyright file="AppendStationCommand.cs" company="Pawlakov">
+﻿// <copyright file="AppendStationCommand.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
@@ -9,15 +9,15 @@ using System;
 using TrainDude.Commands.Contracts.Base;
 using TrainDude.Commands.Contracts.Generic;
 
-public sealed record class AppendStationCommand
+public sealed record class AppendSegmentCommand
     : BaseUpdateCommand
 {
-    public const string Route = "/line/station/append";
+    public const string Route = "/line/segment/append";
 
-    public AppendStationCommand()
+    public AppendSegmentCommand()
         : base(Route)
     {
     }
 
-    public Guid StationId { get; set; }
+    public Guid SegmentId { get; set; }
 }

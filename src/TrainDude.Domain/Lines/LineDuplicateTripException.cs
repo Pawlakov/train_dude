@@ -7,6 +7,7 @@ namespace TrainDude.Domain.Lines;
 using System;
 
 using TrainDude.Domain.Base;
+using TrainDude.Domain.Trips;
 
 public sealed class LineDuplicateTripException
     : DomainException

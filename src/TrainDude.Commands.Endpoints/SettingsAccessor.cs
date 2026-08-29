@@ -26,7 +26,7 @@ public static class SettingsAccessor
 
     public static async Task ExecuteWithSettings(
         IDocumentSession session,
-        Func<IEventStream<SettingsDocument>, SettingsDocument, Task> action,
+        Func<IEventStream<SettingsAggregate>, SettingsAggregate, Task> action,
         CancellationToken cancellationToken = default)
     {
         await SingletonLock.WaitAsync(cancellationToken);
@@ -44,14 +44,14 @@ public static class SettingsAccessor
         }
     }
 
-    public static async Task<SettingsDocument> FetchForReading(IDocumentSession session, CancellationToken cancellationToken = default)
+    public static async Task<SettingsAggregate> FetchForReading(IDocumentSession session, CancellationToken cancellationToken = default)
     {
-        var aggregate = await session.Events.AggregateStreamAsync<SettingsDocument>(SingletonId, token: cancellationToken);
+        var aggregate = await session.Events.AggregateStreamAsync<SettingsAggregate>(SingletonId, token: cancellationToken);
 
         if (aggregate is null)
         {
-            aggregate = new SettingsDocument();
-            aggregate.Apply(SettingsDocument.Make(SingletonId));
+            aggregate = new SettingsAggregate();
+            aggregate.Apply(SettingsAggregate.Make(SingletonId));
         }
 
         return aggregate;
@@ -63,20 +63,20 @@ public static class SettingsAccessor
         return aggregate.StationNameMode;
     }
 
-    private static async Task<(IEventStream<SettingsDocument> Stream, SettingsDocument Aggregate)> LoadForWriting(
+    private static async Task<(IEventStream<SettingsAggregate> Stream, SettingsAggregate Aggregate)> LoadForWriting(
         IDocumentSession session,
         CancellationToken cancellationToken)
     {
-        var stream = await session.Events.FetchForWriting<SettingsDocument>(SingletonId, cancellationToken);
+        var stream = await session.Events.FetchForWriting<SettingsAggregate>(SingletonId, cancellationToken);
 
         var aggregate = stream.Aggregate;
 
         if (aggregate is null)
         {
-            var created = SettingsDocument.Make(SingletonId);
+            var created = SettingsAggregate.Make(SingletonId);
             stream.AppendOne(created);
 
-            aggregate = new SettingsDocument();
+            aggregate = new SettingsAggregate();
             aggregate.Apply(created);
         }
 

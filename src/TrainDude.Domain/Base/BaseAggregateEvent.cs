@@ -6,4 +6,4 @@ namespace TrainDude.Domain.Base;
 
 using System;
 
-public abstract record class BaseAggregateEvent(Guid Id, DateTime When) : BaseDomainEvent(When);
+public abstract record class BaseAggregateEvent<TAggregate>(Guid Id, DateTime When) : BaseDomainEvent<TAggregate>(When) where TAggregate : BaseAggregate;

@@ -1,4 +1,5 @@
-﻿- a:
+﻿- id: 1
+  a:
     station_id: 1
     pole: true
   b:
@@ -6,7 +7,8 @@
     pole: false
   length: 4.8
   tracks: 1
-- a:
+- id: 2
+  a:
     station_id: 2
     pole: true
   b:
@@ -14,7 +16,8 @@
     pole: false
   length: 7.3
   tracks: 1
-- a:
+- id: 3
+  a:
     station_id: 3
     pole: true
   b:
@@ -22,7 +25,8 @@
     pole: false
   length: 6.1
   tracks: 1
-- a:
+- id: 4
+  a:
     station_id: 4
     pole: true
   b:
@@ -30,7 +34,8 @@
     pole: false
   length: 4.7
   tracks: 1
-- a:
+- id: 5
+  a:
     station_id: 5
     pole: true
   b:
@@ -38,7 +43,8 @@
     pole: false
   length: 7.7
   tracks: 1
-- a:
+- id: 6
+  a:
     station_id: 6
     pole: true
   b:
@@ -46,7 +52,8 @@
     pole: false
   length: 6.0
   tracks: 1
-- a:
+- id: 7
+  a:
     station_id: 7
     pole: true
   b:
@@ -54,7 +61,8 @@
     pole: false
   length: 5.8
   tracks: 1
-- a:
+- id: 8
+  a:
     station_id: 8
     pole: true
   b:
@@ -97,7 +105,8 @@
       longitude: 22.2865
     - latitude: 54.3177
       longitude: 22.2875
-- a:
+- id: 9
+  a:
     station_id: 10
     pole: false
   b:
@@ -105,7 +114,8 @@
     pole: true
   length: 7.5
   tracks: 1
-- a:
+- id: 10
+  a:
     station_id: 11
     pole: false
   b:
@@ -113,7 +123,8 @@
     pole: true
   length: 3.8
   tracks: 1
-- a:
+- id: 11
+  a:
     station_id: 12
     pole: false
   b:
@@ -121,7 +132,8 @@
     pole: true
   length: 6.2
   tracks: 1
-- a:
+- id: 12
+  a:
     station_id: 13
     pole: false
   b:
@@ -129,7 +141,8 @@
     pole: true
   length: 5.6
   tracks: 1
-- a:
+- id: 13
+  a:
     station_id: 14
     pole: false
   b:
@@ -137,7 +150,8 @@
     pole: true
   length: 3.4
   tracks: 1
-- a:
+- id: 14
+  a:
     station_id: 15
     pole: false
   b:
@@ -145,7 +159,8 @@
     pole: true
   length: 6.3
   tracks: 1
-- a:
+- id: 15
+  a:
     station_id: 16
     pole: false
   b:
@@ -153,7 +168,8 @@
     pole: true
   length: 4.2
   tracks: 2
-- a:
+- id: 16
+  a:
     station_id: 17
     pole: false
   b:
@@ -161,7 +177,8 @@
     pole: true
   length: 3.6
   tracks: 1
-- a:
+- id: 17
+  a:
     station_id: 18
     pole: false
   b:
@@ -169,7 +186,8 @@
     pole: true
   length: 7.9
   tracks: 1
-- a:
+- id: 18
+  a:
     station_id: 19
     pole: false
   b:
@@ -177,7 +195,8 @@
     pole: true
   length: 4.6
   tracks: 1
-- a:
+- id: 19
+  a:
     station_id: 20
     pole: false
   b:
@@ -185,7 +204,8 @@
     pole: true
   length: 2.5
   tracks: 1
-- a:
+- id: 20
+  a:
     station_id: 21
     pole: false
   b:
@@ -193,7 +213,8 @@
     pole: true
   length: 5.4
   tracks: 1
-- a:
+- id: 21
+  a:
     station_id: 22
     pole: false
   b:
@@ -201,7 +222,8 @@
     pole: true
   length: 4.6
   tracks: 1
-- a:
+- id: 22
+  a:
     station_id: 23
     pole: false
   b:
@@ -209,7 +231,8 @@
     pole: true
   length: 4.6
   tracks: 1
-- a:
+- id: 23
+  a:
     station_id: 24
     pole: false
   b:
@@ -217,7 +240,8 @@
     pole: true
   length: 2.3
   tracks: 1
-- a:
+- id: 24
+  a:
     station_id: 25
     pole: false
   b:
@@ -225,7 +249,8 @@
     pole: true
   length: 2.7
   tracks: 1
-- a:
+- id: 25
+  a:
     station_id: 26
     pole: false
   b:
@@ -233,7 +258,8 @@
     pole: true
   length: 1.6
   tracks: 1
-- a:
+- id: 26
+  a:
     station_id: 27
     pole: false
   b:
@@ -241,7 +267,8 @@
     pole: true
   length: 0.9
   tracks: 1
-- a:
+- id: 27
+  a:
     station_id: 28
     pole: false
   b:
@@ -249,7 +276,8 @@
     pole: true
   length: 2.4
   tracks: 1
-- a:
+- id: 28
+  a:
     station_id: 29
     pole: false
   b:
@@ -257,7 +285,8 @@
     pole: true
   length: 6.4
   tracks: 1
-- a:
+- id: 29
+  a:
     station_id: 30
     pole: false
   b:
@@ -265,7 +294,8 @@
     pole: true
   length: 4.9
   tracks: 1
-- a:
+- id: 30
+  a:
     station_id: 31
     pole: false
   b:
@@ -273,7 +303,8 @@
     pole: true
   length: 6.2
   tracks: 1
-- a:
+- id: 31
+  a:
     station_id: 32
     pole: false
   b:
@@ -281,7 +312,8 @@
     pole: true
   length: 5.9
   tracks: 1
-- a:
+- id: 32
+  a:
     station_id: 1
     pole: false
   b:
@@ -368,7 +400,8 @@
       latitude: 54.2204
     - longitude: 21.7661
       latitude: 54.2201
-- a:
+- id: 33
+  a:
     station_id: 33
     pole: false
   b:
@@ -376,7 +409,8 @@
     pole: true
   length: 6.8
   tracks: 1
-- a:
+- id: 34
+  a:
     station_id: 34
     pole: false
   b:
@@ -384,7 +418,8 @@
     pole: true
   length: 3.9
   tracks: 1
-- a:
+- id: 35
+  a:
     station_id: 35
     pole: false
   b:
@@ -392,7 +427,8 @@
     pole: true
   length: 3.4
   tracks: 1
-- a:
+- id: 36
+  a:
     station_id: 36
     pole: false
   b:
@@ -400,7 +436,8 @@
     pole: true
   length: 2.8
   tracks: 1
-- a:
+- id: 37
+  a:
     station_id: 37
     pole: false
   b:
@@ -408,7 +445,8 @@
     pole: true
   length: 4.3
   tracks: 1
-- a:
+- id: 38
+  a:
     station_id: 38
     pole: false
   b:

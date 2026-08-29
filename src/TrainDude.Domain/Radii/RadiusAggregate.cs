@@ -14,15 +14,14 @@ public class RadiusAggregate
 {
     [JsonConstructor]
     private RadiusAggregate(Guid id, long version, int speed, int minimum)
+        : base(id, version)
     {
-        this.Id = id;
-        this.Version = version;
-
         this.Speed = speed;
         this.Minimum = minimum;
     }
 
     public RadiusAggregate()
+        : base()
     {
     }
 
@@ -35,11 +34,19 @@ public class RadiusAggregate
         return new RadiusCreated(id, DateTime.UtcNow, speed, minimum);
     }
 
-    public void Apply(RadiusCreated e)
+    public void Apply(BaseAggregateEvent<RadiusAggregate> @event)
     {
-        this.Id = e.Id;
-        this.Speed = e.Speed;
-        this.Minimum = e.Minimum;
+        switch (@event)
+        {
+            case RadiusCreated e:
+                this.Initialize();
+                this.Id = e.Id;
+                this.Speed = e.Speed;
+                this.Minimum = e.Minimum;
+                break;
+            default:
+                throw new NotSupportedException("Unknown event type.");
+        }
 
         this.Version++;
     }

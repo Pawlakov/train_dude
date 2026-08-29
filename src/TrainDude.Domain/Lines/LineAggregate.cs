@@ -10,38 +10,44 @@ using System.Linq;
 using System.Text.Json.Serialization;
 
 using TrainDude.Domain.Base;
+using TrainDude.Domain.Segments;
+using TrainDude.Domain.Stations;
+using TrainDude.Domain.Trips;
 
 public class LineAggregate
     : BaseAggregate
 {
+    private readonly List<Guid> segments;
     private readonly List<Guid> trips;
-    private readonly List<Guid> stations;
 
     [JsonConstructor]
-    private LineAggregate(Guid id, long version, int lineNumber, char? lineLetter, ICollection<Guid> trips, ICollection<Guid> stations)
+    private LineAggregate(Guid id, long version, int lineNumber, char? lineLetter, Guid? startId, ICollection<Guid> segments, ICollection<Guid> trips)
+        : base(id, version)
     {
-        this.Id = id;
-        this.Version = version;
-
         this.LineNumber = lineNumber;
         this.LineLetter = lineLetter;
+        this.StartId = startId;
+
+        this.segments = (segments ?? []).ToList();
         this.trips = (trips ?? []).ToList();
-        this.stations = (stations ?? []).ToList();
     }
 
     public LineAggregate()
+        : base()
     {
+        this.segments = new List<Guid>();
         this.trips = new List<Guid>();
-        this.stations = new List<Guid>();
     }
 
     public int LineNumber { get; private set; }
 
     public char? LineLetter { get; private set; }
 
-    public ICollection<Guid> Trips => this.trips.AsReadOnly();
+    public Guid? StartId { get; private set; }
 
-    public ICollection<Guid> Stations => this.stations.AsReadOnly();
+    public IReadOnlyList<Guid> Segments => this.segments.AsReadOnly();
+
+    public IReadOnlyList<Guid> Trips => this.trips.AsReadOnly();
 
     public static LineCreated Make(Guid id, int lineNumber, char? lineLetter)
     {
@@ -50,6 +56,7 @@ public class LineAggregate
 
     public LineTripAssigned AssignTrip(Guid tripId)
     {
+        this.AssertInitialized(nameof(this.AssignTrip));
         if (this.trips.Contains(tripId))
         {
             throw new LineDuplicateTripException(this.Id, tripId);
@@ -58,36 +65,48 @@ public class LineAggregate
         return new LineTripAssigned(this.Id, DateTime.UtcNow, tripId);
     }
 
-    public LineStationAppended AppendStation(Guid stationId)
+    public LineOrderFlipped FlipOrder()
     {
-        if (this.stations.Count != 0 && this.stations.Last() == stationId)
+        this.AssertInitialized(nameof(this.FlipOrder));
+        return new LineOrderFlipped(this.Id, DateTime.UtcNow);
+    }
+
+    public LineSegmentAppended AppendSegment(Guid segmentId) // TODO actually you can enforce rules here if you pass the hole segment aggregate
+    {
+        this.AssertInitialized(nameof(this.AppendSegment));
+        return new LineSegmentAppended(this.Id, DateTime.UtcNow, segmentId);
+    }
+
+    public void Apply(BaseAggregateEvent<LineAggregate> @event)
+    {
+        switch (@event)
         {
-            throw new LineConsecutiveDuplicateStationException(this.Id, stationId);
+            case LineCreated e:
+                this.Initialize();
+                this.Id = e.Id;
+                this.LineNumber = e.LineNumber;
+                this.LineLetter = e.LineLetter;
+                break;
+            case LineTripAssigned e:
+                this.trips.Add(e.TripId);
+                break;
+            case LineOrderFlipped e:
+                this.segments.Reverse();
+                this.StartId = this.DetermineNewStart();
+                break;
+            case LineSegmentAppended e:
+                this.segments.Add(e.SegmentId);
+                break;
+            default:
+                throw new NotSupportedException("Unknown event type.");
         }
 
-        return new LineStationAppended(this.Id, DateTime.UtcNow, stationId);
-    }
-
-    public void Apply(LineCreated e)
-    {
-        this.Id = e.Id;
-        this.LineNumber = e.LineNumber;
-        this.LineLetter = e.LineLetter;
-
         this.Version++;
     }
 
-    public void Apply(LineTripAssigned e)
+    // TODO The logic with axles.
+    private Guid DetermineNewStart()
     {
-        this.trips.Add(e.TripId);
-
-        this.Version++;
-    }
-
-    public void Apply(LineStationAppended e)
-    {
-        this.stations.Add(e.StationId);
-
-        this.Version++;
+        throw new NotImplementedException();
     }
 }

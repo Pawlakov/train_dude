@@ -8,4 +8,4 @@ using System;
 
 using TrainDude.Domain.Base;
 
-public sealed record class LineCreated(Guid Id, DateTime When, int LineNumber, char? LineLetter) : BaseAggregateEvent(Id, When);
+public sealed record class LineCreated(Guid Id, DateTime When, int LineNumber, char? LineLetter) : BaseAggregateEvent<LineAggregate>(Id, When);

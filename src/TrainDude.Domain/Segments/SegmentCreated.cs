@@ -8,4 +8,4 @@ using System;
 
 using TrainDude.Domain.Base;
 
-public sealed record class SegmentCreated(Guid Id, DateTime When, double NominalLength, int Tracks, SegmentEnd A, SegmentEnd B) : BaseAggregateEvent(Id, When);
+public sealed record class SegmentCreated(Guid Id, DateTime When, double NominalLength, int Tracks, SegmentEnd A, SegmentEnd B) : BaseAggregateEvent<SegmentAggregate>(Id, When);

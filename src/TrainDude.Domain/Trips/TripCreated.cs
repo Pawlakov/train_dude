@@ -8,4 +8,4 @@ using System;
 
 using TrainDude.Domain.Base;
 
-public sealed record class TripCreated(Guid Id, DateTime When, int TripNumber) : BaseAggregateEvent(Id, When);
+public sealed record class TripCreated(Guid Id, DateTime When, int TripNumber) : BaseAggregateEvent<TripAggregate>(Id, When);

@@ -8,4 +8,4 @@ using System;
 
 using TrainDude.Domain.Base;
 
-public sealed record class RadiusCreated(Guid Id, DateTime When, int Speed, int Minimum) : BaseAggregateEvent(Id, When);
+public sealed record class RadiusCreated(Guid Id, DateTime When, int Speed, int Minimum) : BaseAggregateEvent<RadiusAggregate>(Id, When);

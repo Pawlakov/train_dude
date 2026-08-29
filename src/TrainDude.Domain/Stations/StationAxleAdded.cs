@@ -8,4 +8,4 @@ using System;
 
 using TrainDude.Domain.Base;
 
-public sealed record class StationAxleAdded(Guid Id, DateTime When) : BaseAggregateEvent(Id, When);
+public sealed record class StationAxleAdded(Guid Id, DateTime When) : BaseAggregateEvent<StationAggregate>(Id, When);

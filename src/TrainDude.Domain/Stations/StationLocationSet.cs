@@ -10,4 +10,4 @@ using TrainDude.Domain.Base;
 using TrainDude.Shared;
 using TrainDude.Shared.Values;
 
-public sealed record class StationLocationSet(Guid Id, DateTime When, Location Location) : BaseAggregateEvent(Id, When);
+public sealed record class StationLocationSet(Guid Id, DateTime When, Location Location) : BaseAggregateEvent<StationAggregate>(Id, When);

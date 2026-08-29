@@ -13,9 +13,9 @@ using Marten.Events.Aggregation;
 using TrainDude.Domain.Settings;
 
 public partial class SettingsProjection
-    : SingleStreamProjection<SettingsDocument, Guid>
+    : SingleStreamProjection<SettingsAggregate, Guid>
 {
-    public void Apply(IEvent<SettingsCreated> e, SettingsDocument settingsDocument) => settingsDocument.Apply(e.Data);
+    public void Apply(IEvent<SettingsCreated> e, SettingsAggregate settingsAggregate) => settingsAggregate.Apply(e.Data);
 
-    public void Apply(IEvent<SettingsStationNameModeUpdated> e, SettingsDocument settingsDocument) => settingsDocument.Apply(e.Data);
+    public void Apply(IEvent<SettingsStationNameModeUpdated> e, SettingsAggregate settingsAggregate) => settingsAggregate.Apply(e.Data);
 }

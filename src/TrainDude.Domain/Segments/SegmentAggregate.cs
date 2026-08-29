@@ -20,10 +20,8 @@ public class SegmentAggregate
 
     [JsonConstructor]
     private SegmentAggregate(Guid id, long version, double? nominalLength, int tracks, SegmentEnd a, SegmentEnd b, ICollection<Location> course)
+        : base(id, version)
     {
-        this.Id = id;
-        this.Version = version;
-
         this.NominalLength = nominalLength;
         this.Tracks = tracks;
         this.A = a;
@@ -32,6 +30,7 @@ public class SegmentAggregate
     }
 
     public SegmentAggregate()
+        : base()
     {
         this.course = new List<Location>();
     }
@@ -44,7 +43,7 @@ public class SegmentAggregate
 
     public SegmentEnd B { get; private set; }
 
-    public ICollection<Location> Course => this.course.AsReadOnly();
+    public IReadOnlyList<Location> Course => this.course.AsReadOnly();
 
     public static SegmentCreated Make(Guid id, double nominalLength, int tracks, SegmentEnd a, SegmentEnd b)
     {
@@ -53,24 +52,29 @@ public class SegmentAggregate
 
     public SegmentCourseSet SetCourse(IEnumerable<Location> course)
     {
+        this.AssertInitialized(nameof(this.SetCourse));
         return new SegmentCourseSet(this.Id, DateTime.UtcNow, course ?? []);
     }
 
-    public void Apply(SegmentCreated e)
+    public void Apply(BaseAggregateEvent<SegmentAggregate> @event)
     {
-        this.Id = e.Id;
-        this.NominalLength = e.NominalLength;
-        this.Tracks = e.Tracks;
-        this.A = e.A;
-        this.B = e.B;
-
-        this.Version++;
-    }
-
-    public void Apply(SegmentCourseSet e)
-    {
-        this.course.Clear();
-        this.course.AddRange(e.Course);
+        switch (@event)
+        {
+            case SegmentCreated e:
+                this.Initialize();
+                this.Id = e.Id;
+                this.NominalLength = e.NominalLength;
+                this.Tracks = e.Tracks;
+                this.A = e.A;
+                this.B = e.B;
+                break;
+            case SegmentCourseSet e:
+                this.course.Clear();
+                this.course.AddRange(e.Course);
+                break;
+            default:
+                throw new NotSupportedException("Unknown event type.");
+        }
 
         this.Version++;
     }

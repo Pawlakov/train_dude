@@ -19,5 +19,7 @@ public partial class LineProjection
 
     public void Apply(IEvent<LineTripAssigned> e, LineAggregate aggregate) => aggregate.Apply(e.Data);
 
-    public void Apply(IEvent<LineStationAppended> e, LineAggregate aggregate) => aggregate.Apply(e.Data);
+    public void Apply(IEvent<LineOrderFlipped> e, LineAggregate aggregate) => aggregate.Apply(e.Data);
+
+    public void Apply(IEvent<LineSegmentAppended> e, LineAggregate aggregate) => aggregate.Apply(e.Data);
 }

@@ -8,4 +8,4 @@ using System;
 
 using TrainDude.Domain.Base;
 
-public sealed record class SettingsCreated(Guid Id, DateTime When) : BaseAggregateEvent(Id, When);
+public sealed record class SettingsCreated(Guid Id, DateTime When) : BaseAggregateEvent<SettingsAggregate>(Id, When);

@@ -22,6 +22,7 @@ using CreateCommand=TrainDude.Commands.Contracts.Radii.CreateCommand;
 
 public class SeedService
 {
+    private readonly ConcurrentDictionary<int, Guid> segmentIdMap;
     private readonly ConcurrentDictionary<int, Guid> stationIdMap;
     private readonly ConcurrentDictionary<int, Guid> tripIdMap;
 
@@ -81,6 +82,18 @@ public class SeedService
         var createdResponse = await this.mediator.Send(createCommand, cancellationToken);
         var version = 1L;
 
+        foreach (var segment in seed.Segments)
+        {
+            var appendSegmentCommand = new AppendSegmentCommand()
+            {
+                Id = createdResponse.Id,
+                Version = version,
+                SegmentId = this.segmentIdMap[segment],
+            };
+
+            version = (await this.mediator.Send(appendSegmentCommand, cancellationToken)).Version;
+        }
+
         foreach (var trip in seed.Trips)
         {
             var assignTripCommand = new AssignTripCommand
@@ -90,21 +103,7 @@ public class SeedService
                 TripId = this.tripIdMap[trip],
             };
 
-            var updatedResult = await this.mediator.Send(assignTripCommand, cancellationToken);
-            version = updatedResult.Version;
-        }
-
-        foreach (var station in seed.Stations)
-        {
-            var appendStationCommand = new AppendStationCommand
-            {
-                Id = createdResponse.Id,
-                Version = version,
-                StationId = this.stationIdMap[station],
-            };
-
-            var updatedResult = await this.mediator.Send(appendStationCommand, cancellationToken);
-            version = updatedResult.Version;
+            version = (await this.mediator.Send(assignTripCommand, cancellationToken)).Version;
         }
     }
 
@@ -178,15 +177,16 @@ public class SeedService
             BPole = seed.B.Pole,
         };
 
-        var createdResponse = await this.mediator.Send(createCommand, cancellationToken);
-        var version = 1L;
+        var segmentId = (await this.mediator.Send(createCommand, cancellationToken)).Id;
+        this.segmentIdMap[seed.Id] = segmentId;
 
+        var version = 1L;
         if (seed.Course is not null && seed.Course is not [])
         {
             var locations = (seed.Course?.Select(x => new Location(x.Longitude, x.Latitude)) ?? []).ToList();
             var setCourseCommand = new SetCourseCommand
             {
-                Id = createdResponse.Id,
+                Id = segmentId,
                 Version = version,
                 Course = locations,
             };
