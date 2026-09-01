@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 
-using TrainDude.Queries.Contracts.Base;
+using TrainDude.Features.Base;
 using TrainDude.Web.Client.Services;
 
 public abstract class EntityLookupPageBase<TQuery, TQueryResult>
@@ -37,7 +37,7 @@ public abstract class EntityLookupPageBase<TQuery, TQueryResult>
     public Guid Id { get; set; }
 
     [Inject]
-    public ISender? Mediator { get; set; }
+    public HttpCommandSender? Mediator { get; set; }
 
     protected override Task OnInitializedAsync()
     {

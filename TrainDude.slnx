@@ -10,17 +10,18 @@
     <File Path="stylecop.json" />
   </Folder>
   <Folder Name="/Source/">
-    <Project Path="src/TrainDude.Commands.Contracts/TrainDude.Commands.Contracts.csproj" />
-    <Project Path="src/TrainDude.Commands.Endpoints/TrainDude.Commands.Endpoints.csproj" />
-    <Project Path="src/TrainDude.Domain/TrainDude.Domain.csproj" />
-    <Project Path="src/TrainDude.Integration.Events/TrainDude.Integration.Events.csproj" />
-    <Project Path="src/TrainDude.Integration.Projections/TrainDude.Integration.Projections.csproj" />
-    <Project Path="src/TrainDude.Queries.Contracts/TrainDude.Queries.Contracts.csproj" />
-    <Project Path="src/TrainDude.Queries.Data/TrainDude.Queries.Data.csproj" />
-    <Project Path="src/TrainDude.Queries.Handlers/TrainDude.Queries.Handlers.csproj" />
+    <Project Path="src/TrainDude.Features.Trips/TrainDude.Features.Trips.csproj" />
     <Project Path="src/TrainDude.Web.Client/TrainDude.Web.Client.csproj" />
     <Project Path="src/TrainDude.Web/TrainDude.Web.csproj" />
-    <Project Path="src\TrainDude.Shared\TrainDude.Shared.csproj" />
+    <Project Path="src/TrainDude.Shared/TrainDude.Shared.csproj" />
+    <Project Path="src/TrainDude.Features.Lines/TrainDude.Features.Lines.csproj" />
+    <Project Path="src/TrainDude.Features.Radii/TrainDude.Features.Radii.csproj" />
+    <Project Path="src/TrainDude.Features/TrainDude.Features.csproj" />
+    <Project Path="src/TrainDude.Features.Segments/TrainDude.Features.Segments.csproj" />
+    <Project Path="src/TrainDude.Features.Settings/TrainDude.Features.Settings.csproj" />
+    <Project Path="src/TrainDude.Features.Stations/TrainDude.Features.Stations.csproj" />
+    <Project Path="src\TrainDude.Features.Shared\TrainDude.Features.Shared.csproj" />
+    <Project Path="src\TrainDude.Infrastructure\TrainDude.Infrastructure.csproj" />
   </Folder>
   <Folder Name="/Tests/">
     <Project Path="tests/TrainDude.Domain.Tests/TrainDude.Domain.Tests.csproj" />

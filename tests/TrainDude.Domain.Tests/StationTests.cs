@@ -1,8 +1,8 @@
 ﻿namespace TrainDude.Domain.Tests;
 
-using TrainDude.Domain.Base;
-using TrainDude.Domain.Common;
-using TrainDude.Domain.Stations;
+using TrainDude.Infrastructure.Base;
+using TrainDude.Infrastructure.Common;
+using TrainDude.Infrastructure.Stations;
 using TrainDude.Shared.Values;
 
 using Xunit;

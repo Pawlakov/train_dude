@@ -11,7 +11,7 @@ using Mediator;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
-using TrainDude.Queries.Contracts.Network;
+using TrainDude.Features.Network.GetNetwork;
 using TrainDude.Web.Client.Services;
 
 public partial class NetworkMap

@@ -6,19 +6,24 @@ namespace TrainDude.Web.Client.Services;
 
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using TrainDude.Commands.Contracts.Admin;
-using TrainDude.Commands.Contracts.Lines;
-using TrainDude.Commands.Contracts.Segments;
-using TrainDude.Commands.Contracts.Stations;
+using TrainDude.Features.Admin;
+using TrainDude.Features.Lines;
+using TrainDude.Features.Lines.AppendSegment;
+using TrainDude.Features.Lines.AssignTrip;
+using TrainDude.Features.Lines.CreateLine;
+using TrainDude.Features.Radii.CreateRadius;
+using TrainDude.Features.Segments;
+using TrainDude.Features.Segments.SetCourse;
+using TrainDude.Features.Stations;
+using TrainDude.Features.Stations.AddAxle;
+using TrainDude.Features.Stations.CreateStation;
+using TrainDude.Features.Stations.SetLocation;
 using TrainDude.Shared.Values;
 using TrainDude.Web.Client.Seed;
-
-using CreateCommand=TrainDude.Commands.Contracts.Radii.CreateCommand;
 
 public class SeedService
 {
@@ -72,7 +77,7 @@ public class SeedService
 
     private async Task SeedLine(LineSeed seed, CancellationToken cancellationToken = default)
     {
-        var createCommand = new Commands.Contracts.Lines.CreateCommand
+        var createCommand = new CreateLineCommand
         {
             Id = Guid.NewGuid(),
             Number = seed.Number,
@@ -109,19 +114,14 @@ public class SeedService
 
     private async Task SeedRadius(RadiusSeed seed, CancellationToken cancellationToken = default)
     {
-        var createCommand = new CreateCommand
-        {
-            Id = Guid.NewGuid(),
-            Speed = seed.Speed,
-            Minimum = seed.Minimum,
-        };
+        var createCommand = new CreateRadiusCommand(seed.Speed, seed.Minimum);
 
         await this.mediator.Send(createCommand, cancellationToken);
     }
 
     private async Task SeedStation(StationSeed seed, CancellationToken cancellationToken = default)
     {
-        var createCommand = new Commands.Contracts.Stations.CreateCommand
+        var createCommand = new CreateStationCommand
         {
             Id = Guid.NewGuid(),
             NameGerman = seed.NameGerman,
@@ -164,7 +164,7 @@ public class SeedService
 
     private async Task SeedSegment(SegmentSeed seed, CancellationToken cancellationToken = default)
     {
-        var createCommand = new Commands.Contracts.Segments.CreateCommand
+        var createCommand = new TrainDude.Features.Segments.CreateSegment.CreateSegmentCommand
         {
             Id = Guid.NewGuid(),
             NominalLength = seed.Length,
@@ -198,7 +198,7 @@ public class SeedService
 
     private async Task SeedTrip(TripSeed seed, CancellationToken cancellationToken = default)
     {
-        var createCommand = new Commands.Contracts.Trips.CreateCommand
+        var createCommand = new TrainDude.Features.Trips.CreateTrip.CreateTripCommand
         {
             Id = Guid.NewGuid(),
             Number = seed.Number,

@@ -1,11 +1,7 @@
-@using FluentValidation
-@using Mediator
-@using TrainDude.Commands.Contracts.Settings
-@using TrainDude.Queries.Contracts.Admin
+@using TrainDude.Features.Settings.GetNameMode
+@using TrainDude.Features.Settings.SetNameMode
 @using TrainDude.Shared.Enums
-@using TrainDude.Shared.Values
 
-@inject ISender QueryMediator
 @inject HttpCommandSender CommandMediator
 
 @if (this.editActive)
@@ -27,11 +23,11 @@
                 <div>
                     <InputRadioGroup @bind-Value="this.command.Mode">
                         <label class="radio">
-                            <InputRadio value="@(StationNameMode.Modern)"/>
+                            <InputRadio value="@(NamingPolicy.Modern)"/>
                             Współczesne
                         </label>
                         <label class="radio">
-                            <InputRadio value="@(StationNameMode.German)"/>
+                            <InputRadio value="@(NamingPolicy.German)"/>
                             Niemieckie
                         </label>
                     </InputRadioGroup>
@@ -51,7 +47,7 @@ else
     <p class="subtitle is-6">
         @if (this.queryResult != null)
         {
-            if (this.queryResult.Mode == StationNameMode.Modern)
+            if (this.queryResult.Mode == NamingPolicy.Modern)
             {
                 <text>Współczesne</text>
             }
@@ -69,7 +65,7 @@ else
 
 @code {
     private bool editActive;
-    private GetStationNameModeQueryResult? queryResult;
+    private GetNameModeQueryResult? queryResult;
     private SetNameModeCommand? command;
     private EditContext? formContext;
     private FluentValidationValidator<SetNameModeCommand>? validator;
@@ -95,7 +91,7 @@ else
 
     private async Task Refresh()
     {
-        var query = new GetStationNameModeQuery();
+        var query = new GetNameModeQuery();
         this.queryResult = await this.QueryMediator.Send(query);
         this.command = new SetNameModeCommand
         {

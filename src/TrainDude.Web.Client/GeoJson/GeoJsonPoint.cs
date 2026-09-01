@@ -6,4 +6,4 @@ namespace TrainDude.Web.Client.GeoJson;
 
 using System.Text.Json.Serialization;
 
-public sealed record class GeoJsonPoint([property: JsonPropertyName("coordinates")] double[] Coordinates) : GeoJsonGeometry();
+public sealed record GeoJsonPoint([property: JsonPropertyName("coordinates")] double[] Coordinates) : GeoJsonGeometry();

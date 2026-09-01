@@ -1,0 +1,31 @@
+﻿// <copyright file="CreateRadiusEndpoint.cs" company="Pawlakov">
+// Copyright (c) Pawlakov. All rights reserved.
+// </copyright>
+
+namespace TrainDude.Features.Radii.CreateRadius;
+
+using System;
+
+using TrainDude.Features.Generic;
+using TrainDude.Features.Radii.Domain;
+
+using Wolverine.Http;
+using Wolverine.Marten;
+
+public static class CreateRadiusEndpoint
+{
+    public const string Route = "/radius/create";
+
+    [WolverinePost(Route)]
+    public static (CreatedResponse, IStartStream) Handle(CreateRadiusCommand command)
+    {
+        var id = Guid.NewGuid();
+        var domainEvent = RadiusAggregate.Make(id, command.Speed, command.Minimum);
+
+        var startStream = MartenOps.StartStream<RadiusAggregate>(id, domainEvent);
+
+        var response = new CreatedResponse(domainEvent.Id);
+
+        return (response, startStream);
+    }
+}

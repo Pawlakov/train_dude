@@ -8,8 +8,6 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using Mediator;
-
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -28,7 +26,6 @@ public static class Program
             BaseAddress = new Uri(builder.HostEnvironment.BaseAddress),
         });
 
-        builder.Services.AddScoped<ISender, HttpMediator>();
         builder.Services.AddScoped<HttpCommandSender>();
         builder.Services.AddScoped<SeedService>();
         builder.Services.AddScoped<SeedLoader>();

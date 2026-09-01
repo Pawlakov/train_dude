@@ -1,0 +1,34 @@
+// <copyright file="GetTripsEndpoint.cs" company="Pawlakov">
+// Copyright (c) Pawlakov. All rights reserved.
+// </copyright>
+
+namespace TrainDude.Features.Trips.GetTrips;
+
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+
+using Marten;
+
+using TrainDude.Features.Trips.Domain;
+
+using Wolverine.Http;
+
+public static class GetTripsEndpoint
+{
+    public const string Route = "/trips";
+
+    [WolverineGet(Route)]
+    public static async Task<GetTripsQueryResult> Handle(GetTripsQuery request, IQuerySession session, CancellationToken cancellationToken)
+    {
+        var trips = await session.Query<TripAggregate>()
+            .ToListAsync(cancellationToken);
+
+        var items = trips
+            .OrderBy(x => x.TripNumber)
+            .Select(x => new GetTripsQueryResultItem { TripId = x.Id, TripNumber = x.TripNumber })
+            .ToList();
+
+        return new GetTripsQueryResult { Items = items };
+    }
+}

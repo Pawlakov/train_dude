@@ -1,8 +1,8 @@
 @page "/station/{Id:guid}"
 @using FluentValidation
 @using Mediator
-@using TrainDude.Queries.Contracts.Stations
-@inherits MapEntityLookupPageBase<GetStationQuery, GetStationQueryResult>
+@using TrainDude.Features.Stations.GetStation
+@inherits MapEntityLookupPageBase<TrainDude.Features.Stations.GetStation.GetStationQuery, TrainDude.Features.Stations.GetStation.GetStationQueryResult>
 
 @if (this.queryResult != null)
 {

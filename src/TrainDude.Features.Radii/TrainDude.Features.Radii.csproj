@@ -1,0 +1,5 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\TrainDude.Features.Shared\TrainDude.Features.Shared.csproj" />
+  </ItemGroup>
+</Project>

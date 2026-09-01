@@ -7,15 +7,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FluentValidation" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
         <PackageReference Include="Microsoft.DotNet.HotReload.WebAssembly.Browser" />
         <PackageReference Include="YamlDotNet" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\TrainDude.Commands.Contracts\TrainDude.Commands.Contracts.csproj" />
-      <ProjectReference Include="..\TrainDude.Queries.Contracts\TrainDude.Queries.Contracts.csproj" />
+      <ProjectReference Include="..\TrainDude.Features\TrainDude.Features.csproj" />
     </ItemGroup>
 
     <ItemGroup>

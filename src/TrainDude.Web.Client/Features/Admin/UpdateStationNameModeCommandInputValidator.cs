@@ -6,8 +6,8 @@ namespace TrainDude.Web.Client.Features.Admin;
 
 using FluentValidation;
 
-using TrainDude.Commands.Contracts.Admin;
-using TrainDude.Commands.Contracts.Settings;
+using TrainDude.Features.Settings;
+using TrainDude.Features.Settings.SetNameMode;
 using TrainDude.Web.Client.Validation;
 
 public class UpdateStationNameModeCommandInputValidator

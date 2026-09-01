@@ -1,5 +1,5 @@
 @page "/line/{Id:guid}"
-@using TrainDude.Queries.Contracts.Lines
+@using TrainDude.Features.Lines.GetLine
 @inherits MapEntityLookupPageBase<GetLineQuery, GetLineQueryResult>
 
 @if (this.queryResult != null)

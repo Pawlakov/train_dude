@@ -5,14 +5,12 @@
 namespace TrainDude.Web.Client.Components.Forms;
 
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-
-using Mediator;
 
 using Microsoft.AspNetCore.Components;
 
-using TrainDude.Queries.Contracts.Base;
+using TrainDude.Features.Base;
+using TrainDude.Web.Client.Services;
 
 public abstract class EntityListPageBase<TQuery, TQueryResult, TQueryResultItem>
     : ComponentBase
@@ -22,7 +20,7 @@ public abstract class EntityListPageBase<TQuery, TQueryResult, TQueryResultItem>
     protected IEnumerable<TQueryResultItem>? items;
 
     [Inject]
-    public ISender? Mediator { get; set; }
+    public HttpCommandSender? Mediator { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {

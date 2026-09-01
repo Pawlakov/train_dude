@@ -10,10 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-using TrainDude.Commands.Endpoints.HostBuilders;
-using TrainDude.Integration.Projections.Admin;
-using TrainDude.Integration.Projections.Trips;
-using TrainDude.Queries.Handlers.HostBuilders;
+using TrainDude.Features.Radii.CreateRadius;
+using TrainDude.Infrastructure.Admin;
 using TrainDude.Web.Components;
 using TrainDude.Web.HostBuilders;
 
@@ -38,7 +36,6 @@ public static class Program
 
         var isDevelopment = builder.Environment.IsDevelopment();
 
-        var readConnectionString = builder.Configuration.GetConnectionString("Read");
         var writeConnectionString = builder.Configuration.GetConnectionString("Write");
 
         builder.Services
@@ -55,14 +52,29 @@ public static class Program
             .AddProblemDetails();
 
         builder.Services
-            .AddReadDataServices(readConnectionString!)
             .AddWriteServices(writeConnectionString!, isDevelopment)
             .AddReadDataValidation()
             .AddRequestHandlers()
             .AddReadExceptionHandlers();
 
-        builder.Host
-            .UseWriteServices(typeof(Program).Assembly, typeof(DroppedProjectionHandler).Assembly);
+        builder.Host.UseWolverine(opts =>
+        {
+            opts.ApplicationAssembly = typeof(Program).Assembly;
+            opts.Discovery.IncludeAssembly(typeof(DroppedProjectionHandler).Assembly);
+            opts.Discovery.IncludeAssembly(typeof(DropEndpoint).Assembly);
+            opts.Discovery.IncludeAssembly(typeof(CreateRadiusEndpoint).Assembly);
+
+            opts.DescribeHandlerMatch(typeof(DropEndpoint));
+
+            opts.Policies.AutoApplyTransactions();
+            opts.Policies.UseDurableLocalQueues();
+            opts.Policies.OnException<DomainException>().MoveToErrorQueue();
+
+            opts.UseFluentValidation();
+
+            // TODO some day we will do it this way
+            // opts.PublishMessage<TripCreatedIntegrationEvent>().ToRabbitQueue("train-dude-projection").UseDurableInbox();
+        });
 
         var app = builder.Build();
 
@@ -88,7 +100,6 @@ public static class Program
             .AddInteractiveWebAssemblyRenderMode()
             .AddAdditionalAssemblies(typeof(Client._Imports).Assembly);
 
-        app.MapControllers();
         app.MapWolverineEndpoints(opts => { opts.UseFluentValidationProblemDetailMiddleware(); });
 
         app.Run();

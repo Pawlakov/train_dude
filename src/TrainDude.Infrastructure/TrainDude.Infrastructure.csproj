@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <PackageReference Include="WolverineFx"/>
+    <PackageReference Include="WolverineFx.Http"/>
+    <PackageReference Include="WolverineFx.Http.FluentValidation"/>
+    <PackageReference Include="WolverineFx.Marten"/>
+  </ItemGroup>
+</Project>

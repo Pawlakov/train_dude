@@ -9,4 +9,4 @@ using System.Text.Json.Serialization;
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "type")]
 [JsonDerivedType(typeof(GeoJsonLineString), "LineString")]
 [JsonDerivedType(typeof(GeoJsonPoint), "Point")]
-public abstract record class GeoJsonGeometry();
+public abstract record GeoJsonGeometry();

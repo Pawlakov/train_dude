@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\TrainDude.Shared\TrainDude.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Radii\Domain\" />
+    <Folder Include="Segments\Domain\" />
+    <Folder Include="Stations\Domain\" />
+    <Folder Include="Trips\Domain\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" />
+  </ItemGroup>
+</Project>

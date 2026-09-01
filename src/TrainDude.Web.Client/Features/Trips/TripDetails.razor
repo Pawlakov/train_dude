@@ -1,8 +1,8 @@
 @page "/trip/{Id:guid}"
 @using FluentValidation
 @using Mediator
-@using TrainDude.Queries.Contracts.Trips
-@inherits MapEntityLookupPageBase<GetTripQuery, GetTripQueryResult>
+@using TrainDude.Features.Trips.GetTrip
+@inherits MapEntityLookupPageBase<TrainDude.Features.Trips.GetTrip.GetTripQuery, GetTripQueryResult>
 
 @if (this.queryResult != null)
 {

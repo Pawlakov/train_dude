@@ -1,6 +1,6 @@
 ﻿@page "/segment/{Id:guid}"
-@using TrainDude.Queries.Contracts.Segments
-@inherits MapEntityLookupPageBase<GetSegmentQuery, GetSegmentQueryResult>
+@using TrainDude.Features.Segments.GetSegment
+@inherits MapEntityLookupPageBase<TrainDude.Features.Segments.GetSegment.GetSegmentQuery, TrainDude.Features.Segments.GetSegment.GetSegmentQueryResult>
 
 <PageTitle>Odcinek</PageTitle>
 

@@ -9,7 +9,7 @@ public class DependencyTests
     [Fact]
     public void DomainShouldNotDepend()
     {
-        var domainAssembly = typeof(TrainDude.Domain.Stations.StationAggregate).Assembly;
+        var domainAssembly = typeof(TrainDude.Infrastructure.Stations.StationAggregate).Assembly;
 
         var result = Types
             .InAssembly(domainAssembly)

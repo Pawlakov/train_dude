@@ -1,7 +1,6 @@
 @page "/trips"
 @using Mediator
-@using TrainDude.Queries.Contracts.Trips
-@inherits EntityListPageBase<GetTripsQuery, GetTripsQueryResult, GetTripsQueryResultItem>
+@inherits EntityListPageBase<TrainDude.Features.Trips.GetTrips.GetTripsQuery, TrainDude.Features.Trips.GetTrips.GetTripsQueryResult, TrainDude.Features.Trips.GetTrips.GetTripsQueryResultItem>
 @layout BlockMapLayout
 
 <PageTitle>Kursy</PageTitle>

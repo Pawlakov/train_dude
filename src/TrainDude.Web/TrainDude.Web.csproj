@@ -6,18 +6,17 @@
   </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Mediator.SourceGenerator">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server"/>
         <PackageReference Include="WolverineFx.RuntimeCompilation" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\TrainDude.Commands.Endpoints\TrainDude.Commands.Endpoints.csproj" />
-      <ProjectReference Include="..\TrainDude.Integration.Projections\TrainDude.Integration.Projections.csproj" />
-      <ProjectReference Include="..\TrainDude.Queries.Handlers\TrainDude.Queries.Handlers.csproj" />
+      <ProjectReference Include="..\TrainDude.Features.Lines\TrainDude.Features.Lines.csproj" />
+      <ProjectReference Include="..\TrainDude.Features.Radii\TrainDude.Features.Radii.csproj" />
+      <ProjectReference Include="..\TrainDude.Features.Segments\TrainDude.Features.Segments.csproj" />
+      <ProjectReference Include="..\TrainDude.Features.Settings\TrainDude.Features.Settings.csproj" />
+      <ProjectReference Include="..\TrainDude.Features.Stations\TrainDude.Features.Stations.csproj" />
+      <ProjectReference Include="..\TrainDude.Features.Trips\TrainDude.Features.Trips.csproj" />
       <ProjectReference Include="..\TrainDude.Web.Client\TrainDude.Web.Client.csproj" />
     </ItemGroup>
 
