@@ -10,18 +10,18 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using TrainDude.Features.Admin;
-using TrainDude.Features.Lines;
-using TrainDude.Features.Lines.AppendSegment;
-using TrainDude.Features.Lines.AssignTrip;
-using TrainDude.Features.Lines.CreateLine;
-using TrainDude.Features.Radii.CreateRadius;
-using TrainDude.Features.Segments;
-using TrainDude.Features.Segments.SetCourse;
-using TrainDude.Features.Stations;
-using TrainDude.Features.Stations.AddAxle;
-using TrainDude.Features.Stations.CreateStation;
-using TrainDude.Features.Stations.SetLocation;
+using TrainDude.Features.Lines.Contracts.AppendSegment;
+using TrainDude.Features.Lines.Contracts.AssignTrip;
+using TrainDude.Features.Lines.Contracts.CreateLine;
+using TrainDude.Features.Radii.Contracts.CreateRadius;
+using TrainDude.Features.Segments.Contracts.CreateSegment;
+using TrainDude.Features.Segments.Contracts.SetCourse;
+using TrainDude.Features.Shared.Contracts.Admin;
+using TrainDude.Features.Shared.Contracts.Generic;
+using TrainDude.Features.Stations.Contracts.AddAxle;
+using TrainDude.Features.Stations.Contracts.CreateStation;
+using TrainDude.Features.Stations.Contracts.SetLocation;
+using TrainDude.Features.Trips.Contracts.CreateTrip;
 using TrainDude.Shared.Values;
 using TrainDude.Web.Client.Seed;
 
@@ -36,6 +36,7 @@ public class SeedService
 
     public SeedService(HttpCommandSender mediator, SeedLoader loader)
     {
+        this.segmentIdMap = new ConcurrentDictionary<int, Guid>();
         this.stationIdMap = new ConcurrentDictionary<int, Guid>();
         this.tripIdMap = new ConcurrentDictionary<int, Guid>();
 
@@ -45,7 +46,7 @@ public class SeedService
 
     public async Task Handle(CancellationToken cancellationToken = default)
     {
-        await this.mediator.Send(new DropCommand(), cancellationToken);
+        await this.mediator.Send<DropCommand, EmptyResult>(new DropCommand(), cancellationToken);
 
         var options = new ParallelOptions
         {
@@ -77,38 +78,23 @@ public class SeedService
 
     private async Task SeedLine(LineSeed seed, CancellationToken cancellationToken = default)
     {
-        var createCommand = new CreateLineCommand
-        {
-            Id = Guid.NewGuid(),
-            Number = seed.Number,
-            Letter = seed.Letter,
-        };
+        var createCommand = new CreateLineCommand(seed.Number, seed.Letter);
 
-        var createdResponse = await this.mediator.Send(createCommand, cancellationToken);
+        var createdResponse = await this.mediator.Send<CreateLineCommand, CreatedResult>(createCommand, cancellationToken);
         var version = 1L;
 
         foreach (var segment in seed.Segments)
         {
-            var appendSegmentCommand = new AppendSegmentCommand()
-            {
-                Id = createdResponse.Id,
-                Version = version,
-                SegmentId = this.segmentIdMap[segment],
-            };
+            var appendSegmentCommand = new AppendSegmentCommand(createdResponse.Id, version, this.segmentIdMap[segment]);
 
-            version = (await this.mediator.Send(appendSegmentCommand, cancellationToken)).Version;
+            version = (await this.mediator.Send<AppendSegmentCommand, UpdatedResult>(appendSegmentCommand, cancellationToken)).Version;
         }
 
         foreach (var trip in seed.Trips)
         {
-            var assignTripCommand = new AssignTripCommand
-            {
-                Id = createdResponse.Id,
-                Version = version,
-                TripId = this.tripIdMap[trip],
-            };
+            var assignTripCommand = new AssignTripCommand(createdResponse.Id, version, this.tripIdMap[trip]);
 
-            version = (await this.mediator.Send(assignTripCommand, cancellationToken)).Version;
+            version = (await this.mediator.Send<AssignTripCommand, UpdatedResult>(assignTripCommand, cancellationToken)).Version;
         }
     }
 
@@ -116,95 +102,59 @@ public class SeedService
     {
         var createCommand = new CreateRadiusCommand(seed.Speed, seed.Minimum);
 
-        await this.mediator.Send(createCommand, cancellationToken);
+        await this.mediator.Send<CreateRadiusCommand, CreatedResult>(createCommand, cancellationToken);
     }
 
     private async Task SeedStation(StationSeed seed, CancellationToken cancellationToken = default)
     {
-        var createCommand = new CreateStationCommand
-        {
-            Id = Guid.NewGuid(),
-            NameGerman = seed.NameGerman,
-            NameGermanNew = seed.NameGermanNew,
-            NamePolish = seed.NamePolish,
-            NameRussian = seed.NameRussian,
-        };
+        var createCommand = new CreateStationCommand(seed.NameGerman, seed.NameGermanNew, seed.NamePolish, seed.NameRussian);
 
-        var createdResponse = await this.mediator.Send(createCommand, cancellationToken);
+        var createdResponse = await this.mediator.Send<CreateStationCommand, CreatedResult>(createCommand, cancellationToken);
         this.stationIdMap[seed.Id] = createdResponse.Id;
         var version = 1L;
 
         if (seed is { Latitude: not null, Longitude: not null })
         {
             var location = new Location(seed.Longitude.Value, seed.Latitude.Value);
-            var setLocationCommand = new SetLocationCommand
-            {
-                Id = createdResponse.Id,
-                Version = version,
-                Location = location,
-            };
+            var setLocationCommand = new SetLocationCommand(createdResponse.Id, version, location);
 
-            var updatedResponse = await this.mediator.Send(setLocationCommand, cancellationToken);
+            var updatedResponse = await this.mediator.Send<SetLocationCommand, UpdatedResult>(setLocationCommand, cancellationToken);
             version = updatedResponse.Version;
         }
 
         var axleCount = seed.AxleCount ?? 1;
         for (var i = 0; i < axleCount; ++i)
         {
-            var addAxleCommand = new AddAxleCommand
-            {
-                Id = createdResponse.Id,
-                Version = version,
-            };
+            var addAxleCommand = new AddAxleCommand(createdResponse.Id, version);
 
-            var updatedResponse = await this.mediator.Send(addAxleCommand, cancellationToken);
+            var updatedResponse = await this.mediator.Send<AddAxleCommand, UpdatedResult>(addAxleCommand, cancellationToken);
             version = updatedResponse.Version;
         }
     }
 
     private async Task SeedSegment(SegmentSeed seed, CancellationToken cancellationToken = default)
     {
-        var createCommand = new TrainDude.Features.Segments.CreateSegment.CreateSegmentCommand
-        {
-            Id = Guid.NewGuid(),
-            NominalLength = seed.Length,
-            Tracks = seed.Tracks,
-            AId = this.stationIdMap[seed.A.StationId],
-            AAxle = seed.A.Axle ?? 0,
-            APole = seed.A.Pole,
-            BId = this.stationIdMap[seed.B.StationId],
-            BAxle = seed.B.Axle ?? 0,
-            BPole = seed.B.Pole,
-        };
+        var createCommand = new CreateSegmentCommand(seed.Length, seed.Tracks, this.stationIdMap[seed.A.StationId], seed.A.Axle ?? 0, seed.A.Pole, this.stationIdMap[seed.B.StationId], seed.B.Axle ?? 0, seed.B.Pole);
 
-        var segmentId = (await this.mediator.Send(createCommand, cancellationToken)).Id;
+        var segmentId = (await this.mediator.Send<CreateSegmentCommand, CreatedResult>(createCommand, cancellationToken)).Id;
         this.segmentIdMap[seed.Id] = segmentId;
 
         var version = 1L;
         if (seed.Course is not null && seed.Course is not [])
         {
             var locations = (seed.Course?.Select(x => new Location(x.Longitude, x.Latitude)) ?? []).ToList();
-            var setCourseCommand = new SetCourseCommand
-            {
-                Id = segmentId,
-                Version = version,
-                Course = locations,
-            };
+            var setCourseCommand = new SetCourseCommand(segmentId, version, locations);
 
-            var updatedResponse = await this.mediator.Send(setCourseCommand, cancellationToken);
+            var updatedResponse = await this.mediator.Send<SetCourseCommand, UpdatedResult>(setCourseCommand, cancellationToken);
             version = updatedResponse.Version;
         }
     }
 
     private async Task SeedTrip(TripSeed seed, CancellationToken cancellationToken = default)
     {
-        var createCommand = new TrainDude.Features.Trips.CreateTrip.CreateTripCommand
-        {
-            Id = Guid.NewGuid(),
-            Number = seed.Number,
-        };
+        var createCommand = new CreateTripCommand(seed.Number);
 
-        var createdResponse = await this.mediator.Send(createCommand, cancellationToken);
+        var createdResponse = await this.mediator.Send<CreateTripCommand, CreatedResult>(createCommand, cancellationToken);
         this.tripIdMap[seed.Number] = createdResponse.Id;
     }
 }

@@ -1,8 +1,16 @@
 @page "/station/{Id:guid}"
 @using FluentValidation
-@using Mediator
-@using TrainDude.Features.Stations.GetStation
-@inherits MapEntityLookupPageBase<TrainDude.Features.Stations.GetStation.GetStationQuery, TrainDude.Features.Stations.GetStation.GetStationQueryResult>
+@using TrainDude.Features.Stations.Contracts.GetStation
+@inherits MapEntityLookupPageBase<GetStationQuery, GetStationQueryResult>
+
+@code {
+
+    protected override GetStationQuery BuildQuery(EntityLookupFormModel formModel)
+    {
+        return new GetStationQuery(formModel.Id);
+    }
+
+}
 
 @if (this.queryResult != null)
 {
@@ -32,9 +40,9 @@ else
         <section class="section">
             <div class="field">
                 <label class="label">ID</label>
-                <TemplatedValidationMessage For="() => this.query.Id" BaseClass="input">
+                <TemplatedValidationMessage For="() => this.formModel.Id" BaseClass="input">
                     <InputTemplate Context="inputClasses">
-                        <input class="@(inputClasses)" value="@(this.query.Id)" disabled/>
+                        <input class="@(inputClasses)" value="@(this.formModel.Id)" disabled/>
                     </InputTemplate>
                 </TemplatedValidationMessage>
             </div>

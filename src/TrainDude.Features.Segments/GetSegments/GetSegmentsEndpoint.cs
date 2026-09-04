@@ -12,8 +12,7 @@ using System.Threading.Tasks;
 
 using Marten;
 
-using TrainDude.Features.Segments.Domain;
-using TrainDude.Features.Segments.Projections;
+using TrainDude.Features.Segments.Contracts.GetSegments;
 using TrainDude.Features.Segments.ReadModels;
 
 using Wolverine;
@@ -21,9 +20,7 @@ using Wolverine.Http;
 
 public static class GetSegmentsEndpoint
 {
-    public const string Route = "/segments";
-
-    [WolverineGet(Route)]
+    [WolverineGet(GetSegmentsQuery.TypeRoute)]
     public static async Task<GetSegmentsQueryResult> Handle(GetSegmentsQuery request, IQuerySession session, CancellationToken cancellationToken = default)
     {
         var queryResult = await session.Query<SegmentReadModel>()
@@ -40,6 +37,6 @@ public static class GetSegmentsEndpoint
             })
             .ToList();
 
-        return new GetSegmentsQueryResult { Items = items };
+        return new GetSegmentsQueryResult(items);
     }
 }

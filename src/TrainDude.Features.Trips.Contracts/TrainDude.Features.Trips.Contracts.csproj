@@ -1,0 +1,5 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\TrainDude.Features.Shared.Contracts\TrainDude.Features.Shared.Contracts.csproj" />
+  </ItemGroup>
+</Project>

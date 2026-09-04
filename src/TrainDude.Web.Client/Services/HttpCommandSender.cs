@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 using FluentValidation;
 using FluentValidation.Results;
 
-using TrainDude.Features.Base;
+using TrainDude.Features.Shared.Contracts.Base;
 using TrainDude.Web.Client.Exceptions;
 
 public class HttpCommandSender
@@ -30,10 +30,11 @@ public class HttpCommandSender
         this.http = http;
     }
 
-    public async Task<TResponse> Send<TResponse>(BaseRoutedCommand<TResponse> command, CancellationToken cancellationToken = default)
-        where TResponse : BaseCommandResponse
+    public async Task<TResponse> Send<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken = default)
+        where TRequest : IDomainRequest<TResponse>
+        where TResponse : IRequestResult
     {
-        var response = await this.http.PostAsJsonAsync(command.Route, (BasePolymorphicCommand)command, cancellationToken).ConfigureAwait(false);
+        var response = await this.http.PostAsJsonAsync(request.Route, request, cancellationToken).ConfigureAwait(false);
 
         if (response.IsSuccessStatusCode)
         {

@@ -10,16 +10,21 @@
     <File Path="stylecop.json" />
   </Folder>
   <Folder Name="/Source/">
+    <Project Path="src/TrainDude.Features.Trips.Contracts/TrainDude.Features.Trips.Contracts.csproj" />
     <Project Path="src/TrainDude.Features.Trips/TrainDude.Features.Trips.csproj" />
     <Project Path="src/TrainDude.Web.Client/TrainDude.Web.Client.csproj" />
     <Project Path="src/TrainDude.Web/TrainDude.Web.csproj" />
-    <Project Path="src/TrainDude.Shared/TrainDude.Shared.csproj" />
+    <Project Path="src/TrainDude.Features.Lines.Contracts/TrainDude.Features.Lines.Contracts.csproj" />
     <Project Path="src/TrainDude.Features.Lines/TrainDude.Features.Lines.csproj" />
+    <Project Path="src/TrainDude.Features.Radii.Contracts/TrainDude.Features.Radii.Contracts.csproj" />
     <Project Path="src/TrainDude.Features.Radii/TrainDude.Features.Radii.csproj" />
-    <Project Path="src/TrainDude.Features/TrainDude.Features.csproj" />
+    <Project Path="src/TrainDude.Features.Segments.Contracts/TrainDude.Features.Segments.Contracts.csproj" />
     <Project Path="src/TrainDude.Features.Segments/TrainDude.Features.Segments.csproj" />
+    <Project Path="src/TrainDude.Features.Settings.Contracts/TrainDude.Features.Settings.Contracts.csproj" />
     <Project Path="src/TrainDude.Features.Settings/TrainDude.Features.Settings.csproj" />
+    <Project Path="src/TrainDude.Features.Stations.Contracts/TrainDude.Features.Stations.Contracts.csproj" />
     <Project Path="src/TrainDude.Features.Stations/TrainDude.Features.Stations.csproj" />
+    <Project Path="src\TrainDude.Features.Shared.Contracts\TrainDude.Features.Shared.Contracts.csproj" />
     <Project Path="src\TrainDude.Features.Shared\TrainDude.Features.Shared.csproj" />
     <Project Path="src\TrainDude.Infrastructure\TrainDude.Infrastructure.csproj" />
   </Folder>

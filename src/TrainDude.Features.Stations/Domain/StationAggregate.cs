@@ -7,9 +7,8 @@ namespace TrainDude.Features.Stations.Domain;
 using System;
 using System.Text.Json.Serialization;
 
-using TrainDude.Features.Base;
-using TrainDude.Features.Shared;
-using TrainDude.Features.Stations.Domain.Events;
+using TrainDude.Features.Shared.Contracts.Base;
+using TrainDude.Features.Shared.Contracts.Stations.Domain.Events;
 using TrainDude.Shared.Values;
 
 public class StationAggregate

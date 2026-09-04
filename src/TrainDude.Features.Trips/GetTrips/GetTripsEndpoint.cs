@@ -10,15 +10,14 @@ using System.Threading.Tasks;
 
 using Marten;
 
+using TrainDude.Features.Trips.Contracts.GetTrips;
 using TrainDude.Features.Trips.Domain;
 
 using Wolverine.Http;
 
 public static class GetTripsEndpoint
 {
-    public const string Route = "/trips";
-
-    [WolverineGet(Route)]
+    [WolverineGet(GetTripsQuery.TypeRoute)]
     public static async Task<GetTripsQueryResult> Handle(GetTripsQuery request, IQuerySession session, CancellationToken cancellationToken)
     {
         var trips = await session.Query<TripAggregate>()
@@ -29,6 +28,6 @@ public static class GetTripsEndpoint
             .Select(x => new GetTripsQueryResultItem { TripId = x.Id, TripNumber = x.TripNumber })
             .ToList();
 
-        return new GetTripsQueryResult { Items = items };
+        return new GetTripsQueryResult(items);
     }
 }

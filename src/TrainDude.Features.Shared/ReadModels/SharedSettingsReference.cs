@@ -1,4 +1,4 @@
-// <copyright file="SettingsReferenceReadModel.cs" company="Pawlakov">
+// <copyright file="SharedSettingsReference.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 

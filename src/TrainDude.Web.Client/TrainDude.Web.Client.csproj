@@ -1,24 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
-    <PropertyGroup>
-        <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
-        <StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
-        <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
-    </PropertyGroup>
+  <PropertyGroup>
+    <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
+    <StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
+    <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
+  </PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
-        <PackageReference Include="Microsoft.DotNet.HotReload.WebAssembly.Browser" />
-        <PackageReference Include="YamlDotNet" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly"/>
+    <PackageReference Include="Microsoft.DotNet.HotReload.WebAssembly.Browser"/>
+    <PackageReference Include="YamlDotNet"/>
+  </ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\TrainDude.Features\TrainDude.Features.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <_ContentIncludedByDefault Remove="wwwroot\appsettings.json" />
-      <_ContentIncludedByDefault Remove="Validation\TemplatedValidationMessage.razor" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TrainDude.Features.Lines.Contracts\TrainDude.Features.Lines.Contracts.csproj"/>
+    <ProjectReference Include="..\TrainDude.Features.Radii.Contracts\TrainDude.Features.Radii.Contracts.csproj"/>
+    <ProjectReference Include="..\TrainDude.Features.Segments.Contracts\TrainDude.Features.Segments.Contracts.csproj"/>
+    <ProjectReference Include="..\TrainDude.Features.Settings.Contracts\TrainDude.Features.Settings.Contracts.csproj"/>
+    <ProjectReference Include="..\TrainDude.Features.Stations.Contracts\TrainDude.Features.Stations.Contracts.csproj"/>
+    <ProjectReference Include="..\TrainDude.Features.Trips.Contracts\TrainDude.Features.Trips.Contracts.csproj"/>
+  </ItemGroup>
 
 </Project>

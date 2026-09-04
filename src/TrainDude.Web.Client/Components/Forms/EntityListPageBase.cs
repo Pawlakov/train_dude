@@ -5,17 +5,18 @@
 namespace TrainDude.Web.Client.Components.Forms;
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Components;
 
-using TrainDude.Features.Base;
+using TrainDude.Features.Shared.Contracts.Base;
 using TrainDude.Web.Client.Services;
 
 public abstract class EntityListPageBase<TQuery, TQueryResult, TQueryResultItem>
     : ComponentBase
-    where TQuery : BaseEntityListQuery<TQueryResult>, new()
-    where TQueryResult : BaseEntityListQueryResult<TQueryResultItem>
+    where TQuery : IListQuery<TQueryResult>, new()
+    where TQueryResult : IListQueryResult<TQueryResultItem>
 {
     protected IEnumerable<TQueryResultItem>? items;
 
@@ -24,7 +25,7 @@ public abstract class EntityListPageBase<TQuery, TQueryResult, TQueryResultItem>
 
     protected override async Task OnParametersSetAsync()
     {
-        var result = await this.Mediator.Send(new TQuery());
-        this.items = result.Items.ToList();
+        var result = await this.Mediator.Send<TQuery, TQueryResult>(new TQuery());
+        this.items = [.. result.Items];
     }
 }

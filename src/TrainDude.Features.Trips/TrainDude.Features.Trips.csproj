@@ -1,5 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <ProjectReference Include="..\TrainDude.Features.Shared\TrainDude.Features.Shared.csproj" />
+    <ProjectReference Include="..\TrainDude.Features.Trips.Contracts\TrainDude.Features.Trips.Contracts.csproj" />
   </ItemGroup>
 </Project>

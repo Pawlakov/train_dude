@@ -4,15 +4,9 @@
 
 namespace TrainDude.Features.Segments.SetCourse;
 
-using System.Linq;
-using System.Threading.Tasks;
-
-using Marten;
-
-using TrainDude.Features.Generic;
+using TrainDude.Features.Segments.Contracts.SetCourse;
 using TrainDude.Features.Segments.Domain;
-using TrainDude.Features.Shared;
-using TrainDude.Features.Stations.GetStation;
+using TrainDude.Features.Shared.Contracts.Generic;
 
 using Wolverine;
 using Wolverine.Http;
@@ -20,15 +14,13 @@ using Wolverine.Marten;
 
 public static class SetCourseEndpoint
 {
-    public const string Route = "/segment/course/set";
-
     [AggregateHandler]
-    [WolverinePost(Route)]
-    public static (UpdatedResponse, Events) Post(SetCourseCommand command, SegmentAggregate aggregate, IMessageBus mediator)
+    [WolverinePost(SetCourseCommand.TypeRoute)]
+    public static (UpdatedResult, Events) Post(SetCourseCommand command, SegmentAggregate aggregate, IMessageBus mediator)
     {
         var domainEvent = aggregate.SetCourse(command.Course);
 
-        var response = new UpdatedResponse(aggregate.Version + 1);
+        var response = new UpdatedResult(aggregate.Version + 1);
 
         return (response, new Events { domainEvent });
     }

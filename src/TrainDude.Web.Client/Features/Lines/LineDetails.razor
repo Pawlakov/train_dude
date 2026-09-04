@@ -1,6 +1,15 @@
 @page "/line/{Id:guid}"
-@using TrainDude.Features.Lines.GetLine
+@using TrainDude.Features.Lines.Contracts.GetLine
 @inherits MapEntityLookupPageBase<GetLineQuery, GetLineQueryResult>
+
+@code {
+
+    protected override GetLineQuery BuildQuery(EntityLookupFormModel formModel)
+    {
+        return new GetLineQuery(formModel.Id);
+    }
+
+}
 
 @if (this.queryResult != null)
 {
@@ -30,9 +39,9 @@ else
         <section class="section">
             <div class="field">
                 <label class="label">ID</label>
-                <TemplatedValidationMessage For="() => this.query.Id" BaseClass="input">
+                <TemplatedValidationMessage For="() => this.formModel.Id" BaseClass="input">
                     <InputTemplate Context="inputClasses">
-                        <input class="@(inputClasses)" value="@(this.query.Id)" disabled/>
+                        <input class="@(inputClasses)" value="@(this.formModel.Id)" disabled/>
                     </InputTemplate>
                 </TemplatedValidationMessage>
             </div>

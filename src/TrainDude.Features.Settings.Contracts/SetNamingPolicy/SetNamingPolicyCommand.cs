@@ -1,0 +1,16 @@
+// <copyright file="SetNamingPolicyCommand.cs" company="Pawlakov">
+// Copyright (c) Pawlakov. All rights reserved.
+// </copyright>
+
+namespace TrainDude.Features.Settings.Contracts.SetNamingPolicy;
+
+using TrainDude.Features.Shared.Contracts.Base;
+using TrainDude.Shared.Enums;
+
+public sealed record SetNamingPolicyCommand(NamingPolicy Policy)
+    : IEmptyCommand
+{
+    public const string TypeRoute = "/settings/name-mode/set";
+
+    public string Route => TypeRoute;
+}

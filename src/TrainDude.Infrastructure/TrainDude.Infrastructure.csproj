@@ -1,8 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <PackageReference Include="WolverineFx"/>
-    <PackageReference Include="WolverineFx.Http"/>
-    <PackageReference Include="WolverineFx.Http.FluentValidation"/>
-    <PackageReference Include="WolverineFx.Marten"/>
+    <Folder Include="Lines\" />
+    <Folder Include="Radii\" />
+    <Folder Include="Segments\" />
+    <Folder Include="Settings\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TrainDude.Features.Lines\TrainDude.Features.Lines.csproj" />
+    <ProjectReference Include="..\TrainDude.Features.Radii\TrainDude.Features.Radii.csproj" />
+    <ProjectReference Include="..\TrainDude.Features.Segments\TrainDude.Features.Segments.csproj" />
+    <ProjectReference Include="..\TrainDude.Features.Settings\TrainDude.Features.Settings.csproj" />
+    <ProjectReference Include="..\TrainDude.Features.Stations\TrainDude.Features.Stations.csproj" />
+    <ProjectReference Include="..\TrainDude.Features.Trips\TrainDude.Features.Trips.csproj" />
   </ItemGroup>
 </Project>

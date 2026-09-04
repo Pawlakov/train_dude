@@ -7,7 +7,7 @@ namespace TrainDude.Features.Stations.ReadModels;
 using System;
 using System.Text.Json.Serialization;
 
-using TrainDude.Features.Stations.Domain.Events;
+using TrainDude.Features.Shared.Contracts.Stations.Domain.Events;
 using TrainDude.Features.Stations.ReadModels.Events;
 using TrainDude.Shared.Values;
 

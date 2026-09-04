@@ -1,8 +1,15 @@
 @page "/trip/{Id:guid}"
 @using FluentValidation
-@using Mediator
-@using TrainDude.Features.Trips.GetTrip
-@inherits MapEntityLookupPageBase<TrainDude.Features.Trips.GetTrip.GetTripQuery, GetTripQueryResult>
+@using TrainDude.Features.Trips.Contracts.GetTrip
+@inherits MapEntityLookupPageBase<GetTripQuery, GetTripQueryResult>
+
+@code {
+
+    protected override GetTripQuery BuildQuery(EntityLookupFormModel formModel)
+    {
+        return new GetTripQuery(formModel.Id);
+    }
+}
 
 @if (this.queryResult != null)
 {
@@ -32,9 +39,9 @@ else
         <section class="section">
             <div class="field">
                 <label class="label">ID</label>
-                <TemplatedValidationMessage For="() => this.query.Id" BaseClass="input">
+                <TemplatedValidationMessage For="() => this.formModel.Id" BaseClass="input">
                     <InputTemplate Context="inputClasses">
-                        <input class="@(inputClasses)" value="@(this.query.Id)" disabled/>
+                        <input class="@(inputClasses)" value="@(this.formModel.Id)" disabled/>
                     </InputTemplate>
                 </TemplatedValidationMessage>
             </div>

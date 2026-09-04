@@ -5,28 +5,25 @@
 namespace TrainDude.Features.Lines.CreateLine;
 
 using System;
-using System.Threading.Tasks;
 
-using TrainDude.Features.Generic;
+using TrainDude.Features.Lines.Contracts.CreateLine;
 using TrainDude.Features.Lines.Domain;
+using TrainDude.Features.Shared.Contracts.Generic;
 
-using Wolverine;
 using Wolverine.Http;
 using Wolverine.Marten;
 
 public static class CreateLineEndpoint
 {
-    public const string Route = "/line/create";
-
-    [WolverinePost(Route)]
-    public static (CreatedResponse, IStartStream) Post(CreateLineCommand lineCommand)
+    [WolverinePost(CreateLineCommand.TypeRoute)]
+    public static (CreatedResult, IStartStream) Post(CreateLineCommand lineCommand)
     {
         var id = Guid.NewGuid();
         var domainEvent = LineAggregate.Make(id, lineCommand.Number, lineCommand.Letter);
 
         IStartStream startStream = MartenOps.StartStream<LineAggregate>(id, domainEvent);
 
-        var response = new CreatedResponse(id);
+        var response = new CreatedResult(id);
 
         return (response, startStream);
     }

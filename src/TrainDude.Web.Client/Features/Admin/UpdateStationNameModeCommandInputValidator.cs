@@ -6,16 +6,15 @@ namespace TrainDude.Web.Client.Features.Admin;
 
 using FluentValidation;
 
-using TrainDude.Features.Settings;
-using TrainDude.Features.Settings.SetNameMode;
+using TrainDude.Features.Settings.Contracts.SetNamingPolicy;
 using TrainDude.Web.Client.Validation;
 
 public class UpdateStationNameModeCommandInputValidator
-    : AbstractInputValidator<SetNameModeCommand>
+    : AbstractInputValidator<SetNamingPolicyCommand>
 {
     public UpdateStationNameModeCommandInputValidator()
     {
-        this.RuleFor(command => command.Mode)
+        this.RuleFor(command => command.Policy)
             .IsInEnum()
             .WithMessage("Value out of range.");
     }

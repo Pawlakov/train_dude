@@ -6,6 +6,8 @@ namespace TrainDude.Features.Trips.CreateTrip;
 
 using FluentValidation;
 
+using TrainDude.Features.Trips.Contracts.CreateTrip;
+
 public sealed class CreateTripValidator
     : AbstractValidator<CreateTripCommand>
 {

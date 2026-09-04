@@ -8,6 +8,8 @@ using System;
 
 using FluentValidation;
 
+using TrainDude.Features.Segments.Contracts.CreateSegment;
+
 public sealed class CreateSegmentValidator
     : AbstractValidator<CreateSegmentCommand>
 {

@@ -9,6 +9,7 @@ using System;
 using FluentValidation;
 
 using TrainDude.Features.Generic;
+using TrainDude.Features.Lines.Contracts.AssignTrip;
 using TrainDude.Features.Shared.Validation;
 
 public sealed class AssignTripValidator

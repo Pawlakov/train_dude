@@ -6,12 +6,13 @@ namespace TrainDude.Features.Stations.SetLocation;
 
 using FluentValidation;
 
-using TrainDude.Features.Generic;
+using TrainDude.Features.Shared.Contracts.Generic;
 using TrainDude.Features.Shared.Validation;
+using TrainDude.Features.Stations.Contracts.SetLocation;
 using TrainDude.Shared.Values;
 
 public sealed class SetLocationValidator
-    : BaseVersionedDomainValidator<SetLocationCommand, UpdatedResponse>
+    : BaseVersionedDomainValidator<SetLocationCommand, UpdatedResult>
 {
     public SetLocationValidator()
     {

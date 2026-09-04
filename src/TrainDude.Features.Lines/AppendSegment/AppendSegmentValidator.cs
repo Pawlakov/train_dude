@@ -8,11 +8,12 @@ using System;
 
 using FluentValidation;
 
-using TrainDude.Features.Generic;
+using TrainDude.Features.Lines.Contracts.AppendSegment;
+using TrainDude.Features.Shared.Contracts.Generic;
 using TrainDude.Features.Shared.Validation;
 
 public sealed class AppendSegmentValidator
-    : BaseVersionedDomainValidator<AppendSegmentCommand, UpdatedResponse>
+    : BaseVersionedDomainValidator<AppendSegmentCommand, UpdatedResult>
 {
     public AppendSegmentValidator()
     {

@@ -10,15 +10,14 @@ using System.Threading.Tasks;
 
 using Marten;
 
+using TrainDude.Features.Lines.Contracts.GetLines;
 using TrainDude.Features.Lines.ReadModels;
 
 using Wolverine.Http;
 
 public static class GetLinesEndpoint
 {
-    public const string Route = "/lines";
-
-    [WolverineGet(Route)]
+    [WolverineGet(GetLinesQuery.TypeRoute)]
     public static async Task<GetLinesQueryResult> Handle(GetLinesQuery request, IQuerySession session, CancellationToken cancellationToken = default)
     {
         var queryResult = await session.Query<LineReadModel>()
@@ -34,6 +33,6 @@ public static class GetLinesEndpoint
             })
             .ToList();
 
-        return new GetLinesQueryResult { Items = items };
+        return new GetLinesQueryResult(items);
     }
 }

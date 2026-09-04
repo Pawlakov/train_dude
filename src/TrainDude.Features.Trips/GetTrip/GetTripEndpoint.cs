@@ -8,6 +8,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
+using TrainDude.Features.Trips.Contracts.GetTrip;
 using TrainDude.Features.Trips.Domain;
 
 using Wolverine.Http;
@@ -15,10 +16,8 @@ using Wolverine.Marten;
 
 public static class GetTripEndpoint
 {
-    public const string Route = "/trip";
-
     [AggregateHandler]
-    [WolverineGet(Route)]
+    [WolverineGet(GetTripQuery.TypeRoute)]
     public static GetTripQueryResult Handle(GetTripQuery query, TripAggregate aggregate)
     {
         var result = new GetTripQueryResult

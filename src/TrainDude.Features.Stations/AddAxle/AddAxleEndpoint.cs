@@ -4,7 +4,8 @@
 
 namespace TrainDude.Features.Stations.AddAxle;
 
-using TrainDude.Features.Generic;
+using TrainDude.Features.Shared.Contracts.Generic;
+using TrainDude.Features.Stations.Contracts.AddAxle;
 using TrainDude.Features.Stations.Domain;
 
 using Wolverine.Http;
@@ -12,15 +13,13 @@ using Wolverine.Marten;
 
 public static class AddAxleEndpoint
 {
-    public const string Route = "/station/axle/add";
-
     [AggregateHandler]
-    [WolverinePost(Route)]
-    public static (UpdatedResponse, Events) Handle(AddAxleCommand command, StationAggregate aggregate)
+    [WolverinePost(AddAxleCommand.TypeRoute)]
+    public static (UpdatedResult, Events) Handle(AddAxleCommand command, StationAggregate aggregate)
     {
         var domainEvent = aggregate.AddAxle();
 
-        var response = new UpdatedResponse(aggregate.Version + 1);
+        var response = new UpdatedResult(aggregate.Version + 1);
 
         return (response, new Events { domainEvent });
     }

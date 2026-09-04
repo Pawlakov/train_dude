@@ -6,6 +6,8 @@ namespace TrainDude.Features.Radii.CreateRadius;
 
 using FluentValidation;
 
+using TrainDude.Features.Radii.Contracts.CreateRadius;
+
 public sealed class CreateRadiusValidator
     : AbstractValidator<CreateRadiusCommand>
 {

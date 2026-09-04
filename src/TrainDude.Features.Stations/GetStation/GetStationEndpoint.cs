@@ -6,6 +6,7 @@ namespace TrainDude.Features.Stations.GetStation;
 
 using System.Linq;
 
+using TrainDude.Features.Stations.Contracts.GetStation;
 using TrainDude.Features.Stations.ReadModels;
 
 using Wolverine.Http;
@@ -13,20 +14,11 @@ using Wolverine.Marten;
 
 public static class GetStationEndpoint
 {
-    public const string Route = "/station";
-
     [AggregateHandler]
-    [WolverineGet(Route)]
+    [WolverineGet(GetStationQuery.TypeRoute)]
     public static GetStationQueryResult Handle(GetStationQuery query, StationReadModel readModel)
     {
-        var result = new GetStationQueryResult
-        {
-            Name = readModel.Name,
-            Location = readModel.Location,
-            AxleCount = readModel.AxleCount,
-            StationPoints = new[] { readModel.Location }.Where(x => x.HasValue).Select(x => x.Value).ToList(),
-            SegmentLineStrings = [],
-        };
+        var result = new GetStationQueryResult(readModel.Name, readModel.Location, readModel.AxleCount, new[] { readModel.Location }.Where(x => x.HasValue).Select(x => x.Value).ToList(), []);
 
         return result;
     }

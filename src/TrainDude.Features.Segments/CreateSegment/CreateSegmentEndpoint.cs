@@ -8,11 +8,12 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using TrainDude.Features.Generic;
+using TrainDude.Features.Segments.Contracts.CreateSegment;
 using TrainDude.Features.Segments.Domain;
 using TrainDude.Features.Segments.Domain.Exceptions;
 using TrainDude.Features.Segments.Domain.Values;
-using TrainDude.Features.Stations.GetStation;
+using TrainDude.Features.Shared.Contracts.Generic;
+using TrainDude.Features.Stations.Contracts.GetStation;
 
 using Wolverine;
 using Wolverine.Http;
@@ -20,10 +21,8 @@ using Wolverine.Marten;
 
 public static class CreateSegmentEndpoint
 {
-    public const string Route = "/segment/create";
-
-    [WolverinePost(Route)]
-    public static async Task<(CreatedResponse, IStartStream)> Post(CreateSegmentCommand segmentCommand, IMessageBus mediator, CancellationToken cancellationToken = default)
+    [WolverinePost(CreateSegmentCommand.TypeRoute)]
+    public static async Task<(CreatedResult, IStartStream)> Post(CreateSegmentCommand segmentCommand, IMessageBus mediator, CancellationToken cancellationToken = default)
     {
         var a = await mediator.InvokeAsync<GetStationQueryResult>(new GetStationQuery(segmentCommand.A.Id), cancellationToken);
         var b = await mediator.InvokeAsync<GetStationQueryResult>(new GetStationQuery(segmentCommand.B.Id), cancellationToken);
@@ -45,7 +44,7 @@ public static class CreateSegmentEndpoint
 
         var startStream = MartenOps.StartStream<SegmentAggregate>(domainEvent.Id, domainEvent);
 
-        var response = new CreatedResponse(domainEvent.Id);
+        var response = new CreatedResult(domainEvent.Id);
 
         return (response, startStream);
     }

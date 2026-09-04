@@ -1,13 +1,15 @@
-@using TrainDude.Features.Settings.GetNameMode
-@using TrainDude.Features.Settings.SetNameMode
+@using FluentValidation
+@using TrainDude.Features.Settings.Contracts.GetNamingPolicy
+@using TrainDude.Features.Settings.Contracts.SetNamingPolicy
+@using TrainDude.Features.Shared.Contracts.Generic
 @using TrainDude.Shared.Enums
 
-@inject HttpCommandSender CommandMediator
+@inject HttpCommandSender Mediator
 
 @if (this.editActive)
 {
     <EditForm EditContext="this.formContext" OnValidSubmit="this.Submit" FormName="UpdateStationNameModeForm">
-        <FluentValidationValidator @ref="this.validator" TModel="SetNameModeCommand"/>
+        <FluentValidationValidator @ref="this.validator" TModel="SetNamingPolicyCommand"/>
         <p class="title is-6">
             Nazwy stacji
             <a class="icon" @onclick="this.Submit">
@@ -17,11 +19,11 @@
                 <i class="fas fa-x"></i>
             </a>
         </p>
-        <TemplatedValidationMessage For="() => this.command.Mode" BaseClass="radios"
+        <TemplatedValidationMessage For="() => this.formModel.Policy" BaseClass="radios"
                                     ControlClass="subtitle is-6">
             <InputTemplate Context="inputClasses">
                 <div>
-                    <InputRadioGroup @bind-Value="this.command.Mode">
+                    <InputRadioGroup @bind-Value="this.formModel.Policy">
                         <label class="radio">
                             <InputRadio value="@(NamingPolicy.Modern)"/>
                             Współczesne
@@ -47,7 +49,7 @@ else
     <p class="subtitle is-6">
         @if (this.queryResult != null)
         {
-            if (this.queryResult.Mode == NamingPolicy.Modern)
+            if (this.queryResult.Policy == NamingPolicy.Modern)
             {
                 <text>Współczesne</text>
             }
@@ -65,10 +67,10 @@ else
 
 @code {
     private bool editActive;
-    private GetNameModeQueryResult? queryResult;
-    private SetNameModeCommand? command;
+    private GetNamingPolicyResult? queryResult;
+    private SettingsFormModel? formModel;
     private EditContext? formContext;
-    private FluentValidationValidator<SetNameModeCommand>? validator;
+    private FluentValidationValidator<SetNamingPolicyCommand>? validator;
 
     protected override async Task OnInitializedAsync()
     {
@@ -78,7 +80,7 @@ else
     private Task ActivateEdit()
     {
         this.editActive = true;
-        this.formContext = new EditContext(this.command);
+        this.formContext = new EditContext(this.formModel);
         return Task.CompletedTask;
     }
 
@@ -91,12 +93,9 @@ else
 
     private async Task Refresh()
     {
-        var query = new GetNameModeQuery();
-        this.queryResult = await this.QueryMediator.Send(query);
-        this.command = new SetNameModeCommand
-        {
-            Mode = this.queryResult.Mode,
-        };
+        var query = new GetNamingPolicyQuery();
+        this.queryResult = await this.Mediator.Send<GetNamingPolicyQuery, GetNamingPolicyResult>(query);
+        this.formModel = new SettingsFormModel() { Policy = this.queryResult.Policy };
     }
 
     private async Task Submit()
@@ -106,7 +105,8 @@ else
         {
             try
             {
-                await this.CommandMediator.Send(this.command);
+                var command = new SetNamingPolicyCommand(this.formModel.Policy);
+                await this.Mediator.Send<SetNamingPolicyCommand, EmptyResult>(command);
                 await this.DeactivateEdit();
             }
             catch (ValidationException exception)

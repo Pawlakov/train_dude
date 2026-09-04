@@ -8,6 +8,8 @@ using System;
 
 using FluentValidation;
 
+using TrainDude.Features.Lines.Contracts.CreateLine;
+
 public sealed class CreateLineValidator
     : AbstractValidator<CreateLineCommand>
 {

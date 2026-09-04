@@ -8,9 +8,10 @@ using System;
 
 using Marten;
 
-using TrainDude.Features.Generic;
+using TrainDude.Features.Lines.Contracts.AppendSegment;
 using TrainDude.Features.Lines.Domain;
 using TrainDude.Features.Lines.ReadModels;
+using TrainDude.Features.Shared.Contracts.Generic;
 
 using Wolverine.Http;
 using Wolverine.Marten;
@@ -18,11 +19,9 @@ using Wolverine.Persistence.EventSourcing;
 
 public static class AppendSegmentEndpoint
 {
-    public const string Route = "/line/segments/append";
-
     [AggregateHandler]
-    [WolverinePost(Route)]
-    public static (UpdatedResponse, Events) Post(AppendSegmentCommand command, LineAggregate aggregate, [ReadModel(nameof(AppendSegmentCommand.SegmentId))] LineSegmentReference segmentAggregate, IQuerySession session)
+    [WolverinePost(AppendSegmentCommand.TypeRoute)]
+    public static (UpdatedResult, Events) Post(AppendSegmentCommand command, LineAggregate aggregate, [ReadModel(nameof(AppendSegmentCommand.SegmentId))] LineSegmentReference segmentAggregate, IQuerySession session)
     {
         var events = new Events();
 
@@ -30,7 +29,7 @@ public static class AppendSegmentEndpoint
         events.Add(appendEvent);
         aggregate.Apply(appendEvent);
 
-        var response = new UpdatedResponse(aggregate.Version + 1);
+        var response = new UpdatedResult(aggregate.Version + 1);
 
         return (response, events);
     }

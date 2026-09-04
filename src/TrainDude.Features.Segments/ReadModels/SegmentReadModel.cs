@@ -14,8 +14,7 @@ using TrainDude.Features.Segments.Domain.Values;
 using TrainDude.Features.Segments.ReadModels.Events;
 using TrainDude.Features.Settings.Domain.Events;
 using TrainDude.Features.Shared;
-using TrainDude.Features.Stations.Domain.Events;
-using TrainDude.Features.Stations.GetStation;
+using TrainDude.Features.Shared.Contracts.Stations.Domain.Events;
 using TrainDude.Shared.Values;
 
 public sealed class SegmentReadModel
@@ -23,7 +22,7 @@ public sealed class SegmentReadModel
     private readonly List<Location> course;
 
     [JsonConstructor]
-    private SegmentReadModel(Guid id, long version, double nominalLength, double? haversine, int tracks, SegmentEnd a, SegmentEnd b, ICollection<Location> course)
+    private SegmentReadModel(Guid id, long version, double nominalLength, double? haversine, int tracks, SegmentEndReference a, SegmentEndReference b, ICollection<Location> course)
     {
         this.Id = id;
         this.Version = version;
@@ -31,6 +30,8 @@ public sealed class SegmentReadModel
         this.NominalLength = nominalLength;
         this.Haversine = haversine;
         this.Tracks = tracks;
+        this.A = a;
+        this.B = b;
         this.course = (course ?? []).ToList();
     }
 

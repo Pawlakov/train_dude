@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 using Microsoft.JSInterop;
 
-using TrainDude.Features.Base;
+using TrainDude.Features.Shared.Contracts.Base;
 using TrainDude.Shared;
 using TrainDude.Shared.Values;
 using TrainDude.Web.Client.GeoJson;
@@ -55,11 +55,8 @@ public sealed class MapService
 
         var featureCollection = BuildGeoJson(data);
 
-        if (FeatureFlags.MapEnabled)
-        {
-            await this.scriptModule.InvokeVoidAsync("clearGeoJson", cancellationToken);
-            await this.scriptModule.InvokeVoidAsync("addGeoJson", cancellationToken, featureCollection);
-        }
+        await this.scriptModule.InvokeVoidAsync("clearGeoJson", cancellationToken);
+        await this.scriptModule.InvokeVoidAsync("addGeoJson", cancellationToken, featureCollection);
 
         this.CurrentData = data;
     }
@@ -83,10 +80,7 @@ public sealed class MapService
         this.scriptModule = await this.js.InvokeAsync<IJSObjectReference>("import", cancellationToken, "./Components/Layout/BaseMapLayout.razor.js");
         if (this.scriptModule != null)
         {
-            if (FeatureFlags.MapEnabled)
-            {
-                await this.scriptModule.InvokeVoidAsync("initMap", cancellationToken, "map", 54.218000, 21.725389, 12);
-            }
+            await this.scriptModule.InvokeVoidAsync("initMap", cancellationToken, "map", 54.218000, 21.725389, 12);
         }
     }
 

@@ -8,6 +8,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
+using JasperFx.Events;
+
 using Marten;
 
 using TrainDude.Features.Settings.Domain;
@@ -18,20 +20,24 @@ public static class SettingsAccessor
 {
     private static readonly SemaphoreSlim SingletonLock = new(1, 1);
 
-    public static async Task ExecuteWithSettings(IDocumentSession session, Func<SettingsDocument, Task> action, CancellationToken cancellationToken = default)
+    public static async Task ExecuteWithSettings(IDocumentSession session, Func<IEventStream<SettingsAggregate>, SettingsAggregate, Task> action, CancellationToken cancellationToken = default)
     {
         await SingletonLock.WaitAsync(cancellationToken);
 
         try
         {
-            var aggregate = await session.LoadAsync<SettingsDocument>(SettingsSingleton.Id, cancellationToken);
+            var stream = await session.Events.FetchForWriting<SettingsAggregate>(SettingsSingleton.Id, cancellationToken);
+            var aggregate = stream.Aggregate;
             if (aggregate is null)
             {
-                aggregate = new SettingsDocument(SettingsSingleton.Id, NamingPolicy.Modern);
-                session.Insert(aggregate);
+                var created = SettingsAggregate.Make(SettingsSingleton.Id);
+                stream.AppendOne(created);
+
+                aggregate = new SettingsAggregate();
+                aggregate.Apply(created);
             }
 
-            await action(aggregate);
+            await action(stream, aggregate);
             await session.SaveChangesAsync(cancellationToken);
         }
         finally
@@ -40,12 +46,13 @@ public static class SettingsAccessor
         }
     }
 
-    public static async Task<SettingsDocument> FetchForReading(IQuerySession session, CancellationToken cancellationToken = default)
+    public static async Task<SettingsAggregate> FetchForReading(IQuerySession session, CancellationToken cancellationToken = default)
     {
-        var aggregate = await session.LoadAsync<SettingsDocument>(SettingsSingleton.Id, cancellationToken);
+        var aggregate = await session.LoadAsync<SettingsAggregate>(SettingsSingleton.Id, cancellationToken);
         if (aggregate is null)
         {
-            aggregate = new SettingsDocument(SettingsSingleton.Id, NamingPolicy.Modern);
+            aggregate = new SettingsAggregate();
+            aggregate.Apply(SettingsAggregate.Make(SettingsSingleton.Id));
         }
 
         return aggregate;

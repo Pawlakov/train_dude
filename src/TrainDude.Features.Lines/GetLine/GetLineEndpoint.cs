@@ -7,6 +7,7 @@ namespace TrainDude.Features.Lines.GetLine;
 using System;
 using System.Linq;
 
+using TrainDude.Features.Lines.Contracts.GetLine;
 using TrainDude.Features.Lines.ReadModels;
 
 using Wolverine.Http;
@@ -14,10 +15,8 @@ using Wolverine.Marten;
 
 public static class GetLineEndpoint
 {
-    public const string Route = "/line";
-
     [AggregateHandler]
-    [WolverineGet(Route)]
+    [WolverineGet(GetLineQuery.TypeRoute)]
     public static GetLineQueryResult Handle(GetLineQuery query, LineReadModel readModel)
     {
         var result = new GetLineQueryResult

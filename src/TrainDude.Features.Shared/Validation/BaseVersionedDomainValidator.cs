@@ -8,12 +8,12 @@ using System;
 
 using FluentValidation;
 
-using TrainDude.Features.Base;
+using TrainDude.Features.Shared.Contracts.Base;
 
 public abstract class BaseVersionedDomainValidator<TCommand, TResult>
     : AbstractValidator<TCommand>
     where TCommand : IVersionedDomainCommand<TResult>
-    where TResult : BaseCommandResponse
+    where TResult : ICommandResult
 {
     public BaseVersionedDomainValidator()
     {

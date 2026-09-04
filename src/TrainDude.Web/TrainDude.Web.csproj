@@ -5,34 +5,4 @@
       <UserSecretsId>0d6c2b99-3ac6-4582-b9c1-04c3013a5c88</UserSecretsId>
   </PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server"/>
-        <PackageReference Include="WolverineFx.RuntimeCompilation" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\TrainDude.Features.Lines\TrainDude.Features.Lines.csproj" />
-      <ProjectReference Include="..\TrainDude.Features.Radii\TrainDude.Features.Radii.csproj" />
-      <ProjectReference Include="..\TrainDude.Features.Segments\TrainDude.Features.Segments.csproj" />
-      <ProjectReference Include="..\TrainDude.Features.Settings\TrainDude.Features.Settings.csproj" />
-      <ProjectReference Include="..\TrainDude.Features.Stations\TrainDude.Features.Stations.csproj" />
-      <ProjectReference Include="..\TrainDude.Features.Trips\TrainDude.Features.Trips.csproj" />
-      <ProjectReference Include="..\TrainDude.Web.Client\TrainDude.Web.Client.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <_ContentIncludedByDefault Remove="Pages\Error.cshtml" />
-      <_ContentIncludedByDefault Remove="Pages\_Host.cshtml" />
-      <_ContentIncludedByDefault Remove="Pages\Admin.razor" />
-      <_ContentIncludedByDefault Remove="Pages\Index.razor" />
-      <_ContentIncludedByDefault Remove="Pages\Radii.razor" />
-      <_ContentIncludedByDefault Remove="Pages\Segment.razor" />
-      <_ContentIncludedByDefault Remove="Pages\Segments.razor" />
-      <_ContentIncludedByDefault Remove="Pages\Stations.razor" />
-      <_ContentIncludedByDefault Remove="Shared\MainLayout.razor" />
-      <_ContentIncludedByDefault Remove="Shared\NavMenu.razor" />
-      <_ContentIncludedByDefault Remove="Components\Layout\MainLayout.razor" />
-      <_ContentIncludedByDefault Remove="Components\Layout\NavMenu.razor" />
-    </ItemGroup>
-
 </Project>

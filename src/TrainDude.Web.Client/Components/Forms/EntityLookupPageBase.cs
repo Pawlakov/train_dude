@@ -5,31 +5,25 @@
 namespace TrainDude.Web.Client.Components.Forms;
 
 using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using System.Threading.Tasks;
 
 using FluentValidation;
 
-using Mediator;
-
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.JSInterop;
 
-using TrainDude.Features.Base;
+using TrainDude.Features.Shared.Contracts.Base;
 using TrainDude.Web.Client.Services;
 
 public abstract class EntityLookupPageBase<TQuery, TQueryResult>
     : ComponentBase
-    where TQuery : BaseEntityLookupQuery<TQueryResult>, new()
-    where TQueryResult : BaseEntityLookupQueryResult
+    where TQuery : class, ILookupQuery<TQueryResult>
+    where TQueryResult : ILookupQueryResult
 {
-    protected TQuery query;
+    protected EntityLookupFormModel formModel;
     protected EditContext formContext;
     protected FluentValidationValidator<TQuery> validator;
-    protected TQueryResult? queryResult = null;
+    protected TQueryResult? queryResult = default;
 
     private bool loadingActive;
 
@@ -39,16 +33,15 @@ public abstract class EntityLookupPageBase<TQuery, TQueryResult>
     [Inject]
     public HttpCommandSender? Mediator { get; set; }
 
-    protected override Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        this.query = new TQuery();
-        this.formContext = new EditContext(this.query);
-        return Task.CompletedTask;
+        this.formModel = new EntityLookupFormModel();
+        this.formContext = new EditContext(this.formModel);
     }
 
     protected override async Task OnParametersSetAsync()
     {
-        this.query.Id = this.Id;
+        this.formModel.Id = this.Id;
         await this.Submit();
     }
 
@@ -62,7 +55,8 @@ public abstract class EntityLookupPageBase<TQuery, TQueryResult>
 
             try
             {
-                this.queryResult = await this.Mediator.Send(this.query);
+                var query = this.BuildQuery(this.formModel);
+                this.queryResult = await this.Mediator.Send<TQuery, TQueryResult>(query);
             }
             catch (ValidationException exception)
             {
@@ -75,4 +69,6 @@ public abstract class EntityLookupPageBase<TQuery, TQueryResult>
             }
         }
     }
+
+    protected abstract TQuery BuildQuery(EntityLookupFormModel formModel);
 }

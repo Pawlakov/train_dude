@@ -6,15 +6,9 @@ namespace TrainDude.Features.Segments.GetSegment;
 
 using System;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
-using ImTools;
-
-using TrainDude.Features.Segments.Domain;
-using TrainDude.Features.Segments.Projections;
+using TrainDude.Features.Segments.Contracts.GetSegment;
 using TrainDude.Features.Segments.ReadModels;
-using TrainDude.Features.Stations.GetStation;
 
 using Wolverine;
 using Wolverine.Http;
@@ -22,15 +16,13 @@ using Wolverine.Marten;
 
 public static class GetSegmentEndpoint
 {
-    public const string Route = "/segment";
-
     [AggregateHandler]
-    [WolverineGet(Route)]
+    [WolverineGet(GetSegmentQuery.TypeRoute)]
     public static GetSegmentQueryResult Handle(GetSegmentQuery query, SegmentReadModel readModel)
     {
         var course = (readModel.A.Location, readModel.B.Location) switch
         {
-            ({} aLocation, {} bLocation) => (readModel.Course ?? [])
+            ({ } aLocation, { } bLocation) => (readModel.Course ?? [])
                 .Prepend(aLocation)
                 .Append(bLocation)
                 .ToList(),

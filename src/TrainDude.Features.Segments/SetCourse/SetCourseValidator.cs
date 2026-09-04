@@ -6,11 +6,12 @@ namespace TrainDude.Features.Segments.SetCourse;
 
 using FluentValidation;
 
-using TrainDude.Features.Generic;
+using TrainDude.Features.Segments.Contracts.SetCourse;
+using TrainDude.Features.Shared.Contracts.Generic;
 using TrainDude.Features.Shared.Validation;
 
 public sealed class SetCourseValidator
-    : BaseVersionedDomainValidator<SetCourseCommand, UpdatedResponse>
+    : BaseVersionedDomainValidator<SetCourseCommand, UpdatedResult>
 {
     public SetCourseValidator()
         : base()

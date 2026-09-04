@@ -6,6 +6,8 @@ namespace TrainDude.Features.Stations.CreateStation;
 
 using FluentValidation;
 
+using TrainDude.Features.Stations.Contracts.CreateStation;
+
 public sealed class CreateStationValidator
     : AbstractValidator<CreateStationCommand>
 {

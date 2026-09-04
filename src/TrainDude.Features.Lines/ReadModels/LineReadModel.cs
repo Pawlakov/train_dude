@@ -20,13 +20,14 @@ public sealed class LineReadModel
     private readonly List<LineTrip> trips;
 
     [JsonConstructor]
-    private LineReadModel(Guid id, long version, int lineNumber, char? lineLetter, Guid? startId, List<LineSegment> segments, List<LineStation> stations, List<LineTrip> trips)
+    private LineReadModel(Guid id, long version, int lineNumber, char? lineLetter, string lineDesignation, List<LineSegment> segments, List<LineStation> stations, List<LineTrip> trips)
     {
         this.Id = id;
         this.Version = version;
 
         this.LineNumber = lineNumber;
         this.LineLetter = lineLetter;
+        this.LineDesignation = lineDesignation;
         this.segments = segments ?? [];
         this.stations = stations ?? [];
         this.trips = trips ?? [];
