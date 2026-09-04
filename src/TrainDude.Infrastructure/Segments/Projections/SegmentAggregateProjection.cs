@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Features.Segments.Projections;
+namespace TrainDude.Infrastructure.Segments.Projections;
 
 using System;
 

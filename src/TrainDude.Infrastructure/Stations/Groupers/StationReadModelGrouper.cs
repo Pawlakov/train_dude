@@ -1,7 +1,7 @@
 // <copyright file="StationReadModelGrouper.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
-namespace TrainDude.Features.Stations.Projections.Groupers;
+namespace TrainDude.Infrastructure.Stations.Groupers;
 
 using System;
 using System.Collections.Generic;

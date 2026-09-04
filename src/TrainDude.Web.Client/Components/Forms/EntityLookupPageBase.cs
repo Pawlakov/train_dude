@@ -31,7 +31,7 @@ public abstract class EntityLookupPageBase<TQuery, TQueryResult>
     public Guid Id { get; set; }
 
     [Inject]
-    public HttpCommandSender? Mediator { get; set; }
+    public ApiClient? Api { get; set; }
 
     protected override void OnInitialized()
     {
@@ -56,7 +56,7 @@ public abstract class EntityLookupPageBase<TQuery, TQueryResult>
             try
             {
                 var query = this.BuildQuery(this.formModel);
-                this.queryResult = await this.Mediator.Send<TQuery, TQueryResult>(query);
+                this.queryResult = await this.Api.SendAsync<TQuery, TQueryResult>(query);
             }
             catch (ValidationException exception)
             {

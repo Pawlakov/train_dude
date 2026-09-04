@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Features.Lines.Projections;
+namespace TrainDude.Infrastructure.Lines.Projections;
 
 using System;
 
@@ -16,5 +16,10 @@ using TrainDude.Features.Segments.Domain.Events;
 public sealed class LineSegmentReferenceProjection
     : SingleStreamProjection<LineSegmentReference, Guid>
 {
-    public void Apply(IEvent<SegmentCreated> e, LineSegmentReference readModel) => readModel.Apply(e.Data);
+    public void Apply(IEvent<SegmentCreated> e, LineSegmentReference readModel)
+    {
+        readModel.Id = e.Data.Id;
+
+        readModel.Version++;
+    }
 }

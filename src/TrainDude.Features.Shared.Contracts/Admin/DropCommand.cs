@@ -4,6 +4,8 @@
 
 namespace TrainDude.Features.Shared.Contracts.Admin;
 
+using System.Text.Json.Serialization;
+
 using TrainDude.Features.Shared.Contracts.Base;
 
 public sealed record DropCommand()

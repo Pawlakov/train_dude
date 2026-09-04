@@ -31,22 +31,22 @@ public class SeedService
     private readonly ConcurrentDictionary<int, Guid> stationIdMap;
     private readonly ConcurrentDictionary<int, Guid> tripIdMap;
 
-    private readonly HttpCommandSender mediator;
+    private readonly ApiClient api;
     private readonly SeedLoader loader;
 
-    public SeedService(HttpCommandSender mediator, SeedLoader loader)
+    public SeedService(ApiClient api, SeedLoader loader)
     {
         this.segmentIdMap = new ConcurrentDictionary<int, Guid>();
         this.stationIdMap = new ConcurrentDictionary<int, Guid>();
         this.tripIdMap = new ConcurrentDictionary<int, Guid>();
 
-        this.mediator = mediator;
+        this.api = api;
         this.loader = loader;
     }
 
     public async Task Handle(CancellationToken cancellationToken = default)
     {
-        await this.mediator.Send<DropCommand, EmptyResult>(new DropCommand(), cancellationToken);
+        await this.api.SendAsync<DropCommand, EmptyResult>(new DropCommand(), cancellationToken);
 
         var options = new ParallelOptions
         {
@@ -80,21 +80,21 @@ public class SeedService
     {
         var createCommand = new CreateLineCommand(seed.Number, seed.Letter);
 
-        var createdResponse = await this.mediator.Send<CreateLineCommand, CreatedResult>(createCommand, cancellationToken);
+        var createdResponse = await this.api.SendAsync<CreateLineCommand, CreatedResult>(createCommand, cancellationToken);
         var version = 1L;
 
         foreach (var segment in seed.Segments)
         {
             var appendSegmentCommand = new AppendSegmentCommand(createdResponse.Id, version, this.segmentIdMap[segment]);
 
-            version = (await this.mediator.Send<AppendSegmentCommand, UpdatedResult>(appendSegmentCommand, cancellationToken)).Version;
+            version = (await this.api.SendAsync<AppendSegmentCommand, UpdatedResult>(appendSegmentCommand, cancellationToken)).Version;
         }
 
         foreach (var trip in seed.Trips)
         {
             var assignTripCommand = new AssignTripCommand(createdResponse.Id, version, this.tripIdMap[trip]);
 
-            version = (await this.mediator.Send<AssignTripCommand, UpdatedResult>(assignTripCommand, cancellationToken)).Version;
+            version = (await this.api.SendAsync<AssignTripCommand, UpdatedResult>(assignTripCommand, cancellationToken)).Version;
         }
     }
 
@@ -102,14 +102,14 @@ public class SeedService
     {
         var createCommand = new CreateRadiusCommand(seed.Speed, seed.Minimum);
 
-        await this.mediator.Send<CreateRadiusCommand, CreatedResult>(createCommand, cancellationToken);
+        await this.api.SendAsync<CreateRadiusCommand, CreatedResult>(createCommand, cancellationToken);
     }
 
     private async Task SeedStation(StationSeed seed, CancellationToken cancellationToken = default)
     {
         var createCommand = new CreateStationCommand(seed.NameGerman, seed.NameGermanNew, seed.NamePolish, seed.NameRussian);
 
-        var createdResponse = await this.mediator.Send<CreateStationCommand, CreatedResult>(createCommand, cancellationToken);
+        var createdResponse = await this.api.SendAsync<CreateStationCommand, CreatedResult>(createCommand, cancellationToken);
         this.stationIdMap[seed.Id] = createdResponse.Id;
         var version = 1L;
 
@@ -118,7 +118,7 @@ public class SeedService
             var location = new Location(seed.Longitude.Value, seed.Latitude.Value);
             var setLocationCommand = new SetLocationCommand(createdResponse.Id, version, location);
 
-            var updatedResponse = await this.mediator.Send<SetLocationCommand, UpdatedResult>(setLocationCommand, cancellationToken);
+            var updatedResponse = await this.api.SendAsync<SetLocationCommand, UpdatedResult>(setLocationCommand, cancellationToken);
             version = updatedResponse.Version;
         }
 
@@ -127,7 +127,7 @@ public class SeedService
         {
             var addAxleCommand = new AddAxleCommand(createdResponse.Id, version);
 
-            var updatedResponse = await this.mediator.Send<AddAxleCommand, UpdatedResult>(addAxleCommand, cancellationToken);
+            var updatedResponse = await this.api.SendAsync<AddAxleCommand, UpdatedResult>(addAxleCommand, cancellationToken);
             version = updatedResponse.Version;
         }
     }
@@ -136,7 +136,7 @@ public class SeedService
     {
         var createCommand = new CreateSegmentCommand(seed.Length, seed.Tracks, this.stationIdMap[seed.A.StationId], seed.A.Axle ?? 0, seed.A.Pole, this.stationIdMap[seed.B.StationId], seed.B.Axle ?? 0, seed.B.Pole);
 
-        var segmentId = (await this.mediator.Send<CreateSegmentCommand, CreatedResult>(createCommand, cancellationToken)).Id;
+        var segmentId = (await this.api.SendAsync<CreateSegmentCommand, CreatedResult>(createCommand, cancellationToken)).Id;
         this.segmentIdMap[seed.Id] = segmentId;
 
         var version = 1L;
@@ -145,7 +145,7 @@ public class SeedService
             var locations = (seed.Course?.Select(x => new Location(x.Longitude, x.Latitude)) ?? []).ToList();
             var setCourseCommand = new SetCourseCommand(segmentId, version, locations);
 
-            var updatedResponse = await this.mediator.Send<SetCourseCommand, UpdatedResult>(setCourseCommand, cancellationToken);
+            var updatedResponse = await this.api.SendAsync<SetCourseCommand, UpdatedResult>(setCourseCommand, cancellationToken);
             version = updatedResponse.Version;
         }
     }
@@ -154,7 +154,7 @@ public class SeedService
     {
         var createCommand = new CreateTripCommand(seed.Number);
 
-        var createdResponse = await this.mediator.Send<CreateTripCommand, CreatedResult>(createCommand, cancellationToken);
+        var createdResponse = await this.api.SendAsync<CreateTripCommand, CreatedResult>(createCommand, cancellationToken);
         this.tripIdMap[seed.Number] = createdResponse.Id;
     }
 }

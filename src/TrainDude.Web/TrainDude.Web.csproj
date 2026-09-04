@@ -1,8 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-    <PropertyGroup>
-        <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
-      <UserSecretsId>0d6c2b99-3ac6-4582-b9c1-04c3013a5c88</UserSecretsId>
+  <PropertyGroup>
+    <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
+    <UserSecretsId>0d6c2b99-3ac6-4582-b9c1-04c3013a5c88</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server"/>
+    <PackageReference Include="WolverineFx.RuntimeCompilation"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TrainDude.Infrastructure\TrainDude.Infrastructure.csproj"/>
+    <ProjectReference Include="..\TrainDude.Web.Client\TrainDude.Web.Client.csproj"/>
+  </ItemGroup>
 
 </Project>

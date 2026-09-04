@@ -1,4 +1,4 @@
-// <copyright file="HttpCommandSender.cs" company="Pawlakov">
+// <copyright file="ApiClient.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
@@ -21,29 +21,31 @@ using FluentValidation.Results;
 using TrainDude.Features.Shared.Contracts.Base;
 using TrainDude.Web.Client.Exceptions;
 
-public class HttpCommandSender
+public class ApiClient
 {
     private readonly HttpClient http;
+    private static readonly JsonSerializerOptions jsonOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web);
 
-    public HttpCommandSender(HttpClient http)
+    public ApiClient(HttpClient http)
     {
         this.http = http;
     }
 
-    public async Task<TResponse> Send<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken = default)
+    public async Task<TResponse> SendAsync<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken = default)
         where TRequest : IDomainRequest<TResponse>
         where TResponse : IRequestResult
     {
-        var response = await this.http.PostAsJsonAsync(request.Route, request, cancellationToken).ConfigureAwait(false);
+        var httpRequest = BuildRequestMessage<TRequest, TResponse>(request);
+        var httpResponse = await this.http.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
 
-        if (response.IsSuccessStatusCode)
+        if (httpResponse.IsSuccessStatusCode)
         {
-            var result = await response.Content.ReadFromJsonAsync<TResponse>(cancellationToken);
+            var result = await httpResponse.Content.ReadFromJsonAsync<TResponse>(cancellationToken);
             return result;
         }
 
-        var body = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-        if (response.StatusCode == HttpStatusCode.BadRequest)
+        var body = await httpResponse.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+        if (httpResponse.StatusCode == HttpStatusCode.BadRequest)
         {
             var failures = TryParseValidationFailures(body);
             if (failures is { Count: > 0 })
@@ -53,7 +55,18 @@ public class HttpCommandSender
         }
 
         var problem = TryParseProblemDetails(body);
-        throw new CommandFailedException(response.StatusCode, problem?.Title, problem?.Detail);
+        throw new CommandFailedException(httpResponse.StatusCode, problem?.Title, problem?.Detail);
+    }
+
+    private static HttpRequestMessage BuildRequestMessage<TRequest, TResponse>(TRequest request)
+        where TRequest : IDomainRequest<TResponse>
+        where TResponse : IRequestResult
+    {
+        var route = request.Route;
+        return new HttpRequestMessage(HttpMethod.Get, route)
+        {
+            Content = JsonContent.Create(request, options: jsonOptions),
+        };
     }
 
     private static List<ValidationFailure>? TryParseValidationFailures(string body)

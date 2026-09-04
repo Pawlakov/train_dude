@@ -7,16 +7,58 @@ using Xunit;
 public class DependencyTests
 {
     [Fact]
-    public void DomainShouldNotDepend()
+    public void ClientShouldNotDependOnServer()
     {
-        var domainAssembly = typeof(TrainDude.Infrastructure.Stations.StationAggregate).Assembly;
+        var clientAssembly = typeof(TrainDude.Web.Client.Program).Assembly;
 
         var result = Types
-            .InAssembly(domainAssembly)
+            .InAssembly(clientAssembly)
             .ShouldNot()
-            .HaveDependencyOnAny("TrainDude.Queries.Data", "TrainDude.Queries.Contracts", "TrainDude.Web")
+            .HaveDependencyOnAny("TrainDude.Web.Program")
             .GetResult();
 
-        Assert.True(result.IsSuccessful, "Domain should not depend on higher layers.");
+        Assert.True(result.IsSuccessful, "Client should not depend on server-side assemblies.");
+    }
+
+    [Fact]
+    public void ClientShouldNotDependOnInfrastructure()
+    {
+        var clientAssembly = typeof(TrainDude.Web.Client.Program).Assembly;
+
+        var result = Types
+            .InAssembly(clientAssembly)
+            .ShouldNot()
+            .HaveDependencyOnAny("TrainDude.Infrastructure")
+            .GetResult();
+
+        Assert.True(result.IsSuccessful, "Client should not depend on server-side assemblies.");
+    }
+
+    [Fact]
+    public void ClientShouldNotDependOnFeatures()
+    {
+        var clientAssembly = typeof(TrainDude.Web.Client.Program).Assembly;
+
+        var result = Types
+            .InAssembly(clientAssembly)
+            .ShouldNot()
+            .HaveDependencyOnAny("TrainDude.Features.Shared.SettingsSingleton")
+            .GetResult();
+
+        Assert.True(result.IsSuccessful, "Client should not depend on server-side assemblies.");
+    }
+
+    [Fact]
+    public void ClientShouldDependOnFeatureContracts()
+    {
+        var clientAssembly = typeof(TrainDude.Web.Client.Program).Assembly;
+
+        var result = Types
+            .InAssembly(clientAssembly)
+            .Should()
+            .HaveDependencyOnAll("TrainDude.Features.Shared.Contracts.Values")
+            .GetResult();
+
+        Assert.True(result.IsSuccessful, "Client should should depend on feature contracts.");
     }
 }

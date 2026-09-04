@@ -21,11 +21,11 @@ public abstract class EntityListPageBase<TQuery, TQueryResult, TQueryResultItem>
     protected IEnumerable<TQueryResultItem>? items;
 
     [Inject]
-    public HttpCommandSender? Mediator { get; set; }
+    public ApiClient? Api { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
-        var result = await this.Mediator.Send<TQuery, TQueryResult>(new TQuery());
+        var result = await this.Api.SendAsync<TQuery, TQueryResult>(new TQuery());
         this.items = [.. result.Items];
     }
 }

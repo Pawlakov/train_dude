@@ -3,8 +3,11 @@
 // </copyright>
 namespace TrainDude.Features.Shared.Contracts.Base;
 
+using System.Text.Json.Serialization;
+
 public interface IDomainRequest<TResult>
     where TResult : IRequestResult
 {
+    [JsonIgnore]
     string Route { get; }
 }

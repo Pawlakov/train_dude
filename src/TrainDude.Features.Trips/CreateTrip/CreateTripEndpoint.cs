@@ -15,7 +15,7 @@ using Wolverine.Marten;
 
 public static class CreateTripEndpoint
 {
-    [WolverinePost(CreateTripCommand.Route)]
+    [WolverinePost(CreateTripCommand.TypeRoute)]
     public static (CreatedResult, IStartStream) Post(CreateTripCommand tripCommand)
     {
         var id = Guid.NewGuid();

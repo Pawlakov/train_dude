@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Features.Stations.Projections;
+namespace TrainDude.Infrastructure.Stations.Projections;
 
 using System;
 using System.Linq;
@@ -16,11 +16,11 @@ using Marten;
 using Marten.Events.Projections;
 
 using TrainDude.Features.Shared;
+using TrainDude.Features.Shared.Contracts.Stations.Domain.Events;
 using TrainDude.Features.Shared.ReadModels;
-using TrainDude.Features.Stations.Domain.Events;
-using TrainDude.Features.Stations.Projections.Groupers;
 using TrainDude.Features.Stations.ReadModels;
 using TrainDude.Features.Stations.ReadModels.Events;
+using TrainDude.Infrastructure.Stations.Groupers;
 using TrainDude.Shared.Enums;
 
 public class StationReadModelProjection
@@ -63,9 +63,25 @@ public class StationReadModelProjection
         }
     }
 
-    public void Apply(IEvent<StationCreatedWithReferences> e, StationReadModel readModel) => readModel.Apply(e.Data);
+    public void Apply(IEvent<StationCreatedWithReferences> e, StationReadModel readModel)
+    {
+        readModel.Id = e.Data.Id;
+        readModel.Name = e.Data.Name;
 
-    public void Apply(IEvent<StationLocationSet> e, StationReadModel readModel) => readModel.Apply(e.Data);
+        this.Version++;
+    }
 
-    public void Apply(IEvent<StationAxleAdded> e, StationReadModel readModel) => readModel.Apply(e.Data);
+    public void Apply(IEvent<StationLocationSet> e, StationReadModel readModel)
+    {
+        readModel.Location = e.Data.Location;
+
+        this.Version++;
+    }
+
+    public void Apply(IEvent<StationAxleAdded> e, StationReadModel readModel)
+    {
+        readModel.AxleCount += 1;
+
+        this.Version++;
+    }
 }

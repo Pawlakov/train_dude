@@ -10,8 +10,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
+using TrainDude.Features.Radii.Contracts.CreateRadius;
 using TrainDude.Features.Radii.CreateRadius;
+using TrainDude.Features.Shared.Exceptions;
 using TrainDude.Infrastructure.Admin;
+using TrainDude.Infrastructure.Radii.Projections;
 using TrainDude.Web.Components;
 using TrainDude.Web.HostBuilders;
 
@@ -53,15 +56,13 @@ public static class Program
 
         builder.Services
             .AddWriteServices(writeConnectionString!, isDevelopment)
-            .AddReadDataValidation()
-            .AddRequestHandlers()
             .AddReadExceptionHandlers();
 
         builder.Host.UseWolverine(opts =>
         {
             opts.ApplicationAssembly = typeof(Program).Assembly;
-            opts.Discovery.IncludeAssembly(typeof(DroppedProjectionHandler).Assembly);
-            opts.Discovery.IncludeAssembly(typeof(DropEndpoint).Assembly);
+            opts.Discovery.IncludeAssembly(typeof(RadiusAggregateProjection).Assembly);
+            opts.Discovery.IncludeAssembly(typeof(CreateRadiusCommand).Assembly);
             opts.Discovery.IncludeAssembly(typeof(CreateRadiusEndpoint).Assembly);
 
             opts.DescribeHandlerMatch(typeof(DropEndpoint));
@@ -71,9 +72,6 @@ public static class Program
             opts.Policies.OnException<DomainException>().MoveToErrorQueue();
 
             opts.UseFluentValidation();
-
-            // TODO some day we will do it this way
-            // opts.PublishMessage<TripCreatedIntegrationEvent>().ToRabbitQueue("train-dude-projection").UseDurableInbox();
         });
 
         var app = builder.Build();

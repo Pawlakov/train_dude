@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Features.Segments.Projections.Groupers;
+namespace TrainDude.Infrastructure.Segments.Groupers;
 
 using System;
 using System.Collections.Generic;
@@ -16,9 +16,8 @@ using Marten;
 using Marten.Events.Aggregation;
 
 using TrainDude.Features.Segments.Domain;
-using TrainDude.Features.Segments.ReadModels;
 using TrainDude.Features.Settings.Domain.Events;
-using TrainDude.Features.Stations.Domain.Events;
+using TrainDude.Features.Shared.Contracts.Stations.Domain.Events;
 
 public sealed class SegmentReadModelGrouper
     : IAggregateGrouper<Guid>

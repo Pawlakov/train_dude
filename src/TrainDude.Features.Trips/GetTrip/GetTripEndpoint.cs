@@ -20,12 +20,7 @@ public static class GetTripEndpoint
     [WolverineGet(GetTripQuery.TypeRoute)]
     public static GetTripQueryResult Handle(GetTripQuery query, TripAggregate aggregate)
     {
-        var result = new GetTripQueryResult
-        {
-            TripNumber = aggregate.TripNumber,
-            StationPoints = [], // TODO
-            SegmentLineStrings = [], // TODO
-        };
+        var result = new GetTripQueryResult(aggregate.TripNumber, [], []); // TODO faktyczne stacje i odcinki
 
         return result;
     }

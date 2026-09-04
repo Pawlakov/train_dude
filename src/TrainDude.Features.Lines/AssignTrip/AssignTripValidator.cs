@@ -8,12 +8,12 @@ using System;
 
 using FluentValidation;
 
-using TrainDude.Features.Generic;
 using TrainDude.Features.Lines.Contracts.AssignTrip;
+using TrainDude.Features.Shared.Contracts.Generic;
 using TrainDude.Features.Shared.Validation;
 
 public sealed class AssignTripValidator
-    : BaseVersionedDomainValidator<AssignTripCommand, UpdatedResponse>
+    : BaseVersionedDomainValidator<AssignTripCommand, UpdatedResult>
 {
     public AssignTripValidator()
     {

@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Features.Stations.Projections;
+namespace TrainDude.Infrastructure.Stations.Projections;
 
 using System;
 
@@ -10,10 +10,10 @@ using JasperFx.Events;
 
 using Marten.Events.Aggregation;
 
+using TrainDude.Features.Shared.Contracts.Stations.Domain.Events;
 using TrainDude.Features.Stations.Domain;
-using TrainDude.Features.Stations.Domain.Events;
 
-public partial class StationAggregateProjection
+public class StationAggregateProjection
     : SingleStreamProjection<StationAggregate, Guid>
 {
     public void Apply(IEvent<StationCreated> e, StationAggregate aggregate) => aggregate.Apply(e.Data);

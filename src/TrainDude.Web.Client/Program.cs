@@ -26,7 +26,7 @@ public static class Program
             BaseAddress = new Uri(builder.HostEnvironment.BaseAddress),
         });
 
-        builder.Services.AddScoped<HttpCommandSender>();
+        builder.Services.AddScoped<ApiClient>();
         builder.Services.AddScoped<SeedService>();
         builder.Services.AddScoped<SeedLoader>();
         builder.Services.AddScoped<MapService>();

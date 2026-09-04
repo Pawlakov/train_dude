@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Features.Lines.Projections;
+namespace TrainDude.Infrastructure.Lines.Projections;
 
 using System;
 using System.Linq;
@@ -17,9 +17,9 @@ using Marten.Events.Projections;
 
 using TrainDude.Features.Lines.Domain.Events;
 using TrainDude.Features.Lines.Domain.Values;
-using TrainDude.Features.Lines.Projections.Groupers;
 using TrainDude.Features.Lines.ReadModels;
 using TrainDude.Features.Lines.ReadModels.Events;
+using TrainDude.Infrastructure.Lines.Groupers;
 
 public sealed class LineReadModelProjection
     : MultiStreamProjection<LineReadModel, Guid>

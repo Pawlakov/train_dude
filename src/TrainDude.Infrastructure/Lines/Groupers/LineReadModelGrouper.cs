@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Features.Lines.Projections.Groupers;
+namespace TrainDude.Infrastructure.Lines.Groupers;
 
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ using Marten;
 using Marten.Events.Aggregation;
 
 using TrainDude.Features.Lines.Domain;
-using TrainDude.Features.Trips.Domain.Events;
+using TrainDude.Features.Shared.Contracts.Trips.Domain.Events;
 
 public sealed class LineReadModelGrouper
     : IAggregateGrouper<Guid>

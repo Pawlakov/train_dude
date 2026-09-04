@@ -1,8 +1,8 @@
-// <copyright file="RadiusProjection.cs" company="Pawlakov">
+// <copyright file="RadiusAggregateProjection.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Features.Radii.Projections;
+namespace TrainDude.Infrastructure.Radii.Projections;
 
 using System;
 
@@ -13,7 +13,7 @@ using Marten.Events.Aggregation;
 using TrainDude.Features.Radii.Domain;
 using TrainDude.Features.Radii.Domain.Events;
 
-public partial class RadiusProjection
+public class RadiusAggregateProjection
     : SingleStreamProjection<RadiusAggregate, Guid>
 {
     public void Apply(IEvent<RadiusCreated> e, RadiusAggregate aggregate) => aggregate.Apply(e.Data);

@@ -24,19 +24,19 @@ public static class CreateSegmentEndpoint
     [WolverinePost(CreateSegmentCommand.TypeRoute)]
     public static async Task<(CreatedResult, IStartStream)> Post(CreateSegmentCommand segmentCommand, IMessageBus mediator, CancellationToken cancellationToken = default)
     {
-        var a = await mediator.InvokeAsync<GetStationQueryResult>(new GetStationQuery(segmentCommand.A.Id), cancellationToken);
-        var b = await mediator.InvokeAsync<GetStationQueryResult>(new GetStationQuery(segmentCommand.B.Id), cancellationToken);
+        var a = await mediator.InvokeAsync<GetStationQueryResult>(new GetStationQuery(segmentCommand.AId), cancellationToken);
+        var b = await mediator.InvokeAsync<GetStationQueryResult>(new GetStationQuery(segmentCommand.BId), cancellationToken);
 
-        var aEnd = new SegmentEnd(segmentCommand.A.Id, segmentCommand.A.Axle, segmentCommand.A.Pole);
-        var bEnd = new SegmentEnd(segmentCommand.B.Id, segmentCommand.B.Axle, segmentCommand.B.Pole);
-        if (segmentCommand.A.Axle >= a.AxleCount)
+        var aEnd = new SegmentEnd(segmentCommand.AId, segmentCommand.AAxle, segmentCommand.APole);
+        var bEnd = new SegmentEnd(segmentCommand.BId, segmentCommand.BAxle, segmentCommand.BPole);
+        if (segmentCommand.AAxle >= a.AxleCount)
         {
-            throw new SegmentNoStationAxleException(segmentCommand.A.Axle, segmentCommand.A.Id, a.AxleCount);
+            throw new SegmentNoStationAxleException(segmentCommand.AAxle, segmentCommand.AId, a.AxleCount);
         }
 
-        if (segmentCommand.B.Axle >= b.AxleCount)
+        if (segmentCommand.BAxle >= b.AxleCount)
         {
-            throw new SegmentNoStationAxleException(segmentCommand.B.Axle, segmentCommand.B.Id, b.AxleCount);
+            throw new SegmentNoStationAxleException(segmentCommand.BAxle, segmentCommand.BId, b.AxleCount);
         }
 
         var id = Guid.NewGuid();

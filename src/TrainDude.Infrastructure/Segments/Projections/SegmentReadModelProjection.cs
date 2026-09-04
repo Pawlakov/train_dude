@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Features.Segments.Projections;
+namespace TrainDude.Infrastructure.Segments.Projections;
 
 using System;
 using System.Linq;
@@ -17,13 +17,13 @@ using Marten.Events.Projections;
 
 using TrainDude.Features.Segments.Domain.Events;
 using TrainDude.Features.Segments.Domain.Values;
-using TrainDude.Features.Segments.Projections.Groupers;
 using TrainDude.Features.Segments.ReadModels;
 using TrainDude.Features.Segments.ReadModels.Events;
 using TrainDude.Features.Settings.Domain.Events;
 using TrainDude.Features.Shared;
+using TrainDude.Features.Shared.Contracts.Stations.Domain.Events;
 using TrainDude.Features.Shared.ReadModels;
-using TrainDude.Features.Stations.Domain.Events;
+using TrainDude.Infrastructure.Segments.Groupers;
 using TrainDude.Shared.Enums;
 
 public sealed class SegmentReadModelProjection
@@ -75,11 +75,51 @@ public sealed class SegmentReadModelProjection
         }
     }
 
-    public void Apply(SegmentCreatedWithReferences e, SegmentReadModel item) => item.Apply(e);
+    public void Apply(SegmentCreatedWithReferences e, SegmentReadModel item)
+    {
+        double? haversine = (e.A.Location, e.B.Location) switch
+        {
+            ({ } aLocation, { } bLocation) => aLocation.Haversine(bLocation),
+            _ => null,
+        };
 
-    public void Apply(SegmentCourseSet e, SegmentReadModel item) => item.Apply(e);
+        item.Id = e.Id;
+        item.NominalLength = e.NominalLength;
+        item.Haversine = haversine;
+        item.A = e.A;
+        item.B = e.B;
 
-    public void Apply(StationLocationSet e, SegmentReadModel item) => item.Apply(e);
+        item.Version++;
+    }
 
-    public void Apply(SettingsNamingPolicySet e, SegmentReadModel item) => item.Apply(e);
+    public void Apply(SegmentCourseSet e, SegmentReadModel item)
+    {
+        item.Course = e.Course.ToList();
+
+        item.Haversine = (item.A.Location, item.B.Location) switch
+        {
+            ({ } aLocation, { } bLocation) => e.Course.Prepend(aLocation).Append(bLocation).Haversine(),
+            _ => null,
+        };
+
+        this.Version++;
+    }
+
+    public void Apply(StationLocationSet e, SegmentReadModel item)
+    {
+        if (item.A.Id == e.Id)
+        {
+            item.A = item.A with { Location = e.Location };
+        }
+
+        if (item.B.Id == e.Id)
+        {
+            item.B = item.B with { Location = e.Location };
+        }
+    }
+
+    public void Apply(SettingsNamingPolicySet e, SegmentReadModel item)
+    {
+        throw new NotImplementedException();
+    }
 }

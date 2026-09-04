@@ -29,25 +29,18 @@ public static class GetSegmentEndpoint
             _ => [],
         };
 
-        var result = new GetSegmentQueryResult
-        {
-            Tracks = readModel.Tracks,
-            NominalLength = readModel.NominalLength,
-            Haversine = readModel.Haversine,
-            A = new()
-            {
-                Id = readModel.A.Id,
-                Name = readModel.A.Name,
-            },
-            B = new()
-            {
-                Id = readModel.B.Id,
-                Name = readModel.B.Name,
-            },
-            Trips = [],
-            StationPoints = new[] { readModel.A.Location, readModel.B.Location }.Where(x => x.HasValue).Select(x => x.Value).ToList(),
-            SegmentLineStrings = [course],
-        };
+        var a = new GetSegmentQueryResult.SegmentEnd(readModel.A.Id, readModel.A.Name);
+        var b = new GetSegmentQueryResult.SegmentEnd(readModel.B.Id, readModel.B.Name);
+        var stationPoints = new[] { readModel.A.Location, readModel.B.Location }.Where(x => x.HasValue).Select(x => x.Value).ToList();
+        var result = new GetSegmentQueryResult(
+        readModel.Tracks,
+        readModel.NominalLength,
+        readModel.Haversine,
+        a,
+        b,
+        [],
+        stationPoints,
+        [course]);
 
         return result;
     }
