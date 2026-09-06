@@ -11,7 +11,7 @@ using TrainDude.Features.Shared.Contracts.Base;
 public sealed record GetSegmentQuery(Guid SegmentId)
     : ILookupQuery<GetSegmentQueryResult>
 {
-    public const string TypeRoute = "/segment";
+    public const string TypeRoute = "/api/segment";
 
     public string Route => TypeRoute;
 

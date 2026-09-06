@@ -20,7 +20,7 @@ using Wolverine.Http;
 
 public static class GetStationsEndpoint
 {
-    [WolverineGet(GetStationsQuery.TypeRoute)]
+    [WolverinePost(GetStationsQuery.TypeRoute)]
     public static async Task<GetStationsQueryResult> Handle(GetStationsQuery request, IQuerySession session, CancellationToken cancellationToken)
     {
         var queryResult = await session.Query<StationReadModel>()

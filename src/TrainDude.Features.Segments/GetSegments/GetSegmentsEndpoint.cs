@@ -20,7 +20,7 @@ using Wolverine.Http;
 
 public static class GetSegmentsEndpoint
 {
-    [WolverineGet(GetSegmentsQuery.TypeRoute)]
+    [WolverinePost(GetSegmentsQuery.TypeRoute)]
     public static async Task<GetSegmentsQueryResult> Handle(GetSegmentsQuery request, IQuerySession session, CancellationToken cancellationToken = default)
     {
         var queryResult = await session.Query<SegmentReadModel>()
@@ -32,8 +32,10 @@ public static class GetSegmentsEndpoint
                 SegmentId = x.Id,
                 Length = x.NominalLength,
                 Haversine = x.Haversine,
-                A = new GetSegmentsQueryResultItem.SegmentEnd { Id = x.A.Id, Name = x.A.Name },
-                B = new GetSegmentsQueryResultItem.SegmentEnd { Id = x.B.Id, Name = x.B.Name },
+                AId = x.A.Id,
+                AName = x.A.Name,
+                BId = x.B.Id,
+                BName = x.B.Name,
             })
             .ToList();
 

@@ -11,7 +11,7 @@ using TrainDude.Features.Shared.Contracts.Base;
 public sealed record AddAxleCommand(Guid StationId, long Version)
     : IUpdateCommand
 {
-    public const string TypeRoute = "/station/axle/add";
+    public const string TypeRoute = "/api/station/axle/add";
 
     public string Route => TypeRoute;
 

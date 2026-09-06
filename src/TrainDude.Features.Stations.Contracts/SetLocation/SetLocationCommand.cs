@@ -12,7 +12,7 @@ using TrainDude.Shared.Values;
 public sealed record SetLocationCommand(Guid StationId, long Version, Location Location)
     : IUpdateCommand
 {
-    public const string TypeRoute = "/station/location/set";
+    public const string TypeRoute = "/api/station/location/set";
 
     public string Route => TypeRoute;
 

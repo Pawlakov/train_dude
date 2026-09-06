@@ -4,14 +4,12 @@
 
 namespace TrainDude.Features.Shared.Contracts.Admin;
 
-using System.Text.Json.Serialization;
-
 using TrainDude.Features.Shared.Contracts.Base;
 
 public sealed record DropCommand()
     : IEmptyCommand
 {
-    public const string TypeRoute = "/admin/drop";
+    public const string TypeRoute = "/api/admin/drop";
 
     public string Route => TypeRoute;
 }

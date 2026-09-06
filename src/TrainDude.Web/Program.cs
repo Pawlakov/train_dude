@@ -10,10 +10,22 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
+using TrainDude.Features.Lines.Contracts.CreateLine;
+using TrainDude.Features.Lines.CreateLine;
+using TrainDude.Features.Lines.GetLines;
 using TrainDude.Features.Radii.Contracts.CreateRadius;
 using TrainDude.Features.Radii.CreateRadius;
+using TrainDude.Features.Radii.GetRadii;
+using TrainDude.Features.Segments.CreateSegment;
+using TrainDude.Features.Segments.GetSegments;
+using TrainDude.Features.Settings.GetNamingPolicy;
+using TrainDude.Features.Settings.SetNamingPolicy;
+using TrainDude.Features.Shared.Drop;
 using TrainDude.Features.Shared.Exceptions;
-using TrainDude.Infrastructure.Admin;
+using TrainDude.Features.Stations.CreateStation;
+using TrainDude.Features.Stations.GetStations;
+using TrainDude.Features.Trips.CreateTrip;
+using TrainDude.Features.Trips.GetTrips;
 using TrainDude.Infrastructure.Radii.Projections;
 using TrainDude.Web.Components;
 using TrainDude.Web.HostBuilders;
@@ -55,15 +67,23 @@ public static class Program
             .AddProblemDetails();
 
         builder.Services
+            .AddEndpointsApiExplorer()
+            .AddSwaggerGen();
+
+        builder.Services
             .AddWriteServices(writeConnectionString!, isDevelopment)
             .AddReadExceptionHandlers();
 
         builder.Host.UseWolverine(opts =>
         {
             opts.ApplicationAssembly = typeof(Program).Assembly;
-            opts.Discovery.IncludeAssembly(typeof(RadiusAggregateProjection).Assembly);
-            opts.Discovery.IncludeAssembly(typeof(CreateRadiusCommand).Assembly);
-            opts.Discovery.IncludeAssembly(typeof(CreateRadiusEndpoint).Assembly);
+            opts.Discovery.IncludeAssembly(typeof(GetLinesEndpoint).Assembly);
+            opts.Discovery.IncludeAssembly(typeof(GetRadiiEndpoint).Assembly);
+            opts.Discovery.IncludeAssembly(typeof(GetSegmentsEndpoint).Assembly);
+            opts.Discovery.IncludeAssembly(typeof(SetNamingPolicyEndpoint).Assembly);
+            opts.Discovery.IncludeAssembly(typeof(DropEndpoint).Assembly);
+            opts.Discovery.IncludeAssembly(typeof(GetStationsEndpoint).Assembly);
+            opts.Discovery.IncludeAssembly(typeof(GetTripsEndpoint).Assembly);
 
             opts.DescribeHandlerMatch(typeof(DropEndpoint));
 
@@ -81,6 +101,8 @@ public static class Program
         if (isDevelopment)
         {
             app.UseWebAssemblyDebugging();
+            app.UseSwagger();
+            app.UseSwaggerUI();
         }
         else
         {

@@ -17,7 +17,7 @@ using Wolverine.Marten;
 public static class GetLineEndpoint
 {
     [AggregateHandler]
-    [WolverineGet(GetLineQuery.TypeRoute)]
+    [WolverinePost(GetLineQuery.TypeRoute)]
     public static GetLineQueryResult Handle(GetLineQuery query, LineReadModel readModel)
     {
         var trips = readModel.Trips.Select(x => new GetLineQueryResultTripItem { TripId = x.Id, TripNumber = x.Number }).ToList();

@@ -9,7 +9,7 @@ using TrainDude.Features.Shared.Contracts.Base;
 public sealed record GetTripsQuery()
     : IListQuery<GetTripsQueryResult>
 {
-    public const string TypeRoute = "/trips";
+    public const string TypeRoute = "/api/trips";
 
     public string Route => TypeRoute;
 }

@@ -18,7 +18,7 @@
 <h1 tabindex="-1">Odcinek</h1>
 @if (this.queryResult != null)
 {
-    <p class="lead">@(this.queryResult.A.Name) - @(this.queryResult.B.Name)</p>
+    <p class="lead">@(this.queryResult.AName) - @(this.queryResult.BName)</p>
 }
 <hr/>
 @if (this.queryResult == null)
@@ -41,7 +41,7 @@ else
 {
     <div class="row text-center">
         <div class="col-3 align-self-center">
-            <a href="/station/@(this.queryResult.A.StationId)">@(this.queryResult.A.Name)</a>
+            <a href="/station/@(this.queryResult.AId)">@(this.queryResult.AName)</a>
         </div>
         <div class="col align-self-center">
             <LengthDisplay Haversine="this.queryResult.Haversine" Length="this.queryResult.NominalLength"/>
@@ -49,7 +49,7 @@ else
             <span>tory: @(this.queryResult.Tracks)</span>
         </div>
         <div class="col-3 align-self-center">
-            <a href="/station/@(this.queryResult.B.StationId)">@(this.queryResult.B.Name)</a>
+            <a href="/station/@(this.queryResult.BId)">@(this.queryResult.BName)</a>
         </div>
     </div>
     <hr/>

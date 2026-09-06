@@ -9,7 +9,7 @@ using TrainDude.Features.Shared.Contracts.Base;
 public sealed record GetRadiiQuery()
     : IListQuery<GetRadiiQueryResult>
 {
-    public const string TypeRoute = "/radii";
+    public const string TypeRoute = "/api/radii";
 
     public string Route => TypeRoute;
 }

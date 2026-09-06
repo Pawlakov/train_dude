@@ -14,14 +14,14 @@ public sealed record GetSegmentQueryResult(
     int Tracks,
     double NominalLength,
     double? Haversine,
-    GetSegmentQueryResult.SegmentEnd A,
-    GetSegmentQueryResult.SegmentEnd B,
+    Guid AId,
+    string AName,
+    Guid BId,
+    string BName,
     IReadOnlyList<GetSegmentQueryResult.SegmentTrip> Trips,
     IReadOnlyList<Location> StationPoints,
     IReadOnlyList<IReadOnlyList<Location>> SegmentLineStrings)
     : ILookupQueryResult
 {
-    public record struct SegmentEnd(Guid StationId, string Name);
-
     public record struct SegmentTrip(Guid TripId, int Number);
 }

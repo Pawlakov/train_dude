@@ -15,7 +15,7 @@ using Wolverine.Http;
 
 public static class GetNamingPolicyEndpoint
 {
-    [WolverineGet(GetNamingPolicyQuery.TypeRoute)]
+    [WolverinePost(GetNamingPolicyQuery.TypeRoute)]
     public static async Task<GetNamingPolicyResult> Handle(GetNamingPolicyQuery query, IDocumentSession session, CancellationToken cancellationToken)
     {
         var queryResult = await SettingsAccessor.FetchForReading(session, cancellationToken);

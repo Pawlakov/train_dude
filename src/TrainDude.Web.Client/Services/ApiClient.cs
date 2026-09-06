@@ -63,7 +63,7 @@ public class ApiClient
         where TResponse : IRequestResult
     {
         var route = request.Route;
-        return new HttpRequestMessage(HttpMethod.Get, route)
+        return new HttpRequestMessage(HttpMethod.Post, route)
         {
             Content = JsonContent.Create(request, options: jsonOptions),
         };

@@ -13,7 +13,7 @@ using TrainDude.Shared.Values;
 public sealed record SetCourseCommand(Guid SegmentId, long Version, IReadOnlyList<Location> Course)
     : IUpdateCommand
 {
-    public const string TypeRoute = "/segment/course/set";
+    public const string TypeRoute = "/api/segment/course/set";
 
     public string Route => TypeRoute;
 

@@ -10,7 +10,7 @@ using TrainDude.Shared.Enums;
 public sealed record SetNamingPolicyCommand(NamingPolicy Policy)
     : IEmptyCommand
 {
-    public const string TypeRoute = "/settings/name-mode/set";
+    public const string TypeRoute = "/api/settings/name-mode/set";
 
     public string Route => TypeRoute;
 }

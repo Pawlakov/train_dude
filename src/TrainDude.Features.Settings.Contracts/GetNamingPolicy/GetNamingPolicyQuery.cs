@@ -11,7 +11,7 @@ using TrainDude.Features.Shared.Contracts.Base;
 public sealed record GetNamingPolicyQuery()
     : IDomainQuery<GetNamingPolicyResult>
 {
-    public const string TypeRoute = "/settings/name-mode";
+    public const string TypeRoute = "/api/settings/name-mode";
 
     [JsonIgnore]
     public string Route => TypeRoute;

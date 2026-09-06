@@ -17,7 +17,7 @@ using Wolverine.Http;
 
 public static class GetTripsEndpoint
 {
-    [WolverineGet(GetTripsQuery.TypeRoute)]
+    [WolverinePost(GetTripsQuery.TypeRoute)]
     public static async Task<GetTripsQueryResult> Handle(GetTripsQuery request, IQuerySession session, CancellationToken cancellationToken)
     {
         var trips = await session.Query<TripAggregate>()

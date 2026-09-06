@@ -8,7 +8,7 @@ using TrainDude.Features.Shared.Contracts.Base;
 
 public sealed record GetLinesQuery() : IListQuery<GetLinesQueryResult>
 {
-    public const string TypeRoute = "/lines";
+    public const string TypeRoute = "/api/lines";
 
     public string Route => TypeRoute;
 }

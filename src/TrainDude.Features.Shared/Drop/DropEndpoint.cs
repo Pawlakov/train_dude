@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Infrastructure.Admin;
+namespace TrainDude.Features.Shared.Drop;
 
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,7 +12,6 @@ using Marten;
 using TrainDude.Features.Shared.Contracts.Admin;
 using TrainDude.Features.Shared.Contracts.Generic;
 
-using Wolverine;
 using Wolverine.Http;
 
 public static class DropEndpoint

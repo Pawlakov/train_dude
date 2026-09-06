@@ -17,7 +17,7 @@ using Wolverine.Http;
 
 public static class GetLinesEndpoint
 {
-    [WolverineGet(GetLinesQuery.TypeRoute)]
+    [WolverinePost(GetLinesQuery.TypeRoute)]
     public static async Task<GetLinesQueryResult> Handle(GetLinesQuery request, IQuerySession session, CancellationToken cancellationToken = default)
     {
         var queryResult = await session.Query<LineReadModel>()

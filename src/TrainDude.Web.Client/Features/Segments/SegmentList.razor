@@ -35,8 +35,8 @@
                 @foreach (var segment in this.items)
                 {
                     <tr>
-                        <td><a href="station/@(segment.A.Id)">@(segment.A.Name)</a></td>
-                        <td><a href="station/@(segment.B.Id)">@(segment.B.Name)</a></td>
+                        <td><a href="station/@(segment.AId)">@(segment.AName)</a></td>
+                        <td><a href="station/@(segment.BId)">@(segment.BName)</a></td>
                         <td><LengthDisplay Haversine="segment.Haversine" Length="segment.Length"/></td>
                         <td><a href="segment/@(segment.SegmentId)">Szczegóły</a></td>
                     </tr>

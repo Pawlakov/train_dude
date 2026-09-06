@@ -14,14 +14,11 @@ public class GetSegmentsQueryResultItem
 
     public required double? Haversine { get; init; }
 
-    public required SegmentEnd A { get; init; }
+    public required Guid AId { get; init; }
 
-    public required SegmentEnd B { get; init; }
+    public required string AName { get; init; }
 
-    public class SegmentEnd
-    {
-        public required Guid Id { get; init; }
+    public required Guid BId { get; init; }
 
-        public required string Name { get; init; }
-    }
+    public required string BName { get; init; }
 }

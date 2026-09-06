@@ -11,7 +11,7 @@ using TrainDude.Features.Shared.Contracts.Base;
 /// </summary>
 public sealed record GetStationsQuery : IListQuery<GetStationsQueryResult>
 {
-    public const string TypeRoute = "/stations";
+    public const string TypeRoute = "/api/stations";
 
     public string Route => TypeRoute;
 }

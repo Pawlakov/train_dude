@@ -17,7 +17,7 @@ using Wolverine.Marten;
 public static class GetSegmentEndpoint
 {
     [AggregateHandler]
-    [WolverineGet(GetSegmentQuery.TypeRoute)]
+    [WolverinePost(GetSegmentQuery.TypeRoute)]
     public static GetSegmentQueryResult Handle(GetSegmentQuery query, SegmentReadModel readModel)
     {
         var course = (readModel.A.Location, readModel.B.Location) switch
@@ -29,15 +29,15 @@ public static class GetSegmentEndpoint
             _ => [],
         };
 
-        var a = new GetSegmentQueryResult.SegmentEnd(readModel.A.Id, readModel.A.Name);
-        var b = new GetSegmentQueryResult.SegmentEnd(readModel.B.Id, readModel.B.Name);
         var stationPoints = new[] { readModel.A.Location, readModel.B.Location }.Where(x => x.HasValue).Select(x => x.Value).ToList();
         var result = new GetSegmentQueryResult(
         readModel.Tracks,
         readModel.NominalLength,
         readModel.Haversine,
-        a,
-        b,
+        readModel.A.Id,
+        readModel.A.Name,
+        readModel.B.Id,
+        readModel.B.Name,
         [],
         stationPoints,
         [course]);
