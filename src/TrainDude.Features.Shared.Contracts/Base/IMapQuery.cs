@@ -7,8 +7,4 @@ using System;
 
 using TrainDude.Features.Shared.Contracts.Generic;
 
-public interface IMapQuery
-    : IDomainQuery<MapQueryResult>
-{
-    Guid Id { get; }
-}
+public interface IMapQuery : IDomainQuery<MapQueryResult>;
