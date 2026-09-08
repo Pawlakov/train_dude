@@ -9,9 +9,6 @@ using System.Collections.Generic;
 using TrainDude.Shared.Values;
 
 public interface ILookupQueryResult
-    : IMapQueryResult
+    : IQueryResult
 {
-    IReadOnlyList<Location> StationPoints { get; }
-
-    IReadOnlyList<IReadOnlyList<Location>> SegmentLineStrings { get; }
 }

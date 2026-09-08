@@ -18,7 +18,7 @@ public static class GetStationEndpoint
     [WolverinePost(GetStationQuery.TypeRoute)]
     public static GetStationQueryResult Handle(GetStationQuery query, StationReadModel readModel)
     {
-        var result = new GetStationQueryResult(readModel.Name, readModel.Location, readModel.AxleCount, new[] { readModel.Location }.Where(x => x.HasValue).Select(x => x.Value).ToList(), []);
+        var result = new GetStationQueryResult(readModel.Name, readModel.Location, readModel.AxleCount);
 
         return result;
     }

@@ -18,9 +18,7 @@ public sealed record GetSegmentQueryResult(
     string AName,
     Guid BId,
     string BName,
-    IReadOnlyList<GetSegmentQueryResult.SegmentTrip> Trips,
-    IReadOnlyList<Location> StationPoints,
-    IReadOnlyList<IReadOnlyList<Location>> SegmentLineStrings)
+    IReadOnlyList<GetSegmentQueryResult.SegmentTrip> Trips)
     : ILookupQueryResult
 {
     public record struct SegmentTrip(Guid TripId, int Number);

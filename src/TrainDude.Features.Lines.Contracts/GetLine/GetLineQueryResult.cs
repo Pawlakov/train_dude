@@ -9,5 +9,5 @@ using System.Collections.Generic;
 using TrainDude.Features.Shared.Contracts.Base;
 using TrainDude.Shared.Values;
 
-public sealed record GetLineQueryResult(string LineDesignation, IReadOnlyList<GetLineQueryResultStationItem> Stations, IReadOnlyList<GetLineQueryResultTripItem> Trips, IReadOnlyList<Location> StationPoints, IReadOnlyList<IReadOnlyList<Location>> SegmentLineStrings)
+public sealed record GetLineQueryResult(string LineDesignation, IReadOnlyList<GetLineQueryResultStationItem> Stations, IReadOnlyList<GetLineQueryResultTripItem> Trips)
     : ILookupQueryResult;

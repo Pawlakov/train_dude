@@ -1,12 +1,18 @@
 @page "/line/{Id:guid}"
 @using TrainDude.Features.Lines.Contracts.GetLine
-@inherits MapEntityLookupPageBase<GetLineQuery, GetLineQueryResult>
+@using TrainDude.Features.Lines.Contracts.GetLineMap
+@inherits MapEntityLookupPageBase<GetLineQuery, GetLineQueryResult, TrainDude.Features.Lines.Contracts.GetLineMap.GetLineMapQuery>
 
 @code {
 
     protected override GetLineQuery BuildQuery(EntityLookupFormModel formModel)
     {
         return new GetLineQuery(formModel.Id);
+    }
+
+    protected override GetLineMapQuery BuildMapQuery(EntityLookupFormModel formModel)
+    {
+        return new GetLineMapQuery(formModel.Id);
     }
 
 }

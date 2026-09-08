@@ -4,9 +4,6 @@
 
 namespace TrainDude.Features.Trips.Contracts.GetTrip;
 
-using System.Collections.Generic;
-
 using TrainDude.Features.Shared.Contracts.Base;
-using TrainDude.Shared.Values;
 
-public sealed record GetTripQueryResult(int TripNumber, IReadOnlyList<Location> StationPoints, IReadOnlyList<IReadOnlyList<Location>> SegmentLineStrings) : ILookupQueryResult;
+public sealed record GetTripQueryResult(int TripNumber) : ILookupQueryResult;

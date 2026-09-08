@@ -4,12 +4,6 @@
 
 namespace TrainDude.Features.Trips.GetTrip;
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-
-using Microsoft.AspNetCore.Mvc;
-
 using TrainDude.Features.Trips.Contracts.GetTrip;
 using TrainDude.Features.Trips.Domain;
 
@@ -22,7 +16,7 @@ public static class GetTripEndpoint
     [WolverinePost(GetTripQuery.TypeRoute)]
     public static GetTripQueryResult Handle(GetTripQuery query, TripAggregate aggregate)
     {
-        var result = new GetTripQueryResult(aggregate.TripNumber, [], []); // TODO faktyczne stacje i odcinki
+        var result = new GetTripQueryResult(aggregate.TripNumber);
 
         return result;
     }

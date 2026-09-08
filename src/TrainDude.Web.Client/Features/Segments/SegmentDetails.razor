@@ -1,11 +1,17 @@
 ﻿@page "/segment/{Id:guid}"
 @using TrainDude.Features.Segments.Contracts.GetSegment
-@inherits MapEntityLookupPageBase<GetSegmentQuery, GetSegmentQueryResult>
+@using TrainDude.Features.Segments.Contracts.GetSegmentMap
+@inherits MapEntityLookupPageBase<GetSegmentQuery, GetSegmentQueryResult, GetSegmentMapQuery>
 
 @code {
     protected override GetSegmentQuery BuildQuery(EntityLookupFormModel formModel)
     {
         return new GetSegmentQuery(formModel.Id);
+    }
+
+    protected override GetSegmentMapQuery BuildMapQuery(EntityLookupFormModel formModel)
+    {
+        return new GetSegmentMapQuery(formModel.Id);
     }
 }
 

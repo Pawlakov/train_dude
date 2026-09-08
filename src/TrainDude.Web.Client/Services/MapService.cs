@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Microsoft.JSInterop;
 
 using TrainDude.Features.Shared.Contracts.Base;
+using TrainDude.Features.Shared.Contracts.Generic;
 using TrainDude.Shared;
 using TrainDude.Shared.Values;
 using TrainDude.Web.Client.GeoJson;
@@ -29,14 +30,14 @@ public sealed class MapService
         this.js = js;
     }
 
-    public IMapQueryResult? CurrentData { get; private set; }
+    public MapQueryResult? CurrentData { get; private set; }
 
     public Task InitializeAsync(CancellationToken cancellationToken = default)
     {
         return this.initialized ??= this.InitializeCoreAsync(cancellationToken);
     }
 
-    public async Task ShowAsync(IMapQueryResult data, CancellationToken cancellationToken = default)
+    public async Task ShowAsync(MapQueryResult data, CancellationToken cancellationToken = default)
     {
         if (this.initialized is not null)
         {
@@ -84,7 +85,7 @@ public sealed class MapService
         }
     }
 
-    private static GeoJsonFeatureCollection BuildGeoJson(IMapQueryResult data)
+    private static GeoJsonFeatureCollection BuildGeoJson(MapQueryResult data)
     {
         var features = new List<GeoJsonFeature>(data.StationPoints.Count + data.SegmentLineStrings.Count);
 

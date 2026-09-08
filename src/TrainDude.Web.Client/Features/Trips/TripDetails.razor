@@ -1,13 +1,18 @@
 @page "/trip/{Id:guid}"
-@using FluentValidation
 @using TrainDude.Features.Trips.Contracts.GetTrip
-@inherits MapEntityLookupPageBase<GetTripQuery, GetTripQueryResult>
+@using TrainDude.Features.Trips.Contracts.GetTripMap
+@inherits MapEntityLookupPageBase<GetTripQuery, GetTripQueryResult, GetTripMapQuery>
 
 @code {
 
     protected override GetTripQuery BuildQuery(EntityLookupFormModel formModel)
     {
         return new GetTripQuery(formModel.Id);
+    }
+
+    protected override GetTripMapQuery BuildMapQuery(EntityLookupFormModel formModel)
+    {
+        return new GetTripMapQuery(formModel.Id);
     }
 }
 

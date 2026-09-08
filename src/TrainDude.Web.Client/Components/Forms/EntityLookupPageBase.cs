@@ -57,6 +57,8 @@ public abstract class EntityLookupPageBase<TQuery, TQueryResult>
             {
                 var query = this.BuildQuery(this.formModel);
                 this.queryResult = await this.Api.SendAsync<TQuery, TQueryResult>(query);
+
+                await this.OnSubmitAsync();
             }
             catch (ValidationException exception)
             {
@@ -68,6 +70,11 @@ public abstract class EntityLookupPageBase<TQuery, TQueryResult>
                 this.StateHasChanged();
             }
         }
+    }
+
+    protected virtual Task OnSubmitAsync()
+    {
+        return Task.CompletedTask;
     }
 
     protected abstract TQuery BuildQuery(EntityLookupFormModel formModel);

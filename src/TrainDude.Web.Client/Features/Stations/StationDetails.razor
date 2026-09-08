@@ -1,13 +1,19 @@
 @page "/station/{Id:guid}"
-@using FluentValidation
+@using TrainDude.Features.Shared.Contracts.Generic
 @using TrainDude.Features.Stations.Contracts.GetStation
-@inherits MapEntityLookupPageBase<GetStationQuery, GetStationQueryResult>
+@using TrainDude.Features.Stations.Contracts.GetStationMap
+@inherits MapEntityLookupPageBase<GetStationQuery, GetStationQueryResult, GetStationMapQuery>
 
 @code {
 
     protected override GetStationQuery BuildQuery(EntityLookupFormModel formModel)
     {
         return new GetStationQuery(formModel.Id);
+    }
+
+    protected override GetStationMapQuery BuildMapQuery(EntityLookupFormModel formModel)
+    {
+        return new GetStationMapQuery(formModel.Id);
     }
 
 }
