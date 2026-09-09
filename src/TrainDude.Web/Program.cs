@@ -4,29 +4,24 @@
 
 namespace TrainDude.Web;
 
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-using TrainDude.Features.Lines.Contracts.CreateLine;
-using TrainDude.Features.Lines.CreateLine;
 using TrainDude.Features.Lines.GetLines;
-using TrainDude.Features.Radii.Contracts.CreateRadius;
-using TrainDude.Features.Radii.CreateRadius;
 using TrainDude.Features.Radii.GetRadii;
-using TrainDude.Features.Segments.CreateSegment;
 using TrainDude.Features.Segments.GetSegments;
-using TrainDude.Features.Settings.GetNamingPolicy;
 using TrainDude.Features.Settings.SetNamingPolicy;
 using TrainDude.Features.Shared.Drop;
 using TrainDude.Features.Shared.Exceptions;
-using TrainDude.Features.Stations.CreateStation;
 using TrainDude.Features.Stations.GetStations;
-using TrainDude.Features.Trips.CreateTrip;
 using TrainDude.Features.Trips.GetTrips;
-using TrainDude.Infrastructure.Radii.Projections;
 using TrainDude.Web.Components;
 using TrainDude.Web.HostBuilders;
 
@@ -58,7 +53,28 @@ public static class Program
 
         builder.Services
             .AddRazorComponents()
-            .AddInteractiveWebAssemblyComponents();
+            .AddInteractiveWebAssemblyComponents()
+            .AddAuthenticationStateSerialization();
+
+        builder.Services
+            .AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+            })
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/account/login";
+                options.LogoutPath = "/account/logout";
+            })
+            .AddGoogle(options =>
+            {
+                options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+                options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+            });
+
+        builder.Services
+            .AddAuthorization();
 
         builder.Services
             .AddControllers();
@@ -113,6 +129,9 @@ public static class Program
         app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
         app.UseHttpsRedirection();
 
+        app.UseAuthentication();
+        app.UseAuthorization();
+
         app.UseAntiforgery();
 
         app.MapStaticAssets();
@@ -121,6 +140,24 @@ public static class Program
             .AddAdditionalAssemblies(typeof(Client._Imports).Assembly);
 
         app.MapWolverineEndpoints(opts => { opts.UseFluentValidationProblemDetailMiddleware(); });
+
+        app.MapGet(
+            "/account/login",
+            (HttpContext httpContext, string? returnUrl) =>
+            {
+                var redirectUri = string.IsNullOrWhiteSpace(returnUrl) ? "/" : returnUrl;
+                return Results.Challenge(new AuthenticationProperties { RedirectUri = redirectUri, }, [GoogleDefaults.AuthenticationScheme]);
+            })
+            .AllowAnonymous();
+
+        app.MapGet(
+            "/account/logout",
+            async (HttpContext httpContext) =>
+            {
+                await httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                return Results.Redirect("/");
+            })
+            .AllowAnonymous();
 
         app.Run();
     }

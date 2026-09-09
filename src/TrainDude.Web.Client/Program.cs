@@ -21,6 +21,10 @@ public static class Program
     {
         var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
+        builder.Services.AddAuthorizationCore();
+        builder.Services.AddCascadingAuthenticationState();
+        builder.Services.AddAuthenticationStateDeserialization();
+
         builder.Services.AddScoped(serviceProvider => new HttpClient
         {
             BaseAddress = new Uri(builder.HostEnvironment.BaseAddress),
@@ -30,6 +34,7 @@ public static class Program
         builder.Services.AddScoped<SeedService>();
         builder.Services.AddScoped<SeedLoader>();
         builder.Services.AddScoped<MapService>();
+
         builder.Services.AddQueryInputValidation();
         builder.Services.AddCommandInputValidation();
 

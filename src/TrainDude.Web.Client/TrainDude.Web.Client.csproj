@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="FluentValidation" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly"/>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" />
     <PackageReference Include="Microsoft.DotNet.HotReload.WebAssembly.Browser"/>
     <PackageReference Include="YamlDotNet"/>
   </ItemGroup>
