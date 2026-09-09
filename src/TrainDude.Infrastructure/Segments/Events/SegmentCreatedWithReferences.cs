@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Features.Segments.ReadModels.Events;
+namespace TrainDude.Infrastructure.Segments.Events;
 
 using System;
 

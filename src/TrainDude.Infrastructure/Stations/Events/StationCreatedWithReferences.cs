@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Features.Stations.ReadModels.Events;
+namespace TrainDude.Infrastructure.Stations.Events;
 
 using System;
 

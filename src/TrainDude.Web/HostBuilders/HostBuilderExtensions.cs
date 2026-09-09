@@ -51,6 +51,7 @@ public static class HostBuilderExtensions
                 options.Projections.Add<LineReadModelProjection>(ProjectionLifecycle.Inline);
                 options.Projections.Add<LineSegmentReferenceProjection>(ProjectionLifecycle.Inline);
                 options.Projections.Add<LineTripReferenceProjection>(ProjectionLifecycle.Inline);
+                options.Projections.Add<LineTripLinkProjection>(ProjectionLifecycle.Inline);
 
                 options.Projections.Add<RadiusAggregateProjection>(ProjectionLifecycle.Inline);
 

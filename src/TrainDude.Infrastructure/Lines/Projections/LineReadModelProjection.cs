@@ -18,7 +18,7 @@ using Marten.Events.Projections;
 using TrainDude.Features.Lines.Domain.Events;
 using TrainDude.Features.Lines.Domain.Values;
 using TrainDude.Features.Lines.ReadModels;
-using TrainDude.Features.Lines.ReadModels.Events;
+using TrainDude.Infrastructure.Lines.Events;
 using TrainDude.Infrastructure.Lines.Groupers;
 
 public sealed class LineReadModelProjection

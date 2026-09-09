@@ -15,8 +15,8 @@ using JasperFx.Events.Grouping;
 using Marten;
 using Marten.Events.Aggregation;
 
-using TrainDude.Features.Lines.Domain;
 using TrainDude.Features.Trips.Domain.Events;
+using TrainDude.Infrastructure.Lines.ReadModels;
 
 public sealed class LineReadModelGrouper
     : IAggregateGrouper<Guid>
@@ -34,14 +34,12 @@ public sealed class LineReadModelGrouper
             return;
         }
 
-        var links = await session.Query<LineAggregate>()
-            .SelectMany(x => x.Trips.Select(y => new { LineId = x.Id, TripId = y }))
-            .Distinct()
+        var links = await session.Query<LineTripLink>()
             .ToListAsync();
 
         var lineIdsByTrip = links
             .GroupBy(x => x.TripId)
-            .ToDictionary(g => g.Key, g => g.Select(x => x.LineId).ToList());
+            .ToDictionary(g => g.Key, g => g.Select(x => x.Id).ToList());
 
         foreach (var e in tripCreatedEvents)
         {

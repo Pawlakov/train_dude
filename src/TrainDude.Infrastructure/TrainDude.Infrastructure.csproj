@@ -1,8 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <Folder Include="Lines\" />
     <Folder Include="Radii\" />
-    <Folder Include="Segments\" />
     <Folder Include="Settings\" />
   </ItemGroup>
   <ItemGroup>

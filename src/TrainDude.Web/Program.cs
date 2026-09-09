@@ -49,8 +49,6 @@ public static class Program
 
         var isDevelopment = builder.Environment.IsDevelopment();
 
-        var writeConnectionString = builder.Configuration.GetConnectionString("Write");
-
         builder.Services
             .AddLogging(logging => logging.AddConsole());
 
@@ -101,7 +99,7 @@ public static class Program
             .AddSwaggerGen();
 
         builder.Services
-            .AddWriteServices(writeConnectionString!, isDevelopment)
+            .AddWriteServices(builder.Configuration.GetConnectionString("Write"), isDevelopment)
             .AddReadExceptionHandlers();
 
         builder.Host.UseWolverine(opts =>

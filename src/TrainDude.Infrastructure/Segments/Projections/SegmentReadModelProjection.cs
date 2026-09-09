@@ -18,13 +18,13 @@ using Marten.Events.Projections;
 using TrainDude.Features.Segments.Domain.Events;
 using TrainDude.Features.Segments.Domain.Values;
 using TrainDude.Features.Segments.ReadModels;
-using TrainDude.Features.Segments.ReadModels.Events;
 using TrainDude.Features.Settings.Domain.Events;
 using TrainDude.Features.Shared;
 using TrainDude.Features.Shared.Contracts.Enums;
 using TrainDude.Features.Shared.Extensions;
 using TrainDude.Features.Shared.ReadModels;
 using TrainDude.Features.Stations.Domain.Events;
+using TrainDude.Infrastructure.Segments.Events;
 using TrainDude.Infrastructure.Segments.Groupers;
 
 public sealed class SegmentReadModelProjection

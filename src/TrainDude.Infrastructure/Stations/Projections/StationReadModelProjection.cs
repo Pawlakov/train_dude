@@ -20,7 +20,7 @@ using TrainDude.Features.Shared.Contracts.Enums;
 using TrainDude.Features.Shared.ReadModels;
 using TrainDude.Features.Stations.Domain.Events;
 using TrainDude.Features.Stations.ReadModels;
-using TrainDude.Features.Stations.ReadModels.Events;
+using TrainDude.Infrastructure.Stations.Events;
 using TrainDude.Infrastructure.Stations.Groupers;
 
 public class StationReadModelProjection
