@@ -68,20 +68,20 @@ public class StationReadModelProjection
         readModel.Id = e.Data.Id;
         readModel.Name = e.Data.Name;
 
-        this.Version++;
+        readModel.Version++;
     }
 
     public void Apply(IEvent<StationLocationSet> e, StationReadModel readModel)
     {
         readModel.Location = e.Data.Location;
 
-        this.Version++;
+        readModel.Version++;
     }
 
     public void Apply(IEvent<StationAxleAdded> e, StationReadModel readModel)
     {
         readModel.AxleCount += 1;
 
-        this.Version++;
+        readModel.Version++;
     }
 }

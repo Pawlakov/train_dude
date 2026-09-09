@@ -103,7 +103,7 @@ public sealed class SegmentReadModelProjection
             _ => null,
         };
 
-        this.Version++;
+        item.Version++;
     }
 
     public void Apply(StationLocationSet e, SegmentReadModel item)

@@ -65,9 +65,36 @@ public sealed class LineReadModelProjection
         }
     }
 
-    public void Apply(IEvent<LineCreated> e, LineReadModel readModel) => readModel.Apply(e.Data);
+    public void Apply(IEvent<LineCreated> e, LineReadModel readModel)
+    {
+        readModel.Id = e.Data.Id;
+        readModel.LineNumber = e.Data.LineNumber;
+        readModel.LineLetter = e.Data.LineLetter;
+        readModel.LineDesignation = $"{e.Data.LineNumber}{e.Data.LineLetter}";
 
-    public void Apply(IEvent<LineTripAssignedWithReferences> e, LineReadModel readModel) => readModel.Apply(e.Data);
+        readModel.Version++;
+    }
 
-    public void Apply(IEvent<LineSegmentAppendedWithReferences> e, LineReadModel readModel) => readModel.Apply(e.Data);
+    public void Apply(IEvent<LineTripAssignedWithReferences> e, LineReadModel readModel)
+    {
+        readModel.Trips = readModel.Trips.Append(e.Data.Trip).ToList();
+
+        readModel.Version++;
+    }
+
+    public void Apply(IEvent<LineSegmentAppendedWithReferences> e, LineReadModel readModel)
+    {
+        if (e.Data.Segment.A == readModel.Stations.LastOrDefault())
+        {
+            readModel.Segments = readModel.Segments.Append(e.Data.Segment).ToList();
+            readModel.Stations = readModel.Stations.Append(e.Data.Segment.B).ToList();
+        }
+        else
+        {
+            readModel.Segments = readModel.Segments.Append(e.Data.Segment).ToList();
+            readModel.Stations = readModel.Stations.Append(e.Data.Segment.A).ToList();
+        }
+
+        readModel.Version++;
+    }
 }

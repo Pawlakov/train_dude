@@ -21,6 +21,6 @@ public sealed class LineTripReferenceProjection
         readModel.Id = e.Id;
         readModel.Number = e.Data.TripNumber;
 
-        this.Version++;
+        readModel.Version++;
     }
 }
