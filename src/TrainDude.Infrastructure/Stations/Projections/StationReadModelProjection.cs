@@ -16,12 +16,12 @@ using Marten;
 using Marten.Events.Projections;
 
 using TrainDude.Features.Shared;
-using TrainDude.Features.Shared.Contracts.Stations.Domain.Events;
+using TrainDude.Features.Shared.Contracts.Enums;
 using TrainDude.Features.Shared.ReadModels;
+using TrainDude.Features.Stations.Domain.Events;
 using TrainDude.Features.Stations.ReadModels;
 using TrainDude.Features.Stations.ReadModels.Events;
 using TrainDude.Infrastructure.Stations.Groupers;
-using TrainDude.Shared.Enums;
 
 public class StationReadModelProjection
     : MultiStreamProjection<StationReadModel, Guid>

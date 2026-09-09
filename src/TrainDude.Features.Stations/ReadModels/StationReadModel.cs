@@ -6,7 +6,7 @@ namespace TrainDude.Features.Stations.ReadModels;
 
 using System;
 
-using TrainDude.Shared.Values;
+using TrainDude.Features.Shared.Contracts.Values;
 
 public sealed class StationReadModel
 {

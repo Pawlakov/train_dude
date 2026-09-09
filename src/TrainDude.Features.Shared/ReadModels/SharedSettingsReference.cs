@@ -7,7 +7,7 @@ namespace TrainDude.Features.Shared.ReadModels;
 using System;
 using System.Text.Json.Serialization;
 
-using TrainDude.Shared.Enums;
+using TrainDude.Features.Shared.Contracts.Enums;
 
 public sealed class SharedSettingsReference
 {

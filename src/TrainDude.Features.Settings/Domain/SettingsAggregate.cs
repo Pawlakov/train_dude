@@ -10,7 +10,7 @@ using System.Text.Json.Serialization;
 using Microsoft.Extensions.DependencyInjection;
 
 using TrainDude.Features.Settings.Domain.Events;
-using TrainDude.Shared.Enums;
+using TrainDude.Features.Shared.Contracts.Enums;
 
 public class SettingsAggregate
 {

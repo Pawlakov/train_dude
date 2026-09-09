@@ -17,7 +17,7 @@ using Marten.Events.Aggregation;
 
 using TrainDude.Features.Segments.Domain;
 using TrainDude.Features.Settings.Domain.Events;
-using TrainDude.Features.Shared.Contracts.Stations.Domain.Events;
+using TrainDude.Features.Stations.Domain.Events;
 
 public sealed class SegmentReadModelGrouper
     : IAggregateGrouper<Guid>

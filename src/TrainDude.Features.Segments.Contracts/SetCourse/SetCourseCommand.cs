@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 
 using TrainDude.Features.Shared.Contracts.Base;
-using TrainDude.Shared.Values;
+using TrainDude.Features.Shared.Contracts.Values;
 
 public sealed record SetCourseCommand(Guid SegmentId, long Version, IReadOnlyList<Location> Course)
     : IUpdateCommand

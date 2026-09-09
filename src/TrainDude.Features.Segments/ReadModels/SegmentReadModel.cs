@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 
 using TrainDude.Features.Segments.Domain.Values;
-using TrainDude.Shared.Values;
+using TrainDude.Features.Shared.Contracts.Values;
 
 public sealed class SegmentReadModel
 {

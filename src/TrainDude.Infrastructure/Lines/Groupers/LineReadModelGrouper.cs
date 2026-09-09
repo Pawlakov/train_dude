@@ -16,7 +16,7 @@ using Marten;
 using Marten.Events.Aggregation;
 
 using TrainDude.Features.Lines.Domain;
-using TrainDude.Features.Shared.Contracts.Trips.Domain.Events;
+using TrainDude.Features.Trips.Domain.Events;
 
 public sealed class LineReadModelGrouper
     : IAggregateGrouper<Guid>

@@ -8,8 +8,8 @@ using System;
 using System.Text.Json.Serialization;
 
 using TrainDude.Features.Shared.Contracts.Base;
-using TrainDude.Features.Shared.Contracts.Stations.Domain.Events;
-using TrainDude.Shared.Values;
+using TrainDude.Features.Shared.Contracts.Values;
+using TrainDude.Features.Stations.Domain.Events;
 
 public class StationAggregate
     : IHasAlternativeNames
@@ -48,19 +48,19 @@ public class StationAggregate
 
     public string? NameRussian { get; private set; }
 
-    public static StationCreated Make(Guid id, string nameGerman, string? nameGermanNew, string? namePolish, string? nameRussian)
+    public static StationCreated Make(Guid id, string who, string nameGerman, string? nameGermanNew, string? namePolish, string? nameRussian)
     {
-        return new StationCreated(id, DateTime.UtcNow, nameGerman, nameGermanNew, namePolish, nameRussian);
+        return new StationCreated(id, DateTime.UtcNow, who, nameGerman, nameGermanNew, namePolish, nameRussian);
     }
 
-    public StationLocationSet SetLocation(Location location)
+    public StationLocationSet SetLocation(string who, Location location)
     {
-        return new StationLocationSet(this.Id, DateTime.UtcNow, location);
+        return new StationLocationSet(this.Id, DateTime.UtcNow, who, location);
     }
 
-    public StationAxleAdded AddAxle()
+    public StationAxleAdded AddAxle(string who)
     {
-        return new StationAxleAdded(this.Id, DateTime.UtcNow);
+        return new StationAxleAdded(this.Id, DateTime.UtcNow, who);
     }
 
     public void Apply(StationCreated e)

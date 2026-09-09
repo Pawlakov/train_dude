@@ -2,12 +2,12 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Features.Shared;
+namespace TrainDude.Features.Shared.Extensions;
 
 using System;
 using System.Collections.Generic;
 
-using TrainDude.Shared.Values;
+using TrainDude.Features.Shared.Contracts.Values;
 
 public static class GeoJsonExtensions
 {

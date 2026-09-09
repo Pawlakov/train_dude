@@ -12,10 +12,7 @@ using System.Threading.Tasks;
 
 using Microsoft.JSInterop;
 
-using TrainDude.Features.Shared.Contracts.Base;
 using TrainDude.Features.Shared.Contracts.Generic;
-using TrainDude.Shared;
-using TrainDude.Shared.Values;
 using TrainDude.Web.Client.GeoJson;
 
 public sealed class MapService

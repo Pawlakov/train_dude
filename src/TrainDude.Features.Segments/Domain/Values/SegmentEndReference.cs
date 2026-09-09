@@ -6,6 +6,6 @@ namespace TrainDude.Features.Segments.Domain.Values;
 
 using System;
 
-using TrainDude.Shared.Values;
+using TrainDude.Features.Shared.Contracts.Values;
 
 public record struct SegmentEndReference(Guid Id, int Axle, bool Pole, Location? Location, string Name);

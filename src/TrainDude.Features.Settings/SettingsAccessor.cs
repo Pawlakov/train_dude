@@ -14,7 +14,6 @@ using Marten;
 
 using TrainDude.Features.Settings.Domain;
 using TrainDude.Features.Shared;
-using TrainDude.Shared.Enums;
 
 public static class SettingsAccessor
 {

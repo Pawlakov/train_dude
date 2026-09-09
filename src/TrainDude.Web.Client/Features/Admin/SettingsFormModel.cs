@@ -4,7 +4,7 @@
 
 namespace TrainDude.Web.Client.Features.Admin;
 
-using TrainDude.Shared.Enums;
+using TrainDude.Features.Shared.Contracts.Enums;
 
 public class SettingsFormModel
 {

@@ -7,6 +7,6 @@ namespace TrainDude.Features.Stations.Contracts.GetStation;
 using System.Collections.Generic;
 
 using TrainDude.Features.Shared.Contracts.Base;
-using TrainDude.Shared.Values;
+using TrainDude.Features.Shared.Contracts.Values;
 
 public sealed record GetStationQueryResult(string Name, Location? Location, int AxleCount) : ILookupQueryResult;

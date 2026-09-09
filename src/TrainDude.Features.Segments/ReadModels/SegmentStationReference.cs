@@ -7,7 +7,7 @@ namespace TrainDude.Features.Segments.ReadModels;
 using System;
 
 using TrainDude.Features.Shared.Contracts.Base;
-using TrainDude.Shared.Values;
+using TrainDude.Features.Shared.Contracts.Values;
 
 public sealed class SegmentStationReference
     : IHasAlternativeNames

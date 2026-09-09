@@ -5,6 +5,6 @@
 namespace TrainDude.Features.Settings.Contracts.GetNamingPolicy;
 
 using TrainDude.Features.Shared.Contracts.Base;
-using TrainDude.Shared.Enums;
+using TrainDude.Features.Shared.Contracts.Enums;
 
 public sealed record GetNamingPolicyResult(NamingPolicy Policy) : IQueryResult;

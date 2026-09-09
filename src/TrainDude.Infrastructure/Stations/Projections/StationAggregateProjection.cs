@@ -10,8 +10,8 @@ using JasperFx.Events;
 
 using Marten.Events.Aggregation;
 
-using TrainDude.Features.Shared.Contracts.Stations.Domain.Events;
 using TrainDude.Features.Stations.Domain;
+using TrainDude.Features.Stations.Domain.Events;
 
 public class StationAggregateProjection
     : SingleStreamProjection<StationAggregate, Guid>

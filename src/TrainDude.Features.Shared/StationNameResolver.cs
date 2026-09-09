@@ -7,7 +7,7 @@ namespace TrainDude.Features.Shared;
 using System;
 
 using TrainDude.Features.Shared.Contracts.Base;
-using TrainDude.Shared.Enums;
+using TrainDude.Features.Shared.Contracts.Enums;
 
 public class StationNameResolver
 {

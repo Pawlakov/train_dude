@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Shared.Enums;
+namespace TrainDude.Features.Shared.Contracts.Enums;
 
 public enum TripType
 {

@@ -21,10 +21,11 @@ using TrainDude.Features.Segments.ReadModels;
 using TrainDude.Features.Segments.ReadModels.Events;
 using TrainDude.Features.Settings.Domain.Events;
 using TrainDude.Features.Shared;
-using TrainDude.Features.Shared.Contracts.Stations.Domain.Events;
+using TrainDude.Features.Shared.Contracts.Enums;
+using TrainDude.Features.Shared.Extensions;
 using TrainDude.Features.Shared.ReadModels;
+using TrainDude.Features.Stations.Domain.Events;
 using TrainDude.Infrastructure.Segments.Groupers;
-using TrainDude.Shared.Enums;
 
 public sealed class SegmentReadModelProjection
     : MultiStreamProjection<SegmentReadModel, Guid>

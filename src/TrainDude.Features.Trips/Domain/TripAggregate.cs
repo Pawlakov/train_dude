@@ -7,7 +7,7 @@ namespace TrainDude.Features.Trips.Domain;
 using System;
 using System.Text.Json.Serialization;
 
-using TrainDude.Features.Shared.Contracts.Trips.Domain.Events;
+using TrainDude.Features.Trips.Domain.Events;
 
 public class TripAggregate
 {

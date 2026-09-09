@@ -7,6 +7,6 @@ namespace TrainDude.Features.Shared.Contracts.Generic;
 using System.Collections.Generic;
 
 using TrainDude.Features.Shared.Contracts.Base;
-using TrainDude.Shared.Values;
+using TrainDude.Features.Shared.Contracts.Values;
 
 public sealed record MapQueryResult(IReadOnlyList<Location> StationPoints, IReadOnlyList<IReadOnlyList<Location>> SegmentLineStrings) : IQueryResult;

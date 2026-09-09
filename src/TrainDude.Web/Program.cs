@@ -4,9 +4,12 @@
 
 namespace TrainDude.Web;
 
+using System.Security.Claims;
+
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -74,7 +77,18 @@ public static class Program
             });
 
         builder.Services
-            .AddAuthorization();
+            .AddAuthorization(options =>
+            {
+                options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+
+                options.AddPolicy(
+                "SuperUser",
+                policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireClaim(ClaimTypes.Email, builder.Configuration["Authorization:SuperUser"]);
+                });
+            });
 
         builder.Services
             .AddControllers();
@@ -139,7 +153,11 @@ public static class Program
             .AddInteractiveWebAssemblyRenderMode()
             .AddAdditionalAssemblies(typeof(Client._Imports).Assembly);
 
-        app.MapWolverineEndpoints(opts => { opts.UseFluentValidationProblemDetailMiddleware(); });
+        app.MapWolverineEndpoints(opts =>
+        {
+            opts.UseFluentValidationProblemDetailMiddleware();
+            opts.RequireAuthorizeOnAll();
+        });
 
         app.MapGet(
             "/account/login",

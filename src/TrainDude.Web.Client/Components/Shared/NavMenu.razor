@@ -1,4 +1,5 @@
-﻿<nav class="navbar navbar-expand-lg">
+﻿@using Microsoft.AspNetCore.Components.Authorization
+<nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -8,24 +9,26 @@
                 <li class="nav-item">
                     <a class="nav-link active" href="">Mapa</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="lines">Linie</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="stations">Stacje</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="segments">Odcinki</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="radii">Promienie</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="trips">Kursy</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="admin">Administracja</a>
-                </li>
+                <AuthorizeView>
+                    <li class="nav-item">
+                        <a class="nav-link" href="lines">Linie</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="stations">Stacje</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="segments">Odcinki</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="radii">Promienie</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="trips">Kursy</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="admin">Administracja</a>
+                    </li>
+                </AuthorizeView>
             </ul>
         </div>
     </div>

@@ -11,8 +11,8 @@ using JasperFx.Events;
 using Marten.Events.Aggregation;
 
 using TrainDude.Features.Settings.Domain.Events;
+using TrainDude.Features.Shared.Contracts.Enums;
 using TrainDude.Features.Shared.ReadModels;
-using TrainDude.Shared.Enums;
 
 public sealed class SharedSettingsReferenceProjection
     : SingleStreamProjection<SharedSettingsReference, Guid>

@@ -6,6 +6,6 @@ namespace TrainDude.Features.Settings.Domain.Events;
 
 using System;
 
-using TrainDude.Shared.Enums;
+using TrainDude.Features.Shared.Contracts.Enums;
 
 public sealed record SettingsNamingPolicySet(Guid Id, DateTime When, NamingPolicy NamingPolicy);

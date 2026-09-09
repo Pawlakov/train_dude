@@ -11,7 +11,7 @@ using System.Text.Json.Serialization;
 
 using TrainDude.Features.Segments.Domain.Events;
 using TrainDude.Features.Segments.Domain.Values;
-using TrainDude.Shared.Values;
+using TrainDude.Features.Shared.Contracts.Values;
 
 public class SegmentAggregate
 {

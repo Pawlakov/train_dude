@@ -7,7 +7,7 @@ namespace TrainDude.Features.Stations.Contracts.SetLocation;
 using System;
 
 using TrainDude.Features.Shared.Contracts.Base;
-using TrainDude.Shared.Values;
+using TrainDude.Features.Shared.Contracts.Values;
 
 public sealed record SetLocationCommand(Guid StationId, long Version, Location Location)
     : IUpdateCommand

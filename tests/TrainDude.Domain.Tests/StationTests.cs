@@ -1,7 +1,7 @@
 ﻿namespace TrainDude.Domain.Tests;
 
+using TrainDude.Features.Shared.Contracts.Values;
 using TrainDude.Infrastructure.Stations;
-using TrainDude.Shared.Values;
 
 using Xunit;
 

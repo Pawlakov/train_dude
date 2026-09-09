@@ -11,7 +11,7 @@ using JasperFx.Events;
 using Marten.Events.Aggregation;
 
 using TrainDude.Features.Segments.ReadModels;
-using TrainDude.Features.Shared.Contracts.Stations.Domain.Events;
+using TrainDude.Features.Stations.Domain.Events;
 
 public sealed class SegmentStationReferenceProjection
     : SingleStreamProjection<SegmentStationReference, Guid>

@@ -2,8 +2,13 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Features.Shared.Contracts.Stations.Domain.Events;
+namespace TrainDude.Features.Stations.Domain.Events;
 
 using System;
 
-public sealed record StationAxleAdded(Guid Id, DateTime When);
+using TrainDude.Features.Shared.Base;
+
+public sealed record StationAxleAdded(Guid StationId, DateTime When, string Who) : IDomainEvent
+{
+    public Guid Id => this.StationId;
+}

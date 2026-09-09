@@ -7,6 +7,6 @@ namespace TrainDude.Features.Segments.Domain.Events;
 using System;
 using System.Collections.Generic;
 
-using TrainDude.Shared.Values;
+using TrainDude.Features.Shared.Contracts.Values;
 
 public sealed record SegmentCourseSet(Guid Id, DateTime When, IEnumerable<Location> Course);

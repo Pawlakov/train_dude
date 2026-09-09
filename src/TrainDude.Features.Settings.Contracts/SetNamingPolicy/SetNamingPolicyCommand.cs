@@ -5,7 +5,7 @@
 namespace TrainDude.Features.Settings.Contracts.SetNamingPolicy;
 
 using TrainDude.Features.Shared.Contracts.Base;
-using TrainDude.Shared.Enums;
+using TrainDude.Features.Shared.Contracts.Enums;
 
 public sealed record SetNamingPolicyCommand(NamingPolicy Policy)
     : IEmptyCommand

@@ -18,11 +18,11 @@ using TrainDude.Features.Segments.Contracts.CreateSegment;
 using TrainDude.Features.Segments.Contracts.SetCourse;
 using TrainDude.Features.Shared.Contracts.Admin;
 using TrainDude.Features.Shared.Contracts.Generic;
+using TrainDude.Features.Shared.Contracts.Values;
 using TrainDude.Features.Stations.Contracts.AddAxle;
 using TrainDude.Features.Stations.Contracts.CreateStation;
 using TrainDude.Features.Stations.Contracts.SetLocation;
 using TrainDude.Features.Trips.Contracts.CreateTrip;
-using TrainDude.Shared.Values;
 using TrainDude.Web.Client.Seed;
 
 public class SeedService

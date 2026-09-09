@@ -6,6 +6,6 @@ namespace TrainDude.Features.Lines.Domain.Values;
 
 using System;
 
-using TrainDude.Shared.Values;
+using TrainDude.Features.Shared.Contracts.Values;
 
 public sealed record LineStation(Guid Id, Location? Location, string Name);
