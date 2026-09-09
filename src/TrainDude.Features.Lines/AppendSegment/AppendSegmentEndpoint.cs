@@ -23,14 +23,10 @@ public static class AppendSegmentEndpoint
     [WolverinePost(AppendSegmentCommand.TypeRoute)]
     public static (UpdatedResult, Events) Post(AppendSegmentCommand command, LineAggregate aggregate, [ReadModel(nameof(AppendSegmentCommand.SegmentId))] LineSegmentReference segmentAggregate, IQuerySession session)
     {
-        var events = new Events();
-
-        var appendEvent = aggregate.AppendSegment(segmentAggregate.Id);
-        events.Add(appendEvent);
-        aggregate.Apply(appendEvent);
+        var domainEvent = aggregate.AppendSegment(segmentAggregate);
 
         var response = new UpdatedResult(aggregate.Version + 1);
 
-        return (response, events);
+        return (response, new Events { domainEvent });
     }
 }

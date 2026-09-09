@@ -11,6 +11,7 @@ using System.Text.Json.Serialization;
 
 using TrainDude.Features.Lines.Domain.Events;
 using TrainDude.Features.Lines.Domain.Exceptions;
+using TrainDude.Features.Lines.ReadModels;
 
 public class LineAggregate
 {
@@ -56,19 +57,19 @@ public class LineAggregate
         return new LineCreated(id, DateTime.UtcNow, lineNumber, lineLetter);
     }
 
-    public LineTripAssigned AssignTrip(Guid tripId)
+    public LineTripAssigned AssignTrip(LineTripReference trip)
     {
-        if (this.trips.Contains(tripId))
+        if (this.trips.Contains(trip.Id))
         {
-            throw new LineDuplicateTripException(this.Id, tripId);
+            throw new LineDuplicateTripException(this.Id, trip.Id);
         }
 
-        return new LineTripAssigned(this.Id, DateTime.UtcNow, tripId);
+        return new LineTripAssigned(this.Id, DateTime.UtcNow, trip.Id);
     }
 
-    public LineSegmentAppended AppendSegment(Guid segmentId) // TODO actually you can enforce rules here if you pass the hole segment reference model
+    public LineSegmentAppended AppendSegment(LineSegmentReference segment)
     {
-        return new LineSegmentAppended(this.Id, DateTime.UtcNow, segmentId);
+        return new LineSegmentAppended(this.Id, DateTime.UtcNow, segment.Id);
     }
 
     public void Apply(LineCreated e)

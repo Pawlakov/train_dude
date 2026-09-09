@@ -19,7 +19,7 @@ public static class AssignTripEndpoint
     [WolverinePost(AssignTripCommand.TypeRoute)]
     public static (UpdatedResult, Events) Post(AssignTripCommand command, LineAggregate aggregate, [ReadModel(nameof(AssignTripCommand.TripId))] LineTripReference tripAggregate)
     {
-        var domainEvent = aggregate.AssignTrip(tripAggregate.Id);
+        var domainEvent = aggregate.AssignTrip(tripAggregate);
 
         var response = new UpdatedResult(aggregate.Version + 1);
 
