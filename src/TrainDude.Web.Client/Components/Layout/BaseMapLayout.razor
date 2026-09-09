@@ -2,5 +2,16 @@
 
 <div id="map"></div>
 <div class="cs-content-wrapper">
-    @this.Body
+    <ErrorBoundary>
+        <ChildContent>
+            @this.Body
+        </ChildContent>
+        <ErrorContent Context="exception">
+            <div class="container-fluid">
+                <main class="container rounded shadow bg-body">
+                    @exception.GetType().Name
+                </main>
+            </div>
+        </ErrorContent>
+    </ErrorBoundary>
 </div>

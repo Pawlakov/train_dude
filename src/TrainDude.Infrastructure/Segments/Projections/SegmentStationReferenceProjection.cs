@@ -11,6 +11,7 @@ using JasperFx.Events;
 using Marten.Events.Aggregation;
 
 using TrainDude.Features.Segments.ReadModels;
+using TrainDude.Features.Settings.Domain.Events;
 using TrainDude.Features.Stations.Domain.Events;
 
 public sealed class SegmentStationReferenceProjection
@@ -40,5 +41,10 @@ public sealed class SegmentStationReferenceProjection
         aggregate.AxleCount += 1;
 
         aggregate.Version++;
+    }
+
+    public void Apply(SettingsNamingPolicySet e, SegmentStationReference item)
+    {
+        throw new NotImplementedException(); // TODO Do this NOW
     }
 }

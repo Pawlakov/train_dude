@@ -1,4 +1,4 @@
-// <copyright file="CommandFailedException.cs" company="Pawlakov">
+﻿// <copyright file="ApiException.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
@@ -9,10 +9,10 @@ using System.Net;
 
 using TrainDude.Web.Client.Services;
 
-public class CommandFailedException
+public sealed class ApiException
     : Exception
 {
-    public CommandFailedException(HttpStatusCode statusCode, string? title, string? detail)
+    public ApiException(HttpStatusCode statusCode, string? title, string? detail)
         : base(BuildMessage(statusCode, title, detail))
     {
         this.StatusCode = statusCode;

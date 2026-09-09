@@ -35,8 +35,8 @@ public class ApiClient
         where TRequest : IDomainRequest<TResponse>
         where TResponse : IRequestResult
     {
-        var httpRequest = BuildRequestMessage<TRequest, TResponse>(request);
-        var httpResponse = await this.http.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+        using var httpRequest = BuildRequestMessage<TRequest, TResponse>(request);
+        using var httpResponse = await this.http.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
 
         if (httpResponse.IsSuccessStatusCode)
         {
@@ -55,7 +55,7 @@ public class ApiClient
         }
 
         var problem = TryParseProblemDetails(body);
-        throw new CommandFailedException(httpResponse.StatusCode, problem?.Title, problem?.Detail);
+        throw new ApiException(httpResponse.StatusCode, problem?.Title, problem?.Detail);
     }
 
     private static HttpRequestMessage BuildRequestMessage<TRequest, TResponse>(TRequest request)

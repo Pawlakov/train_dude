@@ -121,6 +121,6 @@ public sealed class SegmentReadModelProjection
 
     public void Apply(SettingsNamingPolicySet e, SegmentReadModel item)
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException(); // TODO Do this NOW
     }
 }

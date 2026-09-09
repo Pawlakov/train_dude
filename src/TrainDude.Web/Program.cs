@@ -115,8 +115,6 @@ public static class Program
             opts.Discovery.IncludeAssembly(typeof(GetStationsEndpoint).Assembly);
             opts.Discovery.IncludeAssembly(typeof(GetTripsEndpoint).Assembly);
 
-            opts.DescribeHandlerMatch(typeof(DropEndpoint));
-
             opts.Policies.AutoApplyTransactions();
             opts.Policies.UseDurableLocalQueues();
             opts.Policies.OnException<DomainException>().MoveToErrorQueue();
@@ -148,7 +146,8 @@ public static class Program
 
         app.UseAntiforgery();
 
-        app.MapStaticAssets();
+        app.MapStaticAssets().Add(endpointBuilder => endpointBuilder.Metadata.Add(new AllowAnonymousAttribute()));
+
         app.MapRazorComponents<App>()
             .AddInteractiveWebAssemblyRenderMode()
             .AddAdditionalAssemblies(typeof(Client._Imports).Assembly);

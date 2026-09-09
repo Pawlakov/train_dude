@@ -71,9 +71,10 @@ public class SeedService
         var segmentsTask = Parallel.ForEachAsync(segmentsSeed, options, async (x, ct) => await this.SeedSegment(x, ct));
         var linesSeed = await linesSeedTask;
         await tripsTask;
+        await segmentsTask;
         var linesTask = Parallel.ForEachAsync(linesSeed, options, async (x, ct) => await this.SeedLine(x, ct));
 
-        await Task.WhenAll(radiiTask, segmentsTask, linesTask);
+        await Task.WhenAll(radiiTask, linesTask);
     }
 
     private async Task SeedLine(LineSeed seed, CancellationToken cancellationToken = default)

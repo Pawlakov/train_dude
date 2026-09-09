@@ -22,6 +22,11 @@ public class StationReadModelGrouper
 {
     public async Task Group(IQuerySession session, IReadOnlyList<IEvent> events, IEventGrouping<Guid> grouping)
     {
+        await this.GroupLocationSet(session, events, grouping);
+    }
+
+    private async Task GroupLocationSet(IQuerySession session, IReadOnlyList<IEvent> events, IEventGrouping<Guid> grouping)
+    {
         var policyEvents = events.OfType<IEvent<SettingsNamingPolicySet>>().ToList();
         if (policyEvents.Count == 0)
         {
