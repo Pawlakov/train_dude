@@ -66,6 +66,7 @@ public class StationAggregate
     public void Apply(StationCreated e)
     {
         this.Id = e.Id;
+        this.AxleCount = 0;
         this.Location = null;
         this.NameGerman = e.NameGerman;
         this.NameGermanNew = e.NameGermanNew;

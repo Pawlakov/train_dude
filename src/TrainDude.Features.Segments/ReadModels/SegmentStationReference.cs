@@ -16,6 +16,8 @@ public sealed class SegmentStationReference
 
     public long Version { get; set; }
 
+    public int AxleCount { get; set; }
+
     public Location? Location { get; set; }
 
     public string NameGerman { get; set; }

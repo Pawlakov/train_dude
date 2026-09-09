@@ -12,21 +12,20 @@ using TrainDude.Features.Segments.Contracts.CreateSegment;
 using TrainDude.Features.Segments.Domain;
 using TrainDude.Features.Segments.Domain.Exceptions;
 using TrainDude.Features.Segments.Domain.Values;
+using TrainDude.Features.Segments.ReadModels;
 using TrainDude.Features.Shared.Contracts.Generic;
 using TrainDude.Features.Stations.Contracts.GetStation;
 
 using Wolverine;
 using Wolverine.Http;
 using Wolverine.Marten;
+using Wolverine.Persistence.EventSourcing;
 
 public static class CreateSegmentEndpoint
 {
     [WolverinePost(CreateSegmentCommand.TypeRoute)]
-    public static async Task<(CreatedResult, IStartStream)> Post(CreateSegmentCommand segmentCommand, IMessageBus mediator, CancellationToken cancellationToken = default)
+    public static async Task<(CreatedResult, IStartStream)> Post(CreateSegmentCommand segmentCommand, [ReadModel(nameof(CreateSegmentCommand.AId))] SegmentStationReference a, [ReadModel(nameof(CreateSegmentCommand.BId))] SegmentStationReference b, CancellationToken cancellationToken = default)
     {
-        var a = await mediator.InvokeAsync<GetStationQueryResult>(new GetStationQuery(segmentCommand.AId), cancellationToken);
-        var b = await mediator.InvokeAsync<GetStationQueryResult>(new GetStationQuery(segmentCommand.BId), cancellationToken);
-
         var aEnd = new SegmentEnd(segmentCommand.AId, segmentCommand.AAxle, segmentCommand.APole);
         var bEnd = new SegmentEnd(segmentCommand.BId, segmentCommand.BAxle, segmentCommand.BPole);
         if (segmentCommand.AAxle >= a.AxleCount)
