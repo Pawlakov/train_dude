@@ -33,14 +33,14 @@ public class SettingsAggregate
 
     public NamingPolicy NamingPolicy { get; private set; }
 
-    public static SettingsCreated Make(Guid id)
+    public static SettingsCreated Make(Guid id, string who)
     {
-        return new SettingsCreated(id, DateTime.UtcNow);
+        return new SettingsCreated(id, who);
     }
 
-    public SettingsNamingPolicySet SetNamingPolicy(NamingPolicy namingPolicy)
+    public SettingsNamingPolicySet SetNamingPolicy(string who, NamingPolicy namingPolicy)
     {
-        return new SettingsNamingPolicySet(this.Id, DateTime.UtcNow, namingPolicy);
+        return new SettingsNamingPolicySet(this.Id, who, namingPolicy);
     }
 
     public void Apply(SettingsCreated e)

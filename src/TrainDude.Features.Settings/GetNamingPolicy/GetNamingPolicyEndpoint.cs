@@ -4,6 +4,7 @@
 
 namespace TrainDude.Features.Settings.GetNamingPolicy;
 
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,9 +20,9 @@ public static class GetNamingPolicyEndpoint
 {
     [WolverineGet(GetNamingPolicyQuery.TypeRoute)]
     [Tags("Settings")]
-    public static async Task<GetNamingPolicyResult> Handle(GetNamingPolicyQuery query, IDocumentSession session, CancellationToken cancellationToken)
+    public static async Task<GetNamingPolicyResult> Handle(GetNamingPolicyQuery query, ClaimsPrincipal user, IQuerySession session, CancellationToken cancellationToken)
     {
-        var queryResult = await SettingsAccessor.FetchForReading(session, cancellationToken);
+        var queryResult = await SettingsAccessor.FetchForReading(session, user, cancellationToken);
         var result = new GetNamingPolicyResult(queryResult.NamingPolicy);
 
         return result;

@@ -15,6 +15,7 @@ using JasperFx.Events.Grouping;
 using Marten;
 using Marten.Events.Projections;
 
+using TrainDude.Features.Settings.Domain.Events;
 using TrainDude.Features.Shared;
 using TrainDude.Features.Shared.Contracts.Enums;
 using TrainDude.Features.Shared.ReadModels;
@@ -37,36 +38,30 @@ public class StationReadModelProjection
 
     public override async Task EnrichEventsAsync(SliceGroup<StationReadModel, Guid> group, IQuerySession querySession, CancellationToken cancellation)
     {
-        var createdEvents = group.Slices
-            .SelectMany(slice => slice.Events().OfType<IEvent<StationCreated>>())
-            .ToArray();
-
-        if (createdEvents.Length == 0)
-        {
-            return;
-        }
-
-        var settings = await querySession.LoadAsync<SharedSettingsReference>(SettingsSingleton.Id, cancellation);
-
-        var policy = settings?.NamingPolicy ?? NamingPolicy.Modern;
-        var nameSelector = StationNameResolver.GetNameSelector(policy);
-
-        foreach (var slice in group.Slices)
-        {
-            foreach (var e in slice.Events().OfType<IEvent<StationCreated>>().ToArray())
+        await group
+            .EnrichWith<SharedSettingsReference>()
+            .ForEvent<StationCreated>()
+            .ForEntityId(_ => SettingsSingleton.Id)
+            .EnrichAsync((slice, e, settings) =>
             {
+                var policy = settings?.NamingPolicy ?? NamingPolicy.Modern;
+                var nameSelector = StationNameResolver.GetNameSelector(policy);
+
                 var name = nameSelector(e.Data);
-                var enriched = new StationCreatedWithReferences(e.Data.Id, name);
+                var enriched = new StationCreatedWithReferences(e.Data, name);
 
                 slice.ReplaceEvent(e, enriched);
-            }
-        }
+            });
     }
 
     public void Apply(IEvent<StationCreatedWithReferences> e, StationReadModel readModel)
     {
-        readModel.Id = e.Data.Id;
+        readModel.Id = e.Data.Event.Id;
         readModel.AxleCount = 1;
+        readModel.NameGerman = e.Data.Event.NameGerman;
+        readModel.NameGermanNew = e.Data.Event.NameGermanNew;
+        readModel.NamePolish = e.Data.Event.NamePolish;
+        readModel.NameRussian = e.Data.Event.NameRussian;
         readModel.Name = e.Data.Name;
 
         readModel.Version++;
@@ -84,5 +79,11 @@ public class StationReadModelProjection
         readModel.AxleCount += 1;
 
         readModel.Version++;
+    }
+
+    public void Apply(SettingsNamingPolicySet e, StationReadModel readModel)
+    {
+        var selector = StationNameResolver.GetNameSelector(e.NamingPolicy);
+        readModel.Name = selector(readModel);
     }
 }

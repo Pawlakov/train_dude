@@ -6,4 +6,10 @@ namespace TrainDude.Features.Settings.Domain.Events;
 
 using System;
 
-public sealed record SettingsCreated(Guid Id, DateTime When);
+using TrainDude.Features.Shared.Base;
+
+public sealed record SettingsCreated(Guid SettingsId, string Who)
+    : IDomainEvent
+{
+    public Guid Id => this.SettingsId;
+}

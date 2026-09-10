@@ -16,32 +16,40 @@ using Marten.Events.Aggregation;
 
 using TrainDude.Features.Settings.Domain.Events;
 using TrainDude.Features.Stations.Domain;
+using TrainDude.Features.Stations.Domain.Events;
 
 public class StationReadModelGrouper
     : IAggregateGrouper<Guid>
 {
     public async Task Group(IQuerySession session, IReadOnlyList<IEvent> events, IEventGrouping<Guid> grouping)
     {
-        await this.GroupLocationSet(session, events, grouping);
+        await this.GroupNamingPolicySet(session, events, grouping);
     }
 
-    private async Task GroupLocationSet(IQuerySession session, IReadOnlyList<IEvent> events, IEventGrouping<Guid> grouping)
+    private async Task GroupNamingPolicySet(IQuerySession session, IReadOnlyList<IEvent> events, IEventGrouping<Guid> grouping)
     {
-        var policyEvents = events.OfType<IEvent<SettingsNamingPolicySet>>().ToList();
-        if (policyEvents.Count == 0)
+        var namingPolicySetEvents = events.OfType<IEvent<SettingsNamingPolicySet>>().ToList();
+        if (namingPolicySetEvents.Count == 0)
         {
             return;
         }
 
-        var allSegmentIds = await session.Query<StationAggregate>()
-            .Select(x => x.Id)
+        var stationIds = await session.Events
+            .QueryRawEventDataOnly<StationCreated>()
+            .Select(x => x.StationId)
+            .Distinct()
             .ToListAsync();
 
-        foreach (var e in policyEvents)
+        if (stationIds.Count == 0)
         {
-            foreach (var segmentId in allSegmentIds)
+            return;
+        }
+
+        foreach (var namingPolicySetEvent in namingPolicySetEvents)
+        {
+            foreach (var stationId in stationIds)
             {
-                grouping.AddEvent(segmentId, e);
+                grouping.AddEvent(stationId, namingPolicySetEvent);
             }
         }
     }
