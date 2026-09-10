@@ -8,10 +8,10 @@ using System;
 
 using TrainDude.Features.Shared.Contracts.Base;
 
-public sealed record CreateSegmentCommand(double NominalLength, int Tracks, Guid AId, int AAxle, bool APole, Guid BId, int BAxle, bool BPole)
-    : ICreateCommand
+public sealed record CreateSegmentCommand(Guid SegmentId, double NominalLength, int Tracks, Guid AId, int AAxle, bool APole, Guid BId, int BAxle, bool BPole)
+    : IGeneralCommand
 {
     public const string TypeRoute = "/api/segments/create";
 
-    public string Route => TypeRoute;
+    public static string Route => TypeRoute;
 }

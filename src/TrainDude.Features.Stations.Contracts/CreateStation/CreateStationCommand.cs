@@ -4,12 +4,14 @@
 
 namespace TrainDude.Features.Stations.Contracts.CreateStation;
 
+using System;
+
 using TrainDude.Features.Shared.Contracts.Base;
 
-public sealed record CreateStationCommand(string NameGerman, string? NameGermanNew, string? NamePolish, string? NameRussian)
-    : ICreateCommand
+public sealed record CreateStationCommand(Guid StationId, string NameGerman, string? NameGermanNew, string? NamePolish, string? NameRussian)
+    : IGeneralCommand
 {
     public const string TypeRoute = "/api/stations/create";
 
-    public string Route => TypeRoute;
+    public static string Route => TypeRoute;
 }

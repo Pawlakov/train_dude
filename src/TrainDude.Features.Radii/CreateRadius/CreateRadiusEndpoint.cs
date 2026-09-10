@@ -10,6 +10,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 
 using TrainDude.Features.Radii.Contracts.CreateRadius;
+using TrainDude.Features.Radii.Contracts.GetRadius;
 using TrainDude.Features.Radii.Domain;
 using TrainDude.Features.Shared.Contracts.Generic;
 using TrainDude.Features.Shared.Extensions;
@@ -21,15 +22,16 @@ public static class CreateRadiusEndpoint
 {
     [WolverinePost(CreateRadiusCommand.TypeRoute)]
     [Tags("Radii")]
-    public static (CreatedResult, IStartStream) Handle(CreateRadiusCommand command, ClaimsPrincipal user)
+    public static (IResult, IStartStream) Handle(CreateRadiusCommand command, ClaimsPrincipal user)
     {
-        var id = Guid.NewGuid();
-        var domainEvent = RadiusAggregate.Make(id, user.GetSubject(), command.Speed, command.Minimum);
+        var domainEvent = RadiusAggregate.Make(command.RadiusId, user.GetSubject(), command.Speed, command.Minimum);
 
-        var startStream = MartenOps.StartStream<RadiusAggregate>(id, domainEvent);
+        var startStream = MartenOps.StartStream<RadiusAggregate>(domainEvent.Id, domainEvent);
 
-        var response = new CreatedResult(domainEvent.Id);
+        var getUrl = string.Format(GetRadiusQuery.Route, domainEvent.Id);
+        var response = new CreationResponse(getUrl);
+        var result = Results.Created(getUrl, response);
 
-        return (response, startStream);
+        return (result, startStream);
     }
 }

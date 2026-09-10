@@ -8,9 +8,9 @@ using TrainDude.Features.Shared.Contracts.Base;
 using TrainDude.Features.Shared.Contracts.Enums;
 
 public sealed record SetNamingPolicyCommand(NamingPolicy Policy)
-    : IEmptyCommand
+    : IGeneralCommand
 {
     public const string TypeRoute = "/api/settings/name-mode";
 
-    public string Route => TypeRoute;
+    public static string Route => TypeRoute;
 }

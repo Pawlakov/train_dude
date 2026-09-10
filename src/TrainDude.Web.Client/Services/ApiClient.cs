@@ -5,11 +5,15 @@
 namespace TrainDude.Web.Client.Services;
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Reflection;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
@@ -18,65 +22,106 @@ using System.Threading.Tasks;
 using FluentValidation;
 using FluentValidation.Results;
 
+using RestSharp;
+
 using TrainDude.Features.Shared.Contracts.Base;
 using TrainDude.Web.Client.Exceptions;
 
 public class ApiClient
 {
-    private readonly HttpClient http;
-    private static readonly JsonSerializerOptions jsonOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web);
+    private readonly IRestClient client;
 
-    public ApiClient(HttpClient http)
+    public ApiClient(IRestClient client)
     {
-        this.http = http;
+        this.client = client ?? throw new ArgumentNullException(nameof(client));
     }
 
-    public Task<TResponse> SendAsync<TRequest, TResponse>(Guid id, TRequest request, CancellationToken cancellationToken = default)
-        where TRequest : IDomainRequest<TResponse>
-        where TResponse : IRequestResult
+    public Task PostAsync<TRequest>(Guid id, TRequest request, CancellationToken cancellationToken = default)
+        where TRequest : ISpecificCommand
     {
-        throw new NotImplementedException();
+        ArgumentNullException.ThrowIfNull(request);
+        var route = BuildRoute(TRequest.Route, id);
+        return this.SendAsync(Method.Post, route, request, null, cancellationToken);
     }
 
-    public async Task<TResponse> SendAsync<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken = default)
-        where TRequest : IDomainRequest<TResponse>
-        where TResponse : IRequestResult
+    public Task PostAsync<TRequest>(TRequest request, CancellationToken cancellationToken = default)
+        where TRequest : IGeneralCommand
     {
-        using var httpRequest = BuildRequestMessage<TRequest, TResponse>(request);
-        using var httpResponse = await this.http.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+        ArgumentNullException.ThrowIfNull(request);
+        return this.SendAsync(Method.Post, TRequest.Route, request, null, cancellationToken);
+    }
 
-        if (httpResponse.IsSuccessStatusCode)
+    public Task<TResponse> GetAsync<TRequest, TResponse>(Guid id, TRequest request, CancellationToken cancellationToken = default)
+        where TRequest : ISpecificQuery<TResponse>
+        where TResponse : IQueryResult
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        var route = BuildRoute(TRequest.Route, id);
+        return this.SendAsync<TResponse>(Method.Get, route, null, request, cancellationToken);
+    }
+
+    public Task<TResponse> GetAsync<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken = default)
+        where TRequest : IGeneralQuery<TResponse>
+        where TResponse : IQueryResult
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        return this.SendAsync<TResponse>(Method.Get, TRequest.Route, null, request, cancellationToken);
+    }
+
+    private async Task SendAsync(Method method, string route, object? body = null, object? query = null, CancellationToken cancellationToken = default)
+    {
+        var request = CreateRequest(method, route, body, query);
+        var response = await this.client.ExecuteAsync(request, cancellationToken).ConfigureAwait(false);
+        if (!response.IsSuccessful)
         {
-            var result = await httpResponse.Content.ReadFromJsonAsync<TResponse>(cancellationToken);
-            return result;
+            HandleErrorResponse(response);
+        }
+    }
+
+    private async Task<TResponse> SendAsync<TResponse>(Method method, string route, object? body = null, object? query = null, CancellationToken cancellationToken = default)
+    {
+        var request = CreateRequest(method, route, body, query);
+        var response = await this.client.ExecuteAsync<TResponse>(request, cancellationToken).ConfigureAwait(false);
+        if (!response.IsSuccessful)
+        {
+            HandleErrorResponse(response);
         }
 
-        var body = await httpResponse.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-        if (httpResponse.StatusCode == HttpStatusCode.BadRequest)
+        return response.Data ?? throw new ApiException(response.StatusCode, "Empty Response", "The server returned an empty payload.");
+    }
+
+    private static RestRequest CreateRequest(Method method, string route, object? body, object? query)
+    {
+        var request = new RestRequest(route, method);
+        if (body is not null)
         {
-            var failures = TryParseValidationFailures(body);
+            request.AddJsonBody(body);
+        }
+
+        if (query is not null)
+        {
+            request.AddObject(query);
+        }
+
+        return request;
+    }
+
+    private static void HandleErrorResponse(RestResponse response)
+    {
+        if (response.StatusCode == HttpStatusCode.BadRequest && !string.IsNullOrWhiteSpace(response.Content))
+        {
+            var failures = TryParseValidationFailures(response.Content);
             if (failures is { Count: > 0 })
             {
                 throw new ValidationException(failures);
             }
         }
 
-        var problem = TryParseProblemDetails(body);
-        throw new ApiException(httpResponse.StatusCode, problem?.Title, problem?.Detail);
+        var problem = TryParseProblemDetails(response.Content);
+        throw new ApiException(response.StatusCode, problem?.Title, problem?.Detail);
     }
 
-    private static HttpRequestMessage BuildRequestMessage<TRequest, TResponse>(TRequest request)
-        where TRequest : IDomainRequest<TResponse>
-        where TResponse : IRequestResult
-    {
-        var route = request.Route;
-        return new HttpRequestMessage(HttpMethod.Post, route)
-        {
-            Content = JsonContent.Create(request, options: jsonOptions),
-        };
-    }
-
-    private static List<ValidationFailure>? TryParseValidationFailures(string body)
+    private static List<ValidationFailure>? TryParseValidationFailures(string? body)
     {
         if (string.IsNullOrWhiteSpace(body))
         {
@@ -86,14 +131,7 @@ public class ApiClient
         try
         {
             var problem = JsonSerializer.Deserialize<ValidationProblemDetailsDto>(body);
-            if (problem?.Errors is not { Count: > 0 })
-            {
-                return null;
-            }
-
-            return problem.Errors
-                .SelectMany(entry => entry.Value.Select(message => new ValidationFailure(entry.Key, message)))
-                .ToList();
+            return problem?.Errors?.SelectMany(e => e.Value.Select(m => new ValidationFailure(e.Key, m))).ToList();
         }
         catch (JsonException)
         {
@@ -101,7 +139,7 @@ public class ApiClient
         }
     }
 
-    private static ProblemDetailsDto? TryParseProblemDetails(string body)
+    private static ProblemDetailsDto? TryParseProblemDetails(string? body)
     {
         if (string.IsNullOrWhiteSpace(body))
         {
@@ -118,18 +156,12 @@ public class ApiClient
         }
     }
 
-    private sealed class ValidationProblemDetailsDto
+    private static string BuildRoute(string template, Guid? id = null)
     {
-        [JsonPropertyName("errors")]
-        public Dictionary<string, string[]>? Errors { get; init; }
+        return id.HasValue ? string.Format(template, id.Value) : template;
     }
 
-    private sealed class ProblemDetailsDto
-    {
-        [JsonPropertyName("title")]
-        public string? Title { get; init; }
+    private sealed record ValidationProblemDetailsDto([property: JsonPropertyName("errors")] Dictionary<string, string[]>? Errors);
 
-        [JsonPropertyName("detail")]
-        public string? Detail { get; init; }
-    }
+    private sealed record ProblemDetailsDto([property: JsonPropertyName("title")] string? Title, [property: JsonPropertyName("detail")] string? Detail);
 }

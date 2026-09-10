@@ -6,11 +6,12 @@ namespace TrainDude.Features.Stations.Contracts.GetStationMap;
 using System;
 
 using TrainDude.Features.Shared.Contracts.Base;
+using TrainDude.Features.Shared.Contracts.Generic;
 
 public sealed record GetStationMapQuery()
-    : IMapQuery
+    : IMapQuery, ISpecificQuery<MapQueryResult>
 {
-    public const string TypeRoute = "/api/stations/{id}/map";
+    public const string TypeRoute = "/api/stations/{0}/map";
 
-    public string Route => TypeRoute;
+    public static string Route => TypeRoute;
 }

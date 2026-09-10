@@ -14,9 +14,9 @@ using Wolverine.Persistence.EventSourcing;
 
 public static class GetStationEndpoint
 {
-    [WolverineGet(GetStationQuery.TypeRoute)]
+    [WolverinePost(GetStationQuery.TypeRoute)]
     [Tags("Stations")]
-    public static GetStationQueryResult Handle(GetStationQuery query, [ReadModel(FromRoute = "id")] StationReadModel readModel)
+    public static GetStationQueryResult Handle([AsParameters] GetStationQuery query, [ReadModel(FromRoute = "0")] StationReadModel readModel)
     {
         var result = new GetStationQueryResult(readModel.Name, readModel.Location, readModel.AxleCount);
 

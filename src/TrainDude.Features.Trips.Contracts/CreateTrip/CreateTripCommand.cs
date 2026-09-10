@@ -4,12 +4,14 @@
 
 namespace TrainDude.Features.Trips.Contracts.CreateTrip;
 
+using System;
+
 using TrainDude.Features.Shared.Contracts.Base;
 
-public sealed record CreateTripCommand(int Number)
-    : ICreateCommand
+public sealed record CreateTripCommand(Guid TripId, int Number)
+    : IGeneralCommand
 {
     public const string TypeRoute = "/api/trips/create";
 
-    public string Route => TypeRoute;
+    public static string Route => TypeRoute;
 }

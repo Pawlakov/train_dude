@@ -7,11 +7,12 @@ namespace TrainDude.Features.Segments.Contracts.GetSegmentMap;
 using System;
 
 using TrainDude.Features.Shared.Contracts.Base;
+using TrainDude.Features.Shared.Contracts.Generic;
 
 public sealed record GetSegmentMapQuery()
-    : IMapQuery
+    : IMapQuery, ISpecificQuery<MapQueryResult>
 {
-    public const string TypeRoute = "/api/segments/{id}/map";
+    public const string TypeRoute = "/api/segments/{0}/map";
 
-    public string Route => TypeRoute;
+    public static string Route => TypeRoute;
 }

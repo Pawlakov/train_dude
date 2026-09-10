@@ -21,12 +21,12 @@ public static class SetLocationEndpoint
 {
     [WolverinePost(SetLocationCommand.TypeRoute)]
     [Tags("Stations")]
-    public static (UpdatedResult, Events) Handle(SetLocationCommand command, [WriteModel(FromRoute = "id", VersionSource = "version")] StationAggregate aggregate, ClaimsPrincipal user)
+    public static (IResult, Events) Handle(SetLocationCommand command, [WriteModel(FromRoute = "0", VersionSource = "version")] StationAggregate aggregate, ClaimsPrincipal user)
     {
         var domainEvent = aggregate.SetLocation(user.GetSubject(), command.Location);
 
-        var response = new UpdatedResult();
+        var result = Results.Ok();
 
-        return (response, new Events { domainEvent });
+        return (result, new Events { domainEvent });
     }
 }

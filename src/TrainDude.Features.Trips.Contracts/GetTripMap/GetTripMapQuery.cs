@@ -7,11 +7,12 @@ namespace TrainDude.Features.Trips.Contracts.GetTripMap;
 using System;
 
 using TrainDude.Features.Shared.Contracts.Base;
+using TrainDude.Features.Shared.Contracts.Generic;
 
 public sealed record GetTripMapQuery()
-    : IMapQuery
+    : IMapQuery, ISpecificQuery<MapQueryResult>
 {
-    public const string TypeRoute = "/api/trips/{id}/map";
+    public const string TypeRoute = "/api/trips/{0}/map";
 
-    public string Route => TypeRoute;
+    public static string Route => TypeRoute;
 }

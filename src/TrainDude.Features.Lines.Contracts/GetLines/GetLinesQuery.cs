@@ -11,5 +11,5 @@ public sealed record GetLinesQuery()
 {
     public const string TypeRoute = "/api/lines";
 
-    public string Route => TypeRoute;
+    public static string Route => TypeRoute;
 }

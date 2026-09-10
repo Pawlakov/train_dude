@@ -7,9 +7,9 @@ namespace TrainDude.Features.Shared.Contracts.Admin;
 using TrainDude.Features.Shared.Contracts.Base;
 
 public sealed record DropCommand()
-    : IEmptyCommand
+    : IGeneralCommand
 {
     public const string TypeRoute = "/api/admin/drop";
 
-    public string Route => TypeRoute;
+    public static string Route => TypeRoute;
 }

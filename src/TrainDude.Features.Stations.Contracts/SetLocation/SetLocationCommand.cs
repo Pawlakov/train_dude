@@ -10,9 +10,9 @@ using TrainDude.Features.Shared.Contracts.Base;
 using TrainDude.Features.Shared.Contracts.Values;
 
 public sealed record SetLocationCommand(Location Location)
-    : IUpdateCommand
+    : ISpecificCommand
 {
-    public const string TypeRoute = "/api/stations/{id}/set-location/{version}";
+    public const string TypeRoute = "/api/stations/{0}/set-location";
 
-    public string Route => TypeRoute;
+    public static string Route => TypeRoute;
 }

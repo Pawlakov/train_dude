@@ -9,9 +9,9 @@ using System;
 using TrainDude.Features.Shared.Contracts.Base;
 
 public sealed record AssignTripCommand(Guid TripId)
-    : IUpdateCommand
+    : ISpecificCommand
 {
-    public const string TypeRoute = "/api/lines/{id}/assign-trip";
+    public const string TypeRoute = "/api/lines/{0}/assign-trip";
 
-    public string Route => TypeRoute;
+    public static string Route => TypeRoute;
 }

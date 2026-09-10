@@ -10,6 +10,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 
 using TrainDude.Features.Lines.Contracts.CreateLine;
+using TrainDude.Features.Lines.Contracts.GetLine;
 using TrainDude.Features.Lines.Domain;
 using TrainDude.Features.Shared.Contracts.Generic;
 using TrainDude.Features.Shared.Extensions;
@@ -21,15 +22,16 @@ public static class CreateLineEndpoint
 {
     [WolverinePost(CreateLineCommand.TypeRoute)]
     [Tags("Lines")]
-    public static (CreatedResult, IStartStream) Handle(CreateLineCommand lineCommand, ClaimsPrincipal user)
+    public static (IResult, IStartStream) Handle(CreateLineCommand command, ClaimsPrincipal user)
     {
-        var id = Guid.NewGuid();
-        var domainEvent = LineAggregate.Make(id, user.GetSubject(), lineCommand.Number, lineCommand.Letter);
+        var domainEvent = LineAggregate.Make(command.LineId, user.GetSubject(), command.Number, command.Letter);
 
-        IStartStream startStream = MartenOps.StartStream<LineAggregate>(id, domainEvent);
+        var startStream = MartenOps.StartStream<LineAggregate>(domainEvent.Id, domainEvent);
 
-        var response = new CreatedResult(id);
+        var getUrl = string.Format(GetLineQuery.Route, domainEvent.Id);
+        var response = new CreationResponse(getUrl);
+        var result = Results.Created(getUrl, response);
 
-        return (response, startStream);
+        return (result, startStream);
     }
 }

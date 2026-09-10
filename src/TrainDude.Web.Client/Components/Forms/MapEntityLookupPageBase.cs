@@ -18,7 +18,7 @@ public abstract class MapEntityLookupPageBase<TQuery, TQueryResult, TMapQuery>
     : EntityLookupPageBase<TQuery, TQueryResult>
     where TQuery : class, ILookupQuery<TQueryResult>
     where TQueryResult : ILookupQueryResult
-    where TMapQuery : IMapQuery
+    where TMapQuery : IMapQuery, ISpecificQuery<MapQueryResult>
 {
     private MapQueryResult mapQueryResult = default;
 
@@ -36,7 +36,7 @@ public abstract class MapEntityLookupPageBase<TQuery, TQueryResult, TMapQuery>
     protected override async Task OnSubmitAsync()
     {
         var query = this.BuildMapQuery(this.formModel);
-        this.mapQueryResult = await this.Api.SendAsync<TMapQuery, MapQueryResult>(query);
+        this.mapQueryResult = await this.Api.GetAsync<TMapQuery, MapQueryResult>(this.formModel.Id, query);
     }
 
     protected abstract TMapQuery BuildMapQuery(EntityLookupFormModel formModel);

@@ -11,5 +11,5 @@ public sealed record GetRadiiQuery()
 {
     public const string TypeRoute = "/api/radii";
 
-    public string Route => TypeRoute;
+    public static string Route => TypeRoute;
 }

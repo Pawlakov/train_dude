@@ -94,7 +94,7 @@ else
     private async Task Refresh()
     {
         var query = new GetNamingPolicyQuery();
-        this.queryResult = await this.Api.SendAsync<GetNamingPolicyQuery, GetNamingPolicyResult>(query);
+        this.queryResult = await this.Api.GetAsync<GetNamingPolicyQuery, GetNamingPolicyResult>(query);
         this.formModel = new SettingsFormModel() { Policy = this.queryResult.Policy };
     }
 
@@ -106,7 +106,7 @@ else
             try
             {
                 var command = new SetNamingPolicyCommand(this.formModel.Policy);
-                await this.Api.SendAsync<SetNamingPolicyCommand, EmptyResult>(command);
+                await this.Api.PostAsync<SetNamingPolicyCommand>(command);
                 await this.DeactivateEdit();
             }
             catch (ValidationException exception)

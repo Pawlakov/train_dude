@@ -25,7 +25,7 @@ public abstract class EntityListPageBase<TQuery, TQueryResult, TQueryResultItem>
 
     protected override async Task OnParametersSetAsync()
     {
-        var result = await this.Api.SendAsync<TQuery, TQueryResult>(new TQuery());
+        var result = await this.Api.GetAsync<TQuery, TQueryResult>(new TQuery());
         this.items = [.. result.Items];
     }
 }

@@ -22,12 +22,12 @@ public static class SetCourseEndpoint
 {
     [WolverinePost(SetCourseCommand.TypeRoute)]
     [Tags("Segments")]
-    public static (UpdatedResult, Events) Handle(SetCourseCommand command, ClaimsPrincipal user, [WriteModel(FromRoute = "id", VersionSource = "version")] SegmentAggregate aggregate)
+    public static (IResult, Events) Handle(SetCourseCommand command, ClaimsPrincipal user, [WriteModel(FromRoute = "0", VersionSource = "version")] SegmentAggregate aggregate)
     {
         var domainEvent = aggregate.SetCourse(user.GetSubject(), command.Course);
 
-        var response = new UpdatedResult();
+        var result = Results.Ok();
 
-        return (response, new Events { domainEvent });
+        return (result, new Events { domainEvent });
     }
 }

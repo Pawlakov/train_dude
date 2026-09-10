@@ -14,5 +14,5 @@ public sealed record GetStationsQuery
 {
     public const string TypeRoute = "/api/stations";
 
-    public string Route => TypeRoute;
+    public static string Route => TypeRoute;
 }

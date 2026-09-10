@@ -1,10 +1,9 @@
-// <copyright file="ICommandResult.cs" company="Pawlakov">
+// <copyright file="ISpecificCommand.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
-
 namespace TrainDude.Features.Shared.Contracts.Base;
 
-public interface ICommandResult
-    : IRequestResult
+public interface ISpecificCommand
+    : IDomainRequest
 {
 }

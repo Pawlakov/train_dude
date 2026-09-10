@@ -20,10 +20,10 @@ using Wolverine.Http;
 
 public static class GetSegmentsMapEndpoint
 {
-    [AllowAnonymous]
     [WolverineGet(GetSegmentsMapQuery.TypeRoute)]
+    [AllowAnonymous]
     [Tags("Segments")]
-    public static async Task<MapQueryResult> Handle(GetSegmentsMapQuery request, IQuerySession session, CancellationToken cancellationToken = default)
+    public static async Task<MapQueryResult> Handle([AsParameters] GetSegmentsMapQuery request, IQuerySession session, CancellationToken cancellationToken = default)
     {
         var queryResult = await session.Query<SegmentReadModel>()
             .ToListAsync(cancellationToken);

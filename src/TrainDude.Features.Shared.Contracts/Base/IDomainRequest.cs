@@ -5,9 +5,8 @@ namespace TrainDude.Features.Shared.Contracts.Base;
 
 using System.Text.Json.Serialization;
 
-public interface IDomainRequest<TResult>
-    where TResult : IRequestResult
+public interface IDomainRequest
 {
     [JsonIgnore]
-    string Route { get; }
+    static abstract string Route { get; }
 }

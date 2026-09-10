@@ -11,5 +11,5 @@ public sealed record GetTripsQuery()
 {
     public const string TypeRoute = "/api/trips";
 
-    public string Route => TypeRoute;
+    public static string Route => TypeRoute;
 }

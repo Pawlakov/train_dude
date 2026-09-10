@@ -11,9 +11,9 @@ using TrainDude.Features.Shared.Contracts.Base;
 using TrainDude.Features.Shared.Contracts.Values;
 
 public sealed record SetCourseCommand(IReadOnlyList<Location> Course)
-    : IUpdateCommand
+    : ISpecificCommand
 {
-    public const string TypeRoute = "/api/segments/{id}/set-course/{version}";
+    public const string TypeRoute = "/api/segments/{0}/set-course";
 
-    public string Route => TypeRoute;
+    public static string Route => TypeRoute;
 }

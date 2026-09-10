@@ -24,7 +24,7 @@ public static class GetStationsEndpoint
 {
     [WolverineGet(GetStationsQuery.TypeRoute)]
     [Tags("Stations")]
-    public static async Task<GetStationsQueryResult> Handle(GetStationsQuery query, IQuerySession session, CancellationToken cancellationToken)
+    public static async Task<GetStationsQueryResult> Handle([AsParameters] GetStationsQuery query, IQuerySession session, CancellationToken cancellationToken)
     {
         var queryResult = await session.Query<StationReadModel>()
             .ToListAsync(cancellationToken);

@@ -14,21 +14,20 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 
 using TrainDude.Features.Shared.Contracts.Admin;
-using TrainDude.Features.Shared.Contracts.Generic;
 
 using Wolverine.Http;
 
 public static class DropEndpoint
 {
-    [Authorize(Policy = "SuperUser")]
     [WolverinePost(DropCommand.TypeRoute)]
+    [Authorize(Policy = "SuperUser")]
     [Tags("Admin")]
-    public static async Task<EmptyResult> Handle(DropCommand command, ClaimsPrincipal user, IDocumentStore store, CancellationToken cancellationToken = default)
+    public static async Task<IResult> Handle(DropCommand command, ClaimsPrincipal user, IDocumentStore store, CancellationToken cancellationToken = default)
     {
         await store.Advanced.Clean.CompletelyRemoveAllAsync(cancellationToken);
 
-        var response = new EmptyResult();
+        var result = Results.Ok();
 
-        return response;
+        return result;
     }
 }

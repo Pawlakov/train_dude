@@ -19,7 +19,7 @@ public static class GetLineMapEndpoint
 {
     [WolverineGet(GetLineMapQuery.TypeRoute)]
     [Tags("Lines")]
-    public static MapQueryResult Handle(GetLineMapQuery query, [ReadModel(FromRoute = "id")] LineReadModel readModel)
+    public static MapQueryResult Handle([AsParameters]GetLineMapQuery query, [ReadModel(FromRoute = "0")] LineReadModel readModel)
     {
         var stationPoints = readModel.Stations.Where(x => x.Location.HasValue).Select(x => x.Location!.Value).ToList();
         var segmentLineStrings = readModel.Segments.Where(x => x.FullCourse != null).Select(x => x.FullCourse).ToList();

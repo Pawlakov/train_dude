@@ -5,7 +5,7 @@
 namespace TrainDude.Features.Shared.Contracts.Base;
 
 public interface IListQuery<TResult>
-    : IDomainQuery<TResult>
+    : IGeneralQuery<TResult>
     where TResult : IQueryResult
 {
 }

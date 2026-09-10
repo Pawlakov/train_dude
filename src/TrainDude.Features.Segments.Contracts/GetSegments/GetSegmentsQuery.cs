@@ -11,5 +11,5 @@ public sealed record GetSegmentsQuery()
 {
     public const string TypeRoute = "/api/segments";
 
-    public string Route => TypeRoute;
+    public static string Route => TypeRoute;
 }

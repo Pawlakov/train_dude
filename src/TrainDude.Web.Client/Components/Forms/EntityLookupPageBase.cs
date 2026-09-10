@@ -56,7 +56,7 @@ public abstract class EntityLookupPageBase<TQuery, TQueryResult>
             try
             {
                 var query = this.BuildQuery(this.formModel);
-                this.queryResult = await this.Api.SendAsync<TQuery, TQueryResult>(query);
+                this.queryResult = await this.Api.GetAsync<TQuery, TQueryResult>(this.formModel.Id, query);
 
                 await this.OnSubmitAsync();
             }

@@ -4,14 +4,12 @@
 
 namespace TrainDude.Features.Segments.Contracts.GetSegment;
 
-using System;
-
 using TrainDude.Features.Shared.Contracts.Base;
 
 public sealed record GetSegmentQuery()
     : ILookupQuery<GetSegmentQueryResult>
 {
-    public const string TypeRoute = "/api/segments/{id}";
+    public const string TypeRoute = "/api/segments/{0}";
 
-    public string Route => TypeRoute;
+    public static string Route => TypeRoute;
 }

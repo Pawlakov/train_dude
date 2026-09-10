@@ -21,12 +21,12 @@ public static class AddAxleEndpoint
 {
     [WolverinePost(AddAxleCommand.TypeRoute)]
     [Tags("Stations")]
-    public static (UpdatedResult, Events) Handle(AddAxleCommand command, [WriteModel(FromRoute = "id", VersionSource = "version")] StationAggregate aggregate, ClaimsPrincipal user)
+    public static (IResult, Events) Handle(AddAxleCommand command, [WriteModel(FromRoute = "0", VersionSource = "version")] StationAggregate aggregate, ClaimsPrincipal user)
     {
         var domainEvent = aggregate.AddAxle(user.GetSubject());
 
-        var response = new UpdatedResult();
+        var result = Results.Ok();
 
-        return (response, new Events { domainEvent });
+        return (result, new Events { domainEvent });
     }
 }

@@ -26,8 +26,8 @@ public partial class NetworkMap
 
     protected override async Task OnParametersSetAsync()
     {
-        var stationsResult = await this.Api.SendAsync<GetStationsMapQuery, MapQueryResult>(new GetStationsMapQuery());
-        var segmentsResult = await this.Api.SendAsync<GetSegmentsMapQuery, MapQueryResult>(new GetSegmentsMapQuery());
+        var stationsResult = await this.Api.GetAsync<GetStationsMapQuery, MapQueryResult>(new GetStationsMapQuery());
+        var segmentsResult = await this.Api.GetAsync<GetSegmentsMapQuery, MapQueryResult>(new GetSegmentsMapQuery());
         this.queryResult = new(stationsResult.StationPoints, segmentsResult.SegmentLineStrings);
     }
 

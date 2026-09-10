@@ -4,11 +4,14 @@
 
 namespace TrainDude.Features.Radii.Contracts.CreateRadius;
 
+using System;
+
 using TrainDude.Features.Shared.Contracts.Base;
 
-public sealed record CreateRadiusCommand(int Speed, int Minimum) : ICreateCommand
+public sealed record CreateRadiusCommand(Guid RadiusId, int Speed, int Minimum)
+    : IGeneralCommand
 {
     public const string TypeRoute = "/api/radii/create";
 
-    public string Route => TypeRoute;
+    public static string Route => TypeRoute;
 }

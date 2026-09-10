@@ -4,12 +4,14 @@
 
 namespace TrainDude.Features.Lines.Contracts.CreateLine;
 
+using System;
+
 using TrainDude.Features.Shared.Contracts.Base;
 
-public sealed record CreateLineCommand(int Number, char? Letter)
-    : ICreateCommand
+public sealed record CreateLineCommand(Guid LineId, int Number, char? Letter)
+    : IGeneralCommand
 {
     public const string TypeRoute = "/api/lines/create";
 
-    public string Route => TypeRoute;
+    public static string Route => TypeRoute;
 }

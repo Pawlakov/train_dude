@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using TrainDude.Features.Shared.Contracts.Generic;
 using TrainDude.Features.Shared.Extensions;
 using TrainDude.Features.Stations.Contracts.CreateStation;
+using TrainDude.Features.Stations.Contracts.GetStation;
 using TrainDude.Features.Stations.Domain;
 
 using Wolverine.Http;
@@ -21,15 +22,16 @@ public static class CreateStationEndpoint
 {
     [WolverinePost(CreateStationCommand.TypeRoute)]
     [Tags("Stations")]
-    public static (CreatedResult, IStartStream) Handle(CreateStationCommand command, ClaimsPrincipal user)
+    public static (IResult, IStartStream) Handle(CreateStationCommand command, ClaimsPrincipal user)
     {
-        var id = Guid.NewGuid();
-        var domainEvent = StationAggregate.Make(id, user.GetSubject(), command.NameGerman, command.NameGermanNew, command.NamePolish, command.NameRussian);
+        var domainEvent = StationAggregate.Make(command.StationId, user.GetSubject(), command.NameGerman, command.NameGermanNew, command.NamePolish, command.NameRussian);
 
-        var startStream = MartenOps.StartStream<StationAggregate>(id, domainEvent);
+        var startStream = MartenOps.StartStream<StationAggregate>(domainEvent.Id, domainEvent);
 
-        var response = new CreatedResult(id);
+        var getUrl = string.Format(GetStationQuery.Route, domainEvent.Id);
+        var response = new CreationResponse(getUrl);
+        var result = Results.Created(getUrl, response);
 
-        return (response, startStream);
+        return (result, startStream);
     }
 }

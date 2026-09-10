@@ -5,6 +5,5 @@
 namespace TrainDude.Features.Shared.Contracts.Base;
 
 public interface IQueryResult
-    : IRequestResult
 {
 }

@@ -22,7 +22,7 @@ public static class SetNamingPolicyEndpoint
 {
     [WolverinePost(SetNamingPolicyCommand.TypeRoute)]
     [Tags("Settings")]
-    public static async Task<EmptyResult> Handle(SetNamingPolicyCommand command, ClaimsPrincipal user, IDocumentSession session, CancellationToken cancellationToken = default)
+    public static async Task<IResult> Handle(SetNamingPolicyCommand command, ClaimsPrincipal user, IDocumentSession session, CancellationToken cancellationToken = default)
     {
         await SettingsAccessor.ExecuteWithSettings(
         session,
@@ -35,7 +35,7 @@ public static class SetNamingPolicyEndpoint
         },
         cancellationToken);
 
-        var result = new EmptyResult();
+        var result = Results.Ok();
 
         return result;
     }

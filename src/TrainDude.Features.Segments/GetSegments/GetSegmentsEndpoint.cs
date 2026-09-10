@@ -21,7 +21,7 @@ public static class GetSegmentsEndpoint
 {
     [WolverineGet(GetSegmentsQuery.TypeRoute)]
     [Tags("Segments")]
-    public static async Task<GetSegmentsQueryResult> Handle(GetSegmentsQuery request, IQuerySession session, CancellationToken cancellationToken = default)
+    public static async Task<GetSegmentsQueryResult> Handle([AsParameters] GetSegmentsQuery request, IQuerySession session, CancellationToken cancellationToken = default)
     {
         var queryResult = await session.Query<SegmentReadModel>()
             .ToListAsync(cancellationToken);

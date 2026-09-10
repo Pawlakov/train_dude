@@ -21,10 +21,10 @@ using Wolverine.Http;
 
 public static class GetStationsMapEndpoint
 {
-    [AllowAnonymous]
     [WolverineGet(GetStationsMapQuery.TypeRoute)]
+    [AllowAnonymous]
     [Tags("Stations")]
-    public static async Task<MapQueryResult> Handle(GetStationsMapQuery query, IQuerySession session, CancellationToken cancellationToken)
+    public static async Task<MapQueryResult> Handle([AsParameters] GetStationsMapQuery query, IQuerySession session, CancellationToken cancellationToken)
     {
         var queryResult = await session.Query<StationReadModel>()
             .ToListAsync(cancellationToken);
