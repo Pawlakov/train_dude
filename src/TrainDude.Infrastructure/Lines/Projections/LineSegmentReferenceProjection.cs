@@ -19,7 +19,5 @@ public sealed class LineSegmentReferenceProjection
     public void Apply(IEvent<SegmentCreated> e, LineSegmentReference readModel)
     {
         readModel.Id = e.Data.Id;
-
-        readModel.Version++;
     }
 }

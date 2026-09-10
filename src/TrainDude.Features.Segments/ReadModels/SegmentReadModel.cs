@@ -14,8 +14,6 @@ public sealed class SegmentReadModel
 {
     public Guid Id { get; set; }
 
-    public long Version { get; set; }
-
     public double NominalLength { get; set; }
 
     public double? Haversine { get; set; }

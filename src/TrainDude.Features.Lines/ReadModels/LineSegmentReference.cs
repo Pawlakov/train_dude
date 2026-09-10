@@ -9,6 +9,4 @@ using System;
 public sealed class LineSegmentReference
 {
     public Guid Id { get; set; }
-
-    public long Version { get; set; }
 }

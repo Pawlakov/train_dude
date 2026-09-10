@@ -13,7 +13,5 @@ public sealed class SharedSettingsReference
 {
     public Guid Id { get; set; }
 
-    public long Version { get; set; }
-
     public NamingPolicy NamingPolicy { get; set; }
 }

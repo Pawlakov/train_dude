@@ -25,11 +25,11 @@ public static class AppendSegmentEndpoint
 {
     [WolverinePost(AppendSegmentCommand.TypeRoute)]
     [Tags("Lines")]
-    public static (UpdatedResult, Events) Handle(AppendSegmentCommand command, [WriteModel(FromRoute = "id", VersionSource = "version")] LineAggregate aggregate, ClaimsPrincipal user, [ReadModel(nameof(AppendSegmentCommand.SegmentId))] LineSegmentReference segmentAggregate, IQuerySession session)
+    public static (UpdatedResult, Events) Handle(AppendSegmentCommand command, [WriteModel(FromRoute = "id")] LineAggregate aggregate, ClaimsPrincipal user, [ReadModel(nameof(AppendSegmentCommand.SegmentId))] LineSegmentReference segmentAggregate, IQuerySession session)
     {
         var domainEvent = aggregate.AppendSegment(user.GetSubject(), segmentAggregate);
 
-        var response = new UpdatedResult(aggregate.Version + 1);
+        var response = new UpdatedResult();
 
         return (response, new Events { domainEvent });
     }

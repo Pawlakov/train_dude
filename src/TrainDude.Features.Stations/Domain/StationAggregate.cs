@@ -15,10 +15,9 @@ public class StationAggregate
     : IHasAlternativeNames
 {
     [JsonConstructor]
-    private StationAggregate(Guid id, long version, int axleCount, Location? location, string nameGerman, string? nameGermanNew, string? namePolish, string? nameRussian)
+    private StationAggregate(Guid id, int axleCount, Location? location, string nameGerman, string? nameGermanNew, string? namePolish, string? nameRussian)
     {
         this.Id = id;
-        this.Version = version;
 
         this.AxleCount = axleCount;
         this.Location = location;
@@ -33,8 +32,6 @@ public class StationAggregate
     }
 
     public Guid Id { get; private set; }
-
-    public long Version { get; private set; }
 
     public int AxleCount { get; private set; }
 
@@ -72,21 +69,15 @@ public class StationAggregate
         this.NameGermanNew = e.NameGermanNew;
         this.NamePolish = e.NamePolish;
         this.NameRussian = e.NameRussian;
-
-        this.Version++;
     }
 
     public void Apply(StationLocationSet e)
     {
         this.Location = e.Location;
-
-        this.Version++;
     }
 
     public void Apply(StationAxleAdded e)
     {
         this.AxleCount += 1;
-
-        this.Version++;
     }
 }

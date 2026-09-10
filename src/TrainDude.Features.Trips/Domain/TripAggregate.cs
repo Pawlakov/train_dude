@@ -12,10 +12,9 @@ using TrainDude.Features.Trips.Domain.Events;
 public class TripAggregate
 {
     [JsonConstructor]
-    private TripAggregate(Guid id, long version, int tripNumber)
+    private TripAggregate(Guid id, int tripNumber)
     {
         this.Id = id;
-        this.Version = version;
 
         this.TripNumber = tripNumber;
     }
@@ -25,8 +24,6 @@ public class TripAggregate
     }
 
     public Guid Id { get; private set; }
-
-    public long Version { get; private set; }
 
     public int TripNumber { get; private set; }
 
@@ -39,7 +36,5 @@ public class TripAggregate
     {
         this.Id = e.Id;
         this.TripNumber = e.TripNumber;
-
-        this.Version++;
     }
 }

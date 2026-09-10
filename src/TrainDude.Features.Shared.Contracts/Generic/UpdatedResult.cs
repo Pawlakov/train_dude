@@ -6,4 +6,4 @@ namespace TrainDude.Features.Shared.Contracts.Generic;
 
 using TrainDude.Features.Shared.Contracts.Base;
 
-public sealed record UpdatedResult(long Version) : ICommandResult;
+public sealed record UpdatedResult() : ICommandResult;

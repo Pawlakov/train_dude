@@ -21,14 +21,10 @@ public sealed class SharedSettingsReferenceProjection
     {
         aggregate.Id = e.Data.Id;
         aggregate.NamingPolicy = NamingPolicy.Modern;
-
-        aggregate.Version++;
     }
 
     public void Apply(IEvent<SettingsNamingPolicySet> e, SharedSettingsReference aggregate)
     {
         aggregate.NamingPolicy = e.Data.NamingPolicy;
-
-        aggregate.Version++;
     }
 }

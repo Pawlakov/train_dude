@@ -10,7 +10,5 @@ public sealed class LineTripReference
 {
     public Guid Id { get; set; }
 
-    public long Version { get; set; }
-
     public int Number { get; set; }
 }

@@ -25,22 +25,16 @@ public sealed class SegmentStationReferenceProjection
         aggregate.NameGermanNew = e.Data.NameGermanNew;
         aggregate.NamePolish = e.Data.NamePolish;
         aggregate.NameRussian = e.Data.NameRussian;
-
-        aggregate.Version++;
     }
 
     public void Apply(IEvent<StationLocationSet> e, SegmentStationReference aggregate)
     {
         aggregate.Location = e.Data.Location;
-
-        aggregate.Version++;
     }
 
     public void Apply(IEvent<StationAxleAdded> e, SegmentStationReference aggregate)
     {
         aggregate.AxleCount += 1;
-
-        aggregate.Version++;
     }
 
     public void Apply(SettingsNamingPolicySet e, SegmentStationReference item)

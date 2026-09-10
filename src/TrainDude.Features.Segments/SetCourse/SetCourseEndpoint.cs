@@ -26,7 +26,7 @@ public static class SetCourseEndpoint
     {
         var domainEvent = aggregate.SetCourse(user.GetSubject(), command.Course);
 
-        var response = new UpdatedResult(aggregate.Version + 1);
+        var response = new UpdatedResult();
 
         return (response, new Events { domainEvent });
     }

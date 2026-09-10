@@ -25,7 +25,7 @@ public static class AddAxleEndpoint
     {
         var domainEvent = aggregate.AddAxle(user.GetSubject());
 
-        var response = new UpdatedResult(aggregate.Version + 1);
+        var response = new UpdatedResult();
 
         return (response, new Events { domainEvent });
     }

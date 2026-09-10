@@ -19,10 +19,9 @@ public class LineAggregate
     private readonly List<Guid> trips;
 
     [JsonConstructor]
-    private LineAggregate(Guid id, long version, int lineNumber, char? lineLetter, Guid? startId, ICollection<Guid> segments, ICollection<Guid> trips)
+    private LineAggregate(Guid id, int lineNumber, char? lineLetter, Guid? startId, ICollection<Guid> segments, ICollection<Guid> trips)
     {
         this.Id = id;
-        this.Version = version;
 
         this.LineNumber = lineNumber;
         this.LineLetter = lineLetter;
@@ -39,8 +38,6 @@ public class LineAggregate
     }
 
     public Guid Id { get; private set; }
-
-    public long Version { get; private set; }
 
     public int LineNumber { get; private set; }
 
@@ -77,21 +74,15 @@ public class LineAggregate
         this.Id = e.Id;
         this.LineNumber = e.LineNumber;
         this.LineLetter = e.LineLetter;
-
-        this.Version++;
     }
 
     public void Apply(LineTripAssigned e)
     {
         this.trips.Add(e.TripId);
-
-        this.Version++;
     }
 
     public void Apply(LineSegmentAppended e)
     {
         this.segments.Add(e.SegmentId);
-
-        this.Version++;
     }
 }

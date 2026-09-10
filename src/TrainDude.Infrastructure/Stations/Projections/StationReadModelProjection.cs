@@ -5,11 +5,9 @@
 namespace TrainDude.Infrastructure.Stations.Projections;
 
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using JasperFx.Events;
 using JasperFx.Events.Grouping;
 
 using Marten;
@@ -29,6 +27,8 @@ public class StationReadModelProjection
 {
     public StationReadModelProjection()
     {
+        this.IncludeType<StationCreated>();
+
         this.Identity<StationCreated>(e => e.Id);
         this.Identity<StationLocationSet>(e => e.Id);
         this.Identity<StationAxleAdded>(e => e.Id);
@@ -54,31 +54,25 @@ public class StationReadModelProjection
             });
     }
 
-    public void Apply(IEvent<StationCreatedWithReferences> e, StationReadModel readModel)
+    public void Apply(StationCreatedWithReferences e, StationReadModel readModel)
     {
-        readModel.Id = e.Data.Event.Id;
+        readModel.Id = e.Event.Id;
         readModel.AxleCount = 1;
-        readModel.NameGerman = e.Data.Event.NameGerman;
-        readModel.NameGermanNew = e.Data.Event.NameGermanNew;
-        readModel.NamePolish = e.Data.Event.NamePolish;
-        readModel.NameRussian = e.Data.Event.NameRussian;
-        readModel.Name = e.Data.Name;
-
-        readModel.Version++;
+        readModel.NameGerman = e.Event.NameGerman;
+        readModel.NameGermanNew = e.Event.NameGermanNew;
+        readModel.NamePolish = e.Event.NamePolish;
+        readModel.NameRussian = e.Event.NameRussian;
+        readModel.Name = e.Name;
     }
 
-    public void Apply(IEvent<StationLocationSet> e, StationReadModel readModel)
+    public void Apply(StationLocationSet e, StationReadModel readModel)
     {
-        readModel.Location = e.Data.Location;
-
-        readModel.Version++;
+        readModel.Location = e.Location;
     }
 
-    public void Apply(IEvent<StationAxleAdded> e, StationReadModel readModel)
+    public void Apply(StationAxleAdded e, StationReadModel readModel)
     {
         readModel.AxleCount += 1;
-
-        readModel.Version++;
     }
 
     public void Apply(SettingsNamingPolicySet e, StationReadModel readModel)

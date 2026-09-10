@@ -89,8 +89,6 @@ public sealed class SegmentReadModelProjection
         item.Haversine = haversine;
         item.A = e.A;
         item.B = e.B;
-
-        item.Version++;
     }
 
     public void Apply(SegmentCourseSet e, SegmentReadModel item)
@@ -102,8 +100,6 @@ public sealed class SegmentReadModelProjection
             ({ } aLocation, { } bLocation) => e.Course.Prepend(aLocation).Append(bLocation).Haversine(),
             _ => null,
         };
-
-        item.Version++;
     }
 
     public void Apply(StationLocationSet e, SegmentReadModel item)

@@ -71,15 +71,11 @@ public sealed class LineReadModelProjection
         readModel.LineNumber = e.Data.LineNumber;
         readModel.LineLetter = e.Data.LineLetter;
         readModel.LineDesignation = $"{e.Data.LineNumber}{e.Data.LineLetter}";
-
-        readModel.Version++;
     }
 
     public void Apply(IEvent<LineTripAssignedWithReferences> e, LineReadModel readModel)
     {
         readModel.Trips = readModel.Trips.Append(e.Data.Trip).ToList();
-
-        readModel.Version++;
     }
 
     public void Apply(IEvent<LineSegmentAppendedWithReferences> e, LineReadModel readModel)
@@ -94,7 +90,5 @@ public sealed class LineReadModelProjection
             readModel.Segments = readModel.Segments.Append(e.Data.Segment).ToList();
             readModel.Stations = readModel.Stations.Append(e.Data.Segment.A).ToList();
         }
-
-        readModel.Version++;
     }
 }

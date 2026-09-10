@@ -12,10 +12,9 @@ using TrainDude.Features.Radii.Domain.Events;
 public class RadiusAggregate
 {
     [JsonConstructor]
-    private RadiusAggregate(Guid id, long version, int speed, int minimum)
+    private RadiusAggregate(Guid id, int speed, int minimum)
     {
         this.Id = id;
-        this.Version = version;
 
         this.Speed = speed;
         this.Minimum = minimum;
@@ -26,8 +25,6 @@ public class RadiusAggregate
     }
 
     public Guid Id { get; private set; }
-
-    public long Version { get; private set; }
 
     public int Speed { get; private set; }
 
@@ -43,7 +40,5 @@ public class RadiusAggregate
         this.Id = e.Id;
         this.Speed = e.Speed;
         this.Minimum = e.Minimum;
-
-        this.Version++;
     }
 }

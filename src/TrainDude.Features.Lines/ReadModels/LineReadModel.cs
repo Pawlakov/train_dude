@@ -13,8 +13,6 @@ public sealed class LineReadModel
 {
     public Guid Id { get; set; }
 
-    public long Version { get; set; }
-
     public int LineNumber { get; set; }
 
     public char? LineLetter { get; set; }

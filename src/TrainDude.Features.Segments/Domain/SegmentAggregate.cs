@@ -18,10 +18,9 @@ public class SegmentAggregate
     private readonly List<Location> course;
 
     [JsonConstructor]
-    private SegmentAggregate(Guid id, long version, double nominalLength, int tracks, SegmentEnd a, SegmentEnd b, ICollection<Location> course)
+    private SegmentAggregate(Guid id, double nominalLength, int tracks, SegmentEnd a, SegmentEnd b, ICollection<Location> course)
     {
         this.Id = id;
-        this.Version = version;
 
         this.NominalLength = nominalLength;
         this.Tracks = tracks;
@@ -36,8 +35,6 @@ public class SegmentAggregate
     }
 
     public Guid Id { get; private set; }
-
-    public long Version { get; private set; }
 
     public double NominalLength { get; private set; }
 
@@ -66,15 +63,11 @@ public class SegmentAggregate
         this.Tracks = e.Tracks;
         this.A = e.A;
         this.B = e.B;
-
-        this.Version++;
     }
 
     public void Apply(SegmentCourseSet e)
     {
         this.course.Clear();
         this.course.AddRange(e.Course);
-
-        this.Version++;
     }
 }

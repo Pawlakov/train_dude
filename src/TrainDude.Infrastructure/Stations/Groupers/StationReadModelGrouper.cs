@@ -34,19 +34,18 @@ public class StationReadModelGrouper
             return;
         }
 
-        var stationIds = await session.Events
-            .QueryRawEventDataOnly<StationCreated>()
-            .Select(x => x.StationId)
-            .Distinct()
-            .ToListAsync();
-
-        if (stationIds.Count == 0)
-        {
-            return;
-        }
-
         foreach (var namingPolicySetEvent in namingPolicySetEvents)
         {
+            var sequence = namingPolicySetEvent.Sequence;
+
+            var stationIds = await session.Events
+                .QueryAllRawEvents()
+                .OfType<IEvent<StationCreated>>()
+                .Where(x => x.Sequence < sequence)
+                .Select(x => x.Data.StationId)
+                .Distinct()
+                .ToListAsync();
+
             foreach (var stationId in stationIds)
             {
                 grouping.AddEvent(stationId, namingPolicySetEvent);

@@ -14,8 +14,6 @@ public sealed class StationReadModel
 {
     public Guid Id { get; set; }
 
-    public long Version { get; set; }
-
     public int AxleCount { get; set; }
 
     public Location? Location { get; set; }

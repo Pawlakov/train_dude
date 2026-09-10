@@ -25,7 +25,7 @@ public static class SetLocationEndpoint
     {
         var domainEvent = aggregate.SetLocation(user.GetSubject(), command.Location);
 
-        var response = new UpdatedResult(aggregate.Version + 1);
+        var response = new UpdatedResult();
 
         return (response, new Events { domainEvent });
     }

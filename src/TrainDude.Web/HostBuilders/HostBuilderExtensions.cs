@@ -48,19 +48,19 @@ public static class HostBuilderExtensions
                 options.Projections.Add<SharedSettingsReferenceProjection>(ProjectionLifecycle.Inline);
 
                 options.Projections.Add<LineAggregateProjection>(ProjectionLifecycle.Inline);
-                options.Projections.Add<LineReadModelProjection>(ProjectionLifecycle.Inline);
-                options.Projections.Add<LineSegmentReferenceProjection>(ProjectionLifecycle.Inline);
-                options.Projections.Add<LineTripReferenceProjection>(ProjectionLifecycle.Inline);
-                options.Projections.Add<LineTripLinkProjection>(ProjectionLifecycle.Inline);
+                options.Projections.Add<LineReadModelProjection>(ProjectionLifecycle.Async);
+                options.Projections.Add<LineSegmentReferenceProjection>(ProjectionLifecycle.Async);
+                options.Projections.Add<LineTripReferenceProjection>(ProjectionLifecycle.Async);
+                options.Projections.Add<LineTripLinkProjection>(ProjectionLifecycle.Async);
 
                 options.Projections.Add<RadiusAggregateProjection>(ProjectionLifecycle.Inline);
 
                 options.Projections.Add<SegmentAggregateProjection>(ProjectionLifecycle.Inline);
-                options.Projections.Add<SegmentReadModelProjection>(ProjectionLifecycle.Inline);
-                options.Projections.Add<SegmentStationReferenceProjection>(ProjectionLifecycle.Inline);
+                options.Projections.Add<SegmentReadModelProjection>(ProjectionLifecycle.Async);
+                options.Projections.Add<SegmentStationReferenceProjection>(ProjectionLifecycle.Async);
 
                 options.Projections.Add<StationAggregateProjection>(ProjectionLifecycle.Inline);
-                options.Projections.Add<StationReadModelProjection>(ProjectionLifecycle.Inline);
+                options.Projections.Add<StationReadModelProjection>(ProjectionLifecycle.Async);
 
                 options.Projections.Add<TripAggregateProjection>(ProjectionLifecycle.Inline);
 

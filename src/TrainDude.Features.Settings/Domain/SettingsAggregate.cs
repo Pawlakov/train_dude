@@ -15,10 +15,9 @@ using TrainDude.Features.Shared.Contracts.Enums;
 public class SettingsAggregate
 {
     [JsonConstructor]
-    private SettingsAggregate(Guid id, long version, NamingPolicy namingPolicy)
+    private SettingsAggregate(Guid id, NamingPolicy namingPolicy)
     {
         this.Id = id;
-        this.Version = version;
 
         this.NamingPolicy = namingPolicy;
     }
@@ -28,8 +27,6 @@ public class SettingsAggregate
     }
 
     public Guid Id { get; private set; }
-
-    public long Version { get; private set; }
 
     public NamingPolicy NamingPolicy { get; private set; }
 
@@ -47,14 +44,10 @@ public class SettingsAggregate
     {
         this.Id = e.Id;
         this.NamingPolicy = NamingPolicy.Modern;
-
-        this.Version++;
     }
 
     public void Apply(SettingsNamingPolicySet e)
     {
         this.NamingPolicy = e.NamingPolicy;
-
-        this.Version++;
     }
 }
