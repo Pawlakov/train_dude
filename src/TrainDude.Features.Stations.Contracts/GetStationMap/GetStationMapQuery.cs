@@ -7,12 +7,10 @@ using System;
 
 using TrainDude.Features.Shared.Contracts.Base;
 
-public sealed record GetStationMapQuery(Guid StationId)
+public sealed record GetStationMapQuery()
     : IMapQuery
 {
-    public const string TypeRoute = "/api/station/map";
+    public const string TypeRoute = "/api/stations/{id}/map";
 
     public string Route => TypeRoute;
-
-    public Guid Id => this.StationId;
 }

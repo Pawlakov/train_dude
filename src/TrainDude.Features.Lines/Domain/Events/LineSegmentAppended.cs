@@ -6,4 +6,4 @@ namespace TrainDude.Features.Lines.Domain.Events;
 
 using System;
 
-public sealed record LineSegmentAppended(Guid Id, DateTime When, Guid SegmentId);
+public sealed record LineSegmentAppended(Guid Id, string Who, Guid SegmentId);

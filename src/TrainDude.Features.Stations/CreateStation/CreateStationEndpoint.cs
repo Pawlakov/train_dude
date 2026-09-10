@@ -7,6 +7,8 @@ namespace TrainDude.Features.Stations.CreateStation;
 using System;
 using System.Security.Claims;
 
+using Microsoft.AspNetCore.Http;
+
 using TrainDude.Features.Shared.Contracts.Generic;
 using TrainDude.Features.Shared.Extensions;
 using TrainDude.Features.Stations.Contracts.CreateStation;
@@ -18,10 +20,11 @@ using Wolverine.Marten;
 public static class CreateStationEndpoint
 {
     [WolverinePost(CreateStationCommand.TypeRoute)]
-    public static (CreatedResult, IStartStream) Post(CreateStationCommand stationCommand, ClaimsPrincipal user)
+    [Tags("Stations")]
+    public static (CreatedResult, IStartStream) Handle(CreateStationCommand command, ClaimsPrincipal user)
     {
         var id = Guid.NewGuid();
-        var domainEvent = StationAggregate.Make(id, user.GetSubject(), stationCommand.NameGerman, stationCommand.NameGermanNew, stationCommand.NamePolish, stationCommand.NameRussian);
+        var domainEvent = StationAggregate.Make(id, user.GetSubject(), command.NameGerman, command.NameGermanNew, command.NamePolish, command.NameRussian);
 
         var startStream = MartenOps.StartStream<StationAggregate>(id, domainEvent);
 

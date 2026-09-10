@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 using Marten;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using TrainDude.Features.Radii.Contracts.GetRadii;
@@ -19,7 +20,8 @@ using Wolverine.Http;
 
 public static class GetRadiiEndpoint
 {
-    [WolverinePost(GetRadiiQuery.TypeRoute)]
+    [WolverineGet(GetRadiiQuery.TypeRoute)]
+    [Tags("Radii")]
     public static async Task<GetRadiiQueryResult> Handle(GetRadiiQuery query, IQuerySession session, CancellationToken cancellationToken)
     {
         var radii = await session.Query<RadiusAggregate>()

@@ -1,5 +1,4 @@
 @page "/station/{Id:guid}"
-@using TrainDude.Features.Shared.Contracts.Generic
 @using TrainDude.Features.Stations.Contracts.GetStation
 @using TrainDude.Features.Stations.Contracts.GetStationMap
 @inherits MapEntityLookupPageBase<GetStationQuery, GetStationQueryResult, GetStationMapQuery>
@@ -8,12 +7,12 @@
 
     protected override GetStationQuery BuildQuery(EntityLookupFormModel formModel)
     {
-        return new GetStationQuery(formModel.Id);
+        throw new NotImplementedException();
     }
 
     protected override GetStationMapQuery BuildMapQuery(EntityLookupFormModel formModel)
     {
-        return new GetStationMapQuery(formModel.Id);
+        throw new NotImplementedException();
     }
 
 }

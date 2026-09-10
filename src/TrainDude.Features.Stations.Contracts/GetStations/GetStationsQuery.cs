@@ -9,7 +9,8 @@ using TrainDude.Features.Shared.Contracts.Base;
 /// <summary>
 /// A query which returns all stations.
 /// </summary>
-public sealed record GetStationsQuery : IListQuery<GetStationsQueryResult>
+public sealed record GetStationsQuery
+    : IListQuery<GetStationsQueryResult>
 {
     public const string TypeRoute = "/api/stations";
 

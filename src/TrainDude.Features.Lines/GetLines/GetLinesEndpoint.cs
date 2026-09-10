@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 
 using Marten;
 
+using Microsoft.AspNetCore.Http;
+
 using TrainDude.Features.Lines.Contracts.GetLines;
 using TrainDude.Features.Lines.ReadModels;
 
@@ -17,7 +19,8 @@ using Wolverine.Http;
 
 public static class GetLinesEndpoint
 {
-    [WolverinePost(GetLinesQuery.TypeRoute)]
+    [WolverineGet(GetLinesQuery.TypeRoute)]
+    [Tags("Lines")]
     public static async Task<GetLinesQueryResult> Handle(GetLinesQuery request, IQuerySession session, CancellationToken cancellationToken = default)
     {
         var queryResult = await session.Query<LineReadModel>()

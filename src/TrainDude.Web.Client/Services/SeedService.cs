@@ -86,16 +86,16 @@ public class SeedService
 
         foreach (var segment in seed.Segments)
         {
-            var appendSegmentCommand = new AppendSegmentCommand(createdResponse.Id, version, this.segmentIdMap[segment]);
+            var appendSegmentCommand = new AppendSegmentCommand(this.segmentIdMap[segment]);
 
-            version = (await this.api.SendAsync<AppendSegmentCommand, UpdatedResult>(appendSegmentCommand, cancellationToken)).Version;
+            version = (await this.api.SendAsync<AppendSegmentCommand, UpdatedResult>(createdResponse.Id, version, appendSegmentCommand, cancellationToken)).Version;
         }
 
         foreach (var trip in seed.Trips)
         {
-            var assignTripCommand = new AssignTripCommand(createdResponse.Id, version, this.tripIdMap[trip]);
+            var assignTripCommand = new AssignTripCommand(this.tripIdMap[trip]);
 
-            version = (await this.api.SendAsync<AssignTripCommand, UpdatedResult>(assignTripCommand, cancellationToken)).Version;
+            version = (await this.api.SendAsync<AssignTripCommand, UpdatedResult>(createdResponse.Id, version, assignTripCommand, cancellationToken)).Version;
         }
     }
 
@@ -117,18 +117,18 @@ public class SeedService
         if (seed is { Latitude: not null, Longitude: not null })
         {
             var location = new Location(seed.Longitude.Value, seed.Latitude.Value);
-            var setLocationCommand = new SetLocationCommand(createdResponse.Id, version, location);
+            var setLocationCommand = new SetLocationCommand(location);
 
-            var updatedResponse = await this.api.SendAsync<SetLocationCommand, UpdatedResult>(setLocationCommand, cancellationToken);
+            var updatedResponse = await this.api.SendAsync<SetLocationCommand, UpdatedResult>(createdResponse.Id, version, setLocationCommand, cancellationToken);
             version = updatedResponse.Version;
         }
 
         var axleCount = seed.AxleCount ?? 1;
-        for (var i = 0; i < axleCount; ++i)
+        for (var i = 1; i < axleCount; ++i)
         {
-            var addAxleCommand = new AddAxleCommand(createdResponse.Id, version);
+            var addAxleCommand = new AddAxleCommand();
 
-            var updatedResponse = await this.api.SendAsync<AddAxleCommand, UpdatedResult>(addAxleCommand, cancellationToken);
+            var updatedResponse = await this.api.SendAsync<AddAxleCommand, UpdatedResult>(createdResponse.Id, version, addAxleCommand, cancellationToken);
             version = updatedResponse.Version;
         }
     }
@@ -144,9 +144,9 @@ public class SeedService
         if (seed.Course is not null && seed.Course is not [])
         {
             var locations = (seed.Course?.Select(x => new Location(x.Longitude, x.Latitude)) ?? []).ToList();
-            var setCourseCommand = new SetCourseCommand(segmentId, version, locations);
+            var setCourseCommand = new SetCourseCommand(locations);
 
-            var updatedResponse = await this.api.SendAsync<SetCourseCommand, UpdatedResult>(setCourseCommand, cancellationToken);
+            var updatedResponse = await this.api.SendAsync<SetCourseCommand, UpdatedResult>(segmentId, version, setCourseCommand, cancellationToken);
             version = updatedResponse.Version;
         }
     }

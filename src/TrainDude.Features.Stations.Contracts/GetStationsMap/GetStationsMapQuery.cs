@@ -8,7 +8,8 @@ using System;
 
 using TrainDude.Features.Shared.Contracts.Base;
 
-public sealed record GetStationsMapQuery() : IMapQuery
+public sealed record GetStationsMapQuery()
+    : IMapQuery
 {
     public const string TypeRoute = "/api/stations/map";
 

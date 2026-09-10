@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 
 using Marten;
 
+using Microsoft.AspNetCore.Http;
+
 using TrainDude.Features.Trips.Contracts.GetTrips;
 using TrainDude.Features.Trips.Domain;
 
@@ -17,7 +19,8 @@ using Wolverine.Http;
 
 public static class GetTripsEndpoint
 {
-    [WolverinePost(GetTripsQuery.TypeRoute)]
+    [WolverineGet(GetTripsQuery.TypeRoute)]
+    [Tags("Trips")]
     public static async Task<GetTripsQueryResult> Handle(GetTripsQuery request, IQuerySession session, CancellationToken cancellationToken)
     {
         var trips = await session.Query<TripAggregate>()

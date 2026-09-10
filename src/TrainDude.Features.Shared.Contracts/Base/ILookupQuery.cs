@@ -10,5 +10,4 @@ public interface ILookupQuery<TResult>
     : IDomainQuery<TResult>
     where TResult : IQueryResult
 {
-    Guid Id { get; }
 }

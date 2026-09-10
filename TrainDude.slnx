@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/Analyzers/">
+    <File Path="analyzers\Directory.Packages.props" />
     <Project Path="analyzers/TrainDude.Architecture.Analyzers.Tests/TrainDude.Architecture.Analyzers.Tests.csproj" />
     <Project Path="analyzers/TrainDude.Architecture.Analyzers/TrainDude.Architecture.Analyzers.csproj" />
   </Folder>
@@ -14,6 +15,7 @@
     <Project Path="src/TrainDude.Features.Trips/TrainDude.Features.Trips.csproj" />
     <Project Path="src/TrainDude.Web.Client/TrainDude.Web.Client.csproj" />
     <Project Path="src/TrainDude.Web/TrainDude.Web.csproj" />
+    <File Path="src\Directory.Packages.props" />
     <Project Path="src/TrainDude.Features.Lines.Contracts/TrainDude.Features.Lines.Contracts.csproj" />
     <Project Path="src/TrainDude.Features.Lines/TrainDude.Features.Lines.csproj" />
     <Project Path="src/TrainDude.Features.Radii.Contracts/TrainDude.Features.Radii.Contracts.csproj" />
@@ -30,6 +32,7 @@
   </Folder>
   <Folder Name="/Tests/">
     <Project Path="tests/TrainDude.Domain.Tests/TrainDude.Domain.Tests.csproj" />
+    <File Path="tests\Directory.Packages.props" />
     <Project Path="tests/TrainDude.Architecture.Tests/TrainDude.Architecture.Tests.csproj" />
   </Folder>
 </Solution>

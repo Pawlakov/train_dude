@@ -8,12 +8,10 @@ using System;
 
 using TrainDude.Features.Shared.Contracts.Base;
 
-public sealed record GetSegmentMapQuery(Guid SegmentId)
+public sealed record GetSegmentMapQuery()
     : IMapQuery
 {
-    public const string TypeRoute = "/api/segment/map";
+    public const string TypeRoute = "/api/segments/{id}/map";
 
     public string Route => TypeRoute;
-
-    public Guid Id => this.SegmentId;
 }

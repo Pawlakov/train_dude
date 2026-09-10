@@ -8,4 +8,4 @@ using System;
 
 using TrainDude.Features.Lines.Domain.Values;
 
-public sealed record LineTripAssignedWithReferences(Guid Id, DateTime When, LineTrip Trip);
+public sealed record LineTripAssignedWithReferences(Guid Id, string Who, LineTrip Trip);

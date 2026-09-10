@@ -4,19 +4,19 @@
 
 namespace TrainDude.Features.Stations.GetStation;
 
-using System.Linq;
+using Microsoft.AspNetCore.Http;
 
 using TrainDude.Features.Stations.Contracts.GetStation;
 using TrainDude.Features.Stations.ReadModels;
 
 using Wolverine.Http;
-using Wolverine.Marten;
+using Wolverine.Persistence.EventSourcing;
 
 public static class GetStationEndpoint
 {
-    [AggregateHandler]
-    [WolverinePost(GetStationQuery.TypeRoute)]
-    public static GetStationQueryResult Handle(GetStationQuery query, StationReadModel readModel)
+    [WolverineGet(GetStationQuery.TypeRoute)]
+    [Tags("Stations")]
+    public static GetStationQueryResult Handle(GetStationQuery query, [ReadModel(FromRoute = "id")] StationReadModel readModel)
     {
         var result = new GetStationQueryResult(readModel.Name, readModel.Location, readModel.AxleCount);
 

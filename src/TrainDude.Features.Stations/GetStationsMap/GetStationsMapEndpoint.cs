@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Marten;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 using TrainDude.Features.Shared.Contracts.Generic;
 using TrainDude.Features.Stations.Contracts.GetStationsMap;
@@ -21,7 +22,8 @@ using Wolverine.Http;
 public static class GetStationsMapEndpoint
 {
     [AllowAnonymous]
-    [WolverinePost(GetStationsMapQuery.TypeRoute)]
+    [WolverineGet(GetStationsMapQuery.TypeRoute)]
+    [Tags("Stations")]
     public static async Task<MapQueryResult> Handle(GetStationsMapQuery query, IQuerySession session, CancellationToken cancellationToken)
     {
         var queryResult = await session.Query<StationReadModel>()

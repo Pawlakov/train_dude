@@ -56,7 +56,7 @@ public class StationReadModelProjection
             foreach (var e in slice.Events().OfType<IEvent<StationCreated>>().ToArray())
             {
                 var name = nameSelector(e.Data);
-                var enriched = new StationCreatedWithReferences(e.Data.Id, e.Data.When, name);
+                var enriched = new StationCreatedWithReferences(e.Data.Id, name);
 
                 slice.ReplaceEvent(e, enriched);
             }
@@ -66,6 +66,7 @@ public class StationReadModelProjection
     public void Apply(IEvent<StationCreatedWithReferences> e, StationReadModel readModel)
     {
         readModel.Id = e.Data.Id;
+        readModel.AxleCount = 1;
         readModel.Name = e.Data.Name;
 
         readModel.Version++;

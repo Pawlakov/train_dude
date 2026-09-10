@@ -4,23 +4,23 @@
 
 namespace TrainDude.Features.Segments.GetSegments;
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 using Marten;
 
+using Microsoft.AspNetCore.Http;
+
 using TrainDude.Features.Segments.Contracts.GetSegments;
 using TrainDude.Features.Segments.ReadModels;
 
-using Wolverine;
 using Wolverine.Http;
 
 public static class GetSegmentsEndpoint
 {
-    [WolverinePost(GetSegmentsQuery.TypeRoute)]
+    [WolverineGet(GetSegmentsQuery.TypeRoute)]
+    [Tags("Segments")]
     public static async Task<GetSegmentsQueryResult> Handle(GetSegmentsQuery request, IQuerySession session, CancellationToken cancellationToken = default)
     {
         var queryResult = await session.Query<SegmentReadModel>()

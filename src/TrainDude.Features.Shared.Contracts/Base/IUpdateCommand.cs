@@ -11,7 +11,4 @@ using TrainDude.Features.Shared.Contracts.Generic;
 public interface IUpdateCommand
     : IVersionedDomainCommand<UpdatedResult>
 {
-    Guid Id { get; }
-
-    long Version { get; }
 }

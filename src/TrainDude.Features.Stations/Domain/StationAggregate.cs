@@ -50,23 +50,23 @@ public class StationAggregate
 
     public static StationCreated Make(Guid id, string who, string nameGerman, string? nameGermanNew, string? namePolish, string? nameRussian)
     {
-        return new StationCreated(id, DateTime.UtcNow, who, nameGerman, nameGermanNew, namePolish, nameRussian);
+        return new StationCreated(id, who, nameGerman, nameGermanNew, namePolish, nameRussian);
     }
 
     public StationLocationSet SetLocation(string who, Location location)
     {
-        return new StationLocationSet(this.Id, DateTime.UtcNow, who, location);
+        return new StationLocationSet(this.Id, who, location);
     }
 
     public StationAxleAdded AddAxle(string who)
     {
-        return new StationAxleAdded(this.Id, DateTime.UtcNow, who);
+        return new StationAxleAdded(this.Id, who);
     }
 
     public void Apply(StationCreated e)
     {
         this.Id = e.Id;
-        this.AxleCount = 0;
+        this.AxleCount = 1;
         this.Location = null;
         this.NameGerman = e.NameGerman;
         this.NameGermanNew = e.NameGermanNew;

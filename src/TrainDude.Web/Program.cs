@@ -163,7 +163,8 @@ public static class Program
                 var redirectUri = string.IsNullOrWhiteSpace(returnUrl) ? "/" : returnUrl;
                 return Results.Challenge(new AuthenticationProperties { RedirectUri = redirectUri, }, [GoogleDefaults.AuthenticationScheme]);
             })
-            .AllowAnonymous();
+            .AllowAnonymous()
+            .WithTags("Auth");
 
         app.MapGet(
             "/account/logout",
@@ -172,7 +173,8 @@ public static class Program
                 await httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
                 return Results.Redirect("/");
             })
-            .AllowAnonymous();
+            .AllowAnonymous()
+            .WithTags("Auth");
 
         app.Run();
     }

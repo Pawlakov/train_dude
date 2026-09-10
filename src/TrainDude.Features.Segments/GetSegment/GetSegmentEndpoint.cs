@@ -4,17 +4,19 @@
 
 namespace TrainDude.Features.Segments.GetSegment;
 
+using Microsoft.AspNetCore.Http;
+
 using TrainDude.Features.Segments.Contracts.GetSegment;
 using TrainDude.Features.Segments.ReadModels;
 
 using Wolverine.Http;
-using Wolverine.Marten;
+using Wolverine.Persistence.EventSourcing;
 
 public static class GetSegmentEndpoint
 {
-    [AggregateHandler]
-    [WolverinePost(GetSegmentQuery.TypeRoute)]
-    public static GetSegmentQueryResult Handle(GetSegmentQuery query, SegmentReadModel readModel)
+    [WolverineGet(GetSegmentQuery.TypeRoute)]
+    [Tags("Segments")]
+    public static GetSegmentQueryResult Handle(GetSegmentQuery query, [ReadModel(FromRoute = "id")] SegmentReadModel readModel)
     {
         var result = new GetSegmentQueryResult(
         readModel.Tracks,

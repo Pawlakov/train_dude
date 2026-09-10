@@ -9,4 +9,4 @@ using System.Collections.Generic;
 
 using TrainDude.Features.Shared.Contracts.Values;
 
-public sealed record SegmentCourseSet(Guid Id, DateTime When, IEnumerable<Location> Course);
+public sealed record SegmentCourseSet(Guid Id, string Who, IEnumerable<Location> Course);

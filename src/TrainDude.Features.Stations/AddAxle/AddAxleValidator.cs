@@ -4,11 +4,11 @@
 
 namespace TrainDude.Features.Stations.AddAxle;
 
-using TrainDude.Features.Shared.Contracts.Generic;
-using TrainDude.Features.Shared.Validation;
+using FluentValidation;
+
 using TrainDude.Features.Stations.Contracts.AddAxle;
 
 public sealed class AddAxleValidator
-    : BaseVersionedDomainValidator<AddAxleCommand, UpdatedResult>
+    : AbstractValidator<AddAxleCommand>
 {
 }

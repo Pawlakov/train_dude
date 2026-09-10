@@ -10,7 +10,5 @@ public interface IDomainEvent
 {
     Guid Id { get; }
 
-    DateTime When { get; }
-
     string Who { get; }
 }

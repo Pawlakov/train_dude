@@ -69,7 +69,7 @@ public sealed class SegmentReadModelProjection
                 var b = stationsById[e.Data.B.Id];
                 var aEnriched = new SegmentEndReference(e.Data.A.Id, e.Data.A.Axle, e.Data.A.Pole, a.Location, nameSelector(a));
                 var bEnriched = new SegmentEndReference(e.Data.B.Id, e.Data.B.Axle, e.Data.B.Pole, b.Location, nameSelector(b));
-                var enriched = new SegmentCreatedWithReferences(e.Data.Id, e.Data.When, e.Data.NominalLength, e.Data.Tracks, aEnriched, bEnriched);
+                var enriched = new SegmentCreatedWithReferences(e.Data.Id, e.Data.Who, e.Data.NominalLength, e.Data.Tracks, aEnriched, bEnriched);
 
                 slice.ReplaceEvent(e, enriched);
             }

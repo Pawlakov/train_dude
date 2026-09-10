@@ -30,9 +30,9 @@ public class TripAggregate
 
     public int TripNumber { get; private set; }
 
-    public static TripCreated Make(Guid tripId, int tripNumber)
+    public static TripCreated Make(Guid tripId, string who, int tripNumber)
     {
-        return new TripCreated(tripId, DateTime.UtcNow, tripNumber);
+        return new TripCreated(tripId, who, tripNumber);
     }
 
     public void Apply(TripCreated e)

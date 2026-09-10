@@ -9,11 +9,9 @@ using System;
 using FluentValidation;
 
 using TrainDude.Features.Lines.Contracts.AssignTrip;
-using TrainDude.Features.Shared.Contracts.Generic;
-using TrainDude.Features.Shared.Validation;
 
 public sealed class AssignTripValidator
-    : BaseVersionedDomainValidator<AssignTripCommand, UpdatedResult>
+    : AbstractValidator<AssignTripCommand>
 {
     public AssignTripValidator()
     {

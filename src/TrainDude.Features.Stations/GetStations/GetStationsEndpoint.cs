@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 
 using Marten;
 
+using Microsoft.AspNetCore.Http;
+
 using TrainDude.Features.Shared;
 using TrainDude.Features.Stations.Contracts.GetStations;
 using TrainDude.Features.Stations.Domain;
@@ -20,8 +22,9 @@ using Wolverine.Http;
 
 public static class GetStationsEndpoint
 {
-    [WolverinePost(GetStationsQuery.TypeRoute)]
-    public static async Task<GetStationsQueryResult> Handle(GetStationsQuery request, IQuerySession session, CancellationToken cancellationToken)
+    [WolverineGet(GetStationsQuery.TypeRoute)]
+    [Tags("Stations")]
+    public static async Task<GetStationsQueryResult> Handle(GetStationsQuery query, IQuerySession session, CancellationToken cancellationToken)
     {
         var queryResult = await session.Query<StationReadModel>()
             .ToListAsync(cancellationToken);

@@ -6,17 +6,19 @@ namespace TrainDude.Features.Lines.GetLine;
 
 using System.Linq;
 
+using Microsoft.AspNetCore.Http;
+
 using TrainDude.Features.Lines.Contracts.GetLine;
 using TrainDude.Features.Lines.ReadModels;
 
 using Wolverine.Http;
-using Wolverine.Marten;
+using Wolverine.Persistence.EventSourcing;
 
 public static class GetLineEndpoint
 {
-    [AggregateHandler]
-    [WolverinePost(GetLineQuery.TypeRoute)]
-    public static GetLineQueryResult Handle(GetLineQuery query, LineReadModel readModel)
+    [WolverineGet(GetLineQuery.TypeRoute)]
+    [Tags("Lines")]
+    public static GetLineQueryResult Handle(GetLineQuery query, [ReadModel(FromRoute = "id")] LineReadModel readModel)
     {
         var trips = readModel.Trips.Select(x => new GetLineQueryResultTripItem { TripId = x.Id, TripNumber = x.Number }).ToList();
         var stations = readModel.Stations.Select(x => new GetLineQueryResultStationItem { StationId = x.Id, Name = x.Name }).ToList();

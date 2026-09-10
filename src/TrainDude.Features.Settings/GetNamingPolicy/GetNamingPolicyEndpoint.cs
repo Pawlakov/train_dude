@@ -9,13 +9,16 @@ using System.Threading.Tasks;
 
 using Marten;
 
+using Microsoft.AspNetCore.Http;
+
 using TrainDude.Features.Settings.Contracts.GetNamingPolicy;
 
 using Wolverine.Http;
 
 public static class GetNamingPolicyEndpoint
 {
-    [WolverinePost(GetNamingPolicyQuery.TypeRoute)]
+    [WolverineGet(GetNamingPolicyQuery.TypeRoute)]
+    [Tags("Settings")]
     public static async Task<GetNamingPolicyResult> Handle(GetNamingPolicyQuery query, IDocumentSession session, CancellationToken cancellationToken)
     {
         var queryResult = await SettingsAccessor.FetchForReading(session, cancellationToken);

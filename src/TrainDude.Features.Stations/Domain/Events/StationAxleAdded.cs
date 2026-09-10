@@ -8,7 +8,7 @@ using System;
 
 using TrainDude.Features.Shared.Base;
 
-public sealed record StationAxleAdded(Guid StationId, DateTime When, string Who) : IDomainEvent
+public sealed record StationAxleAdded(Guid StationId, string Who) : IDomainEvent
 {
     public Guid Id => this.StationId;
 }

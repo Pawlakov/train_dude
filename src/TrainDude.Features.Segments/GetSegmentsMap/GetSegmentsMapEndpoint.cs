@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Marten;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 using TrainDude.Features.Segments.Contracts.GetSegmentsMap;
 using TrainDude.Features.Segments.ReadModels;
@@ -20,7 +21,8 @@ using Wolverine.Http;
 public static class GetSegmentsMapEndpoint
 {
     [AllowAnonymous]
-    [WolverinePost(GetSegmentsMapQuery.TypeRoute)]
+    [WolverineGet(GetSegmentsMapQuery.TypeRoute)]
+    [Tags("Segments")]
     public static async Task<MapQueryResult> Handle(GetSegmentsMapQuery request, IQuerySession session, CancellationToken cancellationToken = default)
     {
         var queryResult = await session.Query<SegmentReadModel>()

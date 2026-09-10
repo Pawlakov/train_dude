@@ -6,4 +6,4 @@ namespace TrainDude.Infrastructure.Stations.Events;
 
 using System;
 
-public sealed record StationCreatedWithReferences(Guid Id, DateTime When, string Name);
+public sealed record StationCreatedWithReferences(Guid Id, string Name);

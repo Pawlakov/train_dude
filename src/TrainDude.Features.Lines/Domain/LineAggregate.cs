@@ -52,24 +52,24 @@ public class LineAggregate
 
     public IReadOnlyList<Guid> Trips => this.trips.AsReadOnly();
 
-    public static LineCreated Make(Guid id, int lineNumber, char? lineLetter)
+    public static LineCreated Make(Guid id, string who, int lineNumber, char? lineLetter)
     {
-        return new LineCreated(id, DateTime.UtcNow, lineNumber, lineLetter);
+        return new LineCreated(id, who, lineNumber, lineLetter);
     }
 
-    public LineTripAssigned AssignTrip(LineTripReference trip)
+    public LineTripAssigned AssignTrip(string who, LineTripReference trip)
     {
         if (this.trips.Contains(trip.Id))
         {
             throw new LineDuplicateTripException(this.Id, trip.Id);
         }
 
-        return new LineTripAssigned(this.Id, DateTime.UtcNow, trip.Id);
+        return new LineTripAssigned(this.Id, who, trip.Id);
     }
 
-    public LineSegmentAppended AppendSegment(LineSegmentReference segment)
+    public LineSegmentAppended AppendSegment(string who, LineSegmentReference segment)
     {
-        return new LineSegmentAppended(this.Id, DateTime.UtcNow, segment.Id);
+        return new LineSegmentAppended(this.Id, who, segment.Id);
     }
 
     public void Apply(LineCreated e)

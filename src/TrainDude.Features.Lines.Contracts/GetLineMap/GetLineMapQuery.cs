@@ -4,17 +4,12 @@
 
 namespace TrainDude.Features.Lines.Contracts.GetLineMap;
 
-using System;
-
-using TrainDude.Features.Lines.Contracts.GetLine;
 using TrainDude.Features.Shared.Contracts.Base;
 
-public sealed record GetLineMapQuery(Guid LineId)
+public sealed record GetLineMapQuery()
     : IMapQuery
 {
-    public const string TypeRoute = "/api/line/map";
+    public const string TypeRoute = "/api/lines/{id}/map";
 
     public string Route => TypeRoute;
-
-    public Guid Id => this.LineId;
 }

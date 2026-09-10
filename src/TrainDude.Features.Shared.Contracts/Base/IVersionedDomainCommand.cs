@@ -10,7 +10,4 @@ public interface IVersionedDomainCommand<TResult>
     : IDomainCommand<TResult>
     where TResult : ICommandResult
 {
-    Guid Id { get; }
-
-    long Version { get; }
 }

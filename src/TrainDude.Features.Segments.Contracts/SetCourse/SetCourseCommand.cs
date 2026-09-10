@@ -10,12 +10,10 @@ using System.Collections.Generic;
 using TrainDude.Features.Shared.Contracts.Base;
 using TrainDude.Features.Shared.Contracts.Values;
 
-public sealed record SetCourseCommand(Guid SegmentId, long Version, IReadOnlyList<Location> Course)
+public sealed record SetCourseCommand(IReadOnlyList<Location> Course)
     : IUpdateCommand
 {
-    public const string TypeRoute = "/api/segment/course/set";
+    public const string TypeRoute = "/api/segments/{id}/set-course/{version}";
 
     public string Route => TypeRoute;
-
-    public Guid Id => this.SegmentId;
 }

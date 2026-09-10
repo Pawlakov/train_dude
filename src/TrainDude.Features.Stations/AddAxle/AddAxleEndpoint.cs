@@ -6,6 +6,8 @@ namespace TrainDude.Features.Stations.AddAxle;
 
 using System.Security.Claims;
 
+using Microsoft.AspNetCore.Http;
+
 using TrainDude.Features.Shared.Contracts.Generic;
 using TrainDude.Features.Shared.Extensions;
 using TrainDude.Features.Stations.Contracts.AddAxle;
@@ -13,12 +15,13 @@ using TrainDude.Features.Stations.Domain;
 
 using Wolverine.Http;
 using Wolverine.Marten;
+using Wolverine.Persistence.EventSourcing;
 
 public static class AddAxleEndpoint
 {
-    [AggregateHandler]
     [WolverinePost(AddAxleCommand.TypeRoute)]
-    public static (UpdatedResult, Events) Handle(AddAxleCommand command, ClaimsPrincipal user, StationAggregate aggregate)
+    [Tags("Stations")]
+    public static (UpdatedResult, Events) Handle(AddAxleCommand command, [WriteModel(FromRoute = "id", VersionSource = "version")] StationAggregate aggregate, ClaimsPrincipal user)
     {
         var domainEvent = aggregate.AddAxle(user.GetSubject());
 

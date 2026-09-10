@@ -31,6 +31,13 @@ public class ApiClient
         this.http = http;
     }
 
+    public Task<TResponse> SendAsync<TRequest, TResponse>(Guid id, long version, TRequest request, CancellationToken cancellationToken = default)
+        where TRequest : IDomainRequest<TResponse>
+        where TResponse : IRequestResult
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<TResponse> SendAsync<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken = default)
         where TRequest : IDomainRequest<TResponse>
         where TResponse : IRequestResult

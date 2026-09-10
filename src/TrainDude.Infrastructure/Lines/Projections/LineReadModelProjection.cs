@@ -58,7 +58,7 @@ public sealed class LineReadModelProjection
             {
                 var reference = tripsById[e.Data.TripId];
                 var trip = new LineTrip(reference.Id, reference.Number);
-                var enriched = new LineTripAssignedWithReferences(e.Data.Id, e.Data.When, trip);
+                var enriched = new LineTripAssignedWithReferences(e.Data.Id, e.Data.Who, trip);
 
                 slice.ReplaceEvent(e, enriched);
             }

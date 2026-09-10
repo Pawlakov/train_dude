@@ -11,7 +11,7 @@ using TrainDude.Features.Shared.Contracts.Base;
 public sealed record CreateSegmentCommand(double NominalLength, int Tracks, Guid AId, int AAxle, bool APole, Guid BId, int BAxle, bool BPole)
     : ICreateCommand
 {
-    public const string TypeRoute = "/api/segment/create";
+    public const string TypeRoute = "/api/segments/create";
 
     public string Route => TypeRoute;
 }

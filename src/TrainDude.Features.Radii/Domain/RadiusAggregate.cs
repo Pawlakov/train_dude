@@ -33,9 +33,9 @@ public class RadiusAggregate
 
     public int Minimum { get; private set; }
 
-    public static RadiusCreated Make(Guid id, int speed, int minimum)
+    public static RadiusCreated Make(Guid id, string who, int speed, int minimum)
     {
-        return new RadiusCreated(id, DateTime.UtcNow, speed, minimum);
+        return new RadiusCreated(id, who, speed, minimum);
     }
 
     public void Apply(RadiusCreated e)

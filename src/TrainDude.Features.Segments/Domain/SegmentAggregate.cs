@@ -49,14 +49,14 @@ public class SegmentAggregate
 
     public IReadOnlyList<Location> Course => this.course.AsReadOnly();
 
-    public static SegmentCreated Make(Guid id, double nominalLength, int tracks, SegmentEnd a, SegmentEnd b)
+    public static SegmentCreated Make(Guid id, string who, double nominalLength, int tracks, SegmentEnd a, SegmentEnd b)
     {
-        return new SegmentCreated(id, DateTime.UtcNow, nominalLength, tracks, a, b);
+        return new SegmentCreated(id, who, nominalLength, tracks, a, b);
     }
 
-    public SegmentCourseSet SetCourse(IEnumerable<Location> course)
+    public SegmentCourseSet SetCourse(string who, IEnumerable<Location> course)
     {
-        return new SegmentCourseSet(this.Id, DateTime.UtcNow, course ?? []);
+        return new SegmentCourseSet(this.Id, who, course ?? []);
     }
 
     public void Apply(SegmentCreated e)
