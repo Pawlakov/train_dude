@@ -20,7 +20,7 @@ public sealed class SegmentStationReferenceProjection
     public void Apply(IEvent<StationCreated> e, SegmentStationReference aggregate)
     {
         aggregate.Id = e.Data.Id;
-        aggregate.AxleCount = 0;
+        aggregate.AxleCount = 1;
         aggregate.NameGerman = e.Data.NameGerman;
         aggregate.NameGermanNew = e.Data.NameGermanNew;
         aggregate.NamePolish = e.Data.NamePolish;
