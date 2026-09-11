@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
+using RestSharp;
+
 using TrainDude.Web.Client.HostBuilders;
 using TrainDude.Web.Client.Seed;
 using TrainDude.Web.Client.Services;
@@ -25,18 +27,16 @@ public static class Program
         builder.Services.AddCascadingAuthenticationState();
         builder.Services.AddAuthenticationStateDeserialization();
 
-        builder.Services.AddScoped(serviceProvider => new HttpClient
-        {
-            BaseAddress = new Uri(builder.HostEnvironment.BaseAddress),
-        });
+        var baseUrl = builder.HostEnvironment.BaseAddress;
+        builder.Services.AddSingleton(serviceProvider => new HttpClient { BaseAddress = new Uri(baseUrl) });
+        builder.Services.AddSingleton<IRestClient>(serviceProvider => new RestClient(baseUrl));
 
-        builder.Services.AddScoped<ApiClient>();
-        builder.Services.AddScoped<SeedService>();
-        builder.Services.AddScoped<SeedLoader>();
-        builder.Services.AddScoped<MapService>();
+        builder.Services.AddSingleton<ApiClient>();
+        builder.Services.AddSingleton<SeedService>();
+        builder.Services.AddSingleton<SeedLoader>();
+        builder.Services.AddSingleton<MapService>();
 
-        builder.Services.AddQueryInputValidation();
-        builder.Services.AddCommandInputValidation();
+        builder.Services.AddInputValidation();
 
         await builder.Build().RunAsync();
     }

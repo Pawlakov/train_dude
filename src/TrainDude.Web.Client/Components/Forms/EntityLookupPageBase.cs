@@ -22,7 +22,7 @@ public abstract class EntityLookupPageBase<TQuery, TQueryResult>
 {
     protected EntityLookupFormModel formModel;
     protected EditContext formContext;
-    protected FluentValidationValidator<TQuery> validator;
+    protected FluentValidationValidator<EntityLookupFormModel> validator;
     protected TQueryResult? queryResult = default;
 
     private bool loadingActive;

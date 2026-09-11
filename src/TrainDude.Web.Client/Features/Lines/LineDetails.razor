@@ -7,12 +7,12 @@
 
     protected override GetLineQuery BuildQuery(EntityLookupFormModel formModel)
     {
-        throw new NotImplementedException();
+        return new GetLineQuery();
     }
 
     protected override GetLineMapQuery BuildMapQuery(EntityLookupFormModel formModel)
     {
-        throw new NotImplementedException();
+        return new GetLineMapQuery();
     }
 
 }
@@ -41,7 +41,7 @@ else
 @if (this.queryResult == null)
 {
     <EditForm EditContext="this.formContext" OnValidSubmit="this.Submit" FormName="GetQueryForm">
-        <FluentValidationValidator @ref="this.validator" TModel="GetLineQuery"/>
+        <FluentValidationValidator @ref="this.validator" TModel="EntityLookupFormModel"/>
         <section class="section">
             <div class="field">
                 <label class="label">ID</label>

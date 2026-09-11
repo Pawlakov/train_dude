@@ -13,7 +13,7 @@ using TrainDude.Web.Client.Validation;
 
 public static class HostBuilderExtensions
 {
-    public static IServiceCollection AddQueryInputValidation(this IServiceCollection services)
+    public static IServiceCollection AddInputValidation(this IServiceCollection services)
     {
         var inputValidatorInterfaceType = typeof(IInputValidator<>);
         var list = typeof(HostBuilderExtensions).Assembly.GetTypes()
@@ -24,26 +24,8 @@ public static class HostBuilderExtensions
         {
             var interfaceType = item.GetInterface(inputValidatorInterfaceType.Name);
 
-            services.TryAddEnumerable(new ServiceDescriptor(interfaceType!, item, ServiceLifetime.Scoped));
-            services.TryAdd(new ServiceDescriptor(item, item, ServiceLifetime.Scoped));
-        }
-
-        return services;
-    }
-
-    public static IServiceCollection AddCommandInputValidation(this IServiceCollection services)
-    {
-        var inputValidatorInterfaceType = typeof(IInputValidator<>);
-        var list = typeof(HostBuilderExtensions).Assembly.GetTypes()
-            .Where(mytype => mytype.GetInterface(inputValidatorInterfaceType.Name) != null && !mytype.IsInterface && !mytype.IsAbstract)
-            .ToList();
-
-        foreach (var item in list)
-        {
-            var interfaceType = item.GetInterface(inputValidatorInterfaceType.Name);
-
-            services.TryAddEnumerable(new ServiceDescriptor(interfaceType!, item, ServiceLifetime.Scoped));
-            services.TryAdd(new ServiceDescriptor(item, item, ServiceLifetime.Scoped));
+            services.TryAddEnumerable(new ServiceDescriptor(interfaceType!, item, ServiceLifetime.Singleton));
+            services.TryAdd(new ServiceDescriptor(item, item, ServiceLifetime.Singleton));
         }
 
         return services;

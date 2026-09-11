@@ -6,12 +6,12 @@
 @code {
     protected override GetSegmentQuery BuildQuery(EntityLookupFormModel formModel)
     {
-        throw new NotImplementedException();
+        return new GetSegmentQuery();
     }
 
     protected override GetSegmentMapQuery BuildMapQuery(EntityLookupFormModel formModel)
     {
-        throw new NotImplementedException();
+        return new GetSegmentMapQuery();
     }
 }
 
@@ -30,7 +30,7 @@
 @if (this.queryResult == null)
 {
     <EditForm EditContext="this.formContext" OnValidSubmit="this.Submit" FormName="GetSegmentForm">
-        <FluentValidationValidator @ref="this.validator" TModel="GetSegmentQuery"/>
+        <FluentValidationValidator @ref="this.validator" TModel="EntityLookupFormModel"/>
         <section class="section">
             <div class="field">
                 <label class="label">ID</label>

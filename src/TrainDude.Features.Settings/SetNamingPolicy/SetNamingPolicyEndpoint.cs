@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 using Marten;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 
 using TrainDude.Features.Settings.Contracts.SetNamingPolicy;
@@ -21,6 +22,7 @@ using Wolverine.Http;
 public static class SetNamingPolicyEndpoint
 {
     [WolverinePost(SetNamingPolicyCommand.TypeRoute)]
+    [Authorize(Policy = "SuperUser")]
     [Tags("Settings")]
     public static async Task<IResult> Handle(SetNamingPolicyCommand command, ClaimsPrincipal user, IDocumentSession session, CancellationToken cancellationToken = default)
     {

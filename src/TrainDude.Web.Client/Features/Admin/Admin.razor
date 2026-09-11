@@ -1,5 +1,7 @@
 ﻿@page "/admin"
+@using Microsoft.AspNetCore.Authorization
 @layout BlockMapLayout
+@attribute [Authorize(Policy = "SuperUser")]
 
 @inject SeedService Service
 

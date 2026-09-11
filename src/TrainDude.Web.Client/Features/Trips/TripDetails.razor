@@ -7,12 +7,12 @@
 
     protected override GetTripQuery BuildQuery(EntityLookupFormModel formModel)
     {
-        throw new NotImplementedException();
+        return new GetTripQuery();
     }
 
     protected override GetTripMapQuery BuildMapQuery(EntityLookupFormModel formModel)
     {
-        throw new NotImplementedException();
+        return new GetTripMapQuery();
     }
 }
 
@@ -40,7 +40,7 @@ else
 @if (this.queryResult == null)
 {
     <EditForm EditContext="this.formContext" OnValidSubmit="this.Submit" FormName="GetTripForm">
-        <FluentValidationValidator @ref="this.validator" TModel="GetTripQuery"/>
+        <FluentValidationValidator @ref="this.validator" TModel="EntityLookupFormModel"/>
         <section class="section">
             <div class="field">
                 <label class="label">ID</label>

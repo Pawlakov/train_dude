@@ -9,7 +9,7 @@
 @if (this.editActive)
 {
     <EditForm EditContext="this.formContext" OnValidSubmit="this.Submit" FormName="UpdateStationNameModeForm">
-        <FluentValidationValidator @ref="this.validator" TModel="SetNamingPolicyCommand"/>
+        <FluentValidationValidator @ref="this.validator" TModel="SettingsFormModel"/>
         <p class="title is-6">
             Nazwy stacji
             <a class="icon" @onclick="this.Submit">
@@ -70,7 +70,7 @@ else
     private GetNamingPolicyResult? queryResult;
     private SettingsFormModel? formModel;
     private EditContext? formContext;
-    private FluentValidationValidator<SetNamingPolicyCommand>? validator;
+    private FluentValidationValidator<SettingsFormModel>? validator;
 
     protected override async Task OnInitializedAsync()
     {

@@ -1,4 +1,4 @@
-// <copyright file="UpdateStationNameModeCommandInputValidator.cs" company="Pawlakov">
+// <copyright file="SettingsFormModelValidator.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
@@ -9,10 +9,10 @@ using FluentValidation;
 using TrainDude.Features.Settings.Contracts.SetNamingPolicy;
 using TrainDude.Web.Client.Validation;
 
-public class UpdateStationNameModeCommandInputValidator
-    : AbstractInputValidator<SetNamingPolicyCommand>
+public class SettingsFormModelValidator
+    : AbstractInputValidator<SettingsFormModel>
 {
-    public UpdateStationNameModeCommandInputValidator()
+    public SettingsFormModelValidator()
     {
         this.RuleFor(command => command.Policy)
             .IsInEnum()
