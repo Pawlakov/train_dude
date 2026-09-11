@@ -18,7 +18,7 @@ public class SegmentAggregate
     private readonly List<Location> course;
 
     [JsonConstructor]
-    private SegmentAggregate(Guid id, double nominalLength, int tracks, SegmentEnd a, SegmentEnd b, ICollection<Location> course)
+    private SegmentAggregate(Guid id, double nominalLength, int tracks, SegmentEnd a, SegmentEnd b, IReadOnlyList<Location> course)
     {
         this.Id = id;
 

@@ -19,7 +19,7 @@ public class LineAggregate
     private readonly List<Guid> trips;
 
     [JsonConstructor]
-    private LineAggregate(Guid id, int lineNumber, char? lineLetter, Guid? startId, ICollection<Guid> segments, ICollection<Guid> trips)
+    private LineAggregate(Guid id, int lineNumber, char? lineLetter, Guid? startId, IReadOnlyList<Guid> segments, IReadOnlyList<Guid> trips)
     {
         this.Id = id;
 
