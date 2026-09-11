@@ -12,7 +12,7 @@ using TrainDude.Features.Shared.Contracts.Generic;
 public sealed record GetSegmentMapQuery()
     : IMapQuery, ISpecificQuery<MapQueryResult>
 {
-    public const string TypeRoute = "/api/segments/{0}/map";
+    public const string TypeRoute = "/api/segments/{id}/map";
 
     public static string Route => TypeRoute;
 }

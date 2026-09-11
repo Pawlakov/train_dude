@@ -21,7 +21,7 @@ public static class GetLinesEndpoint
 {
     [WolverineGet(GetLinesQuery.TypeRoute)]
     [Tags("Lines")]
-    public static async Task<GetLinesQueryResult> Handle([AsParameters]GetLinesQuery request, IQuerySession session, CancellationToken cancellationToken = default)
+    public static async Task<GetLinesQueryResult> Handle([AsParameters] GetLinesQuery request, IQuerySession session, CancellationToken cancellationToken = default)
     {
         var queryResult = await session.Query<LineReadModel>()
             .ToListAsync(cancellationToken);

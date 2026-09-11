@@ -8,5 +8,5 @@ using TrainDude.Features.Shared.Contracts.Base;
 public sealed record GetRadiusQuery()
     : IListQuery<GetRadiusQueryResult>
 {
-    public static string Route => "/api/radii/{0}";
+    public static string Route => "/api/radii/{id}";
 }

@@ -10,7 +10,7 @@ using TrainDude.Features.Shared.Contracts.Generic;
 public sealed record GetLineMapQuery()
     : IMapQuery, ISpecificQuery<MapQueryResult>
 {
-    public const string TypeRoute = "/api/lines/{0}/map";
+    public const string TypeRoute = "/api/lines/{id}/map";
 
     public static string Route => TypeRoute;
 }

@@ -158,7 +158,7 @@ public class ApiClient
 
     private static string BuildRoute(string template, Guid? id = null)
     {
-        return id.HasValue ? string.Format(template, id.Value) : template;
+        return id.HasValue ? template.Replace("{id}", id.Value.ToString()) : template;
     }
 
     private sealed record ValidationProblemDetailsDto([property: JsonPropertyName("errors")] Dictionary<string, string[]>? Errors);

@@ -28,7 +28,7 @@ public static class CreateLineEndpoint
 
         var startStream = MartenOps.StartStream<LineAggregate>(domainEvent.Id, domainEvent);
 
-        var getUrl = string.Format(GetLineQuery.Route, domainEvent.Id);
+        var getUrl = GetLineQuery.Route.Replace("{id}", domainEvent.Id.ToString());
         var response = new CreationResponse(getUrl);
         var result = Results.Created(getUrl, response);
 

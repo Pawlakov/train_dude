@@ -14,7 +14,7 @@ public sealed class AggregateNamingAnalyzer
 {
     internal const string DiagnosticId = "TD001";
     private static readonly LocalizableString Title = "Class with 'Aggregate' suffix must inherit from BaseAggregate";
-    private static readonly LocalizableString MessageFormat = "Class '{0}' has the 'Aggregate' suffix but does not inherit from 'BaseAggregate'";
+    private static readonly LocalizableString MessageFormat = "Class '{id}' has the 'Aggregate' suffix but does not inherit from 'BaseAggregate'";
     private const string Category = "Design";
     private static readonly LocalizableString Description = "Classes named with the 'Aggregate' suffix are expected to derive from BaseAggregate to ensure consistent aggregate root behavior.";
 

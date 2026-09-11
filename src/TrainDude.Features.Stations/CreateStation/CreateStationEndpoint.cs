@@ -28,7 +28,7 @@ public static class CreateStationEndpoint
 
         var startStream = MartenOps.StartStream<StationAggregate>(domainEvent.Id, domainEvent);
 
-        var getUrl = string.Format(GetStationQuery.Route, domainEvent.Id);
+        var getUrl = GetStationQuery.Route.Replace("{id}", domainEvent.Id.ToString());
         var response = new CreationResponse(getUrl);
         var result = Results.Created(getUrl, response);
 

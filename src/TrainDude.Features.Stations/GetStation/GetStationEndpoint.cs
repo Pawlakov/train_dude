@@ -10,13 +10,14 @@ using TrainDude.Features.Stations.Contracts.GetStation;
 using TrainDude.Features.Stations.ReadModels;
 
 using Wolverine.Http;
+using Wolverine.Http.Marten;
 using Wolverine.Persistence.EventSourcing;
 
 public static class GetStationEndpoint
 {
-    [WolverinePost(GetStationQuery.TypeRoute)]
+    [WolverineGet(GetStationQuery.TypeRoute)]
     [Tags("Stations")]
-    public static GetStationQueryResult Handle([AsParameters] GetStationQuery query, [ReadModel(FromRoute = "0")] StationReadModel readModel)
+    public static GetStationQueryResult Handle([AsParameters] GetStationQuery query, [Document(FromRoute = "id")] StationReadModel readModel)
     {
         var result = new GetStationQueryResult(readModel.Name, readModel.Location, readModel.AxleCount);
 

@@ -10,13 +10,13 @@ using TrainDude.Features.Segments.Contracts.GetSegment;
 using TrainDude.Features.Segments.ReadModels;
 
 using Wolverine.Http;
-using Wolverine.Persistence.EventSourcing;
+using Wolverine.Http.Marten;
 
 public static class GetSegmentEndpoint
 {
     [WolverineGet(GetSegmentQuery.TypeRoute)]
     [Tags("Segments")]
-    public static GetSegmentQueryResult Handle([AsParameters] GetSegmentQuery query, [ReadModel(FromRoute = "0")] SegmentReadModel readModel)
+    public static GetSegmentQueryResult Handle([AsParameters] GetSegmentQuery query, [Document(FromRoute = "id")] SegmentReadModel readModel)
     {
         var result = new GetSegmentQueryResult(
         readModel.Tracks,

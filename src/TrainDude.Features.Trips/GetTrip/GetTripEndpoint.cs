@@ -16,7 +16,7 @@ public static class GetTripEndpoint
 {
     [WolverineGet(GetTripQuery.TypeRoute)]
     [Tags("Trips")]
-    public static GetTripQueryResult Handle([AsParameters] GetTripQuery query, [ReadModel(FromRoute = "0")] TripAggregate aggregate)
+    public static GetTripQueryResult Handle([AsParameters] GetTripQuery query, [ReadModel(FromRoute = "id")] TripAggregate aggregate)
     {
         var result = new GetTripQueryResult(aggregate.TripNumber);
 

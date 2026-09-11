@@ -28,7 +28,7 @@ public static class CreateTripEndpoint
 
         var startStream = MartenOps.StartStream<TripAggregate>(domainEvent.Id, domainEvent);
 
-        var getUrl = string.Format(GetTripQuery.Route, domainEvent.Id);
+        var getUrl = GetTripQuery.Route.Replace("{id}", domainEvent.Id.ToString());
         var response = new CreationResponse(getUrl);
         var result = Results.Created(getUrl, response);
 

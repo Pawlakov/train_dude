@@ -43,7 +43,7 @@ public static class CreateSegmentEndpoint
 
         var startStream = MartenOps.StartStream<SegmentAggregate>(domainEvent.Id, domainEvent);
 
-        var getUrl = string.Format(GetSegmentQuery.Route, domainEvent.Id);
+        var getUrl = GetSegmentQuery.Route.Replace("{id}", domainEvent.Id.ToString());
         var response = new CreationResponse(getUrl);
         var result = Results.Created(getUrl, response);
 

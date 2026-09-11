@@ -12,13 +12,13 @@ using TrainDude.Features.Lines.Contracts.GetLine;
 using TrainDude.Features.Lines.ReadModels;
 
 using Wolverine.Http;
-using Wolverine.Persistence.EventSourcing;
+using Wolverine.Http.Marten;
 
 public static class GetLineEndpoint
 {
     [WolverineGet(GetLineQuery.TypeRoute)]
     [Tags("Lines")]
-    public static GetLineQueryResult Handle([AsParameters]GetLineQuery query, [ReadModel(FromRoute = "0")] LineReadModel readModel)
+    public static GetLineQueryResult Handle([AsParameters] GetLineQuery query, [Document(FromRoute = "id")] LineReadModel readModel)
     {
         var trips = readModel.Trips.Select(x => new GetLineQueryResultTripItem { TripId = x.Id, TripNumber = x.Number }).ToList();
         var stations = readModel.Stations.Select(x => new GetLineQueryResultStationItem { StationId = x.Id, Name = x.Name }).ToList();

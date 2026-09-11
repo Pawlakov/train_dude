@@ -13,13 +13,13 @@ using TrainDude.Features.Segments.ReadModels;
 using TrainDude.Features.Shared.Contracts.Generic;
 
 using Wolverine.Http;
-using Wolverine.Persistence.EventSourcing;
+using Wolverine.Http.Marten;
 
 public static class GetSegmentMapEndpoint
 {
     [WolverineGet(GetSegmentMapQuery.TypeRoute)]
     [Tags("Segments")]
-    public static MapQueryResult Handle([AsParameters] GetSegmentMapQuery query, [ReadModel(FromRoute = "0")] SegmentReadModel readModel)
+    public static MapQueryResult Handle([AsParameters] GetSegmentMapQuery query, [Document(FromRoute = "id")] SegmentReadModel readModel)
     {
         var course = (readModel.A.Location, readModel.B.Location) switch
         {

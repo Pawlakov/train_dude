@@ -15,6 +15,7 @@ using TrainDude.Features.Shared.Extensions;
 
 using Wolverine;
 using Wolverine.Http;
+using Wolverine.Http.Marten;
 using Wolverine.Marten;
 using Wolverine.Persistence.EventSourcing;
 
@@ -22,7 +23,7 @@ public static class SetCourseEndpoint
 {
     [WolverinePost(SetCourseCommand.TypeRoute)]
     [Tags("Segments")]
-    public static (IResult, Events) Handle(SetCourseCommand command, ClaimsPrincipal user, [WriteModel(FromRoute = "0", VersionSource = "version")] SegmentAggregate aggregate)
+    public static (IResult, Events) Handle(SetCourseCommand command, ClaimsPrincipal user, [Document(FromRoute = "id")] SegmentAggregate aggregate)
     {
         var domainEvent = aggregate.SetCourse(user.GetSubject(), command.Course);
 

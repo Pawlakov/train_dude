@@ -22,7 +22,7 @@ public static class AssignTripEndpoint
 {
     [WolverinePost(AssignTripCommand.TypeRoute)]
     [Tags("Lines")]
-    public static (IResult, Events) Handle(AssignTripCommand command, [WriteModel(FromRoute = "0")] LineAggregate aggregate, ClaimsPrincipal user, [ReadModel(nameof(AssignTripCommand.TripId))] LineTripReference tripAggregate)
+    public static (IResult, Events) Handle(AssignTripCommand command, [WriteModel(FromRoute = "id")] LineAggregate aggregate, ClaimsPrincipal user, [ReadModel(nameof(AssignTripCommand.TripId))] LineTripReference tripAggregate)
     {
         var domainEvent = aggregate.AssignTrip(user.GetSubject(), tripAggregate);
 

@@ -11,7 +11,7 @@ using TrainDude.Features.Shared.Contracts.Generic;
 public sealed record GetStationMapQuery()
     : IMapQuery, ISpecificQuery<MapQueryResult>
 {
-    public const string TypeRoute = "/api/stations/{0}/map";
+    public const string TypeRoute = "/api/stations/{id}/map";
 
     public static string Route => TypeRoute;
 }

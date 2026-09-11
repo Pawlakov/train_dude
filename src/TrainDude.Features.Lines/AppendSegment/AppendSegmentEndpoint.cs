@@ -25,7 +25,7 @@ public static class AppendSegmentEndpoint
 {
     [WolverinePost(AppendSegmentCommand.TypeRoute)]
     [Tags("Lines")]
-    public static (IResult, Events) Handle(AppendSegmentCommand command, [WriteModel(FromRoute = "0")] LineAggregate aggregate, ClaimsPrincipal user, [ReadModel(nameof(AppendSegmentCommand.SegmentId))] LineSegmentReference segmentAggregate, IQuerySession session)
+    public static (IResult, Events) Handle(AppendSegmentCommand command, [WriteModel(FromRoute = "id")] LineAggregate aggregate, ClaimsPrincipal user, [ReadModel(nameof(AppendSegmentCommand.SegmentId))] LineSegmentReference segmentAggregate, IQuerySession session)
     {
         var domainEvent = aggregate.AppendSegment(user.GetSubject(), segmentAggregate);
 
