@@ -23,9 +23,18 @@ public static class Program
     {
         var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-        builder.Services.AddAuthorizationCore();
-        builder.Services.AddCascadingAuthenticationState();
         builder.Services.AddAuthenticationStateDeserialization();
+        builder.Services.AddCascadingAuthenticationState();
+        builder.Services.AddAuthorizationCore(options =>
+        {
+            options.AddPolicy(
+            "SuperUser",
+            policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.RequireRole("SuperUser");
+            });
+        });
 
         var baseUrl = builder.HostEnvironment.BaseAddress;
         builder.Services.AddSingleton(serviceProvider => new HttpClient { BaseAddress = new Uri(baseUrl) });

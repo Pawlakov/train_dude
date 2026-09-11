@@ -4,11 +4,14 @@
 
 namespace TrainDude.Web;
 
+using System;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -73,6 +76,22 @@ public static class Program
             {
                 options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
                 options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+                options.Events = new OAuthEvents
+                {
+                    OnCreatingTicket = context =>
+                    {
+                        var superUserEmail = builder.Configuration["Authorization:SuperUser"];
+                        var userEmail = context.Principal?.FindFirst(ClaimTypes.Email)?.Value;
+
+                        if (userEmail != null && userEmail.Equals(superUserEmail, StringComparison.OrdinalIgnoreCase))
+                        {
+                            var identity = (ClaimsIdentity)context.Principal!.Identity!;
+                            identity.AddClaim(new Claim(ClaimTypes.Role, "SuperUser"));
+                        }
+
+                        return Task.CompletedTask;
+                    },
+                };
             });
 
         builder.Services
@@ -85,7 +104,7 @@ public static class Program
                 policy =>
                 {
                     policy.RequireAuthenticatedUser();
-                    policy.RequireClaim(ClaimTypes.Email, builder.Configuration["Authorization:SuperUser"]);
+                    policy.RequireRole("SuperUser");
                 });
             });
 
