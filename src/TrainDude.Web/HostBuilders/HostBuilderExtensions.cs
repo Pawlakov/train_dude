@@ -71,7 +71,7 @@ public static class HostBuilderExtensions
             })
             .UseLightweightSessions()
             .IntegrateWithWolverine()
-            .AddAsyncDaemon(DaemonMode.HotCold);
+            .AddAsyncDaemon(DaemonMode.Solo);
 
         services.AddWolverineHttp();
 

@@ -6,4 +6,7 @@ namespace TrainDude.Features.Lines.Domain.Events;
 
 using System;
 
-public sealed record LineCreated(Guid Id, string Who, int LineNumber, char? LineLetter);
+public sealed record LineCreated(Guid LineId, string Who, int LineNumber, char? LineLetter) : ILineEvent
+{
+    public Guid Id => this.LineId;
+}

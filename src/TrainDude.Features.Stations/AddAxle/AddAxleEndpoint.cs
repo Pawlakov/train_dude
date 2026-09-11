@@ -15,12 +15,13 @@ using TrainDude.Features.Stations.Domain;
 using Wolverine.Http;
 using Wolverine.Http.Marten;
 using Wolverine.Marten;
+using Wolverine.Persistence.EventSourcing;
 
 public static class AddAxleEndpoint
 {
     [WolverinePost(AddAxleCommand.TypeRoute)]
     [Tags("Stations")]
-    public static (IResult, Events) Handle(AddAxleCommand command, [Document(FromRoute = "id")] StationAggregate aggregate, ClaimsPrincipal user)
+    public static (IResult, Events) Handle(AddAxleCommand command, [WriteModel(FromRoute = "id")] StationAggregate aggregate, ClaimsPrincipal user)
     {
         var domainEvent = aggregate.AddAxle(user.GetSubject());
 

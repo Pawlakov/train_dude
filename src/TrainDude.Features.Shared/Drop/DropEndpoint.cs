@@ -12,6 +12,7 @@ using Marten;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Hosting;
 
 using TrainDude.Features.Shared.Contracts.Admin;
 
@@ -22,9 +23,9 @@ public static class DropEndpoint
     [WolverinePost(DropCommand.TypeRoute)]
     [Authorize(Policy = "SuperUser")]
     [Tags("Admin")]
-    public static async Task<IResult> Handle(DropCommand command, ClaimsPrincipal user, IDocumentStore store, CancellationToken cancellationToken = default)
+    public static async Task<IResult> Handle(DropCommand command, ClaimsPrincipal user, IHost host, CancellationToken cancellationToken = default)
     {
-        await store.Advanced.Clean.CompletelyRemoveAllAsync(cancellationToken);
+        await host.ResetAllMartenDataAsync();
 
         var result = Results.Ok();
 

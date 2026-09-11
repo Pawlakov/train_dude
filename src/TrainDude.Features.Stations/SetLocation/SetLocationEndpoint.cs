@@ -15,12 +15,13 @@ using TrainDude.Features.Stations.Domain;
 using Wolverine.Http;
 using Wolverine.Http.Marten;
 using Wolverine.Marten;
+using Wolverine.Persistence.EventSourcing;
 
 public static class SetLocationEndpoint
 {
     [WolverinePost(SetLocationCommand.TypeRoute)]
     [Tags("Stations")]
-    public static (IResult, Events) Handle(SetLocationCommand command, [Document(FromRoute = "id")] StationAggregate aggregate, ClaimsPrincipal user)
+    public static (IResult, Events) Handle(SetLocationCommand command, [WriteModel(FromRoute = "id")] StationAggregate aggregate, ClaimsPrincipal user)
     {
         var domainEvent = aggregate.SetLocation(user.GetSubject(), command.Location);
 

@@ -8,4 +8,4 @@ using System;
 
 using TrainDude.Features.Stations.Domain.Events;
 
-public sealed record StationCreatedWithReferences(StationCreated Event, string Name);
+public sealed record StationCreatedWithReferences(Guid StationId, string Who, string NameGerman, string? NameGermanNew, string? NamePolish, string? NameRussian, string Name);

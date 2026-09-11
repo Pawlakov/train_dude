@@ -10,7 +10,7 @@ using TrainDude.Features.Shared.Base;
 using TrainDude.Features.Shared.Contracts.Enums;
 
 public sealed record SettingsNamingPolicySet(Guid SettingsId, string Who, NamingPolicy NamingPolicy)
-    : IDomainEvent
+    : ISettingsEvent
 {
     public Guid Id => this.SettingsId;
 }

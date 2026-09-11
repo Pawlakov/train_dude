@@ -6,4 +6,8 @@ namespace TrainDude.Features.Radii.Domain.Events;
 
 using System;
 
-public sealed record RadiusCreated(Guid Id, string Who, int Speed, int Minimum);
+public sealed record RadiusCreated(Guid RadiusId, string Who, int Speed, int Minimum)
+    : IRadiusEvents
+{
+    public Guid Id => this.RadiusId;
+}

@@ -9,7 +9,7 @@ using System;
 using TrainDude.Features.Shared.Base;
 
 public sealed record SettingsCreated(Guid SettingsId, string Who)
-    : IDomainEvent
+    : ISettingsEvent
 {
     public Guid Id => this.SettingsId;
 }

@@ -6,4 +6,8 @@ namespace TrainDude.Features.Trips.Domain.Events;
 
 using System;
 
-public sealed record TripCreated(Guid Id, string Who, int TripNumber);
+public sealed record TripCreated(Guid TripId, string Who, int TripNumber)
+    : ITripEvent
+{
+    public Guid Id => this.TripId;
+}

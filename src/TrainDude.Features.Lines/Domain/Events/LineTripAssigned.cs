@@ -6,4 +6,8 @@ namespace TrainDude.Features.Lines.Domain.Events;
 
 using System;
 
-public sealed record LineTripAssigned(Guid Id, string Who, Guid TripId);
+public sealed record LineTripAssigned(Guid LineId, string Who, Guid TripId)
+    : ILineEvent
+{
+    public Guid Id => this.LineId;
+}

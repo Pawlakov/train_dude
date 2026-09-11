@@ -10,7 +10,7 @@ using TrainDude.Features.Shared.Base;
 using TrainDude.Features.Shared.Contracts.Values;
 
 public sealed record StationLocationSet(Guid StationId, string Who, Location Location)
-    : IDomainEvent
+    : IStationEvent
 {
     public Guid Id => this.StationId;
 }

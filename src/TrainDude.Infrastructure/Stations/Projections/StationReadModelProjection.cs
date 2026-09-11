@@ -27,12 +27,6 @@ public class StationReadModelProjection
 {
     public StationReadModelProjection()
     {
-        this.IncludeType<StationCreated>();
-
-        this.Identity<StationCreated>(e => e.Id);
-        this.Identity<StationLocationSet>(e => e.Id);
-        this.Identity<StationAxleAdded>(e => e.Id);
-
         this.CustomGrouping(new StationReadModelGrouper());
     }
 
@@ -48,7 +42,7 @@ public class StationReadModelProjection
                 var nameSelector = StationNameResolver.GetNameSelector(policy);
 
                 var name = nameSelector(e.Data);
-                var enriched = new StationCreatedWithReferences(e.Data, name);
+                var enriched = new StationCreatedWithReferences(e.Data.StationId, e.Data.Who, e.Data.NameGerman, e.Data.NameGermanNew, e.Data.NamePolish, e.Data.NameRussian, name);
 
                 slice.ReplaceEvent(e, enriched);
             });
@@ -56,12 +50,12 @@ public class StationReadModelProjection
 
     public void Apply(StationCreatedWithReferences e, StationReadModel readModel)
     {
-        readModel.Id = e.Event.Id;
+        readModel.Id = e.StationId;
         readModel.AxleCount = 1;
-        readModel.NameGerman = e.Event.NameGerman;
-        readModel.NameGermanNew = e.Event.NameGermanNew;
-        readModel.NamePolish = e.Event.NamePolish;
-        readModel.NameRussian = e.Event.NameRussian;
+        readModel.NameGerman = e.NameGerman;
+        readModel.NameGermanNew = e.NameGermanNew;
+        readModel.NamePolish = e.NamePolish;
+        readModel.NameRussian = e.NameRussian;
         readModel.Name = e.Name;
     }
 

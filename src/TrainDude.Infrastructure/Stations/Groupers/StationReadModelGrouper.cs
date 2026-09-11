@@ -1,6 +1,7 @@
 // <copyright file="StationReadModelGrouper.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
+
 namespace TrainDude.Infrastructure.Stations.Groupers;
 
 using System;
@@ -23,33 +24,34 @@ public class StationReadModelGrouper
 {
     public async Task Group(IQuerySession session, IReadOnlyList<IEvent> events, IEventGrouping<Guid> grouping)
     {
-        await this.GroupNamingPolicySet(session, events, grouping);
+        foreach (var e in events)
+        {
+            if (e is IEvent<SettingsNamingPolicySet> namingPolicySetEvent)
+            {
+                await this.GroupNamingPolicySet(session, namingPolicySetEvent, grouping);
+            }
+            else if (e is IEvent<IStationEvent> stationEvent)
+            {
+                grouping.AddEvent(stationEvent.Data.StationId, stationEvent);
+            }
+        }
     }
 
-    private async Task GroupNamingPolicySet(IQuerySession session, IReadOnlyList<IEvent> events, IEventGrouping<Guid> grouping)
+    private async Task GroupNamingPolicySet(IQuerySession session, IEvent<SettingsNamingPolicySet> namingPolicySetEvent, IEventGrouping<Guid> grouping)
     {
-        var namingPolicySetEvents = events.OfType<IEvent<SettingsNamingPolicySet>>().ToList();
-        if (namingPolicySetEvents.Count == 0)
+        var sequence = namingPolicySetEvent.Sequence;
+
+        var stationIds = await session.Events
+            .QueryAllRawEvents()
+            .OfType<IEvent<StationCreated>>()
+            .Where(x => x.Sequence < sequence)
+            .Select(x => x.Data.StationId)
+            .Distinct()
+            .ToListAsync();
+
+        foreach (var stationId in stationIds)
         {
-            return;
-        }
-
-        foreach (var namingPolicySetEvent in namingPolicySetEvents)
-        {
-            var sequence = namingPolicySetEvent.Sequence;
-
-            var stationIds = await session.Events
-                .QueryAllRawEvents()
-                .OfType<IEvent<StationCreated>>()
-                .Where(x => x.Sequence < sequence)
-                .Select(x => x.Data.StationId)
-                .Distinct()
-                .ToListAsync();
-
-            foreach (var stationId in stationIds)
-            {
-                grouping.AddEvent(stationId, namingPolicySetEvent);
-            }
+            grouping.AddEvent(stationId, namingPolicySetEvent);
         }
     }
 }
