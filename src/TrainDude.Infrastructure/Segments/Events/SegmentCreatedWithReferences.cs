@@ -6,6 +6,7 @@ namespace TrainDude.Infrastructure.Segments.Events;
 
 using System;
 
+using TrainDude.Features.Segments.Domain.Events;
 using TrainDude.Features.Segments.Domain.Values;
 
-public sealed record SegmentCreatedWithReferences(Guid Id, string Who, double NominalLength, int Tracks, SegmentEndReference A, SegmentEndReference B);
+public sealed record SegmentCreatedWithReferences(SegmentCreated Event, SegmentEndReference A, SegmentEndReference B);

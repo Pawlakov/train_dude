@@ -1,4 +1,4 @@
-// <copyright file="ProjectionStoreFixtureBase.cs" company="Pawlakov">
+// <copyright file="ProjectionStoreFixture.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 namespace TrainDude.Infrastructure.Tests;

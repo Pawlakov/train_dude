@@ -4,9 +4,12 @@
 
 namespace TrainDude.Features.Segments.Domain.Events;
 
+using System;
+
 using TrainDude.Features.Shared.Base;
 
 public interface ISegmentEvent
     : IDomainEvent
 {
+    Guid SegmentId { get; }
 }

@@ -32,9 +32,7 @@ public sealed class SegmentReadModelProjection
 {
     public SegmentReadModelProjection()
     {
-        this.Identity<SegmentCreated>(e => e.Id);
-        this.Identity<SegmentCourseSet>(e => e.Id);
-
+        this.TransformsEvent<ISegmentEvent>();
         this.CustomGrouping(new SegmentReadModelGrouper());
     }
 
@@ -69,7 +67,7 @@ public sealed class SegmentReadModelProjection
                 var b = stationsById[e.Data.B.Id];
                 var aEnriched = new SegmentEndReference(e.Data.A.Id, e.Data.A.Axle, e.Data.A.Pole, a.Location, nameSelector(a));
                 var bEnriched = new SegmentEndReference(e.Data.B.Id, e.Data.B.Axle, e.Data.B.Pole, b.Location, nameSelector(b));
-                var enriched = new SegmentCreatedWithReferences(e.Data.Id, e.Data.Who, e.Data.NominalLength, e.Data.Tracks, aEnriched, bEnriched);
+                var enriched = new SegmentCreatedWithReferences(e.Data, aEnriched, bEnriched);
 
                 slice.ReplaceEvent(e, enriched);
             }
@@ -84,8 +82,8 @@ public sealed class SegmentReadModelProjection
             _ => null,
         };
 
-        item.Id = e.Id;
-        item.NominalLength = e.NominalLength;
+        item.Id = e.Event.Id;
+        item.NominalLength = e.Event.NominalLength;
         item.Haversine = haversine;
         item.A = e.A;
         item.B = e.B;
