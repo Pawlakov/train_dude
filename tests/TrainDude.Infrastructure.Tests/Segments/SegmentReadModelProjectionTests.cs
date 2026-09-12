@@ -51,8 +51,11 @@ public class SegmentReadModelProjectionTests
         {
             session.Events.Append(segmentId, new SegmentCreated(segmentId, Who, 22.2, 2, a, b));
             await session.SaveChangesAsync();
+        }
 
-            await this.fixture.Daemon.RebuildProjectionAsync<StationReadModel>(CancellationToken.None);
+        using (var session = this.fixture.Store.LightweightSession())
+        {
+            await this.fixture.Daemon.RebuildProjectionAsync<SegmentReadModel>(CancellationToken.None);
 
             var segment = await session.LoadAsync<SegmentReadModel>(segmentId);
             await Assert.That(segment).IsNotNull();

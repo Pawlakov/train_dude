@@ -80,7 +80,10 @@ public class StationReadModelProjectionTests
 
             session.Events.Append(stationId, new StationCreated(stationId, Who, "Lublinitz", "Loben", "Lubliniec", null));
             await session.SaveChangesAsync();
+        }
 
+        using (var session = this.fixture.Store.LightweightSession())
+        {
             await this.fixture.Daemon.RebuildProjectionAsync<StationReadModel>(CancellationToken.None);
 
             var station = await session.LoadAsync<StationReadModel>(stationId);
@@ -111,7 +114,10 @@ public class StationReadModelProjectionTests
         {
             session.Events.Append(stationId, new StationLocationSet(stationId, Who, location));
             await session.SaveChangesAsync();
+        }
 
+        using (var session = this.fixture.Store.LightweightSession())
+        {
             await this.fixture.Daemon.RebuildProjectionAsync<StationReadModel>(CancellationToken.None);
 
             var station = await session.LoadAsync<StationReadModel>(stationId);
@@ -144,7 +150,10 @@ public class StationReadModelProjectionTests
             }
 
             await session.SaveChangesAsync();
+        }
 
+        using (var session = this.fixture.Store.LightweightSession())
+        {
             await this.fixture.Daemon.RebuildProjectionAsync<StationReadModel>(CancellationToken.None);
 
             var station = await session.LoadAsync<StationReadModel>(stationId);
@@ -170,7 +179,10 @@ public class StationReadModelProjectionTests
         {
             session.Events.Append(SettingsSingleton.Id, new SettingsNamingPolicySet(SettingsSingleton.Id, Who, NamingPolicy.German));
             await session.SaveChangesAsync();
+        }
 
+        using (var session = this.fixture.Store.LightweightSession())
+        {
             await this.fixture.Daemon.RebuildProjectionAsync<StationReadModel>(CancellationToken.None);
 
             var afterGerman = await session.LoadAsync<StationReadModel>(stationId);
@@ -212,7 +224,10 @@ public class StationReadModelProjectionTests
         {
             session.Events.Append(SettingsSingleton.Id, new SettingsNamingPolicySet(SettingsSingleton.Id, Who, NamingPolicy.German));
             await session.SaveChangesAsync();
+        }
 
+        using (var session = this.fixture.Store.LightweightSession())
+        {
             await this.fixture.Daemon.RebuildProjectionAsync<StationReadModel>(CancellationToken.None);
 
             var station1 = await session.LoadAsync<StationReadModel>(stationId1);
@@ -230,14 +245,19 @@ public class StationReadModelProjectionTests
     {
         await this.fixture.ResetAsync();
 
-        using var session = this.fixture.Store.LightweightSession();
-        session.Events.Append(SettingsSingleton.Id, new SettingsCreated(SettingsSingleton.Id, Who));
-        session.Events.Append(SettingsSingleton.Id, new SettingsNamingPolicySet(SettingsSingleton.Id, Who, NamingPolicy.German));
-        await session.SaveChangesAsync();
+        using (var session = this.fixture.Store.LightweightSession())
+        {
+            session.Events.Append(SettingsSingleton.Id, new SettingsCreated(SettingsSingleton.Id, Who));
+            session.Events.Append(SettingsSingleton.Id, new SettingsNamingPolicySet(SettingsSingleton.Id, Who, NamingPolicy.German));
+            await session.SaveChangesAsync();
+        }
 
-        await this.fixture.Daemon.RebuildProjectionAsync<StationReadModel>(CancellationToken.None);
+        using (var session = this.fixture.Store.LightweightSession())
+        {
+            await this.fixture.Daemon.RebuildProjectionAsync<StationReadModel>(CancellationToken.None);
 
-        var missingStation = await session.Query<StationReadModel>().ToListAsync(CancellationToken.None);
-        await Assert.That(missingStation).IsEmpty();
+            var missingStation = await session.Query<StationReadModel>().ToListAsync(CancellationToken.None);
+            await Assert.That(missingStation).IsEmpty();
+        }
     }
 }
