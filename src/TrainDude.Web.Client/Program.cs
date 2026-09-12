@@ -13,8 +13,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 using RestSharp;
 
+using TrainDude.Web.Client.Features.Admin;
 using TrainDude.Web.Client.HostBuilders;
-using TrainDude.Web.Client.Seed;
 using TrainDude.Web.Client.Services;
 
 public static class Program

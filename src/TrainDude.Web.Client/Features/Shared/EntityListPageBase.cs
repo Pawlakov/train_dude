@@ -2,10 +2,9 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Web.Client.Components.Forms;
+namespace TrainDude.Web.Client.Features.Shared;
 
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Components;

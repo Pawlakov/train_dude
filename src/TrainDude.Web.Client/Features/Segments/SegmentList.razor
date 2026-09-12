@@ -1,5 +1,7 @@
 ﻿@page "/segments"
-@inherits EntityListPageBase<TrainDude.Features.Segments.Contracts.GetSegments.GetSegmentsQuery, TrainDude.Features.Segments.Contracts.GetSegments.GetSegmentsQueryResult, TrainDude.Features.Segments.Contracts.GetSegments.GetSegmentsQueryResultItem>
+@using TrainDude.Features.Segments.Contracts.GetSegments
+@using TrainDude.Web.Client.Features.Shared
+@inherits EntityListPageBase<GetSegmentsQuery, GetSegmentsQueryResult, GetSegmentsQueryResultItem>
 @layout BlockMapLayout
 
 <PageTitle>Odcinki</PageTitle>

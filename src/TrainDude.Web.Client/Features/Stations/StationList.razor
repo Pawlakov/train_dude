@@ -1,5 +1,7 @@
 ﻿@page "/stations"
-@inherits EntityListPageBase<TrainDude.Features.Stations.Contracts.GetStations.GetStationsQuery, TrainDude.Features.Stations.Contracts.GetStations.GetStationsQueryResult, TrainDude.Features.Stations.Contracts.GetStations.GetStationsQueryResultItem>
+@using TrainDude.Features.Stations.Contracts.GetStations
+@using TrainDude.Web.Client.Features.Shared
+@inherits EntityListPageBase<GetStationsQuery, GetStationsQueryResult, GetStationsQueryResultItem>
 @layout BlockMapLayout
 
 <PageTitle>Stacje</PageTitle>

@@ -1,19 +1,8 @@
 ﻿@page "/segment/{Id:guid}"
 @using TrainDude.Features.Segments.Contracts.GetSegment
 @using TrainDude.Features.Segments.Contracts.GetSegmentMap
+@using TrainDude.Web.Client.Features.Shared
 @inherits MapEntityLookupPageBase<GetSegmentQuery, GetSegmentQueryResult, GetSegmentMapQuery>
-
-@code {
-    protected override GetSegmentQuery BuildQuery(EntityLookupFormModel formModel)
-    {
-        return new GetSegmentQuery();
-    }
-
-    protected override GetSegmentMapQuery BuildMapQuery(EntityLookupFormModel formModel)
-    {
-        return new GetSegmentMapQuery();
-    }
-}
 
 <PageTitle>Odcinek</PageTitle>
 
@@ -72,5 +61,17 @@ else
                 12:00
             </div>
         </div>
+    }
+}
+
+@code {
+    protected override GetSegmentQuery BuildQuery(EntityLookupFormModel formModel)
+    {
+        return new GetSegmentQuery();
+    }
+
+    protected override GetSegmentMapQuery BuildMapQuery(EntityLookupFormModel formModel)
+    {
+        return new GetSegmentMapQuery();
     }
 }

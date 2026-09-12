@@ -1,5 +1,7 @@
 @page "/trips"
-@inherits EntityListPageBase<TrainDude.Features.Trips.Contracts.GetTrips.GetTripsQuery, TrainDude.Features.Trips.Contracts.GetTrips.GetTripsQueryResult, TrainDude.Features.Trips.Contracts.GetTrips.GetTripsQueryResultItem>
+@using TrainDude.Features.Trips.Contracts.GetTrips
+@using TrainDude.Web.Client.Features.Shared
+@inherits EntityListPageBase<GetTripsQuery, GetTripsQueryResult, GetTripsQueryResultItem>
 @layout BlockMapLayout
 
 <PageTitle>Kursy</PageTitle>

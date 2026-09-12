@@ -1,5 +1,7 @@
 @page "/lines"
-@inherits EntityListPageBase<TrainDude.Features.Lines.Contracts.GetLines.GetLinesQuery, TrainDude.Features.Lines.Contracts.GetLines.GetLinesQueryResult, TrainDude.Features.Lines.Contracts.GetLines.GetLinesQueryResultItem>
+@using TrainDude.Features.Lines.Contracts.GetLines
+@using TrainDude.Web.Client.Features.Shared
+@inherits EntityListPageBase<GetLinesQuery, GetLinesQueryResult, GetLinesQueryResultItem>
 @layout BlockMapLayout
 
 <PageTitle>Linie</PageTitle>

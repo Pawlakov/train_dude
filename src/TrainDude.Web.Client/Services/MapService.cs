@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using Microsoft.JSInterop;
 
 using TrainDude.Features.Shared.Contracts.Generic;
-using TrainDude.Web.Client.GeoJson;
+using TrainDude.Web.Client.Services.GeoJson;
 
 public sealed class MapService
     : IAsyncDisposable

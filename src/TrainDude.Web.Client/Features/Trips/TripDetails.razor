@@ -1,20 +1,8 @@
 @page "/trip/{Id:guid}"
 @using TrainDude.Features.Trips.Contracts.GetTrip
 @using TrainDude.Features.Trips.Contracts.GetTripMap
+@using TrainDude.Web.Client.Features.Shared
 @inherits MapEntityLookupPageBase<GetTripQuery, GetTripQueryResult, GetTripMapQuery>
-
-@code {
-
-    protected override GetTripQuery BuildQuery(EntityLookupFormModel formModel)
-    {
-        return new GetTripQuery();
-    }
-
-    protected override GetTripMapQuery BuildMapQuery(EntityLookupFormModel formModel)
-    {
-        return new GetTripMapQuery();
-    }
-}
 
 @if (this.queryResult != null)
 {
@@ -58,4 +46,17 @@ else
     <section class="section">
 
     </section>
+}
+
+@code {
+
+    protected override GetTripQuery BuildQuery(EntityLookupFormModel formModel)
+    {
+        return new GetTripQuery();
+    }
+
+    protected override GetTripMapQuery BuildMapQuery(EntityLookupFormModel formModel)
+    {
+        return new GetTripMapQuery();
+    }
 }

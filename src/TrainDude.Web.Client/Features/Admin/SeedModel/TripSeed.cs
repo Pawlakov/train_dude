@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Web.Client.Seed;
+namespace TrainDude.Web.Client.Features.Admin.SeedModel;
 
 using TrainDude.Features.Shared.Contracts.Enums;
 

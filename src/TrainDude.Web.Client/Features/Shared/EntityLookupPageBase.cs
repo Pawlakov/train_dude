@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Web.Client.Components.Forms;
+namespace TrainDude.Web.Client.Features.Shared;
 
 using System;
 using System.Threading.Tasks;
@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 
 using TrainDude.Features.Shared.Contracts.Base;
+using TrainDude.Web.Client.Components.Forms;
 using TrainDude.Web.Client.Services;
 
 public abstract class EntityLookupPageBase<TQuery, TQueryResult>

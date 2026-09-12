@@ -1,21 +1,8 @@
 @page "/line/{Id:guid}"
 @using TrainDude.Features.Lines.Contracts.GetLine
 @using TrainDude.Features.Lines.Contracts.GetLineMap
+@using TrainDude.Web.Client.Features.Shared
 @inherits MapEntityLookupPageBase<GetLineQuery, GetLineQueryResult, GetLineMapQuery>
-
-@code {
-
-    protected override GetLineQuery BuildQuery(EntityLookupFormModel formModel)
-    {
-        return new GetLineQuery();
-    }
-
-    protected override GetLineMapQuery BuildMapQuery(EntityLookupFormModel formModel)
-    {
-        return new GetLineMapQuery();
-    }
-
-}
 
 @if (this.queryResult != null)
 {
@@ -98,4 +85,18 @@ else
             </div>
         </div>
     </section>
+}
+
+@code {
+
+    protected override GetLineQuery BuildQuery(EntityLookupFormModel formModel)
+    {
+        return new GetLineQuery();
+    }
+
+    protected override GetLineMapQuery BuildMapQuery(EntityLookupFormModel formModel)
+    {
+        return new GetLineMapQuery();
+    }
+
 }

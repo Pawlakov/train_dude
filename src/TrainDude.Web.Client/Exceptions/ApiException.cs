@@ -7,8 +7,6 @@ namespace TrainDude.Web.Client.Exceptions;
 using System;
 using System.Net;
 
-using TrainDude.Web.Client.Services;
-
 public sealed class ApiException
     : Exception
 {

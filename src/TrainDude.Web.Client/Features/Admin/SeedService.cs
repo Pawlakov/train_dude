@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Web.Client.Services;
+namespace TrainDude.Web.Client.Features.Admin;
 
 using System;
 using System.Collections.Concurrent;
@@ -17,13 +17,13 @@ using TrainDude.Features.Radii.Contracts.CreateRadius;
 using TrainDude.Features.Segments.Contracts.CreateSegment;
 using TrainDude.Features.Segments.Contracts.SetCourse;
 using TrainDude.Features.Shared.Contracts.Admin;
-using TrainDude.Features.Shared.Contracts.Generic;
 using TrainDude.Features.Shared.Contracts.Values;
 using TrainDude.Features.Stations.Contracts.AddAxle;
 using TrainDude.Features.Stations.Contracts.CreateStation;
 using TrainDude.Features.Stations.Contracts.SetLocation;
 using TrainDude.Features.Trips.Contracts.CreateTrip;
-using TrainDude.Web.Client.Seed;
+using TrainDude.Web.Client.Features.Admin.SeedModel;
+using TrainDude.Web.Client.Services;
 
 public class SeedService
 {

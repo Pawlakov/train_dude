@@ -1,21 +1,8 @@
 @page "/station/{Id:guid}"
 @using TrainDude.Features.Stations.Contracts.GetStation
 @using TrainDude.Features.Stations.Contracts.GetStationMap
+@using TrainDude.Web.Client.Features.Shared
 @inherits MapEntityLookupPageBase<GetStationQuery, GetStationQueryResult, GetStationMapQuery>
-
-@code {
-
-    protected override GetStationQuery BuildQuery(EntityLookupFormModel formModel)
-    {
-        return new GetStationQuery();
-    }
-
-    protected override GetStationMapQuery BuildMapQuery(EntityLookupFormModel formModel)
-    {
-        return new GetStationMapQuery();
-    }
-
-}
 
 @if (this.queryResult != null)
 {
@@ -59,4 +46,18 @@ else
     <section class="section">
 
     </section>
+}
+
+@code {
+
+    protected override GetStationQuery BuildQuery(EntityLookupFormModel formModel)
+    {
+        return new GetStationQuery();
+    }
+
+    protected override GetStationMapQuery BuildMapQuery(EntityLookupFormModel formModel)
+    {
+        return new GetStationMapQuery();
+    }
+
 }

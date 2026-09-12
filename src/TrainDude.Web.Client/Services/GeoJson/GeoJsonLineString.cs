@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Web.Client.GeoJson;
+namespace TrainDude.Web.Client.Services.GeoJson;
 
 using System.Text.Json.Serialization;
 

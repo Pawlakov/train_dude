@@ -2,11 +2,9 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Web.Client.Components.Forms;
+namespace TrainDude.Web.Client.Features.Shared;
 
 using System.Threading.Tasks;
-
-using FluentValidation;
 
 using Microsoft.AspNetCore.Components;
 
