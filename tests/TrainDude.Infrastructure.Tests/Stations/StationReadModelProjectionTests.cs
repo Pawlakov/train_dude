@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Infrastructure.Tests;
+namespace TrainDude.Infrastructure.Tests.Stations;
 
 using System;
 using System.Threading;
