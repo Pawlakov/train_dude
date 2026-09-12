@@ -1,13 +1,17 @@
-﻿namespace TrainDude.Architecture.Tests;
+﻿// <copyright file="DependencyTests.cs" company="Pawlakov">
+// Copyright (c) Pawlakov. All rights reserved.
+// </copyright>
+
+namespace TrainDude.Architecture.Tests;
+
+using System.Threading.Tasks;
 
 using NetArchTest.Rules;
 
-using Xunit;
-
 public class DependencyTests
 {
-    [Fact]
-    public void ClientShouldNotDependOnServer()
+    [Test]
+    public async Task ClientShouldNotDependOnServer()
     {
         var clientAssembly = typeof(TrainDude.Web.Client.Program).Assembly;
 
@@ -17,11 +21,11 @@ public class DependencyTests
             .HaveDependencyOnAny("TrainDude.Web.Program")
             .GetResult();
 
-        Assert.True(result.IsSuccessful, "Client should not depend on server-side assemblies.");
+        await Assert.That(result.IsSuccessful).IsTrue().Because("Client should not depend on server-side assemblies.");
     }
 
-    [Fact]
-    public void ClientShouldNotDependOnInfrastructure()
+    [Test]
+    public async Task ClientShouldNotDependOnInfrastructure()
     {
         var clientAssembly = typeof(TrainDude.Web.Client.Program).Assembly;
 
@@ -31,11 +35,11 @@ public class DependencyTests
             .HaveDependencyOnAny("TrainDude.Infrastructure")
             .GetResult();
 
-        Assert.True(result.IsSuccessful, "Client should not depend on server-side assemblies.");
+        await Assert.That(result.IsSuccessful).IsTrue().Because("Client should not depend on server-side assemblies.");
     }
 
-    [Fact]
-    public void ClientShouldNotDependOnFeatures()
+    [Test]
+    public async Task ClientShouldNotDependOnFeatures()
     {
         var clientAssembly = typeof(TrainDude.Web.Client.Program).Assembly;
 
@@ -45,11 +49,11 @@ public class DependencyTests
             .HaveDependencyOnAny("TrainDude.Features.Shared.SettingsSingleton")
             .GetResult();
 
-        Assert.True(result.IsSuccessful, "Client should not depend on server-side assemblies.");
+        await Assert.That(result.IsSuccessful).IsTrue().Because("Client should not depend on server-side assemblies.");
     }
 
-    [Fact]
-    public void ClientShouldDependOnFeatureContracts()
+    [Test]
+    public async Task ClientShouldDependOnFeatureContracts()
     {
         var clientAssembly = typeof(TrainDude.Web.Client.Program).Assembly;
 
@@ -59,6 +63,6 @@ public class DependencyTests
             .HaveDependencyOnAll("TrainDude.Features.Shared.Contracts.Values")
             .GetResult();
 
-        Assert.True(result.IsSuccessful, "Client should should depend on feature contracts.");
+        await Assert.That(result.IsSuccessful).IsTrue().Because("Client should should depend on feature contracts.");
     }
 }
