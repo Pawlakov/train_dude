@@ -5,9 +5,11 @@
 namespace TrainDude.Infrastructure.Stations.Projections;
 
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using JasperFx.Events;
 using JasperFx.Events.Grouping;
 
 using Marten;
@@ -27,35 +29,46 @@ public class StationReadModelProjection
 {
     public StationReadModelProjection()
     {
+        this.TransformsEvent<IStationEvent>();
         this.CustomGrouping(new StationReadModelGrouper());
     }
 
     public override async Task EnrichEventsAsync(SliceGroup<StationReadModel, Guid> group, IQuerySession querySession, CancellationToken cancellation)
     {
-        await group
-            .EnrichWith<SharedSettingsReference>()
-            .ForEvent<StationCreated>()
-            .ForEntityId(_ => SettingsSingleton.Id)
-            .EnrichAsync((slice, e, settings) =>
-            {
-                var policy = settings?.NamingPolicy ?? NamingPolicy.Modern;
-                var nameSelector = StationNameResolver.GetNameSelector(policy);
+        var createdEvents = group.Slices
+            .SelectMany(slice => slice.Events().OfType<IEvent<StationCreated>>())
+            .ToArray();
 
+        if (createdEvents.Length == 0)
+        {
+            return;
+        }
+
+        var settings = await querySession.LoadAsync<SharedSettingsReference>(SettingsSingleton.Id, cancellation);
+
+        var policy = settings?.NamingPolicy ?? NamingPolicy.Modern;
+        var nameSelector = StationNameResolver.GetNameSelector(policy);
+
+        foreach (var slice in group.Slices)
+        {
+            foreach (var e in slice.Events().OfType<IEvent<StationCreated>>().ToArray())
+            {
                 var name = nameSelector(e.Data);
-                var enriched = new StationCreatedWithReferences(e.Data.StationId, e.Data.Who, e.Data.NameGerman, e.Data.NameGermanNew, e.Data.NamePolish, e.Data.NameRussian, name);
+                var enriched = new StationCreatedWithReferences(e.Data, name);
 
                 slice.ReplaceEvent(e, enriched);
-            });
+            }
+        }
     }
 
     public void Apply(StationCreatedWithReferences e, StationReadModel readModel)
     {
-        readModel.Id = e.StationId;
+        readModel.Id = e.Event.StationId;
         readModel.AxleCount = 1;
-        readModel.NameGerman = e.NameGerman;
-        readModel.NameGermanNew = e.NameGermanNew;
-        readModel.NamePolish = e.NamePolish;
-        readModel.NameRussian = e.NameRussian;
+        readModel.NameGerman = e.Event.NameGerman;
+        readModel.NameGermanNew = e.Event.NameGermanNew;
+        readModel.NamePolish = e.Event.NamePolish;
+        readModel.NameRussian = e.Event.NameRussian;
         readModel.Name = e.Name;
     }
 
