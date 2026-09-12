@@ -31,8 +31,8 @@
     <Project Path="src\TrainDude.Infrastructure\TrainDude.Infrastructure.csproj" />
   </Folder>
   <Folder Name="/Tests/">
-    <Project Path="tests/TrainDude.Domain.Tests/TrainDude.Domain.Tests.csproj" />
     <File Path="tests\Directory.Packages.props" />
     <Project Path="tests/TrainDude.Architecture.Tests/TrainDude.Architecture.Tests.csproj" />
+    <Project Path="tests\TrainDude.Infrastructure.Tests\TrainDude.Infrastructure.Tests.csproj" />
   </Folder>
 </Solution>
