@@ -16,8 +16,8 @@ using Marten;
 using Marten.Events.Projections;
 
 using TrainDude.Features.Lines.Domain.Events;
-using TrainDude.Features.Lines.Domain.Values;
 using TrainDude.Features.Lines.ReadModels;
+using TrainDude.Features.Lines.ReadModels.Values;
 using TrainDude.Infrastructure.Lines.Events;
 using TrainDude.Infrastructure.Lines.Groupers;
 
@@ -43,7 +43,7 @@ public sealed class LineReadModelProjection
             foreach (var tripAssignedEvent in slice.Events().OfType<IEvent<LineTripAssigned>>().ToArray())
             {
                 var reference = tripsById[tripAssignedEvent.Data.TripId];
-                var trip = new LineTrip(reference.Id, reference.Number);
+                var trip = new LineReadModelTrip(reference.Id, reference.Number);
                 var enriched = new LineTripAssignedWithReferences(tripAssignedEvent.Data.Id, tripAssignedEvent.Data.Who, trip);
 
                 slice.ReplaceEvent(tripAssignedEvent, enriched);

@@ -6,6 +6,6 @@ namespace TrainDude.Infrastructure.Lines.Events;
 
 using System;
 
-using TrainDude.Features.Lines.Domain.Values;
+using TrainDude.Features.Lines.ReadModels.Values;
 
-public sealed record LineSegmentAppendedWithReferences(Guid Id, DateTime When, LineSegment Segment);
+public sealed record LineSegmentAppendedWithReferences(Guid Id, DateTime When, LineReadModelSegment Segment);

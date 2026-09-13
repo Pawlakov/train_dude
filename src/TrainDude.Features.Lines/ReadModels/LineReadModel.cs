@@ -7,7 +7,7 @@ namespace TrainDude.Features.Lines.ReadModels;
 using System;
 using System.Collections.Generic;
 
-using TrainDude.Features.Lines.Domain.Values;
+using TrainDude.Features.Lines.ReadModels.Values;
 
 public sealed class LineReadModel
 {
@@ -19,9 +19,9 @@ public sealed class LineReadModel
 
     public string LineDesignation { get; set; }
 
-    public IReadOnlyList<LineSegment> Segments { get; set; }
+    public IReadOnlyList<LineReadModelSegment> Segments { get; set; }
 
-    public IReadOnlyList<LineStation> Stations { get; set; }
+    public IReadOnlyList<LineReadModelStation> Stations { get; set; }
 
-    public IReadOnlyList<LineTrip> Trips { get; set; }
+    public IReadOnlyList<LineReadModelTrip> Trips { get; set; }
 }

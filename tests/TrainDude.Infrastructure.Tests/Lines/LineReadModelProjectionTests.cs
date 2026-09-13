@@ -10,8 +10,8 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using TrainDude.Features.Lines.Domain.Events;
-using TrainDude.Features.Lines.Domain.Values;
 using TrainDude.Features.Lines.ReadModels;
+using TrainDude.Features.Lines.ReadModels.Values;
 using TrainDude.Features.Segments.Domain.Events;
 using TrainDude.Features.Segments.Domain.Values;
 using TrainDude.Features.Stations.Domain.Events;
@@ -65,7 +65,7 @@ public class LineReadModelProjectionTests
 
         using (var session = this.fixture.Store.LightweightSession())
         {
-            session.Events.Append(tripId, CreateTripCreated(tripId, 123));
+            session.Events.Append(tripId, new TripCreated(tripId, Who, 123));
             session.Events.Append(lineId, new LineCreated(lineId, Who, 120, null));
             session.Events.Append(lineId, new LineTripAssigned(lineId, Who, tripId));
             await session.SaveChangesAsync();
@@ -93,8 +93,8 @@ public class LineReadModelProjectionTests
 
         using (var session = this.fixture.Store.LightweightSession())
         {
-            session.Events.Append(trip1Id, CreateTripCreated(trip1Id, 101));
-            session.Events.Append(trip2Id, CreateTripCreated(trip2Id, 202));
+            session.Events.Append(trip1Id, new TripCreated(trip1Id, Who, 101));
+            session.Events.Append(trip2Id, new TripCreated(trip2Id, Who, 202));
             session.Events.Append(lineId, new LineCreated(lineId, Who, 120, null));
             session.Events.Append(lineId, new LineTripAssigned(lineId, Who, trip1Id));
             session.Events.Append(lineId, new LineTripAssigned(lineId, Who, trip2Id));
@@ -129,29 +129,17 @@ public class LineReadModelProjectionTests
         using (var session = this.fixture.Store.LightweightSession())
         {
             session.Events.Append(station1Id, new StationCreated(station1Id, Who, "A-old", "A-new", "A", null));
-            session.Events.Append(station2Id, new StationCreated(station2Id, Who, "B-old", "B-new", "B", null));
-            session.Events.Append(station3Id, new StationCreated(station3Id, Who, "C-old", "C-new", "C", null));
-            session.Events.Append(
-            segment1Id,
-            new SegmentCreated(
-            segment1Id,
-            Who,
-            10,
-            1,
-            new SegmentEnd(station1Id, 0, true),
-            new SegmentEnd(station2Id, 0, true)));
-            session.Events.Append(
-            segment2Id,
-            new SegmentCreated(
-            segment2Id,
-            Who,
-            20,
-            1,
-            new SegmentEnd(station3Id, 0, true),
-            new SegmentEnd(station2Id, 0, true)));
+            session.Events.Append(station2Id, new StationCreated(station2Id, Who, "B-old", "B-new", null, "B"));
+            session.Events.Append(station3Id, new StationCreated(station3Id, Who, "C-old", null, "C", null));
+            var end1 = new SegmentEnd(station1Id, 0, true);
+            var end2 = new SegmentEnd(station2Id, 0, false);
+            session.Events.Append(segment1Id, new SegmentCreated(segment1Id, Who, 10, 1, end1, end2));
+            var end3 = new SegmentEnd(station2Id, 0, true);
+            var end4 = new SegmentEnd(station3Id, 0, false);
+            session.Events.Append(segment2Id, new SegmentCreated(segment2Id, Who, 20, 1, end3, end4));
             session.Events.Append(lineId, new LineCreated(lineId, Who, 120, null));
-            session.Events.Append(lineId, CreateLineSegmentAppended(lineId, segment1Id, station1Id, station2Id));
-            session.Events.Append(lineId, CreateLineSegmentAppended(lineId, segment2Id, station2Id, station3Id));
+            session.Events.Append(lineId, new LineSegmentAppended(lineId, Who, segment1Id));
+            session.Events.Append(lineId, new LineSegmentAppended(lineId, Who, segment2Id));
             await session.SaveChangesAsync();
         }
 
@@ -171,134 +159,5 @@ public class LineReadModelProjectionTests
             await Assert.That(line.Stations[1].Id).IsEqualTo(station2Id);
             await Assert.That(line.Stations[2].Id).IsEqualTo(station3Id);
         }
-    }
-
-    private static TripCreated CreateTripCreated(Guid tripId, int tripNumber)
-    {
-        return (TripCreated)CreateRecord(
-        typeof(TripCreated),
-        new Dictionary<string, object?>
-        {
-            ["id"] = tripId,
-            ["tripId"] = tripId,
-            ["who"] = Who,
-            ["tripNumber"] = tripNumber,
-        });
-    }
-
-    private static LineSegment CreateLineSegment(Guid segmentId, SegmentEnd a, SegmentEnd b)
-    {
-        return (LineSegment)CreateRecord(
-        typeof(LineSegment),
-        new Dictionary<string, object?>
-        {
-            ["id"] = segmentId,
-            ["segmentId"] = segmentId,
-            ["a"] = a,
-            ["b"] = b,
-        });
-    }
-
-    private static LineSegmentAppended CreateLineSegmentAppended(Guid lineId, Guid segmentId, Guid aId, Guid bId)
-    {
-        var a = new SegmentEnd(aId, 0, true);
-        var b = new SegmentEnd(bId, 0, true);
-
-        return (LineSegmentAppended)CreateRecord(
-        typeof(LineSegmentAppended),
-        new Dictionary<string, object?>
-        {
-            ["id"] = lineId,
-            ["lineId"] = lineId,
-            ["segmentId"] = segmentId,
-            ["a"] = a,
-            ["b"] = b,
-            ["segment"] = CreateLineSegment(segmentId, a, b),
-            ["lineSegment"] = CreateLineSegment(segmentId, a, b),
-            ["who"] = Who,
-            ["when"] = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc),
-        });
-    }
-
-    private static object CreateRecord(Type type, IReadOnlyDictionary<string, object?> values)
-    {
-        foreach (var constructor in type.GetConstructors())
-        {
-            var parameters = constructor.GetParameters();
-            var arguments = new object?[parameters.Length];
-            var supported = true;
-
-            for (var i = 0; i < parameters.Length; i++)
-            {
-                var parameter = parameters[i];
-                if (TryGetValue(values, parameter.Name!, out var value))
-                {
-                    arguments[i] = value;
-                    continue;
-                }
-
-                if (parameter.HasDefaultValue)
-                {
-                    arguments[i] = parameter.DefaultValue;
-                    continue;
-                }
-
-                if (parameter.ParameterType == typeof(Guid))
-                {
-                    arguments[i] = Guid.NewGuid();
-                }
-                else if (parameter.ParameterType == typeof(string))
-                {
-                    arguments[i] = Who;
-                }
-                else if (parameter.ParameterType == typeof(DateTime))
-                {
-                    arguments[i] = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-                }
-                else if (parameter.ParameterType == typeof(int))
-                {
-                    arguments[i] = 0;
-                }
-                else if (parameter.ParameterType == typeof(long))
-                {
-                    arguments[i] = 0L;
-                }
-                else if (parameter.ParameterType == typeof(bool))
-                {
-                    arguments[i] = false;
-                }
-                else if (parameter.ParameterType.IsEnum)
-                {
-                    arguments[i] = Activator.CreateInstance(parameter.ParameterType);
-                }
-                else
-                {
-                    supported = false;
-                    break;
-                }
-            }
-
-            if (supported)
-            {
-                return constructor.Invoke(arguments);
-            }
-        }
-
-        throw new InvalidOperationException($"Could not construct {type.FullName} using the supplied values.");
-    }
-
-    private static bool TryGetValue(IReadOnlyDictionary<string, object?> values, string name, out object? value)
-    {
-        foreach (var pair in values)
-        {
-            if (string.Equals(pair.Key, name, StringComparison.OrdinalIgnoreCase))
-            {
-                value = pair.Value;
-                return true;
-            }
-        }
-
-        value = null;
-        return false;
     }
 }
