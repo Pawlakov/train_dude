@@ -4,6 +4,6 @@
 
 namespace TrainDude.Features.Shared.Contracts.Base;
 
-public interface IResult
+public interface IResponse
 {
 }

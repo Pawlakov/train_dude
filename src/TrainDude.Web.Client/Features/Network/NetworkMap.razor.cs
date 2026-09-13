@@ -16,7 +16,7 @@ using TrainDude.Web.Client.Services;
 public partial class NetworkMap
     : ComponentBase
 {
-    private MapQueryResult? queryResult;
+    private MapQueryResponse? queryResult;
 
     [Inject]
     public ApiClient? Api { get; set; }
@@ -26,8 +26,8 @@ public partial class NetworkMap
 
     protected override async Task OnParametersSetAsync()
     {
-        var stationsResult = await this.Api.SendAsync<GetStationsMapQuery, MapQueryResult>(new GetStationsMapQuery());
-        var segmentsResult = await this.Api.SendAsync<GetSegmentsMapQuery, MapQueryResult>(new GetSegmentsMapQuery());
+        var stationsResult = await this.Api.SendAsync<GetStationsMapQuery, MapQueryResponse>(new GetStationsMapQuery());
+        var segmentsResult = await this.Api.SendAsync<GetSegmentsMapQuery, MapQueryResponse>(new GetSegmentsMapQuery());
         this.queryResult = new(stationsResult.StationPoints, segmentsResult.SegmentLineStrings);
     }
 

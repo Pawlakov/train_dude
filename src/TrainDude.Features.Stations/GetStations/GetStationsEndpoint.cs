@@ -24,7 +24,7 @@ public static class GetStationsEndpoint
 {
     [WolverineGet(GetStationsQuery.TypeRoute)]
     [Tags("Stations")]
-    public static async Task<GetStationsQueryResult> Handle([AsParameters] GetStationsQuery query, IQuerySession session, CancellationToken cancellationToken)
+    public static async Task<GetStationsQueryResponse> Handle([AsParameters] GetStationsQuery query, IQuerySession session, CancellationToken cancellationToken)
     {
         var queryResult = await session.Query<StationReadModel>()
             .ToListAsync(cancellationToken);
@@ -34,6 +34,6 @@ public static class GetStationsEndpoint
             .Select(x => new GetStationsQueryResultItem { StationId = x.Id, Name = x.Name, HasLocation = x.Location != null })
             .ToList();
 
-        return new GetStationsQueryResult(items);
+        return new GetStationsQueryResponse(items);
     }
 }

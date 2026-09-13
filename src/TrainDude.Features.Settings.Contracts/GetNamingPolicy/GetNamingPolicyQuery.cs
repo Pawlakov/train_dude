@@ -9,7 +9,7 @@ using System.Text.Json.Serialization;
 using TrainDude.Features.Shared.Contracts.Base;
 
 public sealed record GetNamingPolicyQuery()
-    : IGeneralQuery<GetNamingPolicyResult>
+    : IGeneralQuery<GetNamingPolicyResponse>
 {
     public const string TypeRoute = "/api/settings/name-mode";
 

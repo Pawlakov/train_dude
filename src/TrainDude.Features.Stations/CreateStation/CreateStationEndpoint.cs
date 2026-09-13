@@ -24,12 +24,13 @@ public static class CreateStationEndpoint
     [Tags("Stations")]
     public static (IResult, IStartStream) Handle(CreateStationCommand command, ClaimsPrincipal user)
     {
-        var domainEvent = StationAggregate.Make(command.StationId, user.GetSubject(), command.NameGerman, command.NameGermanNew, command.NamePolish, command.NameRussian);
+        var stationId = Guid.NewGuid();
+        var domainEvent = StationAggregate.Make(stationId, user.GetSubject(), command.NameGerman, command.NameGermanNew, command.NamePolish, command.NameRussian);
 
         var startStream = MartenOps.StartStream<StationAggregate>(domainEvent.StationId, domainEvent);
 
         var getUrl = GetStationQuery.Route.Replace("{id}", domainEvent.StationId.ToString());
-        var response = new CreationResponse(getUrl);
+        var response = new CreatedResponse(stationId);
         var result = Results.Created(getUrl, response);
 
         return (result, startStream);

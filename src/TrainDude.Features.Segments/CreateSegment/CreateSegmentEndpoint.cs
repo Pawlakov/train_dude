@@ -4,6 +4,7 @@
 
 namespace TrainDude.Features.Segments.CreateSegment;
 
+using System;
 using System.Security.Claims;
 using System.Threading;
 
@@ -15,6 +16,7 @@ using TrainDude.Features.Segments.Domain;
 using TrainDude.Features.Segments.Domain.Exceptions;
 using TrainDude.Features.Segments.Domain.Values;
 using TrainDude.Features.Segments.ReadModels;
+using TrainDude.Features.Shared.Contracts.Generic;
 using TrainDude.Features.Shared.Extensions;
 
 using Wolverine.Http;
@@ -39,13 +41,13 @@ public static class CreateSegmentEndpoint
             throw new SegmentNoStationAxleException(command.BAxle, command.BId, b.AxleCount);
         }
 
-        var domainEvent = SegmentAggregate.Make(command.SegmentId, user.GetSubject(), command.NominalLength, command.Tracks, aEnd, bEnd);
+        var segmentId = Guid.NewGuid();
+        var domainEvent = SegmentAggregate.Make(segmentId, user.GetSubject(), command.NominalLength, command.Tracks, aEnd, bEnd);
 
         var startStream = MartenOps.StartStream<SegmentAggregate>(domainEvent.SegmentId, domainEvent);
 
-        var getUrl = GetSegmentQuery.Route.Replace("{id}", domainEvent.SegmentId.ToString());
-        var response = new CreationResponse(getUrl);
-        var result = Results.Created(getUrl, response);
+        var response = new CreatedResponse(segmentId);
+        var result = Results.Created(GetSegmentQuery.Route.Replace("{id}", domainEvent.SegmentId.ToString()), response);
 
         return (result, startStream);
     }

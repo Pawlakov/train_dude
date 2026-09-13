@@ -4,8 +4,8 @@
 
 namespace TrainDude.Features.Shared.Contracts.Base;
 
-public interface IListQuery<TResult>
-    : IGeneralQuery<TResult>
-    where TResult : IResult
+public interface IListQuery<TResponse>
+    : IGeneralQuery<TResponse>
+    where TResponse : IResponse
 {
 }

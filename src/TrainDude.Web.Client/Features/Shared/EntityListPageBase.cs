@@ -15,7 +15,7 @@ using TrainDude.Web.Client.Services;
 public abstract class EntityListPageBase<TQuery, TQueryResult, TQueryResultItem>
     : ComponentBase
     where TQuery : IListQuery<TQueryResult>, new()
-    where TQueryResult : IListQueryResult<TQueryResultItem>
+    where TQueryResult : IListQueryResponse<TQueryResultItem>
 {
     protected IEnumerable<TQueryResultItem>? items;
 

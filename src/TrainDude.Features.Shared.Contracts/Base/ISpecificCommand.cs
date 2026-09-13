@@ -9,7 +9,7 @@ using System;
 using TrainDude.Features.Shared.Contracts.Generic;
 
 public interface ISpecificCommand
-    : ICommand<EmptyResult>
+    : ICommand<EmptyResponse>
 {
     Guid Id { get; }
 }

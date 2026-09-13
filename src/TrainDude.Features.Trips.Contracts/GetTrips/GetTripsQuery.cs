@@ -7,7 +7,7 @@ namespace TrainDude.Features.Trips.Contracts.GetTrips;
 using TrainDude.Features.Shared.Contracts.Base;
 
 public sealed record GetTripsQuery()
-    : IListQuery<GetTripsQueryResult>
+    : IListQuery<GetTripsQueryResponse>
 {
     public const string TypeRoute = "/api/trips";
 

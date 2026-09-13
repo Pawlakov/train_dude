@@ -8,4 +8,4 @@ using System.Collections.Generic;
 
 using TrainDude.Features.Shared.Contracts.Base;
 
-public sealed record GetRadiiQueryResult(IReadOnlyList<GetRadiiQueryResultItem> Items) : IListQueryResult<GetRadiiQueryResultItem>;
+public sealed record GetRadiiQueryResponse(IReadOnlyList<GetRadiiQueryResultItem> Items) : IListQueryResponse<GetRadiiQueryResultItem>;

@@ -24,13 +24,13 @@ public static class CreateRadiusEndpoint
     [Tags("Radii")]
     public static (IResult, IStartStream) Handle(CreateRadiusCommand command, ClaimsPrincipal user)
     {
-        var domainEvent = RadiusAggregate.Make(command.RadiusId, user.GetSubject(), command.Speed, command.Minimum);
+        var radiusId = Guid.NewGuid();
+        var domainEvent = RadiusAggregate.Make(radiusId, user.GetSubject(), command.Speed, command.Minimum);
 
         var startStream = MartenOps.StartStream<RadiusAggregate>(domainEvent.RadiusId, domainEvent);
 
-        var getUrl = GetRadiusQuery.Route.Replace("{id}", domainEvent.RadiusId.ToString());
-        var response = new CreationResponse(getUrl);
-        var result = Results.Created(getUrl, response);
+        var response = new CreatedResponse(radiusId);
+        var result = Results.Created(GetRadiusQuery.Route.Replace("{id}", domainEvent.RadiusId.ToString()), response);
 
         return (result, startStream);
     }

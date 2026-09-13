@@ -8,7 +8,7 @@ using System;
 
 using TrainDude.Features.Shared.Contracts.Base;
 
-public sealed record CreateRadiusCommand(Guid RadiusId, int Speed, int Minimum)
+public sealed record CreateRadiusCommand(int Speed, int Minimum)
     : ICreateCommand
 {
     public const string TypeRoute = "/api/radii/create";

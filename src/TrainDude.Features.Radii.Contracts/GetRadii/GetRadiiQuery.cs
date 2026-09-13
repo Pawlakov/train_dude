@@ -7,7 +7,7 @@ namespace TrainDude.Features.Radii.Contracts.GetRadii;
 using TrainDude.Features.Shared.Contracts.Base;
 
 public sealed record GetRadiiQuery()
-    : IListQuery<GetRadiiQueryResult>
+    : IListQuery<GetRadiiQueryResponse>
 {
     public const string TypeRoute = "/api/radii";
 

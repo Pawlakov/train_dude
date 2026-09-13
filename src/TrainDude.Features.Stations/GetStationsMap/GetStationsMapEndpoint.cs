@@ -24,7 +24,7 @@ public static class GetStationsMapEndpoint
     [WolverineGet(GetStationsMapQuery.TypeRoute)]
     [AllowAnonymous]
     [Tags("Stations")]
-    public static async Task<MapQueryResult> Handle([AsParameters] GetStationsMapQuery query, IQuerySession session, CancellationToken cancellationToken)
+    public static async Task<MapQueryResponse> Handle([AsParameters] GetStationsMapQuery query, IQuerySession session, CancellationToken cancellationToken)
     {
         var queryResult = await session.Query<StationReadModel>()
             .ToListAsync(cancellationToken);
@@ -34,7 +34,7 @@ public static class GetStationsMapEndpoint
             .Select(x => x.Location.Value)
             .ToList();
 
-        var result = new MapQueryResult(stationPoints, []);
+        var result = new MapQueryResponse(stationPoints, []);
 
         return result;
     }

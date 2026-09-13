@@ -7,7 +7,7 @@ namespace TrainDude.Features.Segments.Contracts.GetSegments;
 using TrainDude.Features.Shared.Contracts.Base;
 
 public sealed record GetSegmentsQuery()
-    : IListQuery<GetSegmentsQueryResult>
+    : IListQuery<GetSegmentsQueryResponse>
 {
     public const string TypeRoute = "/api/segments";
 

@@ -9,4 +9,4 @@ using System.Collections.Generic;
 using TrainDude.Features.Shared.Contracts.Base;
 using TrainDude.Features.Shared.Contracts.Values;
 
-public sealed record GetStationQueryResult(string Name, Location? Location, int AxleCount) : ILookupQueryResult;
+public sealed record GetStationQueryResponse(string Name, Location? Location, int AxleCount) : ILookupQueryResponse;

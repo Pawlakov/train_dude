@@ -47,7 +47,7 @@ public class SeedService
 
     public async Task Handle(CancellationToken cancellationToken = default)
     {
-        await this.api.SendAsync<DropCommand, EmptyResult>(new DropCommand(), cancellationToken);
+        await this.api.SendAsync<DropCommand, EmptyResponse>(new DropCommand(), cancellationToken);
 
         var options = new ParallelOptions
         {
@@ -80,82 +80,77 @@ public class SeedService
 
     private async Task SeedLine(LineSeed seed, CancellationToken cancellationToken = default)
     {
-        var lineId = Guid.NewGuid();
-        var createCommand = new CreateLineCommand(lineId, seed.Number, seed.Letter);
+        var createCommand = new CreateLineCommand(seed.Number, seed.Letter);
 
-        await this.api.SendAsync<CreateLineCommand, CreatedResult>(createCommand, cancellationToken);
+        var created = await this.api.SendAsync<CreateLineCommand, CreatedResponse>(createCommand, cancellationToken);
 
         foreach (var segment in seed.Segments)
         {
-            var appendSegmentCommand = new AppendSegmentCommand(lineId, this.segmentIdMap[segment]);
+            var appendSegmentCommand = new AppendSegmentCommand(created.Id, this.segmentIdMap[segment]);
 
-            await this.api.SendAsync<AppendSegmentCommand, EmptyResult>(appendSegmentCommand, cancellationToken);
+            await this.api.SendAsync<AppendSegmentCommand, EmptyResponse>(appendSegmentCommand, cancellationToken);
         }
 
         foreach (var trip in seed.Trips)
         {
-            var assignTripCommand = new AssignTripCommand(lineId, this.tripIdMap[trip]);
+            var assignTripCommand = new AssignTripCommand(created.Id, this.tripIdMap[trip]);
 
-            await this.api.SendAsync<AssignTripCommand, EmptyResult>(assignTripCommand, cancellationToken);
+            await this.api.SendAsync<AssignTripCommand, EmptyResponse>(assignTripCommand, cancellationToken);
         }
     }
 
     private async Task SeedRadius(RadiusSeed seed, CancellationToken cancellationToken = default)
     {
-        var radiusId = Guid.NewGuid();
-        var createCommand = new CreateRadiusCommand(radiusId, seed.Speed, seed.Minimum);
+        var createCommand = new CreateRadiusCommand(seed.Speed, seed.Minimum);
 
-        await this.api.SendAsync<CreateRadiusCommand, CreatedResult>(createCommand, cancellationToken);
+        await this.api.SendAsync<CreateRadiusCommand, CreatedResponse>(createCommand, cancellationToken);
     }
 
     private async Task SeedStation(StationSeed seed, CancellationToken cancellationToken = default)
     {
-        var stationId = Guid.NewGuid();
-        var createCommand = new CreateStationCommand(stationId, seed.NameGerman, seed.NameGermanNew, seed.NamePolish, seed.NameRussian);
+        var createCommand = new CreateStationCommand(seed.NameGerman, seed.NameGermanNew, seed.NamePolish, seed.NameRussian);
 
-        await this.api.SendAsync<CreateStationCommand, CreatedResult>(createCommand, cancellationToken);
-        this.stationIdMap[seed.Id] = stationId;
+        var created = await this.api.SendAsync<CreateStationCommand, CreatedResponse>(createCommand, cancellationToken);
+        this.stationIdMap[seed.Id] = created.Id;
 
         if (seed is { Latitude: not null, Longitude: not null })
         {
             var location = new Location(seed.Longitude.Value, seed.Latitude.Value);
-            var setLocationCommand = new SetLocationCommand(stationId, location);
+            var setLocationCommand = new SetLocationCommand(created.Id, location);
 
-            await this.api.SendAsync<SetLocationCommand, EmptyResult>(setLocationCommand, cancellationToken);
+            await this.api.SendAsync<SetLocationCommand, EmptyResponse>(setLocationCommand, cancellationToken);
         }
 
         var axleCount = seed.AxleCount ?? 1;
         for (var i = 1; i < axleCount; ++i)
         {
-            var addAxleCommand = new AddAxleCommand(stationId);
+            var addAxleCommand = new AddAxleCommand(created.Id);
 
-            await this.api.SendAsync<AddAxleCommand, EmptyResult>(addAxleCommand, cancellationToken);
+            await this.api.SendAsync<AddAxleCommand, EmptyResponse>(addAxleCommand, cancellationToken);
         }
     }
 
     private async Task SeedSegment(SegmentSeed seed, CancellationToken cancellationToken = default)
     {
-        var segmentId = Guid.NewGuid();
-        var createCommand = new CreateSegmentCommand(segmentId, seed.Length, seed.Tracks, this.stationIdMap[seed.A.StationId], seed.A.Axle ?? 0, seed.A.Pole, this.stationIdMap[seed.B.StationId], seed.B.Axle ?? 0, seed.B.Pole);
+        var createCommand = new CreateSegmentCommand(seed.Length, seed.Tracks, this.stationIdMap[seed.A.StationId], seed.A.Axle ?? 0, seed.A.Pole, this.stationIdMap[seed.B.StationId], seed.B.Axle ?? 0, seed.B.Pole);
 
-        await this.api.SendAsync<CreateSegmentCommand, CreatedResult>(createCommand, cancellationToken);
-        this.segmentIdMap[seed.Id] = segmentId;
+        var created = await this.api.SendAsync<CreateSegmentCommand, CreatedResponse>(createCommand, cancellationToken);
+        this.segmentIdMap[seed.Id] = created.Id;
 
         if (seed.Course is not null && seed.Course is not [])
         {
             var locations = (seed.Course?.Select(x => new Location(x.Longitude, x.Latitude)) ?? []).ToList();
-            var setCourseCommand = new SetCourseCommand(segmentId, locations);
+            var setCourseCommand = new SetCourseCommand(created.Id, locations);
 
-            await this.api.SendAsync<SetCourseCommand, EmptyResult>(setCourseCommand, cancellationToken);
+            await this.api.SendAsync<SetCourseCommand, EmptyResponse>(setCourseCommand, cancellationToken);
         }
     }
 
     private async Task SeedTrip(TripSeed seed, CancellationToken cancellationToken = default)
     {
-        var tripId = Guid.NewGuid();
-        var createCommand = new CreateTripCommand(tripId, seed.Number);
+        var createCommand = new CreateTripCommand(seed.Number);
 
-        await this.api.SendAsync<CreateTripCommand, CreatedResult>(createCommand, cancellationToken);
-        this.tripIdMap[seed.Number] = tripId;
+        var created = await this.api.SendAsync<CreateTripCommand, CreatedResponse>(createCommand, cancellationToken);
+        this.tripIdMap[seed.Number] = created.Id;
     }
 }

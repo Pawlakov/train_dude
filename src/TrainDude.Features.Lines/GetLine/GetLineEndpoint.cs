@@ -18,12 +18,12 @@ public static class GetLineEndpoint
 {
     [WolverineGet(GetLineQuery.TypeRoute)]
     [Tags("Lines")]
-    public static GetLineQueryResult Handle([AsParameters] GetLineQuery query, [Document(FromRoute = "id")] LineReadModel readModel)
+    public static GetLineQueryResponse Handle([AsParameters] GetLineQuery query, [Document(FromRoute = "id")] LineReadModel readModel)
     {
         var trips = readModel.Trips.Select(x => new GetLineQueryResultTripItem { TripId = x.Id, TripNumber = x.Number }).ToList();
         var stations = readModel.Stations.Select(x => new GetLineQueryResultStationItem { StationId = x.Id, Name = x.Name }).ToList();
 
-        var result = new GetLineQueryResult(readModel.LineDesignation, stations, trips);
+        var result = new GetLineQueryResponse(readModel.LineDesignation, stations, trips);
         return result;
     }
 }

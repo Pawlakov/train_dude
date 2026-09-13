@@ -6,8 +6,8 @@ namespace TrainDude.Features.Shared.Contracts.Base;
 
 using System;
 
-public interface ILookupQuery<TResult>
-    : ISpecificQuery<TResult>
-    where TResult : IResult
+public interface ILookupQuery<TResponse>
+    : ISpecificQuery<TResponse>
+    where TResponse : IResponse
 {
 }

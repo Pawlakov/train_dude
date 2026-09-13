@@ -20,9 +20,9 @@ public static class GetStationMapEndpoint
 {
     [WolverineGet(GetStationMapQuery.TypeRoute)]
     [Tags("Stations")]
-    public static MapQueryResult Handle([AsParameters] GetStationMapQuery query, [Document(FromRoute = "id")] StationReadModel readModel)
+    public static MapQueryResponse Handle([AsParameters] GetStationMapQuery query, [Document(FromRoute = "id")] StationReadModel readModel)
     {
-        var result = new MapQueryResult(new[] { readModel.Location }.Where(x => x.HasValue).Select(x => x.Value).ToList(), []);
+        var result = new MapQueryResponse(new[] { readModel.Location }.Where(x => x.HasValue).Select(x => x.Value).ToList(), []);
 
         return result;
     }

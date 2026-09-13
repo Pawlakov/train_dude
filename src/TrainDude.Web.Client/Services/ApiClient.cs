@@ -38,7 +38,7 @@ public class ApiClient
 
     public Task<TResponse> SendAsync<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken = default)
         where TRequest : IRequest<TResponse>
-        where TResponse : IResult
+        where TResponse : IResponse
     {
         ArgumentNullException.ThrowIfNull(request);
         var (method, route, bodyObject, queryObject) = request switch

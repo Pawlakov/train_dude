@@ -6,9 +6,9 @@ namespace TrainDude.Features.Shared.Contracts.Base;
 
 using System;
 
-public interface ISpecificQuery<TResult>
-    : IQuery<TResult>
-    where TResult : IResult
+public interface ISpecificQuery<TResponse>
+    : IQuery<TResponse>
+    where TResponse : IResponse
 {
     Guid Id { get; }
 }

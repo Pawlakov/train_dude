@@ -7,6 +7,6 @@ namespace TrainDude.Features.Shared.Contracts.Base;
 using TrainDude.Features.Shared.Contracts.Generic;
 
 public interface IGeneralCommand
-    : ICommand<EmptyResult>
+    : ICommand<EmptyResponse>
 {
 }

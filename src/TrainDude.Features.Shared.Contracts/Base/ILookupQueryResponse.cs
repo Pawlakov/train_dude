@@ -6,7 +6,7 @@ namespace TrainDude.Features.Shared.Contracts.Base;
 
 using System.Collections.Generic;
 
-public interface ILookupQueryResult
-    : IResult
+public interface ILookupQueryResponse
+    : IResponse
 {
 }

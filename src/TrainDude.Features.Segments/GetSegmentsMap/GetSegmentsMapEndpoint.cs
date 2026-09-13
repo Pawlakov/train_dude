@@ -23,7 +23,7 @@ public static class GetSegmentsMapEndpoint
     [WolverineGet(GetSegmentsMapQuery.TypeRoute)]
     [AllowAnonymous]
     [Tags("Segments")]
-    public static async Task<MapQueryResult> Handle([AsParameters] GetSegmentsMapQuery request, IQuerySession session, CancellationToken cancellationToken = default)
+    public static async Task<MapQueryResponse> Handle([AsParameters] GetSegmentsMapQuery request, IQuerySession session, CancellationToken cancellationToken = default)
     {
         var queryResult = await session.Query<SegmentReadModel>()
             .ToListAsync(cancellationToken);
@@ -33,7 +33,7 @@ public static class GetSegmentsMapEndpoint
             .Select(x => (x.Course ?? []).Prepend(x.A.Location!.Value).Append(x.B.Location!.Value).ToList())
             .ToList();
 
-        var result = new MapQueryResult([], segmentLineStrings);
+        var result = new MapQueryResponse([], segmentLineStrings);
 
         return result;
     }

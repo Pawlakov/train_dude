@@ -8,7 +8,7 @@ using System;
 
 using TrainDude.Features.Shared.Contracts.Base;
 
-public sealed record CreateLineCommand(Guid LineId, int Number, char? Letter)
+public sealed record CreateLineCommand(int Number, char? Letter)
     : ICreateCommand
 {
     public const string TypeRoute = "/api/lines/create";

@@ -8,7 +8,7 @@ using System;
 
 using TrainDude.Features.Shared.Contracts.Base;
 
-public sealed record CreateTripCommand(Guid TripId, int Number)
+public sealed record CreateTripCommand(int Number)
     : ICreateCommand
 {
     public const string TypeRoute = "/api/trips/create";

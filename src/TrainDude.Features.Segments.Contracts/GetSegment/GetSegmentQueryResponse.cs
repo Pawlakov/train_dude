@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 using TrainDude.Features.Shared.Contracts.Base;
 
-public sealed record GetSegmentQueryResult(
+public sealed record GetSegmentQueryResponse(
     int Tracks,
     double NominalLength,
     double? Haversine,
@@ -17,8 +17,8 @@ public sealed record GetSegmentQueryResult(
     string AName,
     Guid BId,
     string BName,
-    IReadOnlyList<GetSegmentQueryResult.SegmentTrip> Trips)
-    : ILookupQueryResult
+    IReadOnlyList<GetSegmentQueryResponse.SegmentTrip> Trips)
+    : ILookupQueryResponse
 {
     public record struct SegmentTrip(Guid TripId, int Number);
 }

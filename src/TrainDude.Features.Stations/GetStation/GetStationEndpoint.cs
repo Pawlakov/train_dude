@@ -17,9 +17,9 @@ public static class GetStationEndpoint
 {
     [WolverineGet(GetStationQuery.TypeRoute)]
     [Tags("Stations")]
-    public static GetStationQueryResult Handle([AsParameters] GetStationQuery query, [Document(FromRoute = "id")] StationReadModel readModel)
+    public static GetStationQueryResponse Handle([AsParameters] GetStationQuery query, [Document(FromRoute = "id")] StationReadModel readModel)
     {
-        var result = new GetStationQueryResult(readModel.Name, readModel.Location, readModel.AxleCount);
+        var result = new GetStationQueryResponse(readModel.Name, readModel.Location, readModel.AxleCount);
 
         return result;
     }

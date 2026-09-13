@@ -21,7 +21,7 @@ public static class GetTripsEndpoint
 {
     [WolverineGet(GetTripsQuery.TypeRoute)]
     [Tags("Trips")]
-    public static async Task<GetTripsQueryResult> Handle([AsParameters] GetTripsQuery request, IQuerySession session, CancellationToken cancellationToken)
+    public static async Task<GetTripsQueryResponse> Handle([AsParameters] GetTripsQuery request, IQuerySession session, CancellationToken cancellationToken)
     {
         var trips = await session.Query<TripAggregate>()
             .ToListAsync(cancellationToken);
@@ -31,6 +31,6 @@ public static class GetTripsEndpoint
             .Select(x => new GetTripsQueryResultItem { TripId = x.Id, TripNumber = x.TripNumber })
             .ToList();
 
-        return new GetTripsQueryResult(items);
+        return new GetTripsQueryResponse(items);
     }
 }

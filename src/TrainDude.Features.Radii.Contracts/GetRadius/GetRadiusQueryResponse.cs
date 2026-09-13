@@ -5,4 +5,4 @@ namespace TrainDude.Features.Radii.Contracts.GetRadius;
 
 using TrainDude.Features.Shared.Contracts.Base;
 
-public sealed record GetRadiusQueryResult() : ILookupQueryResult;
+public sealed record GetRadiusQueryResponse() : ILookupQueryResponse;

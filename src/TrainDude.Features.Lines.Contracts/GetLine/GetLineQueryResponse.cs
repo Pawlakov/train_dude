@@ -8,5 +8,5 @@ using System.Collections.Generic;
 
 using TrainDude.Features.Shared.Contracts.Base;
 
-public sealed record GetLineQueryResult(string LineDesignation, IReadOnlyList<GetLineQueryResultStationItem> Stations, IReadOnlyList<GetLineQueryResultTripItem> Trips)
-    : ILookupQueryResult;
+public sealed record GetLineQueryResponse(string LineDesignation, IReadOnlyList<GetLineQueryResultStationItem> Stations, IReadOnlyList<GetLineQueryResultTripItem> Trips)
+    : ILookupQueryResponse;

@@ -3,8 +3,8 @@
 // </copyright>
 namespace TrainDude.Features.Shared.Contracts.Base;
 
-public interface IQuery<TResult>
-    : IRequest<TResult>
-    where TResult : IResult
+public interface IQuery<TResponse>
+    : IRequest<TResponse>
+    where TResponse : IResponse
 {
 }

@@ -7,7 +7,7 @@ namespace TrainDude.Features.Lines.Contracts.GetLines;
 using TrainDude.Features.Shared.Contracts.Base;
 
 public sealed record GetLinesQuery()
-    : IListQuery<GetLinesQueryResult>
+    : IListQuery<GetLinesQueryResponse>
 {
     public const string TypeRoute = "/api/lines";
 

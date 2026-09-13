@@ -19,7 +19,7 @@ using TrainDude.Web.Client.Services;
 public abstract class EntityLookupPageBase<TQuery, TQueryResult>
     : ComponentBase
     where TQuery : class, ILookupQuery<TQueryResult>
-    where TQueryResult : ILookupQueryResult
+    where TQueryResult : ILookupQueryResponse
 {
     protected EntityLookupFormModel formModel;
     protected EditContext formContext;

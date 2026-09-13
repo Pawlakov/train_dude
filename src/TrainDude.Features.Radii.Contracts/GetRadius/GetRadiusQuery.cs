@@ -6,7 +6,7 @@ namespace TrainDude.Features.Radii.Contracts.GetRadius;
 using TrainDude.Features.Shared.Contracts.Base;
 
 public sealed record GetRadiusQuery()
-    : IListQuery<GetRadiusQueryResult>
+    : IListQuery<GetRadiusQueryResponse>
 {
     public static string Route => "/api/radii/{id}";
 }

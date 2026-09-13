@@ -24,13 +24,13 @@ public static class CreateTripEndpoint
     [Tags("Trips")]
     public static (IResult, IStartStream) Handle(CreateTripCommand command, ClaimsPrincipal user)
     {
-        var domainEvent = TripAggregate.Make(command.TripId, user.GetSubject(), command.Number);
+        var tripId = Guid.NewGuid();
+        var domainEvent = TripAggregate.Make(tripId, user.GetSubject(), command.Number);
 
         var startStream = MartenOps.StartStream<TripAggregate>(domainEvent.TripId, domainEvent);
 
-        var getUrl = GetTripQuery.Route.Replace("{id}", domainEvent.TripId.ToString());
-        var response = new CreationResponse(getUrl);
-        var result = Results.Created(getUrl, response);
+        var response = new CreatedResponse(tripId);
+        var result = Results.Created(GetTripQuery.Route.Replace("{id}", domainEvent.TripId.ToString()), response);
 
         return (result, startStream);
     }

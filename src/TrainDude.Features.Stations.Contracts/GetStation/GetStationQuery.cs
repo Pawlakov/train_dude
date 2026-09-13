@@ -9,7 +9,7 @@ using System;
 using TrainDude.Features.Shared.Contracts.Base;
 
 public sealed record GetStationQuery(Guid Id)
-    : ILookupQuery<GetStationQueryResult>
+    : ILookupQuery<GetStationQueryResponse>
 {
     public const string TypeRoute = "/api/stations/{id}";
 

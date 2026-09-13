@@ -16,9 +16,9 @@ public static class GetSegmentEndpoint
 {
     [WolverineGet(GetSegmentQuery.TypeRoute)]
     [Tags("Segments")]
-    public static GetSegmentQueryResult Handle([AsParameters] GetSegmentQuery query, [Document(FromRoute = "id")] SegmentReadModel readModel)
+    public static GetSegmentQueryResponse Handle([AsParameters] GetSegmentQuery query, [Document(FromRoute = "id")] SegmentReadModel readModel)
     {
-        var result = new GetSegmentQueryResult(
+        var result = new GetSegmentQueryResponse(
         readModel.Tracks,
         readModel.NominalLength,
         readModel.Haversine,

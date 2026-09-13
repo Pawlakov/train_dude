@@ -27,14 +27,14 @@ public sealed class MapService
         this.js = js;
     }
 
-    public MapQueryResult? CurrentData { get; private set; }
+    public MapQueryResponse? CurrentData { get; private set; }
 
     public Task InitializeAsync(CancellationToken cancellationToken = default)
     {
         return this.initialized ??= this.InitializeCoreAsync(cancellationToken);
     }
 
-    public async Task ShowAsync(MapQueryResult data, CancellationToken cancellationToken = default)
+    public async Task ShowAsync(MapQueryResponse data, CancellationToken cancellationToken = default)
     {
         if (this.initialized is not null)
         {
@@ -82,7 +82,7 @@ public sealed class MapService
         }
     }
 
-    private static GeoJsonFeatureCollection BuildGeoJson(MapQueryResult data)
+    private static GeoJsonFeatureCollection BuildGeoJson(MapQueryResponse data)
     {
         var features = new List<GeoJsonFeature>(data.StationPoints.Count + data.SegmentLineStrings.Count);
 

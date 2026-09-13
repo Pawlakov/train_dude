@@ -22,7 +22,7 @@ public static class GetRadiiEndpoint
 {
     [WolverineGet(GetRadiiQuery.TypeRoute)]
     [Tags("Radii")]
-    public static async Task<GetRadiiQueryResult> Handle([AsParameters] GetRadiiQuery query, IQuerySession session, CancellationToken cancellationToken)
+    public static async Task<GetRadiiQueryResponse> Handle([AsParameters] GetRadiiQuery query, IQuerySession session, CancellationToken cancellationToken)
     {
         var radii = await session.Query<RadiusAggregate>()
             .OrderBy(x => x.Speed)
@@ -32,6 +32,6 @@ public static class GetRadiiEndpoint
             .Select(x => new GetRadiiQueryResultItem(x.Id, x.Speed, x.Minimum, 1000 / (double)x.Minimum))
             .ToList();
 
-        return new GetRadiiQueryResult(items);
+        return new GetRadiiQueryResponse(items);
     }
 }

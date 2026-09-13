@@ -19,7 +19,7 @@ public static class GetSegmentMapEndpoint
 {
     [WolverineGet(GetSegmentMapQuery.TypeRoute)]
     [Tags("Segments")]
-    public static MapQueryResult Handle([AsParameters] GetSegmentMapQuery query, [Document(FromRoute = "id")] SegmentReadModel readModel)
+    public static MapQueryResponse Handle([AsParameters] GetSegmentMapQuery query, [Document(FromRoute = "id")] SegmentReadModel readModel)
     {
         var course = (readModel.A.Location, readModel.B.Location) switch
         {
@@ -31,7 +31,7 @@ public static class GetSegmentMapEndpoint
         };
 
         var stationPoints = new[] { readModel.A.Location, readModel.B.Location }.Where(x => x.HasValue).Select(x => x.Value).ToList();
-        var result = new MapQueryResult(stationPoints, [course]);
+        var result = new MapQueryResponse(stationPoints, [course]);
 
         return result;
     }

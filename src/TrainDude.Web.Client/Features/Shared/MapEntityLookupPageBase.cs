@@ -15,26 +15,26 @@ using TrainDude.Web.Client.Services;
 public abstract class MapEntityLookupPageBase<TQuery, TQueryResult, TMapQuery>
     : EntityLookupPageBase<TQuery, TQueryResult>
     where TQuery : class, ILookupQuery<TQueryResult>
-    where TQueryResult : ILookupQueryResult
-    where TMapQuery : IMapQuery, ISpecificQuery<MapQueryResult>
+    where TQueryResult : ILookupQueryResponse
+    where TMapQuery : IMapQuery, ISpecificQuery<MapQueryResponse>
 {
-    private MapQueryResult mapQueryResult = default;
+    private MapQueryResponse mapQueryResponse = default;
 
     [Inject]
     public MapService? MapService { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (this.queryResult != null && this.MapService.CurrentData != this.mapQueryResult)
+        if (this.queryResult != null && this.MapService.CurrentData != this.mapQueryResponse)
         {
-            await this.MapService.ShowAsync(this.mapQueryResult);
+            await this.MapService.ShowAsync(this.mapQueryResponse);
         }
     }
 
     protected override async Task OnSubmitAsync()
     {
         var query = this.BuildMapQuery(this.formModel);
-        this.mapQueryResult = await this.Api.SendAsync<TMapQuery, MapQueryResult>(query);
+        this.mapQueryResponse = await this.Api.SendAsync<TMapQuery, MapQueryResponse>(query);
     }
 
     protected abstract TMapQuery BuildMapQuery(EntityLookupFormModel formModel);

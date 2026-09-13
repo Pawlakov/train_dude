@@ -6,4 +6,4 @@ namespace TrainDude.Features.Trips.Contracts.GetTrip;
 
 using TrainDude.Features.Shared.Contracts.Base;
 
-public sealed record GetTripQueryResult(int TripNumber) : ILookupQueryResult;
+public sealed record GetTripQueryResponse(int TripNumber) : ILookupQueryResponse;

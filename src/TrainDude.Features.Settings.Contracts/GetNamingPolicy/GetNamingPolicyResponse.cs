@@ -7,4 +7,4 @@ namespace TrainDude.Features.Settings.Contracts.GetNamingPolicy;
 using TrainDude.Features.Shared.Contracts.Base;
 using TrainDude.Features.Shared.Contracts.Enums;
 
-public sealed record GetNamingPolicyResult(NamingPolicy Policy) : IResult;
+public sealed record GetNamingPolicyResponse(NamingPolicy Policy) : IResponse;

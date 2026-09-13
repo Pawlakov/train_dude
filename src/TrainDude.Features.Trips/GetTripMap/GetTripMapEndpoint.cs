@@ -17,9 +17,9 @@ public static class GetTripMapEndpoint
 {
     [WolverineGet(GetTripMapQuery.TypeRoute)]
     [Tags("Trips")]
-    public static MapQueryResult Handle([AsParameters] GetTripMapQuery query, [ReadModel(FromRoute = "id")] TripAggregate aggregate)
+    public static MapQueryResponse Handle([AsParameters] GetTripMapQuery query, [ReadModel(FromRoute = "id")] TripAggregate aggregate)
     {
-        var result = new MapQueryResult([], []); // TODO faktyczne stacje i odcinki
+        var result = new MapQueryResponse([], []); // TODO faktyczne stacje i odcinki
 
         return result;
     }

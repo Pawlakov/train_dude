@@ -8,4 +8,4 @@ using System.Collections.Generic;
 
 using TrainDude.Features.Shared.Contracts.Base;
 
-public sealed record GetStationsQueryResult(IReadOnlyList<GetStationsQueryResultItem> Items) : IListQueryResult<GetStationsQueryResultItem>;
+public sealed record GetStationsQueryResponse(IReadOnlyList<GetStationsQueryResultItem> Items) : IListQueryResponse<GetStationsQueryResultItem>;

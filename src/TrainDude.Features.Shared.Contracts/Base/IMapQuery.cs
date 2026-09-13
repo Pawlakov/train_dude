@@ -7,4 +7,4 @@ using System;
 
 using TrainDude.Features.Shared.Contracts.Generic;
 
-public interface IMapQuery : IQuery<MapQueryResult>;
+public interface IMapQuery : IQuery<MapQueryResponse>;

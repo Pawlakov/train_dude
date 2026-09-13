@@ -6,8 +6,8 @@ namespace TrainDude.Features.Shared.Contracts.Base;
 
 using System.Collections.Generic;
 
-public interface IListQueryResult<TItem>
-    : IResult
+public interface IListQueryResponse<TItem>
+    : IResponse
 {
     IReadOnlyList<TItem> Items { get; }
 }
