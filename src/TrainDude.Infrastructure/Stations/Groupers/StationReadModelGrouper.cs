@@ -23,6 +23,12 @@ public class StationReadModelGrouper
 {
     public async Task Group(IQuerySession session, IReadOnlyList<IEvent> events, IEventGrouping<Guid> grouping)
     {
+        var stationIds = await session.Events
+            .QueryRawEventDataOnly<StationCreated>()
+            .Select(x => x.StationId)
+            .Distinct()
+            .ToListAsync();
+
         foreach (var e in events)
         {
             if (e.Data is IStationEvent stationEvent)
@@ -31,19 +37,13 @@ public class StationReadModelGrouper
             }
             else if (e.Data is SettingsNamingPolicySet)
             {
-                await this.GroupNamingPolicySet(session, (IEvent<SettingsNamingPolicySet>)e, grouping);
+                await this.GroupNamingPolicySet(session, (IEvent<SettingsNamingPolicySet>)e, grouping, stationIds);
             }
         }
     }
 
-    private async Task GroupNamingPolicySet(IQuerySession session, IEvent<SettingsNamingPolicySet> namingPolicySetEvent, IEventGrouping<Guid> grouping)
+    private async Task GroupNamingPolicySet(IQuerySession session, IEvent<SettingsNamingPolicySet> namingPolicySetEvent, IEventGrouping<Guid> grouping, IEnumerable<Guid> stationIds)
     {
-        var stationIds = await session.Events
-            .QueryRawEventDataOnly<StationCreated>()
-            .Select(x => x.StationId)
-            .Distinct()
-            .ToListAsync();
-
         foreach (var stationId in stationIds)
         {
             grouping.AddEvent(stationId, namingPolicySetEvent);

@@ -35,28 +35,19 @@ public class StationReadModelProjection
 
     public override async Task EnrichEventsAsync(SliceGroup<StationReadModel, Guid> group, IQuerySession querySession, CancellationToken cancellation)
     {
-        var createdEvents = group.Slices
-            .SelectMany(slice => slice.Events().OfType<IEvent<StationCreated>>())
-            .ToArray();
-
-        if (createdEvents.Length == 0)
-        {
-            return;
-        }
-
         var settings = await querySession.LoadAsync<SharedSettingsReference>(SettingsSingleton.Id, cancellation);
-
         var policy = settings?.NamingPolicy ?? NamingPolicy.Modern;
         var nameSelector = StationNameResolver.GetNameSelector(policy);
 
         foreach (var slice in group.Slices)
         {
-            foreach (var e in slice.Events().OfType<IEvent<StationCreated>>().ToArray())
+            var createdEvent = slice.Events().OfType<IEvent<StationCreated>>().SingleOrDefault();
+            if (createdEvent is not null)
             {
-                var name = nameSelector(e.Data);
-                var enriched = new StationCreatedWithReferences(e.Data, name);
+                var name = nameSelector(createdEvent.Data);
+                var enriched = new StationCreatedWithReferences(createdEvent.Data, name);
 
-                slice.ReplaceEvent(e, enriched);
+                slice.ReplaceEvent(createdEvent, enriched);
             }
         }
     }
