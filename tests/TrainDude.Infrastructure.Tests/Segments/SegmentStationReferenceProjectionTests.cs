@@ -47,4 +47,50 @@ public class SegmentStationReferenceProjectionTests
             await Assert.That(station.NameRussian).IsEqualTo("Озёрск");
         }
     }
+
+    [Test]
+    public async Task StationLocationSet_UpdatesLocation()
+    {
+        await this.fixture.ResetAsync();
+        var stationId = Guid.NewGuid();
+        var location = new TrainDude.Features.Shared.Contracts.Values.Location(50.66, 18.68);
+
+        using (var session = this.fixture.Store.LightweightSession())
+        {
+            session.Events.Append(stationId, new StationCreated(stationId, Who, "Darkehmen", "Angerapp", null, "Озёрск"));
+            session.Events.Append(stationId, new StationLocationSet(stationId, Who, location));
+            await session.SaveChangesAsync();
+        }
+
+        using (var session = this.fixture.Store.LightweightSession())
+        {
+            var station = await session.LoadAsync<SegmentStationReference>(stationId);
+            await Assert.That(station).IsNotNull();
+            await Assert.That(station.Location).IsEqualTo(location);
+            await Assert.That(station.AxleCount).IsEqualTo(1);
+        }
+    }
+
+    [Test]
+    public async Task StationAxleAdded_IncrementsAxleCount()
+    {
+        await this.fixture.ResetAsync();
+        var stationId = Guid.NewGuid();
+
+        using (var session = this.fixture.Store.LightweightSession())
+        {
+            session.Events.Append(stationId, new StationCreated(stationId, Who, "Darkehmen", "Angerapp", null, "Озёрск"));
+            session.Events.Append(stationId, new StationAxleAdded(stationId, Who));
+            session.Events.Append(stationId, new StationAxleAdded(stationId, Who));
+            await session.SaveChangesAsync();
+        }
+
+        using (var session = this.fixture.Store.LightweightSession())
+        {
+            var station = await session.LoadAsync<SegmentStationReference>(stationId);
+            await Assert.That(station).IsNotNull();
+            await Assert.That(station.AxleCount).IsEqualTo(3);
+        }
+    }
+
 }

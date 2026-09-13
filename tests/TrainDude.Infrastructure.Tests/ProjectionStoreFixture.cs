@@ -98,6 +98,7 @@ public class ProjectionStoreFixture
         await this.Store.Advanced.Clean.DeleteDocumentsByTypeAsync(typeof(LineAggregate));
 
         await this.Store.Advanced.Clean.DeleteDocumentsByTypeAsync(typeof(SharedSettingsReference));
+        await this.Store.Advanced.Clean.DeleteDocumentsByTypeAsync(typeof(SettingsAggregate));
     }
 
     public ValueTask DisposeAsync()

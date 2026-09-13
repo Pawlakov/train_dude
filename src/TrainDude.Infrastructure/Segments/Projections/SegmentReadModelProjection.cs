@@ -38,38 +38,47 @@ public sealed class SegmentReadModelProjection
 
     public override async Task EnrichEventsAsync(SliceGroup<SegmentReadModel, Guid> group, IQuerySession querySession, CancellationToken cancellation)
     {
-        var createdEvents = group.Slices
-            .SelectMany(slice => slice.Events().OfType<IEvent<SegmentCreated>>())
-            .ToArray();
-
-        if (createdEvents.Length == 0)
-        {
-            return;
-        }
-
-        var stationIds = createdEvents
-            .SelectMany(e => new[] { e.Data.A.Id, e.Data.B.Id })
-            .Distinct()
-            .ToArray();
-
-        var stations = await querySession.LoadManyAsync<SegmentStationReference>(cancellation, stationIds);
-        var settings = await querySession.LoadAsync<SharedSettingsReference>(SettingsSingleton.Id, cancellation);
-
-        var stationsById = stations.ToDictionary(s => s.Id, s => s);
-        var policy = settings?.NamingPolicy ?? NamingPolicy.Modern;
-        var nameSelector = StationNameResolver.GetNameSelector(policy);
-
         foreach (var slice in group.Slices)
         {
-            foreach (var e in slice.Events().OfType<IEvent<SegmentCreated>>().ToArray())
-            {
-                var a = stationsById[e.Data.A.Id];
-                var b = stationsById[e.Data.B.Id];
-                var aEnriched = new SegmentEndReference(e.Data.A.Id, e.Data.A.Axle, e.Data.A.Pole, a.Location, nameSelector(a));
-                var bEnriched = new SegmentEndReference(e.Data.B.Id, e.Data.B.Axle, e.Data.B.Pole, b.Location, nameSelector(b));
-                var enriched = new SegmentCreatedWithReferences(e.Data, aEnriched, bEnriched);
+            var namingPolicySetEvent = slice.Events().OfType<IEvent<SettingsNamingPolicySet>>().OrderByDescending(x => x.Sequence).FirstOrDefault();
+            var createdEvent = slice.Events().OfType<IEvent<SegmentCreated>>().SingleOrDefault();
 
-                slice.ReplaceEvent(e, enriched);
+            if (createdEvent is null)
+            {
+                if (namingPolicySetEvent is not null)
+                {
+                    var a = await querySession.LoadAsync<SegmentStationReference>(slice.Snapshot.A.Id, cancellation);
+                    var b = await querySession.LoadAsync<SegmentStationReference>(slice.Snapshot.B.Id, cancellation);
+
+                    var nameSelector = StationNameResolver.GetNameSelector(namingPolicySetEvent.Data.NamingPolicy);
+                    var aName = nameSelector(a);
+                    var bName = nameSelector(b);
+                    var enriched = new SettingsNamingPolicySetWithReferences(namingPolicySetEvent.Data, aName, bName);
+
+                    slice.ReplaceEvent(namingPolicySetEvent, enriched);
+                }
+            }
+            else
+            {
+                var stationIds = new[] { createdEvent.Data.A.Id, createdEvent.Data.B.Id };
+                var stations = await querySession.LoadManyAsync<SegmentStationReference>(cancellation, stationIds);
+                var stationsById = stations.ToDictionary(s => s.Id, s => s);
+
+                var a = stationsById[createdEvent.Data.A.Id];
+                var b = stationsById[createdEvent.Data.B.Id];
+
+                var policy = namingPolicySetEvent switch
+                {
+                    not null => namingPolicySetEvent.Data.NamingPolicy,
+                    null => (await querySession.LoadAsync<SharedSettingsReference>(SettingsSingleton.Id, cancellation))?.NamingPolicy ?? NamingPolicy.Modern,
+                };
+
+                var nameSelector = StationNameResolver.GetNameSelector(policy);
+                var aEnriched = new SegmentEndReference(createdEvent.Data.A.Id, createdEvent.Data.A.Axle, createdEvent.Data.A.Pole, a.Location, nameSelector(a));
+                var bEnriched = new SegmentEndReference(createdEvent.Data.B.Id, createdEvent.Data.B.Axle, createdEvent.Data.B.Pole, b.Location, nameSelector(b));
+                var enriched = new SegmentCreatedWithReferences(createdEvent.Data, aEnriched, bEnriched);
+
+                slice.ReplaceEvent(createdEvent, enriched);
             }
         }
     }
@@ -120,7 +129,9 @@ public sealed class SegmentReadModelProjection
         };
     }
 
-    public void Apply(SettingsNamingPolicySet e, SegmentReadModel aggregate)
+    public void Apply(SettingsNamingPolicySetWithReferences e, SegmentReadModel aggregate)
     {
+        aggregate.A = aggregate.A with { Name = e.AName };
+        aggregate.B = aggregate.B with { Name = e.BName };
     }
 }

@@ -71,6 +71,9 @@ public sealed class LineReadModelProjection
         readModel.LineNumber = e.Data.LineNumber;
         readModel.LineLetter = e.Data.LineLetter;
         readModel.LineDesignation = $"{e.Data.LineNumber}{e.Data.LineLetter}";
+        readModel.Segments = [];
+        readModel.Stations = [];
+        readModel.Trips = [];
     }
 
     public void Apply(IEvent<LineTripAssignedWithReferences> e, LineReadModel readModel)

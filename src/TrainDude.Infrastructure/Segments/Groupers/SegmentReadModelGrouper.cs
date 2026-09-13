@@ -71,15 +71,15 @@ public sealed class SegmentReadModelGrouper
 
     private async Task GroupNamingPolicySet(IQuerySession session, IEvent<SettingsNamingPolicySet> namingPolicySetEvent, IEventGrouping<Guid> grouping)
     {
-        var stationIds = await session.Events
-            .QueryRawEventDataOnly<StationCreated>()
-            .Select(x => x.StationId)
+        var segmentIds = await session.Events
+            .QueryRawEventDataOnly<SegmentCreated>()
+            .Select(x => x.SegmentId)
             .Distinct()
             .ToListAsync();
 
-        foreach (var stationId in stationIds)
+        foreach (var segmentId in segmentIds)
         {
-            grouping.AddEvent(stationId, namingPolicySetEvent);
+            grouping.AddEvent(segmentId, namingPolicySetEvent);
         }
     }
 }

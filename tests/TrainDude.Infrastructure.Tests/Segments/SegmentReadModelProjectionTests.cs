@@ -202,6 +202,44 @@ public class SegmentReadModelProjectionTests
     }
 
     [Test]
+    public async Task SegmentCourseSet_ReplacesPreviousCourse()
+    {
+        await this.fixture.ResetAsync();
+        var station1Id = Guid.NewGuid();
+        var station2Id = Guid.NewGuid();
+        var segmentId = Guid.NewGuid();
+        var loc1 = new Location(50.66, 18.68);
+        var loc2 = new Location(54.36, 21.30);
+        var firstCourse = new[] { new Location(52.0, 19.0), new Location(53.0, 20.0) };
+        var secondCourse = new[] { new Location(51.0, 19.5) };
+
+        using (var session = this.fixture.Store.LightweightSession())
+        {
+            session.Events.Append(station1Id, new StationCreated(station1Id, Who, "Lublinitz", "Loben", "Lubliniec", null));
+            session.Events.Append(station1Id, new StationLocationSet(station1Id, Who, loc1));
+            session.Events.Append(station2Id, new StationCreated(station2Id, Who, "Gerdauen", null, null, "Железнодорожный"));
+            session.Events.Append(station2Id, new StationLocationSet(station2Id, Who, loc2));
+            session.Events.Append(segmentId, new SegmentCreated(segmentId, Who, 22.2, 2, new SegmentEnd(station1Id, 0, true), new SegmentEnd(station2Id, 0, true)));
+            session.Events.Append(segmentId, new SegmentCourseSet(segmentId, Who, firstCourse));
+            session.Events.Append(segmentId, new SegmentCourseSet(segmentId, Who, secondCourse));
+            await session.SaveChangesAsync();
+        }
+
+        using (var session = this.fixture.Store.LightweightSession())
+        {
+            await this.fixture.Daemon.RebuildProjectionAsync<StationReadModel>(CancellationToken.None);
+            await this.fixture.Daemon.RebuildProjectionAsync<SegmentReadModel>(CancellationToken.None);
+
+            var segment = await session.LoadAsync<SegmentReadModel>(segmentId);
+
+            await Assert.That(segment).IsNotNull();
+            await Assert.That(segment.Course.Count).IsEqualTo(1);
+            await Assert.That(segment.Course[0]).IsEqualTo(secondCourse[0]);
+            await Assert.That(segment.Haversine).IsNotNull();
+        }
+    }
+
+    [Test]
     public async Task SettingsNamingPolicySet_UpdatesStationNamesAccordingToNewPolicy()
     {
         await this.fixture.ResetAsync();
