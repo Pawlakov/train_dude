@@ -6,8 +6,4 @@ namespace TrainDude.Features.Lines.Domain.Events;
 
 using System;
 
-public sealed record LineSegmentAppended(Guid LineId, string Who, Guid SegmentId)
-    : ILineEvent
-{
-    public Guid Id => LineId;
-}
+public sealed record LineSegmentAppended(Guid LineId, string Who, Guid SegmentId) : ILineEvent;

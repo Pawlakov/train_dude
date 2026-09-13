@@ -9,8 +9,4 @@ using System;
 using TrainDude.Features.Shared.Base;
 using TrainDude.Features.Shared.Contracts.Values;
 
-public sealed record StationLocationSet(Guid StationId, string Who, Location Location)
-    : IStationEvent
-{
-    public Guid Id => this.StationId;
-}
+public sealed record StationLocationSet(Guid StationId, string Who, Location Location) : IStationEvent;

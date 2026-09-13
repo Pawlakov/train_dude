@@ -37,7 +37,7 @@ public class RadiusAggregate
 
     public void Apply(RadiusCreated e)
     {
-        this.Id = e.Id;
+        this.Id = e.RadiusId;
         this.Speed = e.Speed;
         this.Minimum = e.Minimum;
     }

@@ -69,7 +69,7 @@ public sealed class LineReadModelProjection
 
     public void Apply(IEvent<LineCreated> e, LineReadModel readModel)
     {
-        readModel.Id = e.Data.Id;
+        readModel.Id = e.Data.LineId;
         readModel.LineNumber = e.Data.LineNumber;
         readModel.LineLetter = e.Data.LineLetter;
         readModel.LineDesignation = $"{e.Data.LineNumber}{e.Data.LineLetter}";

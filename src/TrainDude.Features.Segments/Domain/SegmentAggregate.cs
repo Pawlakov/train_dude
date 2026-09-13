@@ -58,7 +58,7 @@ public class SegmentAggregate
 
     public void Apply(SegmentCreated e)
     {
-        this.Id = e.Id;
+        this.Id = e.SegmentId;
         this.NominalLength = e.NominalLength;
         this.Tracks = e.Tracks;
         this.A = e.A;

@@ -4,9 +4,12 @@
 
 namespace TrainDude.Features.Settings.Domain.Events;
 
+using System;
+
 using TrainDude.Features.Shared.Base;
 
 public interface ISettingsEvent
     : IDomainEvent
 {
+    Guid SettingsId { get; }
 }

@@ -19,7 +19,7 @@ public sealed class LineSegmentReferenceProjection
 {
     public void Apply(IEvent<SegmentCreated> e, LineSegmentReference aggregate)
     {
-        aggregate.Id = e.Data.Id;
+        aggregate.Id = e.Data.SegmentId;
         aggregate.AId = e.Data.A.Id;
         aggregate.BId = e.Data.B.Id;
         aggregate.Course = [];

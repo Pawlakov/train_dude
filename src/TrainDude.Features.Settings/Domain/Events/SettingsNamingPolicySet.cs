@@ -9,8 +9,4 @@ using System;
 using TrainDude.Features.Shared.Base;
 using TrainDude.Features.Shared.Contracts.Enums;
 
-public sealed record SettingsNamingPolicySet(Guid SettingsId, string Who, NamingPolicy NamingPolicy)
-    : ISettingsEvent
-{
-    public Guid Id => this.SettingsId;
-}
+public sealed record SettingsNamingPolicySet(Guid SettingsId, string Who, NamingPolicy NamingPolicy) : ISettingsEvent;

@@ -3,9 +3,12 @@
 // </copyright>
 namespace TrainDude.Features.Trips.Domain.Events;
 
+using System;
+
 using TrainDude.Features.Shared.Base;
 
 public interface ITripEvent
     : IDomainEvent
 {
+    Guid TripId { get; }
 }

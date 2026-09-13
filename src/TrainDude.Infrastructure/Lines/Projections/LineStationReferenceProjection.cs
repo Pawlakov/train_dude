@@ -18,7 +18,7 @@ public sealed class LineStationReferenceProjection
 {
     public void Apply(IEvent<StationCreated> e, LineStationReference aggregate)
     {
-        aggregate.Id = e.Data.Id;
+        aggregate.Id = e.Data.StationId;
         aggregate.AxleCount = 1;
         aggregate.NameGerman = e.Data.NameGerman;
         aggregate.NameGermanNew = e.Data.NameGermanNew;

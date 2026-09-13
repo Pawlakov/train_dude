@@ -3,9 +3,12 @@
 // </copyright>
 namespace TrainDude.Features.Radii.Domain.Events;
 
+using System;
+
 using TrainDude.Features.Shared.Base;
 
 public interface IRadiusEvents
     : IDomainEvent
 {
+    Guid RadiusId { get; }
 }

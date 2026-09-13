@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Http;
 using TrainDude.Features.Lines.Contracts.CreateLine;
 using TrainDude.Features.Lines.Contracts.GetLine;
 using TrainDude.Features.Lines.Domain;
-using TrainDude.Features.Shared.Contracts.Generic;
 using TrainDude.Features.Shared.Extensions;
 
 using Wolverine.Http;
@@ -26,9 +25,9 @@ public static class CreateLineEndpoint
     {
         var domainEvent = LineAggregate.Make(command.LineId, user.GetSubject(), command.Number, command.Letter);
 
-        var startStream = MartenOps.StartStream<LineAggregate>(domainEvent.Id, domainEvent);
+        var startStream = MartenOps.StartStream<LineAggregate>(domainEvent.LineId, domainEvent);
 
-        var getUrl = GetLineQuery.Route.Replace("{id}", domainEvent.Id.ToString());
+        var getUrl = GetLineQuery.Route.Replace("{id}", domainEvent.LineId.ToString());
         var response = new CreationResponse(getUrl);
         var result = Results.Created(getUrl, response);
 

@@ -62,7 +62,7 @@ public sealed class SegmentReadModelGrouper
 
     private void GroupLocationSet(IQuerySession session, IEvent<StationLocationSet> locationSetEvent, IEventGrouping<Guid> grouping, Dictionary<Guid, List<Guid>> segmentIdsByStation)
     {
-        if (segmentIdsByStation.TryGetValue(locationSetEvent.Data.Id, out var segmentIds))
+        if (segmentIdsByStation.TryGetValue(locationSetEvent.Data.StationId, out var segmentIds))
         {
             foreach (var segmentId in segmentIds)
             {

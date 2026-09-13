@@ -8,7 +8,5 @@ using System;
 
 public interface IDomainEvent
 {
-    Guid Id { get; }
-
     string Who { get; }
 }

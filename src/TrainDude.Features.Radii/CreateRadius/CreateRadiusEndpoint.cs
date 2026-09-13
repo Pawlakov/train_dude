@@ -26,9 +26,9 @@ public static class CreateRadiusEndpoint
     {
         var domainEvent = RadiusAggregate.Make(command.RadiusId, user.GetSubject(), command.Speed, command.Minimum);
 
-        var startStream = MartenOps.StartStream<RadiusAggregate>(domainEvent.Id, domainEvent);
+        var startStream = MartenOps.StartStream<RadiusAggregate>(domainEvent.RadiusId, domainEvent);
 
-        var getUrl = GetRadiusQuery.Route.Replace("{id}", domainEvent.Id.ToString());
+        var getUrl = GetRadiusQuery.Route.Replace("{id}", domainEvent.RadiusId.ToString());
         var response = new CreationResponse(getUrl);
         var result = Results.Created(getUrl, response);
 

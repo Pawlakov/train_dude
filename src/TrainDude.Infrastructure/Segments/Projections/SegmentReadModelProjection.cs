@@ -90,7 +90,7 @@ public sealed class SegmentReadModelProjection
 
     public void Apply(IEvent<SegmentCreatedWithReferences> e, SegmentReadModel aggregate)
     {
-        aggregate.Id = e.Data.Event.Id;
+        aggregate.Id = e.Data.Event.SegmentId;
         aggregate.NominalLength = e.Data.Event.NominalLength;
         aggregate.Tracks = e.Data.Event.Tracks;
         aggregate.A = e.Data.A;
@@ -116,12 +116,12 @@ public sealed class SegmentReadModelProjection
             return;
         }
 
-        if (aggregate.A.Id == e.Data.Id)
+        if (aggregate.A.Id == e.Data.StationId)
         {
             aggregate.A = aggregate.A with { Location = e.Data.Location };
         }
 
-        if (aggregate.B.Id == e.Data.Id)
+        if (aggregate.B.Id == e.Data.StationId)
         {
             aggregate.B = aggregate.B with { Location = e.Data.Location };
         }

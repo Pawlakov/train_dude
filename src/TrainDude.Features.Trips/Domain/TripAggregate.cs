@@ -34,7 +34,7 @@ public class TripAggregate
 
     public void Apply(TripCreated e)
     {
-        this.Id = e.Id;
+        this.Id = e.TripId;
         this.TripNumber = e.TripNumber;
     }
 }

@@ -71,7 +71,7 @@ public class LineAggregate
 
     public void Apply(LineCreated e)
     {
-        this.Id = e.Id;
+        this.Id = e.LineId;
         this.LineNumber = e.LineNumber;
         this.LineLetter = e.LineLetter;
     }

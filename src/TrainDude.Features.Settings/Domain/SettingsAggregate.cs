@@ -42,7 +42,7 @@ public class SettingsAggregate
 
     public void Apply(SettingsCreated e)
     {
-        this.Id = e.Id;
+        this.Id = e.SettingsId;
         this.NamingPolicy = NamingPolicy.Modern;
     }
 

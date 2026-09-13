@@ -8,8 +8,4 @@ using System;
 
 using TrainDude.Features.Shared.Base;
 
-public sealed record SettingsCreated(Guid SettingsId, string Who)
-    : ISettingsEvent
-{
-    public Guid Id => this.SettingsId;
-}
+public sealed record SettingsCreated(Guid SettingsId, string Who) : ISettingsEvent;

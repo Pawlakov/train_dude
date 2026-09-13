@@ -8,8 +8,4 @@ using System;
 
 using TrainDude.Features.Segments.Domain.Values;
 
-public sealed record SegmentCreated(Guid SegmentId, string Who, double NominalLength, int Tracks, SegmentEnd A, SegmentEnd B)
-    : ISegmentEvent
-{
-    public Guid Id => this.SegmentId;
-}
+public sealed record SegmentCreated(Guid SegmentId, string Who, double NominalLength, int Tracks, SegmentEnd A, SegmentEnd B) : ISegmentEvent;

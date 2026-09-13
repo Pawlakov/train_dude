@@ -19,7 +19,8 @@ public sealed class SharedSettingsReferenceProjection
 {
     public void Apply(IEvent<SettingsCreated> e, SharedSettingsReference aggregate)
     {
-        aggregate.Id = e.Data.Id;
+        aggregate.Id = e.Data.
+            SettingsId;
         aggregate.NamingPolicy = NamingPolicy.Modern;
     }
 

@@ -9,8 +9,4 @@ using System.Collections.Generic;
 
 using TrainDude.Features.Shared.Contracts.Values;
 
-public sealed record SegmentCourseSet(Guid SegmentId, string Who, IEnumerable<Location> Course)
-    : ISegmentEvent
-{
-    public Guid Id => this.SegmentId;
-}
+public sealed record SegmentCourseSet(Guid SegmentId, string Who, IEnumerable<Location> Course) : ISegmentEvent;
