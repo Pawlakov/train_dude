@@ -9,7 +9,7 @@ using System;
 using TrainDude.Features.Shared.Contracts.Base;
 
 public sealed record CreateLineCommand(Guid LineId, int Number, char? Letter)
-    : IGeneralCommand
+    : ICreateCommand
 {
     public const string TypeRoute = "/api/lines/create";
 

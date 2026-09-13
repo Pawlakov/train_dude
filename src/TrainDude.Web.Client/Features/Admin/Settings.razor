@@ -106,7 +106,7 @@ else
             try
             {
                 var command = new SetNamingPolicyCommand(this.formModel.Policy);
-                await this.Api.SendAsync<SetNamingPolicyCommand>(command);
+                await this.Api.SendAsync<SetNamingPolicyCommand, EmptyResult>(command);
                 await this.DeactivateEdit();
             }
             catch (ValidationException exception)
@@ -115,4 +115,5 @@ else
             }
         }
     }
+
 }

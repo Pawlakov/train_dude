@@ -8,7 +8,7 @@ using System;
 
 public interface ISpecificQuery<TResult>
     : IQuery<TResult>
-    where TResult : IQueryResult
+    where TResult : IResult
 {
     Guid Id { get; }
 }

@@ -9,4 +9,4 @@ using System.Collections.Generic;
 using TrainDude.Features.Shared.Contracts.Base;
 using TrainDude.Features.Shared.Contracts.Values;
 
-public sealed record MapQueryResult(IReadOnlyList<Location> StationPoints, IReadOnlyList<IReadOnlyList<Location>> SegmentLineStrings) : IQueryResult;
+public sealed record MapQueryResult(IReadOnlyList<Location> StationPoints, IReadOnlyList<IReadOnlyList<Location>> SegmentLineStrings) : IResult;

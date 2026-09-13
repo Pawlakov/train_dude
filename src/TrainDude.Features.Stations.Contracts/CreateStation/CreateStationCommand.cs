@@ -9,7 +9,7 @@ using System;
 using TrainDude.Features.Shared.Contracts.Base;
 
 public sealed record CreateStationCommand(Guid StationId, string NameGerman, string? NameGermanNew, string? NamePolish, string? NameRussian)
-    : IGeneralCommand
+    : ICreateCommand
 {
     public const string TypeRoute = "/api/stations/create";
 

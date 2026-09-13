@@ -1,15 +1,12 @@
-// <copyright file="ISpecificCommand.cs" company="Pawlakov">
+// <copyright file="ICreateCommand.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
 namespace TrainDude.Features.Shared.Contracts.Base;
 
-using System;
-
 using TrainDude.Features.Shared.Contracts.Generic;
 
-public interface ISpecificCommand
-    : ICommand<EmptyResult>
+public interface ICreateCommand
+    : ICommand<CreatedResult>
 {
-    Guid Id { get; }
 }

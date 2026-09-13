@@ -8,6 +8,6 @@ using System;
 
 public interface ILookupQuery<TResult>
     : ISpecificQuery<TResult>
-    where TResult : IQueryResult
+    where TResult : IResult
 {
 }

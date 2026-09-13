@@ -1,11 +1,10 @@
-// <copyright file="IQuery.cs" company="Pawlakov">
-// Copyright (c) Pawlakov. All rights reserved.
+// <copyright file="IQuery.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
-
 namespace TrainDude.Features.Shared.Contracts.Base;
 
 public interface IQuery<TResult>
-    : IDomainRequest
-    where TResult : IQueryResult
+    : IRequest<TResult>
+    where TResult : IResult
 {
 }
