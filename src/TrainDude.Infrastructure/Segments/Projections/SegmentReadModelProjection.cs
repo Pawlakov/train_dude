@@ -40,9 +40,12 @@ public sealed class SegmentReadModelProjection
     {
         var settingsReference = await querySession.LoadAsync<SharedSettingsReference>(SettingsSingleton.Id, cancellation);
 
-        var stationIds1 = group.Slices.Where(x => x.Snapshot != null).SelectMany(x => new[] { x.Snapshot.A.Id, x.Snapshot.B.Id }).ToList();
-        var stationIds2 = group.Slices.SelectMany(x => x.Events().OfType<IEvent<SegmentCreated>>()).SelectMany(x => new[] { x.Data.A.Id, x.Data.B.Id }).ToList();
-        var stationIds = stationIds1.Concat(stationIds2).Distinct().ToList();
+        // works wonderfully but good luck reading this
+        var stationIds = group.Slices
+            .SelectMany(x => x.Events().OfType<IEvent<SegmentCreated>>()
+                .SelectMany(y => new[] { y.Data.A.Id, y.Data.B.Id })
+                .Concat(x.Snapshot != null ? new[] { x.Snapshot.A.Id, x.Snapshot.B.Id } : []))
+            .ToList();
 
         var stations = await querySession.LoadManyAsync<SegmentStationReference>(cancellation, stationIds);
         var stationsById = stations.ToDictionary(s => s.Id, s => s);
