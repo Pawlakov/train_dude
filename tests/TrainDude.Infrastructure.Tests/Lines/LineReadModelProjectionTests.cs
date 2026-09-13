@@ -14,6 +14,9 @@ using TrainDude.Features.Lines.ReadModels;
 using TrainDude.Features.Lines.ReadModels.Values;
 using TrainDude.Features.Segments.Domain.Events;
 using TrainDude.Features.Segments.Domain.Values;
+using TrainDude.Features.Settings.Domain.Events;
+using TrainDude.Features.Shared;
+using TrainDude.Features.Shared.Contracts.Enums;
 using TrainDude.Features.Stations.Domain.Events;
 using TrainDude.Features.Trips.Domain.Events;
 
@@ -116,7 +119,7 @@ public class LineReadModelProjectionTests
     }
 
     [Test]
-    public async Task LineSegmentAppended_ResolvesSegmentReferenceAndBuildsStationPath()
+    public async Task LineSegmentAppended_ResolvesReferences()
     {
         await this.fixture.ResetAsync();
         var lineId = Guid.NewGuid();
@@ -130,15 +133,40 @@ public class LineReadModelProjectionTests
         {
             session.Events.Append(station1Id, new StationCreated(station1Id, Who, "A-old", "A-new", "A", null));
             session.Events.Append(station2Id, new StationCreated(station2Id, Who, "B-old", "B-new", null, "B"));
-            session.Events.Append(station3Id, new StationCreated(station3Id, Who, "C-old", null, "C", null));
             var end1 = new SegmentEnd(station1Id, 0, true);
             var end2 = new SegmentEnd(station2Id, 0, false);
             session.Events.Append(segment1Id, new SegmentCreated(segment1Id, Who, 10, 1, end1, end2));
+            session.Events.Append(lineId, new LineCreated(lineId, Who, 120, null));
+            session.Events.Append(lineId, new LineSegmentAppended(lineId, Who, segment1Id));
+            await session.SaveChangesAsync();
+        }
+
+        using (var session = this.fixture.Store.LightweightSession())
+        {
+            await this.fixture.Daemon.RebuildProjectionAsync<LineReadModel>(CancellationToken.None);
+
+            var line = await session.LoadAsync<LineReadModel>(lineId);
+            await Assert.That(line).IsNotNull();
+            await Assert.That(line.Segments.Count).IsEqualTo(1);
+            await Assert.That(line.Segments[0].A.Id).IsEqualTo(station1Id);
+            await Assert.That(line.Segments[0].B.Id).IsEqualTo(station2Id);
+            await Assert.That(line.Segments[0].A.Name).IsEqualTo("A");
+            await Assert.That(line.Segments[0].B.Name).IsEqualTo("B");
+            await Assert.That(line.Stations.Count).IsEqualTo(2);
+            await Assert.That(line.Stations[0].Id).IsEqualTo(station1Id);
+            await Assert.That(line.Stations[1].Id).IsEqualTo(station2Id);
+            await Assert.That(line.Stations[0].Name).IsEqualTo("A");
+            await Assert.That(line.Stations[1].Name).IsEqualTo("B");
+        }
+
+        using (var session = this.fixture.Store.LightweightSession())
+        {
+            session.Events.Append(SettingsSingleton.Id, new SettingsCreated(SettingsSingleton.Id, Who));
+            session.Events.Append(SettingsSingleton.Id, new SettingsNamingPolicySet(SettingsSingleton.Id, Who, NamingPolicy.German));
+            session.Events.Append(station3Id, new StationCreated(station3Id, Who, "C-old", null, "C", null));
             var end3 = new SegmentEnd(station2Id, 0, true);
             var end4 = new SegmentEnd(station3Id, 0, false);
             session.Events.Append(segment2Id, new SegmentCreated(segment2Id, Who, 20, 1, end3, end4));
-            session.Events.Append(lineId, new LineCreated(lineId, Who, 120, null));
-            session.Events.Append(lineId, new LineSegmentAppended(lineId, Who, segment1Id));
             session.Events.Append(lineId, new LineSegmentAppended(lineId, Who, segment2Id));
             await session.SaveChangesAsync();
         }
@@ -154,10 +182,17 @@ public class LineReadModelProjectionTests
             await Assert.That(line.Segments[0].B.Id).IsEqualTo(station2Id);
             await Assert.That(line.Segments[1].A.Id).IsEqualTo(station2Id);
             await Assert.That(line.Segments[1].B.Id).IsEqualTo(station3Id);
+            await Assert.That(line.Segments[0].A.Name).IsEqualTo("A-new");
+            await Assert.That(line.Segments[0].B.Name).IsEqualTo("B-new");
+            await Assert.That(line.Segments[1].A.Name).IsEqualTo("B-new");
+            await Assert.That(line.Segments[1].B.Name).IsEqualTo("C-old");
             await Assert.That(line.Stations.Count).IsEqualTo(3);
             await Assert.That(line.Stations[0].Id).IsEqualTo(station1Id);
             await Assert.That(line.Stations[1].Id).IsEqualTo(station2Id);
             await Assert.That(line.Stations[2].Id).IsEqualTo(station3Id);
+            await Assert.That(line.Stations[0].Name).IsEqualTo("A-new");
+            await Assert.That(line.Stations[1].Name).IsEqualTo("B-new");
+            await Assert.That(line.Stations[2].Name).IsEqualTo("C-old");
         }
     }
 }

@@ -95,9 +95,13 @@ public sealed class LineReadModelProjection
         {
             readModel.Stations = readModel.Stations.Append(e.Data.Segment.B).ToList();
         }
-        else
+        else if (e.Data.Segment.B.Id == readModel.Stations.Last().Id)
         {
             readModel.Stations = readModel.Stations.Append(e.Data.Segment.A).ToList();
+        }
+        else
+        {
+            throw new NotImplementedException("This will be handled once we fully figure out segment appening in all cases.");
         }
     }
 }
