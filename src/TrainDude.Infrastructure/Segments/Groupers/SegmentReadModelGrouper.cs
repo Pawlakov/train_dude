@@ -25,30 +25,7 @@ public sealed class SegmentReadModelGrouper
 {
     public async Task Group(IQuerySession session, IReadOnlyList<IEvent> events, IEventGrouping<Guid> grouping)
     {
-        foreach (var e in events)
-        {
-            if (e.Data is ISegmentEvent segmentEvent)
-            {
-                grouping.AddEvent(segmentEvent.SegmentId, e);
-            }
-            else if (e.Data is StationLocationSet)
-            {
-                await this.GroupLocationSet(session, (IEvent<StationLocationSet>)e, grouping);
-            }
-            else if (e.Data is SettingsNamingPolicySet)
-            {
-                await this.GroupNamingPolicySet(session, (IEvent<SettingsNamingPolicySet>)e, grouping);
-            }
-        }
-    }
-
-    private async Task GroupLocationSet(IQuerySession session, IEvent<StationLocationSet> locationSetEvent, IEventGrouping<Guid> grouping)
-    {
-        var stationId = locationSetEvent.Data.Id;
-
         var links = await session.Query<SegmentAggregate>()
-            .Where(x => x.A.Id == stationId || x.B.Id == stationId)
-            .Select(x => new { x.Id, x.A, x.B })
             .ToListAsync();
 
         var segmentIdsByStation = links
@@ -60,6 +37,31 @@ public sealed class SegmentReadModelGrouper
             .GroupBy(x => x.StationId)
             .ToDictionary(g => g.Key, g => g.Select(x => x.SegmentId).ToList());
 
+        var segmentIds = await session.Events
+            .QueryRawEventDataOnly<SegmentCreated>()
+            .Select(x => x.SegmentId)
+            .Distinct()
+            .ToListAsync();
+
+        foreach (var e in events.OrderBy(x => x.Sequence))
+        {
+            if (e.Data is ISegmentEvent segmentEvent)
+            {
+                grouping.AddEvent(segmentEvent.SegmentId, e);
+            }
+            else if (e.Data is StationLocationSet)
+            {
+                await this.GroupLocationSet(session, (IEvent<StationLocationSet>)e, grouping, segmentIdsByStation);
+            }
+            else if (e.Data is SettingsNamingPolicySet)
+            {
+                await this.GroupNamingPolicySet(session, (IEvent<SettingsNamingPolicySet>)e, grouping, segmentIds);
+            }
+        }
+    }
+
+    private async Task GroupLocationSet(IQuerySession session, IEvent<StationLocationSet> locationSetEvent, IEventGrouping<Guid> grouping, Dictionary<Guid, List<Guid>> segmentIdsByStation)
+    {
         if (segmentIdsByStation.TryGetValue(locationSetEvent.Data.Id, out var segmentIds))
         {
             foreach (var segmentId in segmentIds)
@@ -69,14 +71,8 @@ public sealed class SegmentReadModelGrouper
         }
     }
 
-    private async Task GroupNamingPolicySet(IQuerySession session, IEvent<SettingsNamingPolicySet> namingPolicySetEvent, IEventGrouping<Guid> grouping)
+    private async Task GroupNamingPolicySet(IQuerySession session, IEvent<SettingsNamingPolicySet> namingPolicySetEvent, IEventGrouping<Guid> grouping, IEnumerable<Guid> segmentIds)
     {
-        var segmentIds = await session.Events
-            .QueryRawEventDataOnly<SegmentCreated>()
-            .Select(x => x.SegmentId)
-            .Distinct()
-            .ToListAsync();
-
         foreach (var segmentId in segmentIds)
         {
             grouping.AddEvent(segmentId, namingPolicySetEvent);
