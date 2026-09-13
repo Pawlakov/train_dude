@@ -5,7 +5,6 @@
 namespace TrainDude.Infrastructure.Tests.Segments;
 
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 using TrainDude.Features.Segments.ReadModels;
@@ -34,9 +33,10 @@ public class SegmentStationReferenceProjectionTests
         {
             session.Events.Append(stationId, new StationCreated(stationId, Who, "Darkehmen", "Angerapp", null, "Озёрск"));
             await session.SaveChangesAsync();
+        }
 
-            await this.fixture.Daemon.RebuildProjectionAsync<SegmentStationReference>(CancellationToken.None);
-
+        using (var session = this.fixture.Store.LightweightSession())
+        {
             var station = await session.LoadAsync<SegmentStationReference>(stationId);
             await Assert.That(station).IsNotNull();
             await Assert.That(station.AxleCount).IsEqualTo(1);

@@ -16,7 +16,6 @@ using Marten;
 using Marten.Events.Aggregation;
 
 using TrainDude.Features.Settings.Domain.Events;
-using TrainDude.Features.Stations.Domain;
 using TrainDude.Features.Stations.Domain.Events;
 
 public class StationReadModelGrouper
@@ -26,18 +25,18 @@ public class StationReadModelGrouper
     {
         foreach (var e in events)
         {
-            if (e.Data is SettingsNamingPolicySet)
-            {
-                await this.GroupNamingPolicySet(session, e, grouping);
-            }
-            else if (e.Data is IStationEvent stationEvent)
+            if (e.Data is IStationEvent stationEvent)
             {
                 grouping.AddEvent(stationEvent.StationId, e);
+            }
+            else if (e.Data is SettingsNamingPolicySet)
+            {
+                await this.GroupNamingPolicySet(session, (IEvent<SettingsNamingPolicySet>)e, grouping);
             }
         }
     }
 
-    private async Task GroupNamingPolicySet(IQuerySession session, IEvent namingPolicySetEvent, IEventGrouping<Guid> grouping)
+    private async Task GroupNamingPolicySet(IQuerySession session, IEvent<SettingsNamingPolicySet> namingPolicySetEvent, IEventGrouping<Guid> grouping)
     {
         var stationIds = await session.Events
             .QueryRawEventDataOnly<StationCreated>()

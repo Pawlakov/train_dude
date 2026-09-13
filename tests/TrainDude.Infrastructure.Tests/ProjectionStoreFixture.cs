@@ -14,9 +14,17 @@ using Marten;
 
 using Microsoft.Extensions.Configuration;
 
+using TrainDude.Features.Lines.Domain;
+using TrainDude.Features.Lines.ReadModels;
+using TrainDude.Features.Radii.Domain;
+using TrainDude.Features.Segments.Domain;
+using TrainDude.Features.Segments.ReadModels;
 using TrainDude.Features.Shared.ReadModels;
+using TrainDude.Features.Stations.Domain;
 using TrainDude.Features.Stations.ReadModels;
+using TrainDude.Features.Trips.Domain;
 using TrainDude.Infrastructure.Lines.Projections;
+using TrainDude.Infrastructure.Lines.ReadModels;
 using TrainDude.Infrastructure.Radii.Projections;
 using TrainDude.Infrastructure.Segments.Projections;
 using TrainDude.Infrastructure.Settings.Projections;
@@ -47,15 +55,15 @@ public class ProjectionStoreFixture
 
             options.Projections.Add<LineAggregateProjection>(ProjectionLifecycle.Inline);
             options.Projections.Add<LineReadModelProjection>(ProjectionLifecycle.Async);
-            options.Projections.Add<LineSegmentReferenceProjection>(ProjectionLifecycle.Async);
-            options.Projections.Add<LineTripReferenceProjection>(ProjectionLifecycle.Async);
-            options.Projections.Add<LineTripLinkProjection>(ProjectionLifecycle.Async);
+            options.Projections.Add<LineSegmentReferenceProjection>(ProjectionLifecycle.Inline);
+            options.Projections.Add<LineTripReferenceProjection>(ProjectionLifecycle.Inline);
+            options.Projections.Add<LineTripLinkProjection>(ProjectionLifecycle.Inline);
 
             options.Projections.Add<RadiusAggregateProjection>(ProjectionLifecycle.Inline);
 
             options.Projections.Add<SegmentAggregateProjection>(ProjectionLifecycle.Inline);
             options.Projections.Add<SegmentReadModelProjection>(ProjectionLifecycle.Async);
-            options.Projections.Add<SegmentStationReferenceProjection>(ProjectionLifecycle.Async);
+            options.Projections.Add<SegmentStationReferenceProjection>(ProjectionLifecycle.Inline);
 
             options.Projections.Add<StationAggregateProjection>(ProjectionLifecycle.Inline);
             options.Projections.Add<StationReadModelProjection>(ProjectionLifecycle.Async);
@@ -71,8 +79,25 @@ public class ProjectionStoreFixture
     public async ValueTask ResetAsync()
     {
         await this.Store.Advanced.Clean.DeleteAllEventDataAsync();
-        await this.Store.Advanced.Clean.DeleteDocumentsByTypeAsync(typeof(SharedSettingsReference));
+
+        await this.Store.Advanced.Clean.DeleteDocumentsByTypeAsync(typeof(TripAggregate));
+
         await this.Store.Advanced.Clean.DeleteDocumentsByTypeAsync(typeof(StationReadModel));
+        await this.Store.Advanced.Clean.DeleteDocumentsByTypeAsync(typeof(StationAggregate));
+
+        await this.Store.Advanced.Clean.DeleteDocumentsByTypeAsync(typeof(SegmentStationReference));
+        await this.Store.Advanced.Clean.DeleteDocumentsByTypeAsync(typeof(SegmentReadModel));
+        await this.Store.Advanced.Clean.DeleteDocumentsByTypeAsync(typeof(SegmentAggregate));
+
+        await this.Store.Advanced.Clean.DeleteDocumentsByTypeAsync(typeof(RadiusAggregate));
+
+        await this.Store.Advanced.Clean.DeleteDocumentsByTypeAsync(typeof(LineTripLink));
+        await this.Store.Advanced.Clean.DeleteDocumentsByTypeAsync(typeof(LineTripReference));
+        await this.Store.Advanced.Clean.DeleteDocumentsByTypeAsync(typeof(LineSegmentReference));
+        await this.Store.Advanced.Clean.DeleteDocumentsByTypeAsync(typeof(LineReadModel));
+        await this.Store.Advanced.Clean.DeleteDocumentsByTypeAsync(typeof(LineAggregate));
+
+        await this.Store.Advanced.Clean.DeleteDocumentsByTypeAsync(typeof(SharedSettingsReference));
     }
 
     public ValueTask DisposeAsync()

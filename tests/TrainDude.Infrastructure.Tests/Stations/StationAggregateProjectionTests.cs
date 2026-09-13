@@ -40,8 +40,6 @@ public class StationAggregateProjectionTests
         session.Events.Append(stationId, new StationCreated(stationId, Who, "Lublinitz", "Loben", "Lubliniec", null));
         await session.SaveChangesAsync();
 
-        await this.fixture.Daemon.RebuildProjectionAsync<StationAggregate>(CancellationToken.None);
-
         var aggregate = await session.LoadAsync<StationAggregate>(stationId);
         await Assert.That(aggregate).IsNotNull();
         await Assert.That(aggregate.Id).IsEqualTo(stationId);
@@ -71,8 +69,6 @@ public class StationAggregateProjectionTests
             session.Events.Append(stationId, new StationLocationSet(stationId, Who, location));
             await session.SaveChangesAsync();
 
-            await this.fixture.Daemon.RebuildProjectionAsync<StationAggregate>(CancellationToken.None);
-
             var aggregate = await session.LoadAsync<StationAggregate>(stationId);
             await Assert.That(aggregate).IsNotNull();
             await Assert.That(aggregate.Location).IsEqualTo(location);
@@ -100,8 +96,6 @@ public class StationAggregateProjectionTests
         {
             session.Events.Append(stationId, new StationLocationSet(stationId, Who, secondLocation));
             await session.SaveChangesAsync();
-
-            await this.fixture.Daemon.RebuildProjectionAsync<StationAggregate>(CancellationToken.None);
 
             var aggregate = await session.LoadAsync<StationAggregate>(stationId);
             await Assert.That(aggregate).IsNotNull();
@@ -131,8 +125,6 @@ public class StationAggregateProjectionTests
             }
 
             await session.SaveChangesAsync();
-
-            await this.fixture.Daemon.RebuildProjectionAsync<StationAggregate>(CancellationToken.None);
 
             var aggregate = await session.LoadAsync<StationAggregate>(stationId);
             await Assert.That(aggregate).IsNotNull();
@@ -165,8 +157,6 @@ public class StationAggregateProjectionTests
             session.Events.Append(stationId, new StationAxleAdded(stationId, Who));
             await session.SaveChangesAsync();
 
-            await this.fixture.Daemon.RebuildProjectionAsync<StationAggregate>(CancellationToken.None);
-
             var aggregate = await session.LoadAsync<StationAggregate>(stationId);
             await Assert.That(aggregate).IsNotNull();
             await Assert.That(aggregate.AxleCount).IsEqualTo(3);
@@ -197,8 +187,6 @@ public class StationAggregateProjectionTests
 
         using (var session = this.fixture.Store.LightweightSession())
         {
-            await this.fixture.Daemon.RebuildProjectionAsync<StationAggregate>(CancellationToken.None);
-
             var aggregate = await session.LoadAsync<StationAggregate>(stationId);
             await Assert.That(aggregate).IsNotNull();
             await Assert.That(aggregate.NameGerman).IsEqualTo("Lublinitz");

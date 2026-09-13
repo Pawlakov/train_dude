@@ -33,8 +33,6 @@ public class SharedSettingsReferenceProjectionTests
         session.Events.Append(SettingsSingleton.Id, new SettingsCreated(SettingsSingleton.Id, who));
         await session.SaveChangesAsync();
 
-        await this.fixture.Daemon.RebuildProjectionAsync<SharedSettingsReference>(CancellationToken.None);
-
         var settings = await session.LoadAsync<SharedSettingsReference>(SettingsSingleton.Id);
         await Assert.That(settings).IsNotNull();
         await Assert.That(settings.NamingPolicy).IsEqualTo(NamingPolicy.Modern);
@@ -50,8 +48,6 @@ public class SharedSettingsReferenceProjectionTests
         session.Events.Append(SettingsSingleton.Id, new SettingsCreated(SettingsSingleton.Id, who));
         session.Events.Append(SettingsSingleton.Id, new SettingsNamingPolicySet(SettingsSingleton.Id, who, NamingPolicy.German));
         await session.SaveChangesAsync();
-
-        await this.fixture.Daemon.RebuildProjectionAsync<SharedSettingsReference>(CancellationToken.None);
 
         var settings = await session.LoadAsync<SharedSettingsReference>(SettingsSingleton.Id);
         await Assert.That(settings).IsNotNull();
@@ -69,8 +65,6 @@ public class SharedSettingsReferenceProjectionTests
         session.Events.Append(SettingsSingleton.Id, new SettingsNamingPolicySet(SettingsSingleton.Id, who, NamingPolicy.German));
         session.Events.Append(SettingsSingleton.Id, new SettingsNamingPolicySet(SettingsSingleton.Id, who, NamingPolicy.Modern));
         await session.SaveChangesAsync();
-
-        await this.fixture.Daemon.RebuildProjectionAsync<SharedSettingsReference>(CancellationToken.None);
 
         var settings = await session.LoadAsync<SharedSettingsReference>(SettingsSingleton.Id);
         await Assert.That(settings).IsNotNull();

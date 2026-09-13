@@ -76,8 +76,6 @@ public class StationReadModelProjectionTests
 
         using (var session = this.fixture.Store.LightweightSession())
         {
-            await this.fixture.Daemon.RebuildProjectionAsync<SharedSettingsReference>(CancellationToken.None);
-
             session.Events.Append(stationId, new StationCreated(stationId, Who, "Lublinitz", "Loben", "Lubliniec", null));
             await session.SaveChangesAsync();
         }

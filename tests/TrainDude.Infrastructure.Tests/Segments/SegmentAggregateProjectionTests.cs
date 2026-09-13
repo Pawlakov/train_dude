@@ -45,8 +45,6 @@ public class SegmentAggregateProjectionTests
 
         using (var session = this.fixture.Store.LightweightSession())
         {
-            await this.fixture.Daemon.RebuildProjectionAsync<SegmentAggregate>(CancellationToken.None);
-
             var aggregate = await session.LoadAsync<SegmentAggregate>(segmentId);
             await Assert.That(aggregate).IsNotNull();
             await Assert.That(aggregate.Id).IsEqualTo(segmentId);
@@ -85,8 +83,6 @@ public class SegmentAggregateProjectionTests
 
         using (var session = this.fixture.Store.LightweightSession())
         {
-            await this.fixture.Daemon.RebuildProjectionAsync<SegmentAggregate>(CancellationToken.None);
-
             var aggregate = await session.LoadAsync<SegmentAggregate>(segmentId);
             await Assert.That(aggregate).IsNotNull();
             await Assert.That(aggregate.Course.Count).IsEqualTo(2);
@@ -124,8 +120,6 @@ public class SegmentAggregateProjectionTests
 
         using (var session = this.fixture.Store.LightweightSession())
         {
-            await this.fixture.Daemon.RebuildProjectionAsync<SegmentAggregate>(CancellationToken.None);
-
             var aggregate = await session.LoadAsync<SegmentAggregate>(segmentId);
             await Assert.That(aggregate).IsNotNull();
             await Assert.That(aggregate.Course.Count).IsEqualTo(2);

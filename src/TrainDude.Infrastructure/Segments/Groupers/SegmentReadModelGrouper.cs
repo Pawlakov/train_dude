@@ -16,6 +16,7 @@ using Marten;
 using Marten.Events.Aggregation;
 
 using TrainDude.Features.Segments.Domain;
+using TrainDude.Features.Segments.Domain.Events;
 using TrainDude.Features.Settings.Domain.Events;
 using TrainDude.Features.Stations.Domain.Events;
 
@@ -24,22 +25,29 @@ public sealed class SegmentReadModelGrouper
 {
     public async Task Group(IQuerySession session, IReadOnlyList<IEvent> events, IEventGrouping<Guid> grouping)
     {
-        await this.GroupLocationSet(session, events, grouping);
-        await this.GroupNamingPolicySet(session, events, grouping);
+        foreach (var e in events)
+        {
+            if (e.Data is ISegmentEvent segmentEvent)
+            {
+                grouping.AddEvent(segmentEvent.SegmentId, e);
+            }
+            else if (e.Data is StationLocationSet)
+            {
+                await this.GroupLocationSet(session, (IEvent<StationLocationSet>)e, grouping);
+            }
+            else if (e.Data is SettingsNamingPolicySet)
+            {
+                await this.GroupNamingPolicySet(session, (IEvent<SettingsNamingPolicySet>)e, grouping);
+            }
+        }
     }
 
-    private async Task GroupLocationSet(IQuerySession session, IReadOnlyList<IEvent> events, IEventGrouping<Guid> grouping)
+    private async Task GroupLocationSet(IQuerySession session, IEvent<StationLocationSet> locationSetEvent, IEventGrouping<Guid> grouping)
     {
-        var locationSetEvents = events.OfType<IEvent<StationLocationSet>>().ToList();
-        if (locationSetEvents.Count == 0)
-        {
-            return;
-        }
-
-        var stationIds = locationSetEvents.Select(e => e.Data.Id).Distinct().ToList();
+        var stationId = locationSetEvent.Data.Id;
 
         var links = await session.Query<SegmentAggregate>()
-            .Where(x => stationIds.Contains(x.A.Id) || stationIds.Contains(x.B.Id))
+            .Where(x => x.A.Id == stationId || x.B.Id == stationId)
             .Select(x => new { x.Id, x.A, x.B })
             .ToListAsync();
 
@@ -52,38 +60,26 @@ public sealed class SegmentReadModelGrouper
             .GroupBy(x => x.StationId)
             .ToDictionary(g => g.Key, g => g.Select(x => x.SegmentId).ToList());
 
-        foreach (var e in locationSetEvents)
+        if (segmentIdsByStation.TryGetValue(locationSetEvent.Data.Id, out var segmentIds))
         {
-            if (!segmentIdsByStation.TryGetValue(e.Data.Id, out var segmentIds))
-            {
-                continue;
-            }
-
             foreach (var segmentId in segmentIds)
             {
-                grouping.AddEvent(segmentId, e);
+                grouping.AddEvent(segmentId, locationSetEvent);
             }
         }
     }
 
-    private async Task GroupNamingPolicySet(IQuerySession session, IReadOnlyList<IEvent> events, IEventGrouping<Guid> grouping)
+    private async Task GroupNamingPolicySet(IQuerySession session, IEvent<SettingsNamingPolicySet> namingPolicySetEvent, IEventGrouping<Guid> grouping)
     {
-        var policyEvents = events.OfType<IEvent<SettingsNamingPolicySet>>().ToList();
-        if (policyEvents.Count == 0)
-        {
-            return;
-        }
-
-        var allSegmentIds = await session.Query<SegmentAggregate>()
-            .Select(x => x.Id)
+        var stationIds = await session.Events
+            .QueryRawEventDataOnly<StationCreated>()
+            .Select(x => x.StationId)
+            .Distinct()
             .ToListAsync();
 
-        foreach (var e in policyEvents)
+        foreach (var stationId in stationIds)
         {
-            foreach (var segmentId in allSegmentIds)
-            {
-                grouping.AddEvent(segmentId, e);
-            }
+            grouping.AddEvent(stationId, namingPolicySetEvent);
         }
     }
 }
