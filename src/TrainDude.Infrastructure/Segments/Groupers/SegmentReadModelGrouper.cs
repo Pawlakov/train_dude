@@ -51,16 +51,16 @@ public sealed class SegmentReadModelGrouper
             }
             else if (e.Data is StationLocationSet)
             {
-                await this.GroupLocationSet(session, (IEvent<StationLocationSet>)e, grouping, segmentIdsByStation);
+                this.GroupLocationSet(session, (IEvent<StationLocationSet>)e, grouping, segmentIdsByStation);
             }
             else if (e.Data is SettingsNamingPolicySet)
             {
-                await this.GroupNamingPolicySet(session, (IEvent<SettingsNamingPolicySet>)e, grouping, segmentIds);
+                this.GroupNamingPolicySet(session, (IEvent<SettingsNamingPolicySet>)e, grouping, segmentIds);
             }
         }
     }
 
-    private async Task GroupLocationSet(IQuerySession session, IEvent<StationLocationSet> locationSetEvent, IEventGrouping<Guid> grouping, Dictionary<Guid, List<Guid>> segmentIdsByStation)
+    private void GroupLocationSet(IQuerySession session, IEvent<StationLocationSet> locationSetEvent, IEventGrouping<Guid> grouping, Dictionary<Guid, List<Guid>> segmentIdsByStation)
     {
         if (segmentIdsByStation.TryGetValue(locationSetEvent.Data.Id, out var segmentIds))
         {
@@ -71,7 +71,7 @@ public sealed class SegmentReadModelGrouper
         }
     }
 
-    private async Task GroupNamingPolicySet(IQuerySession session, IEvent<SettingsNamingPolicySet> namingPolicySetEvent, IEventGrouping<Guid> grouping, IEnumerable<Guid> segmentIds)
+    private void GroupNamingPolicySet(IQuerySession session, IEvent<SettingsNamingPolicySet> namingPolicySetEvent, IEventGrouping<Guid> grouping, IEnumerable<Guid> segmentIds)
     {
         foreach (var segmentId in segmentIds)
         {

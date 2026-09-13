@@ -25,9 +25,8 @@ using TrainDude.Features.Stations.Domain;
 using TrainDude.Features.Stations.ReadModels;
 using TrainDude.Features.Trips.Domain;
 using TrainDude.Infrastructure.Lines.Projections;
-using TrainDude.Infrastructure.Lines.ReadModels;
 using TrainDude.Infrastructure.Segments.Projections;
-using TrainDude.Infrastructure.Settings.Projections;
+using TrainDude.Infrastructure.Shared.Projections;
 using TrainDude.Infrastructure.Stations.Projections;
 
 using TUnit.Core.Interfaces;
@@ -55,9 +54,9 @@ public class ProjectionStoreFixture
 
             options.Projections.Snapshot<LineAggregate>(SnapshotLifecycle.Inline);
             options.Projections.Add<LineReadModelProjection>(ProjectionLifecycle.Async);
+            options.Projections.Add<LineStationReferenceProjection>(ProjectionLifecycle.Inline);
             options.Projections.Add<LineSegmentReferenceProjection>(ProjectionLifecycle.Inline);
             options.Projections.Add<LineTripReferenceProjection>(ProjectionLifecycle.Inline);
-            options.Projections.Add<LineTripLinkProjection>(ProjectionLifecycle.Inline);
 
             options.Projections.Snapshot<RadiusAggregate>(SnapshotLifecycle.Inline);
 
@@ -91,9 +90,9 @@ public class ProjectionStoreFixture
 
         await this.Store.Advanced.Clean.DeleteDocumentsByTypeAsync(typeof(RadiusAggregate));
 
-        await this.Store.Advanced.Clean.DeleteDocumentsByTypeAsync(typeof(LineTripLink));
         await this.Store.Advanced.Clean.DeleteDocumentsByTypeAsync(typeof(LineTripReference));
         await this.Store.Advanced.Clean.DeleteDocumentsByTypeAsync(typeof(LineSegmentReference));
+        await this.Store.Advanced.Clean.DeleteDocumentsByTypeAsync(typeof(LineStationReference));
         await this.Store.Advanced.Clean.DeleteDocumentsByTypeAsync(typeof(LineReadModel));
         await this.Store.Advanced.Clean.DeleteDocumentsByTypeAsync(typeof(LineAggregate));
 

@@ -15,43 +15,43 @@ using JasperFx.Events.Grouping;
 using Marten;
 using Marten.Events.Aggregation;
 
+using TrainDude.Features.Lines.Domain;
+using TrainDude.Features.Lines.Domain.Events;
 using TrainDude.Features.Trips.Domain.Events;
-using TrainDude.Infrastructure.Lines.ReadModels;
 
 public sealed class LineReadModelGrouper
     : IAggregateGrouper<Guid>
 {
     public async Task Group(IQuerySession session, IReadOnlyList<IEvent> events, IEventGrouping<Guid> grouping)
     {
-        await this.GroupTripCreated(session, events, grouping);
-    }
-
-    private async Task GroupTripCreated(IQuerySession session, IReadOnlyList<IEvent> events, IEventGrouping<Guid> grouping)
-    {
-        var tripCreatedEvents = events.OfType<IEvent<TripCreated>>().ToList();
-        if (tripCreatedEvents.Count == 0)
-        {
-            return;
-        }
-
-        var links = await session.Query<LineTripLink>()
+        var links = await session.Query<LineAggregate>()
             .ToListAsync();
 
         var lineIdsByTrip = links
+            .SelectMany(x => x.Trips.Select(y => new { TripId = y, LineId = x.Id }))
             .GroupBy(x => x.TripId)
-            .ToDictionary(g => g.Key, g => g.Select(x => x.Id).ToList());
+            .ToDictionary(x => x.Key, x => x.Select(y => y.LineId).ToList());
 
-        foreach (var e in tripCreatedEvents)
+        foreach (var e in events.OrderBy(x => x.Sequence))
         {
-            var tripId = e.Data.Id;
-            if (!lineIdsByTrip.TryGetValue(tripId, out var lineIds))
+            if (e.Data is ILineEvent lineEvent)
             {
-                continue;
+                grouping.AddEvent(lineEvent.LineId, e);
             }
+            else if (e.Data is TripCreated)
+            {
+                await this.GroupTripCreated(session, (IEvent<TripCreated>)e, grouping, lineIdsByTrip);
+            }
+        }
+    }
 
+    private async Task GroupTripCreated(IQuerySession session, IEvent<TripCreated> tripCreatedEvent, IEventGrouping<Guid> grouping, Dictionary<Guid, List<Guid>> lineIdsByTrip)
+    {
+        if (lineIdsByTrip.TryGetValue(tripCreatedEvent.Data.TripId, out var lineIds))
+        {
             foreach (var lineId in lineIds)
             {
-                grouping.AddEvent(lineId, e);
+                grouping.AddEvent(lineId, tripCreatedEvent);
             }
         }
     }

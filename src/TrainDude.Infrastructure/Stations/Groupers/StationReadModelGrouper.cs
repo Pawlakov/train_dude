@@ -29,7 +29,7 @@ public class StationReadModelGrouper
             .Distinct()
             .ToListAsync();
 
-        foreach (var e in events)
+        foreach (var e in events.OrderBy(x => x.Sequence))
         {
             if (e.Data is IStationEvent stationEvent)
             {
@@ -37,12 +37,12 @@ public class StationReadModelGrouper
             }
             else if (e.Data is SettingsNamingPolicySet)
             {
-                await this.GroupNamingPolicySet(session, (IEvent<SettingsNamingPolicySet>)e, grouping, stationIds);
+                this.GroupNamingPolicySet(session, (IEvent<SettingsNamingPolicySet>)e, grouping, stationIds);
             }
         }
     }
 
-    private async Task GroupNamingPolicySet(IQuerySession session, IEvent<SettingsNamingPolicySet> namingPolicySetEvent, IEventGrouping<Guid> grouping, IEnumerable<Guid> stationIds)
+    private void GroupNamingPolicySet(IQuerySession session, IEvent<SettingsNamingPolicySet> namingPolicySetEvent, IEventGrouping<Guid> grouping, IEnumerable<Guid> stationIds)
     {
         foreach (var stationId in stationIds)
         {

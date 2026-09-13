@@ -22,7 +22,7 @@ using TrainDude.Features.Stations.Domain;
 using TrainDude.Features.Trips.Domain;
 using TrainDude.Infrastructure.Lines.Projections;
 using TrainDude.Infrastructure.Segments.Projections;
-using TrainDude.Infrastructure.Settings.Projections;
+using TrainDude.Infrastructure.Shared.Projections;
 using TrainDude.Infrastructure.Stations.Projections;
 using TrainDude.Web.ExceptionHandlers;
 
@@ -42,7 +42,7 @@ public static class HostBuilderExtensions
 
     public static IServiceCollection AddWriteServices(this IServiceCollection services, string connectionString, bool isDevelopment)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(connectionString, nameof(connectionString));
+        ArgumentException.ThrowIfNullOrWhiteSpace(connectionString);
 
         services.AddMarten(options =>
             {
@@ -54,9 +54,9 @@ public static class HostBuilderExtensions
 
                 options.Projections.Snapshot<LineAggregate>(SnapshotLifecycle.Inline);
                 options.Projections.Add<LineReadModelProjection>(ProjectionLifecycle.Async);
+                options.Projections.Add<LineStationReferenceProjection>(ProjectionLifecycle.Inline);
                 options.Projections.Add<LineSegmentReferenceProjection>(ProjectionLifecycle.Inline);
                 options.Projections.Add<LineTripReferenceProjection>(ProjectionLifecycle.Inline);
-                options.Projections.Add<LineTripLinkProjection>(ProjectionLifecycle.Inline);
 
                 options.Projections.Snapshot<RadiusAggregate>(SnapshotLifecycle.Inline);
 

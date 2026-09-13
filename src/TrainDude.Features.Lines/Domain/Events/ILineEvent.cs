@@ -4,9 +4,12 @@
 
 namespace TrainDude.Features.Lines.Domain.Events;
 
+using System;
+
 using TrainDude.Features.Shared.Base;
 
 public interface ILineEvent
     : IDomainEvent
 {
+    Guid LineId { get; }
 }

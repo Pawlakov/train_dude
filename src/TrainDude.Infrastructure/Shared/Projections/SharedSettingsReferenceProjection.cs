@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Infrastructure.Settings.Projections;
+namespace TrainDude.Infrastructure.Shared.Projections;
 
 using System;
 

@@ -26,41 +26,27 @@ public sealed class LineReadModelProjection
 {
     public LineReadModelProjection()
     {
-        this.Identity<LineCreated>(e => e.Id);
-        this.Identity<LineTripAssigned>(e => e.Id);
-        this.Identity<LineSegmentAppended>(e => e.Id);
-
+        this.TransformsEvent<ILineEvent>();
         this.CustomGrouping(new LineReadModelGrouper());
     }
 
     public override async Task EnrichEventsAsync(SliceGroup<LineReadModel, Guid> group, IQuerySession querySession, CancellationToken cancellation)
     {
-        var tripAssignedEvents = group.Slices
-            .SelectMany(slice => slice.Events().OfType<IEvent<LineTripAssigned>>())
-            .ToArray();
-
-        if (tripAssignedEvents.Length == 0)
-        {
-            return;
-        }
-
-        var tripIds = tripAssignedEvents
-            .Select(e => e.Data.TripId)
-            .ToArray();
-
-        var trips = await querySession.LoadManyAsync<LineTripReference>(cancellation, tripIds);
-
-        var tripsById = trips.ToDictionary(s => s.Id, s => s);
-
         foreach (var slice in group.Slices)
         {
-            foreach (var e in slice.Events().OfType<IEvent<LineTripAssigned>>().ToArray())
-            {
-                var reference = tripsById[e.Data.TripId];
-                var trip = new LineTrip(reference.Id, reference.Number);
-                var enriched = new LineTripAssignedWithReferences(e.Data.Id, e.Data.Who, trip);
+            var tripAssignedEvents = slice.Events().OfType<IEvent<LineTripAssigned>>().ToArray();
 
-                slice.ReplaceEvent(e, enriched);
+            var tripIds = tripAssignedEvents.Select(e => e.Data.TripId).ToArray();
+            var trips = await querySession.LoadManyAsync<LineTripReference>(cancellation, tripIds);
+            var tripsById = trips.ToDictionary(s => s.Id, s => s);
+
+            foreach (var tripAssignedEvent in slice.Events().OfType<IEvent<LineTripAssigned>>().ToArray())
+            {
+                var reference = tripsById[tripAssignedEvent.Data.TripId];
+                var trip = new LineTrip(reference.Id, reference.Number);
+                var enriched = new LineTripAssignedWithReferences(tripAssignedEvent.Data.Id, tripAssignedEvent.Data.Who, trip);
+
+                slice.ReplaceEvent(tripAssignedEvent, enriched);
             }
         }
     }
