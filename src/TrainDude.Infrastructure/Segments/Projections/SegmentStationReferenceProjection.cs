@@ -36,9 +36,4 @@ public sealed class SegmentStationReferenceProjection
     {
         aggregate.AxleCount += 1;
     }
-
-    public void Apply(SettingsNamingPolicySet e, SegmentStationReference item)
-    {
-        throw new NotImplementedException(); // TODO Do this NOW
-    }
 }

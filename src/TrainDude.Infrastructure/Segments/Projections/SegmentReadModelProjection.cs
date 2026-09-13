@@ -74,47 +74,53 @@ public sealed class SegmentReadModelProjection
         }
     }
 
-    public void Apply(SegmentCreatedWithReferences e, SegmentReadModel item)
+    public void Apply(SegmentCreatedWithReferences e, SegmentReadModel aggregate)
     {
-        double? haversine = (e.A.Location, e.B.Location) switch
+        aggregate.Id = e.Event.Id;
+        aggregate.NominalLength = e.Event.NominalLength;
+        aggregate.Tracks = e.Event.Tracks;
+        aggregate.A = e.A;
+        aggregate.B = e.B;
+        aggregate.Course = [];
+
+        aggregate.Haversine = (aggregate.A.Location, aggregate.B.Location) switch
         {
-            ({ } aLocation, { } bLocation) => aLocation.Haversine(bLocation),
-            _ => null,
-        };
-
-        item.Id = e.Event.Id;
-        item.NominalLength = e.Event.NominalLength;
-        item.Haversine = haversine;
-        item.A = e.A;
-        item.B = e.B;
-    }
-
-    public void Apply(SegmentCourseSet e, SegmentReadModel item)
-    {
-        item.Course = e.Course.ToList();
-
-        item.Haversine = (item.A.Location, item.B.Location) switch
-        {
-            ({ } aLocation, { } bLocation) => e.Course.Prepend(aLocation).Append(bLocation).Haversine(),
+            ({ } aLocation, { } bLocation) => aggregate.Course.Prepend(aLocation).Append(bLocation).Haversine(),
             _ => null,
         };
     }
 
-    public void Apply(StationLocationSet e, SegmentReadModel item)
+    public void Apply(SegmentCourseSet e, SegmentReadModel aggregate)
     {
-        if (item.A.Id == e.Id)
-        {
-            item.A = item.A with { Location = e.Location };
-        }
+        aggregate.Course = e.Course.ToList();
 
-        if (item.B.Id == e.Id)
+        aggregate.Haversine = (aggregate.A.Location, aggregate.B.Location) switch
         {
-            item.B = item.B with { Location = e.Location };
-        }
+            ({ } aLocation, { } bLocation) => aggregate.Course.Prepend(aLocation).Append(bLocation).Haversine(),
+            _ => null,
+        };
     }
 
-    public void Apply(SettingsNamingPolicySet e, SegmentReadModel item)
+    public void Apply(StationLocationSet e, SegmentReadModel aggregate)
     {
-        throw new NotImplementedException(); // TODO Do this NOW
+        if (aggregate.A.Id == e.Id)
+        {
+            aggregate.A = aggregate.A with { Location = e.Location };
+        }
+
+        if (aggregate.B.Id == e.Id)
+        {
+            aggregate.B = aggregate.B with { Location = e.Location };
+        }
+
+        aggregate.Haversine = (aggregate.A.Location, aggregate.B.Location) switch
+        {
+            ({ } aLocation, { } bLocation) => aggregate.Course.Prepend(aLocation).Append(bLocation).Haversine(),
+            _ => null,
+        };
+    }
+
+    public void Apply(SettingsNamingPolicySet e, SegmentReadModel aggregate)
+    {
     }
 }
