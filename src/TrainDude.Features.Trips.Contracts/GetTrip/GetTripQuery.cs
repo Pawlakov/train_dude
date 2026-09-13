@@ -8,7 +8,7 @@ using System;
 
 using TrainDude.Features.Shared.Contracts.Base;
 
-public sealed record GetTripQuery()
+public sealed record GetTripQuery(Guid Id)
     : ILookupQuery<GetTripQueryResult>
 {
     public const string TypeRoute = "/api/trips/{id}";

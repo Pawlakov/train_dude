@@ -52,11 +52,11 @@ else
 
     protected override GetTripQuery BuildQuery(EntityLookupFormModel formModel)
     {
-        return new GetTripQuery();
+        return new GetTripQuery(formModel.Id);
     }
 
     protected override GetTripMapQuery BuildMapQuery(EntityLookupFormModel formModel)
     {
-        return new GetTripMapQuery();
+        return new GetTripMapQuery(formModel.Id);
     }
 }

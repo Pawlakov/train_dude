@@ -67,11 +67,11 @@ else
 @code {
     protected override GetSegmentQuery BuildQuery(EntityLookupFormModel formModel)
     {
-        return new GetSegmentQuery();
+        return new GetSegmentQuery(formModel.Id);
     }
 
     protected override GetSegmentMapQuery BuildMapQuery(EntityLookupFormModel formModel)
     {
-        return new GetSegmentMapQuery();
+        return new GetSegmentMapQuery(formModel.Id);
     }
 }

@@ -3,7 +3,10 @@
 // </copyright>
 namespace TrainDude.Features.Shared.Contracts.Base;
 
+using System;
+
 public interface ISpecificCommand
-    : IDomainRequest
+    : ICommand
 {
+    Guid Id { get; }
 }

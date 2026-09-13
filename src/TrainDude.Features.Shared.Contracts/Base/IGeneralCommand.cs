@@ -5,6 +5,6 @@
 namespace TrainDude.Features.Shared.Contracts.Base;
 
 public interface IGeneralCommand
-    : IDomainRequest
+    : ICommand
 {
 }

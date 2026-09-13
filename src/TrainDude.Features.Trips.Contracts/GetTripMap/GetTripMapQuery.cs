@@ -9,7 +9,7 @@ using System;
 using TrainDude.Features.Shared.Contracts.Base;
 using TrainDude.Features.Shared.Contracts.Generic;
 
-public sealed record GetTripMapQuery()
+public sealed record GetTripMapQuery(Guid Id)
     : IMapQuery, ISpecificQuery<MapQueryResult>
 {
     public const string TypeRoute = "/api/trips/{id}/map";

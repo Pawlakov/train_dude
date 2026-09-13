@@ -91,12 +91,12 @@ else
 
     protected override GetLineQuery BuildQuery(EntityLookupFormModel formModel)
     {
-        return new GetLineQuery();
+        return new GetLineQuery(formModel.Id);
     }
 
     protected override GetLineMapQuery BuildMapQuery(EntityLookupFormModel formModel)
     {
-        return new GetLineMapQuery();
+        return new GetLineMapQuery(formModel.Id);
     }
 
 }

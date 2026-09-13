@@ -52,12 +52,12 @@ else
 
     protected override GetStationQuery BuildQuery(EntityLookupFormModel formModel)
     {
-        return new GetStationQuery();
+        return new GetStationQuery(formModel.Id);
     }
 
     protected override GetStationMapQuery BuildMapQuery(EntityLookupFormModel formModel)
     {
-        return new GetStationMapQuery();
+        return new GetStationMapQuery(formModel.Id);
     }
 
 }

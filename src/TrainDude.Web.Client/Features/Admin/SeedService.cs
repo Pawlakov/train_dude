@@ -46,7 +46,7 @@ public class SeedService
 
     public async Task Handle(CancellationToken cancellationToken = default)
     {
-        await this.api.PostAsync<DropCommand>(new DropCommand(), cancellationToken);
+        await this.api.SendAsync<DropCommand>(new DropCommand(), cancellationToken);
 
         var options = new ParallelOptions
         {
@@ -82,20 +82,20 @@ public class SeedService
         var lineId = Guid.NewGuid();
         var createCommand = new CreateLineCommand(lineId, seed.Number, seed.Letter);
 
-        await this.api.PostAsync(createCommand, cancellationToken);
+        await this.api.SendAsync(createCommand, cancellationToken);
 
         foreach (var segment in seed.Segments)
         {
-            var appendSegmentCommand = new AppendSegmentCommand(this.segmentIdMap[segment]);
+            var appendSegmentCommand = new AppendSegmentCommand(lineId, this.segmentIdMap[segment]);
 
-            await this.api.PostAsync(lineId, appendSegmentCommand, cancellationToken);
+            await this.api.SendAsync(appendSegmentCommand, cancellationToken);
         }
 
         foreach (var trip in seed.Trips)
         {
-            var assignTripCommand = new AssignTripCommand(this.tripIdMap[trip]);
+            var assignTripCommand = new AssignTripCommand(lineId, this.tripIdMap[trip]);
 
-            await this.api.PostAsync(lineId, assignTripCommand, cancellationToken);
+            await this.api.SendAsync(assignTripCommand, cancellationToken);
         }
     }
 
@@ -104,7 +104,7 @@ public class SeedService
         var radiusId = Guid.NewGuid();
         var createCommand = new CreateRadiusCommand(radiusId, seed.Speed, seed.Minimum);
 
-        await this.api.PostAsync(createCommand, cancellationToken);
+        await this.api.SendAsync(createCommand, cancellationToken);
     }
 
     private async Task SeedStation(StationSeed seed, CancellationToken cancellationToken = default)
@@ -112,23 +112,23 @@ public class SeedService
         var stationId = Guid.NewGuid();
         var createCommand = new CreateStationCommand(stationId, seed.NameGerman, seed.NameGermanNew, seed.NamePolish, seed.NameRussian);
 
-        await this.api.PostAsync(createCommand, cancellationToken);
+        await this.api.SendAsync(createCommand, cancellationToken);
         this.stationIdMap[seed.Id] = stationId;
 
         if (seed is { Latitude: not null, Longitude: not null })
         {
             var location = new Location(seed.Longitude.Value, seed.Latitude.Value);
-            var setLocationCommand = new SetLocationCommand(location);
+            var setLocationCommand = new SetLocationCommand(stationId, location);
 
-            await this.api.PostAsync(stationId, setLocationCommand, cancellationToken);
+            await this.api.SendAsync(setLocationCommand, cancellationToken);
         }
 
         var axleCount = seed.AxleCount ?? 1;
         for (var i = 1; i < axleCount; ++i)
         {
-            var addAxleCommand = new AddAxleCommand();
+            var addAxleCommand = new AddAxleCommand(stationId);
 
-            await this.api.PostAsync(stationId, addAxleCommand, cancellationToken);
+            await this.api.SendAsync(addAxleCommand, cancellationToken);
         }
     }
 
@@ -137,15 +137,15 @@ public class SeedService
         var segmentId = Guid.NewGuid();
         var createCommand = new CreateSegmentCommand(segmentId, seed.Length, seed.Tracks, this.stationIdMap[seed.A.StationId], seed.A.Axle ?? 0, seed.A.Pole, this.stationIdMap[seed.B.StationId], seed.B.Axle ?? 0, seed.B.Pole);
 
-        await this.api.PostAsync(createCommand, cancellationToken);
+        await this.api.SendAsync(createCommand, cancellationToken);
         this.segmentIdMap[seed.Id] = segmentId;
 
         if (seed.Course is not null && seed.Course is not [])
         {
             var locations = (seed.Course?.Select(x => new Location(x.Longitude, x.Latitude)) ?? []).ToList();
-            var setCourseCommand = new SetCourseCommand(locations);
+            var setCourseCommand = new SetCourseCommand(segmentId, locations);
 
-            await this.api.PostAsync(segmentId, setCourseCommand, cancellationToken);
+            await this.api.SendAsync(setCourseCommand, cancellationToken);
         }
     }
 
@@ -154,7 +154,7 @@ public class SeedService
         var tripId = Guid.NewGuid();
         var createCommand = new CreateTripCommand(tripId, seed.Number);
 
-        await this.api.PostAsync<CreateTripCommand>(createCommand, cancellationToken);
+        await this.api.SendAsync<CreateTripCommand>(createCommand, cancellationToken);
         this.tripIdMap[seed.Number] = tripId;
     }
 }

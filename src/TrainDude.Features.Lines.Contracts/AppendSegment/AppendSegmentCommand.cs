@@ -8,7 +8,7 @@ using System;
 
 using TrainDude.Features.Shared.Contracts.Base;
 
-public sealed record AppendSegmentCommand(Guid SegmentId)
+public sealed record AppendSegmentCommand(Guid Id, Guid SegmentId)
     : ISpecificCommand
 {
     public const string TypeRoute = "/api/lines/{id}/append-segment";

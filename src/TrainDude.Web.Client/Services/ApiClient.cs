@@ -36,36 +36,33 @@ public class ApiClient
         this.client = client ?? throw new ArgumentNullException(nameof(client));
     }
 
-    public Task PostAsync<TRequest>(Guid id, TRequest request, CancellationToken cancellationToken = default)
-        where TRequest : ISpecificCommand
+    public Task SendAsync<TRequest>(TRequest request, CancellationToken cancellationToken = default)
+        where TRequest : ICommand
     {
         ArgumentNullException.ThrowIfNull(request);
-        var route = BuildRoute(TRequest.Route, id);
-        return this.SendAsync(Method.Post, route, request, null, cancellationToken);
+        var (method, route) = request switch
+        {
+            IGeneralCommand => (Method.Post, TRequest.Route),
+            ISpecificCommand specificRequest => (Method.Post, BuildRoute(TRequest.Route, specificRequest.Id)),
+            _ => throw new NotSupportedException("Unknown command type. A command should implement either ISpecificCommand or IGeneralCommand."),
+        };
+
+        return this.SendAsync(method, route, request, null, cancellationToken);
     }
 
-    public Task PostAsync<TRequest>(TRequest request, CancellationToken cancellationToken = default)
-        where TRequest : IGeneralCommand
-    {
-        ArgumentNullException.ThrowIfNull(request);
-        return this.SendAsync(Method.Post, TRequest.Route, request, null, cancellationToken);
-    }
-
-    public Task<TResponse> GetAsync<TRequest, TResponse>(Guid id, TRequest request, CancellationToken cancellationToken = default)
-        where TRequest : ISpecificQuery<TResponse>
+    public Task<TResponse> SendAsync<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken = default)
+        where TRequest : IQuery<TResponse>
         where TResponse : IQueryResult
     {
         ArgumentNullException.ThrowIfNull(request);
-        var route = BuildRoute(TRequest.Route, id);
+        var (method, route) = request switch
+        {
+            IGeneralQuery<TResponse> => (Method.Get, TRequest.Route),
+            ISpecificQuery<TResponse> specificRequest => (Method.Get, BuildRoute(TRequest.Route, specificRequest.Id)),
+            _ => throw new NotSupportedException("Unknown command type. A command should implement either ISpecificCommand or IGeneralCommand."),
+        };
+
         return this.SendAsync<TResponse>(Method.Get, route, null, request, cancellationToken);
-    }
-
-    public Task<TResponse> GetAsync<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken = default)
-        where TRequest : IGeneralQuery<TResponse>
-        where TResponse : IQueryResult
-    {
-        ArgumentNullException.ThrowIfNull(request);
-        return this.SendAsync<TResponse>(Method.Get, TRequest.Route, null, request, cancellationToken);
     }
 
     private async Task SendAsync(Method method, string route, object? body = null, object? query = null, CancellationToken cancellationToken = default)

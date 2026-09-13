@@ -4,9 +4,11 @@
 
 namespace TrainDude.Features.Lines.Contracts.GetLine;
 
+using System;
+
 using TrainDude.Features.Shared.Contracts.Base;
 
-public sealed record GetLineQuery()
+public sealed record GetLineQuery(Guid Id)
     : ILookupQuery<GetLineQueryResult>
 {
     public const string TypeRoute = "/api/lines/{id}";

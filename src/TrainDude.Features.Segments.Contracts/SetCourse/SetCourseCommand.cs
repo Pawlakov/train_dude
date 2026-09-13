@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using TrainDude.Features.Shared.Contracts.Base;
 using TrainDude.Features.Shared.Contracts.Values;
 
-public sealed record SetCourseCommand(IReadOnlyList<Location> Course)
+public sealed record SetCourseCommand(Guid Id, IReadOnlyList<Location> Course)
     : ISpecificCommand
 {
     public const string TypeRoute = "/api/segments/{id}/set-course";
