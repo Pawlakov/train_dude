@@ -152,8 +152,8 @@ public class LineReadModelProjectionTests
             await Assert.That(line.Segments.Count).IsEqualTo(2);
             await Assert.That(line.Segments[0].A.Id).IsEqualTo(station1Id);
             await Assert.That(line.Segments[0].B.Id).IsEqualTo(station2Id);
-            await Assert.That(line.Segments[1].A.Id).IsEqualTo(station3Id);
-            await Assert.That(line.Segments[1].B.Id).IsEqualTo(station2Id);
+            await Assert.That(line.Segments[1].A.Id).IsEqualTo(station2Id);
+            await Assert.That(line.Segments[1].B.Id).IsEqualTo(station3Id);
             await Assert.That(line.Stations.Count).IsEqualTo(3);
             await Assert.That(line.Stations[0].Id).IsEqualTo(station1Id);
             await Assert.That(line.Stations[1].Id).IsEqualTo(station2Id);

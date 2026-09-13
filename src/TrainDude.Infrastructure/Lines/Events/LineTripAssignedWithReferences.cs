@@ -6,6 +6,7 @@ namespace TrainDude.Infrastructure.Lines.Events;
 
 using System;
 
+using TrainDude.Features.Lines.Domain.Events;
 using TrainDude.Features.Lines.ReadModels.Values;
 
-public sealed record LineTripAssignedWithReferences(Guid Id, string Who, LineReadModelTrip Trip);
+public sealed record LineTripAssignedWithReferences(LineTripAssigned Event, LineReadModelTrip Trip);

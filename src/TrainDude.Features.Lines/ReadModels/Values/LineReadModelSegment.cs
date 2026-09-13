@@ -9,4 +9,4 @@ using System.Collections.Generic;
 
 using TrainDude.Features.Shared.Contracts.Values;
 
-public sealed record LineReadModelSegment(Guid Id, IReadOnlyList<Location>? FullCourse, LineReadModelStation A, LineReadModelStation B);
+public sealed record LineReadModelSegment(Guid Id, LineReadModelStation A, LineReadModelStation B, IReadOnlyList<Location> Course);

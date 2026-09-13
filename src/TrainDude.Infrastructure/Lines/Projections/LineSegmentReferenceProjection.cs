@@ -5,6 +5,7 @@
 namespace TrainDude.Infrastructure.Lines.Projections;
 
 using System;
+using System.Linq;
 
 using JasperFx.Events;
 
@@ -16,8 +17,16 @@ using TrainDude.Features.Segments.Domain.Events;
 public sealed class LineSegmentReferenceProjection
     : SingleStreamProjection<LineSegmentReference, Guid>
 {
-    public void Apply(IEvent<SegmentCreated> e, LineSegmentReference readModel)
+    public void Apply(IEvent<SegmentCreated> e, LineSegmentReference aggregate)
     {
-        readModel.Id = e.Data.Id;
+        aggregate.Id = e.Data.Id;
+        aggregate.AId = e.Data.A.Id;
+        aggregate.BId = e.Data.B.Id;
+        aggregate.Course = [];
+    }
+
+    public void Apply(IEvent<SegmentCourseSet> e, LineSegmentReference aggregate)
+    {
+        aggregate.Course = e.Data.Course.ToList();
     }
 }

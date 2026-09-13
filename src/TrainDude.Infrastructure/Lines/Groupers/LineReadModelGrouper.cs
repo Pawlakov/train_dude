@@ -17,6 +17,7 @@ using Marten.Events.Aggregation;
 
 using TrainDude.Features.Lines.Domain;
 using TrainDude.Features.Lines.Domain.Events;
+using TrainDude.Features.Segments.Domain.Events;
 using TrainDude.Features.Trips.Domain.Events;
 
 public sealed class LineReadModelGrouper
@@ -32,6 +33,11 @@ public sealed class LineReadModelGrouper
             .GroupBy(x => x.TripId)
             .ToDictionary(x => x.Key, x => x.Select(y => y.LineId).ToList());
 
+        var lineIdsBySegment = links
+            .SelectMany(x => x.Segments.Select(y => new { SegmentId = y, LineId = x.Id }))
+            .GroupBy(x => x.SegmentId)
+            .ToDictionary(x => x.Key, x => x.Select(y => y.LineId).ToList());
+
         foreach (var e in events.OrderBy(x => x.Sequence))
         {
             if (e.Data is ILineEvent lineEvent)
@@ -40,18 +46,33 @@ public sealed class LineReadModelGrouper
             }
             else if (e.Data is TripCreated)
             {
-                await this.GroupTripCreated(session, (IEvent<TripCreated>)e, grouping, lineIdsByTrip);
+                this.GroupTripCreated(session, (IEvent<TripCreated>)e, grouping, lineIdsByTrip);
+            }
+            else if (e.Data is SegmentCreated)
+            {
+                this.GroupSegmentCreated(session, (IEvent<SegmentCreated>)e, grouping, lineIdsBySegment);
             }
         }
     }
 
-    private async Task GroupTripCreated(IQuerySession session, IEvent<TripCreated> tripCreatedEvent, IEventGrouping<Guid> grouping, Dictionary<Guid, List<Guid>> lineIdsByTrip)
+    private void GroupTripCreated(IQuerySession session, IEvent<TripCreated> tripCreatedEvent, IEventGrouping<Guid> grouping, Dictionary<Guid, List<Guid>> lineIdsByTrip)
     {
         if (lineIdsByTrip.TryGetValue(tripCreatedEvent.Data.TripId, out var lineIds))
         {
             foreach (var lineId in lineIds)
             {
                 grouping.AddEvent(lineId, tripCreatedEvent);
+            }
+        }
+    }
+
+    private void GroupSegmentCreated(IQuerySession session, IEvent<SegmentCreated> segmentCreatedEvent, IEventGrouping<Guid> grouping, Dictionary<Guid, List<Guid>> lineIdsBySegment)
+    {
+        if (lineIdsBySegment.TryGetValue(segmentCreatedEvent.Data.SegmentId, out var lineIds))
+        {
+            foreach (var lineId in lineIds)
+            {
+                grouping.AddEvent(lineId, segmentCreatedEvent);
             }
         }
     }

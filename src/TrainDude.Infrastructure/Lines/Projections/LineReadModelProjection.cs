@@ -35,18 +35,34 @@ public sealed class LineReadModelProjection
         foreach (var slice in group.Slices)
         {
             var tripAssignedEvents = slice.Events().OfType<IEvent<LineTripAssigned>>().ToArray();
+            var segmentAppendedEvents = slice.Events().OfType<IEvent<LineSegmentAppended>>().ToArray();
 
             var tripIds = tripAssignedEvents.Select(e => e.Data.TripId).ToArray();
             var trips = await querySession.LoadManyAsync<LineTripReference>(cancellation, tripIds);
-            var tripsById = trips.ToDictionary(s => s.Id, s => s);
+            var tripsById = trips.ToDictionary(lineTripReference => lineTripReference.Id, x => x);
 
-            foreach (var tripAssignedEvent in slice.Events().OfType<IEvent<LineTripAssigned>>().ToArray())
+            var segmentIds = segmentAppendedEvents.Select(e => e.Data.SegmentId).ToArray();
+            var segments = await querySession.LoadManyAsync<LineSegmentReference>(cancellation, segmentIds);
+            var segmentsById = segments.ToDictionary(x => x.Id, x => x);
+
+            foreach (var tripAssignedEvent in tripAssignedEvents)
             {
                 var reference = tripsById[tripAssignedEvent.Data.TripId];
                 var trip = new LineReadModelTrip(reference.Id, reference.Number);
-                var enriched = new LineTripAssignedWithReferences(tripAssignedEvent.Data.Id, tripAssignedEvent.Data.Who, trip);
+                var enriched = new LineTripAssignedWithReferences(tripAssignedEvent.Data, trip);
 
                 slice.ReplaceEvent(tripAssignedEvent, enriched);
+            }
+
+            foreach (var segmentAppendedEvent in segmentAppendedEvents)
+            {
+                var reference = segmentsById[segmentAppendedEvent.Data.SegmentId];
+                var a = new LineReadModelStation(reference.AId, null, "???");
+                var b = new LineReadModelStation(reference.BId, null, "???");
+                var segment = new LineReadModelSegment(reference.Id, a, b, reference.Course);
+                var enriched = new LineSegmentAppendedWithReferences(segmentAppendedEvent.Data, segment);
+
+                slice.ReplaceEvent(segmentAppendedEvent, enriched);
             }
         }
     }
@@ -69,14 +85,18 @@ public sealed class LineReadModelProjection
 
     public void Apply(IEvent<LineSegmentAppendedWithReferences> e, LineReadModel readModel)
     {
-        if (e.Data.Segment.A == readModel.Stations.LastOrDefault())
+        readModel.Segments = readModel.Segments.Append(e.Data.Segment).ToList();
+
+        if (readModel.Stations.IsEmpty())
         {
-            readModel.Segments = readModel.Segments.Append(e.Data.Segment).ToList();
+            readModel.Stations = readModel.Stations.Append(e.Data.Segment.A).Append(e.Data.Segment.B).ToList();
+        }
+        else if (e.Data.Segment.A.Id == readModel.Stations.Last().Id)
+        {
             readModel.Stations = readModel.Stations.Append(e.Data.Segment.B).ToList();
         }
         else
         {
-            readModel.Segments = readModel.Segments.Append(e.Data.Segment).ToList();
             readModel.Stations = readModel.Stations.Append(e.Data.Segment.A).ToList();
         }
     }

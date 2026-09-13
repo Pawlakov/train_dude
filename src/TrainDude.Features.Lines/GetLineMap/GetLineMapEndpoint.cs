@@ -22,7 +22,7 @@ public static class GetLineMapEndpoint
     public static MapQueryResult Handle([AsParameters] GetLineMapQuery query, [Document(FromRoute = "id")] LineReadModel readModel)
     {
         var stationPoints = readModel.Stations.Where(x => x.Location.HasValue).Select(x => x.Location!.Value).ToList();
-        var segmentLineStrings = readModel.Segments.Where(x => x.FullCourse != null).Select(x => x.FullCourse).ToList();
+        var segmentLineStrings = readModel.Segments.Select(x => x.Course).ToList();
 
         var result = new MapQueryResult(stationPoints, segmentLineStrings);
         return result;
