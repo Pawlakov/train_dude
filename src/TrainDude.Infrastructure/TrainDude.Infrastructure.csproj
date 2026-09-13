@@ -1,6 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <Folder Include="Radii\" />
     <Folder Include="Settings\" />
   </ItemGroup>
   <ItemGroup>
