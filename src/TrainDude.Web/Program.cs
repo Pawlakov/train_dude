@@ -29,6 +29,7 @@ using TrainDude.Features.Shared.Exceptions;
 using TrainDude.Features.Stations.GetStations;
 using TrainDude.Features.Trips.GetTrips;
 using TrainDude.Infrastructure;
+using TrainDude.Infrastructure.HostBuilders;
 using TrainDude.Web.Components;
 using TrainDude.Web.HostBuilders;
 
@@ -119,7 +120,8 @@ public static class Program
             .AddSwaggerGen();
 
         builder.Services
-            .AddWriteServices(builder.Configuration.GetConnectionString("Write"), isDevelopment)
+            .AddEventStore(builder.Configuration.GetConnectionString("Write"), isDevelopment)
+            .AddHttpHandlers()
             .AddReadExceptionHandlers();
 
         builder.Host.UseWolverine(opts =>

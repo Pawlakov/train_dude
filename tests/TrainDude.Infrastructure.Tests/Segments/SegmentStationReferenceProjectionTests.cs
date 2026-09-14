@@ -11,7 +11,7 @@ using TrainDude.Features.Segments.ReadModels;
 using TrainDude.Features.Stations.Domain.Events;
 
 [NotInParallel]
-[ClassDataSource<ProjectionStoreFixture>(Shared = SharedType.PerClass)]
+[ClassDataSource<ProjectionStoreFixture>(Shared = SharedType.PerTestSession)]
 public class SegmentStationReferenceProjectionTests
 {
     private const string Who = "test@example.com";
@@ -26,7 +26,6 @@ public class SegmentStationReferenceProjectionTests
     [Test]
     public async Task StationCreated()
     {
-        await this.fixture.ResetAsync();
         var stationId = Guid.NewGuid();
 
         using (var session = this.fixture.Store.LightweightSession())
@@ -51,7 +50,6 @@ public class SegmentStationReferenceProjectionTests
     [Test]
     public async Task StationLocationSet_UpdatesLocation()
     {
-        await this.fixture.ResetAsync();
         var stationId = Guid.NewGuid();
         var location = new TrainDude.Features.Shared.Contracts.Values.Location(50.66, 18.68);
 
@@ -74,7 +72,6 @@ public class SegmentStationReferenceProjectionTests
     [Test]
     public async Task StationAxleAdded_IncrementsAxleCount()
     {
-        await this.fixture.ResetAsync();
         var stationId = Guid.NewGuid();
 
         using (var session = this.fixture.Store.LightweightSession())

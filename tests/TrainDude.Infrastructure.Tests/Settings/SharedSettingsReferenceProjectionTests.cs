@@ -13,7 +13,7 @@ using TrainDude.Features.Shared.Contracts.Enums;
 using TrainDude.Features.Shared.ReadModels;
 
 [NotInParallel]
-[ClassDataSource<ProjectionStoreFixture>(Shared = SharedType.PerClass)]
+[ClassDataSource<ProjectionStoreFixture>(Shared = SharedType.PerTestSession)]
 public class SharedSettingsReferenceProjectionTests
 {
     private readonly ProjectionStoreFixture fixture;
@@ -26,7 +26,6 @@ public class SharedSettingsReferenceProjectionTests
     [Test]
     public async Task SettingsCreated_DefaultsToModernNamingPolicy()
     {
-        await this.fixture.ResetAsync();
         var who = "test@example.com";
 
         using var session = this.fixture.Store.LightweightSession();
@@ -41,7 +40,6 @@ public class SharedSettingsReferenceProjectionTests
     [Test]
     public async Task SettingsNamingPolicySet_UpdatesNamingPolicy()
     {
-        await this.fixture.ResetAsync();
         var who = "test@example.com";
 
         using var session = this.fixture.Store.LightweightSession();
@@ -57,7 +55,6 @@ public class SharedSettingsReferenceProjectionTests
     [Test]
     public async Task SettingsNamingPolicySet_CanRevertToAPreviousPolicy()
     {
-        await this.fixture.ResetAsync();
         var who = "test@example.com";
 
         using var session = this.fixture.Store.LightweightSession();

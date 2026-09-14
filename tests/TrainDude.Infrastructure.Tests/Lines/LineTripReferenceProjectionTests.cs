@@ -12,7 +12,7 @@ using TrainDude.Features.Lines.ReadModels;
 using TrainDude.Features.Trips.Domain.Events;
 
 [NotInParallel]
-[ClassDataSource<ProjectionStoreFixture>(Shared = SharedType.PerClass)]
+[ClassDataSource<ProjectionStoreFixture>(Shared = SharedType.PerTestSession)]
 public class LineTripReferenceProjectionTests
 {
     private const string Who = "test@example.com";

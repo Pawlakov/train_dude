@@ -21,7 +21,7 @@ using TrainDude.Features.Stations.Domain.Events;
 using TrainDude.Features.Trips.Domain.Events;
 
 [NotInParallel]
-[ClassDataSource<ProjectionStoreFixture>(Shared = SharedType.PerClass)]
+[ClassDataSource<ProjectionStoreFixture>(Shared = SharedType.PerTestSession)]
 public class LineReadModelProjectionTests
 {
     private const string Who = "test@example.com";
@@ -38,7 +38,6 @@ public class LineReadModelProjectionTests
     [Arguments(110, 'f', "110f")]
     public async Task LineCreated(int lineNumber, char? lineLetter, string lineDesignation)
     {
-        await this.fixture.ResetAsync();
         var lineId = Guid.NewGuid();
 
         using (var session = this.fixture.Store.LightweightSession())
@@ -62,7 +61,6 @@ public class LineReadModelProjectionTests
     [Test]
     public async Task LineTripAssigned_ResolvesTripReferenceAndAddsTripToLine()
     {
-        await this.fixture.ResetAsync();
         var lineId = Guid.NewGuid();
         var tripId = Guid.NewGuid();
 
@@ -89,7 +87,6 @@ public class LineReadModelProjectionTests
     [Test]
     public async Task MultipleLineTripAssignedEvents_PreserveEventOrder()
     {
-        await this.fixture.ResetAsync();
         var lineId = Guid.NewGuid();
         var trip1Id = Guid.NewGuid();
         var trip2Id = Guid.NewGuid();
@@ -121,7 +118,6 @@ public class LineReadModelProjectionTests
     [Test]
     public async Task LineSegmentAppended_ResolvesReferences()
     {
-        await this.fixture.ResetAsync();
         var lineId = Guid.NewGuid();
         var segment1Id = Guid.NewGuid();
         var segment2Id = Guid.NewGuid();

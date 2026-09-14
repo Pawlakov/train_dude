@@ -18,7 +18,7 @@ using TrainDude.Features.Stations.Domain.Events;
 using TrainDude.Features.Stations.ReadModels;
 
 [NotInParallel]
-[ClassDataSource<ProjectionStoreFixture>(Shared = SharedType.PerClass)]
+[ClassDataSource<ProjectionStoreFixture>(Shared = SharedType.PerTestSession)]
 public class SegmentReadModelProjectionTests
 {
     private const string Who = "test@example.com";
@@ -33,7 +33,6 @@ public class SegmentReadModelProjectionTests
     [Test]
     public async Task SegmentCreated_WithNoSettingsRecorded_DefaultsToModernNamingPolicy()
     {
-        await this.fixture.ResetAsync();
         var station1Id = Guid.NewGuid();
         var station2Id = Guid.NewGuid();
         var segmentId = Guid.NewGuid();
@@ -79,7 +78,6 @@ public class SegmentReadModelProjectionTests
     [Test]
     public async Task SegmentCreated_WithSettingsRecorded_UsesConfiguredNamingPolicy()
     {
-        await this.fixture.ResetAsync();
         var station1Id = Guid.NewGuid();
         var station2Id = Guid.NewGuid();
         var segmentId = Guid.NewGuid();
@@ -118,7 +116,6 @@ public class SegmentReadModelProjectionTests
     [Test]
     public async Task StationLocationSet_UpdatesLocation_AndRecalculatesHaversine()
     {
-        await this.fixture.ResetAsync();
         var station1Id = Guid.NewGuid();
         var station2Id = Guid.NewGuid();
         var segmentId = Guid.NewGuid();
@@ -165,7 +162,6 @@ public class SegmentReadModelProjectionTests
     [Test]
     public async Task SegmentCourseSet_WhenStationsHaveLocations_CalculatesHaversineWithCourse()
     {
-        await this.fixture.ResetAsync();
         var station1Id = Guid.NewGuid();
         var station2Id = Guid.NewGuid();
         var segmentId = Guid.NewGuid();
@@ -204,7 +200,6 @@ public class SegmentReadModelProjectionTests
     [Test]
     public async Task SegmentCourseSet_ReplacesPreviousCourse()
     {
-        await this.fixture.ResetAsync();
         var station1Id = Guid.NewGuid();
         var station2Id = Guid.NewGuid();
         var segmentId = Guid.NewGuid();
@@ -242,7 +237,6 @@ public class SegmentReadModelProjectionTests
     [Test]
     public async Task SettingsNamingPolicySet_UpdatesStationNamesAccordingToNewPolicy()
     {
-        await this.fixture.ResetAsync();
         var station1Id = Guid.NewGuid();
         var station2Id = Guid.NewGuid();
         var segmentId = Guid.NewGuid();

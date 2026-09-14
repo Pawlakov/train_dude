@@ -14,12 +14,11 @@ using TrainDude.Features.Settings.Domain.Events;
 using TrainDude.Features.Shared;
 using TrainDude.Features.Shared.Contracts.Enums;
 using TrainDude.Features.Shared.Contracts.Values;
-using TrainDude.Features.Shared.ReadModels;
 using TrainDude.Features.Stations.Domain.Events;
 using TrainDude.Features.Stations.ReadModels;
 
 [NotInParallel]
-[ClassDataSource<ProjectionStoreFixture>(Shared = SharedType.PerClass)]
+[ClassDataSource<ProjectionStoreFixture>(Shared = SharedType.PerTestSession)]
 public class StationReadModelProjectionTests
 {
     private const string Who = "test@example.com";
@@ -34,7 +33,6 @@ public class StationReadModelProjectionTests
     [Test]
     public async Task StationCreated_WithNoSettingsRecorded_DefaultsToModernNamingPolicy()
     {
-        await this.fixture.ResetAsync();
         var stationId = Guid.NewGuid();
 
         using (var session = this.fixture.Store.LightweightSession())
@@ -59,7 +57,6 @@ public class StationReadModelProjectionTests
     [Test]
     public async Task StationCreated_WithNamingPolicyInEffectAtCreationTime_UsesThatPolicyForName()
     {
-        await this.fixture.ResetAsync();
         var stationId = Guid.NewGuid();
 
         using (var session = this.fixture.Store.LightweightSession())
@@ -98,7 +95,6 @@ public class StationReadModelProjectionTests
     [Test]
     public async Task StationLocationSet_UpdatesLocationWithoutAffectingOtherFields()
     {
-        await this.fixture.ResetAsync();
         var stationId = Guid.NewGuid();
         var location = new Location(20, 50);
 
@@ -131,7 +127,6 @@ public class StationReadModelProjectionTests
     [Arguments(3)]
     public async Task StationAxleAdded_IncrementsAxleCountForEachEvent(int axlesAdded)
     {
-        await this.fixture.ResetAsync();
         var stationId = Guid.NewGuid();
 
         using (var session = this.fixture.Store.LightweightSession())
@@ -163,7 +158,6 @@ public class StationReadModelProjectionTests
     [Test]
     public async Task SettingsNamingPolicySet_RecomputesNameOnExistingStationEachTimePolicyChanges()
     {
-        await this.fixture.ResetAsync();
         var stationId = Guid.NewGuid();
 
         using (var session = this.fixture.Store.LightweightSession())
@@ -206,7 +200,6 @@ public class StationReadModelProjectionTests
     [Test]
     public async Task SettingsNamingPolicySet_UpdatesAllExistingStationsIndependently()
     {
-        await this.fixture.ResetAsync();
         var stationId1 = Guid.NewGuid();
         var stationId2 = Guid.NewGuid();
 
@@ -241,8 +234,6 @@ public class StationReadModelProjectionTests
     [Test]
     public async Task SettingsNamingPolicySet_WithNoStationsCreatedYet_CompletesWithoutError()
     {
-        await this.fixture.ResetAsync();
-
         using (var session = this.fixture.Store.LightweightSession())
         {
             session.Events.Append(SettingsSingleton.Id, new SettingsCreated(SettingsSingleton.Id, Who));

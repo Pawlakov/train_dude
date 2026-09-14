@@ -75,6 +75,7 @@ public class ProjectionStoreFixture
         this.Daemon = await this.Store.BuildProjectionDaemonAsync();
     }
 
+    [Before(Test)]
     public async ValueTask ResetAsync()
     {
         await this.Store.Advanced.Clean.DeleteAllEventDataAsync();
