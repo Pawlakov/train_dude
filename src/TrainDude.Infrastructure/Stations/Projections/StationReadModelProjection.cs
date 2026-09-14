@@ -24,7 +24,7 @@ using TrainDude.Features.Stations.ReadModels;
 using TrainDude.Infrastructure.Stations.Events;
 using TrainDude.Infrastructure.Stations.Groupers;
 
-public class StationReadModelProjection
+public sealed class StationReadModelProjection
     : MultiStreamProjection<StationReadModel, Guid>
 {
     public StationReadModelProjection()

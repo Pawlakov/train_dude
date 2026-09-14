@@ -18,7 +18,7 @@ using Marten.Events.Aggregation;
 using TrainDude.Features.Settings.Domain.Events;
 using TrainDude.Features.Stations.Domain.Events;
 
-public class StationReadModelGrouper
+internal sealed class StationReadModelGrouper
     : IAggregateGrouper<Guid>
 {
     public async Task Group(IQuerySession session, IReadOnlyList<IEvent> events, IEventGrouping<Guid> grouping)

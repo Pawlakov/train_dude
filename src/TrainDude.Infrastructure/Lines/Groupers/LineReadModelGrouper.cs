@@ -20,7 +20,7 @@ using TrainDude.Features.Lines.Domain.Events;
 using TrainDude.Features.Segments.Domain.Events;
 using TrainDude.Features.Trips.Domain.Events;
 
-public sealed class LineReadModelGrouper
+internal sealed class LineReadModelGrouper
     : IAggregateGrouper<Guid>
 {
     public async Task Group(IQuerySession session, IReadOnlyList<IEvent> events, IEventGrouping<Guid> grouping)

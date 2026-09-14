@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\TrainDude.Web.Client\TrainDude.Web.Client.csproj" />
+    <ProjectReference Include="..\..\src\TrainDude.Infrastructure\TrainDude.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

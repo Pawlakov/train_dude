@@ -20,7 +20,7 @@ using TrainDude.Features.Segments.Domain.Events;
 using TrainDude.Features.Settings.Domain.Events;
 using TrainDude.Features.Stations.Domain.Events;
 
-public sealed class SegmentReadModelGrouper
+internal sealed class SegmentReadModelGrouper
     : IAggregateGrouper<Guid>
 {
     public async Task Group(IQuerySession session, IReadOnlyList<IEvent> events, IEventGrouping<Guid> grouping)
