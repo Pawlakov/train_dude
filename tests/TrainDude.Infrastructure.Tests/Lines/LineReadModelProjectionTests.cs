@@ -34,6 +34,12 @@ public class LineReadModelProjectionTests
         this.fixture = fixture;
     }
 
+    [Before(Test)]
+    public async Task SetUp()
+    {
+        await this.fixture.ResetAsync();
+    }
+
     [Test]
     [Arguments(120, null, "120")]
     [Arguments(110, 'f', "110f")]

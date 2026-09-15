@@ -23,6 +23,12 @@ public class LineSegmentReferenceProjectionTests
         this.fixture = fixture;
     }
 
+    [Before(Test)]
+    public async Task SetUp()
+    {
+        await this.fixture.ResetAsync();
+    }
+
     [Test]
     public async Task SegmentCreated_CreatesLineSegmentReference()
     {

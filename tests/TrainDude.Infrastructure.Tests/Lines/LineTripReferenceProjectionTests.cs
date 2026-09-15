@@ -24,6 +24,12 @@ public class LineTripReferenceProjectionTests
         this.fixture = fixture;
     }
 
+    [Before(Test)]
+    public async Task SetUp()
+    {
+        await this.fixture.ResetAsync();
+    }
+
     [Test]
     public async Task TripCreated_CreatesLineTripReference()
     {
