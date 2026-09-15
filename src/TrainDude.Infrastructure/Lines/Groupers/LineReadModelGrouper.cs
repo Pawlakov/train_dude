@@ -17,6 +17,7 @@ using Marten.Events.Aggregation;
 
 using TrainDude.Features.Lines.Domain;
 using TrainDude.Features.Lines.Domain.Events;
+using TrainDude.Features.Segments.Domain;
 using TrainDude.Features.Segments.Domain.Events;
 using TrainDude.Features.Settings.Domain.Events;
 using TrainDude.Features.Stations.Domain.Events;
@@ -28,7 +29,14 @@ internal sealed class LineReadModelGrouper
     public async Task Group(IQuerySession session, IReadOnlyList<IEvent> events, IEventGrouping<Guid> grouping)
     {
         var links = await session.Query<LineAggregate>()
+            .Select(x => new { x.Id, x.Trips, x.Segments })
             .ToListAsync();
+
+        var segmentLinks = await session.Query<SegmentAggregate>()
+            .Select(x => new { x.Id, x.A, x.B })
+            .ToListAsync();
+
+        var stationIdsBySegment = segmentLinks.ToDictionary(x => x.Id, x => new List<Guid> { x.A.Id, x.B.Id });
 
         var lineIdsByTrip = links
             .SelectMany(x => x.Trips.Select(y => new { TripId = y, LineId = x.Id }))
@@ -38,6 +46,12 @@ internal sealed class LineReadModelGrouper
         var lineIdsBySegment = links
             .SelectMany(x => x.Segments.Select(y => new { SegmentId = y, LineId = x.Id }))
             .GroupBy(x => x.SegmentId)
+            .ToDictionary(x => x.Key, x => x.Select(y => y.LineId).ToList());
+
+        var lineIdsByStation = links
+            .SelectMany(x => x.Segments.Select(y => new { Stations = stationIdsBySegment[y], LineId = x.Id }))
+            .SelectMany(x => x.Stations.Select(y => new { StationId = y, x.LineId }))
+            .GroupBy(x => x.StationId)
             .ToDictionary(x => x.Key, x => x.Select(y => y.LineId).ToList());
 
         var lineIds = await session.Events
@@ -54,25 +68,25 @@ internal sealed class LineReadModelGrouper
                     grouping.AddEvent(lineEvent.LineId, e);
                     break;
                 case TripCreated:
-                    this.GroupTripCreated(session, (IEvent<TripCreated>)e, grouping, lineIdsByTrip);
+                    this.GroupTripCreated((IEvent<TripCreated>)e, grouping, lineIdsByTrip);
                     break;
                 case SegmentCreated:
-                    this.GroupSegmentCreated(session, (IEvent<SegmentCreated>)e, grouping, lineIdsBySegment);
+                    this.GroupSegmentCreated((IEvent<SegmentCreated>)e, grouping, lineIdsBySegment);
                     break;
                 case StationLocationSet:
-                    this.GroupLocationSet(session, (IEvent<StationLocationSet>)e, grouping);
+                    this.GroupLocationSet((IEvent<StationLocationSet>)e, grouping, lineIdsByStation);
                     break;
                 case SegmentCourseSet:
-                    this.GroupCourseSet(session, (IEvent<SegmentCourseSet>)e, grouping);
+                    this.GroupCourseSet((IEvent<SegmentCourseSet>)e, grouping, lineIdsBySegment);
                     break;
                 case SettingsNamingPolicySet:
-                    this.GroupNamingPolicySet(session, (IEvent<SettingsNamingPolicySet>)e, grouping, lineIds);
+                    this.GroupNamingPolicySet((IEvent<SettingsNamingPolicySet>)e, grouping, lineIds);
                     break;
             }
         }
     }
 
-    private void GroupTripCreated(IQuerySession session, IEvent<TripCreated> tripCreatedEvent, IEventGrouping<Guid> grouping, Dictionary<Guid, List<Guid>> lineIdsByTrip)
+    private void GroupTripCreated(IEvent<TripCreated> tripCreatedEvent, IEventGrouping<Guid> grouping, Dictionary<Guid, List<Guid>> lineIdsByTrip)
     {
         if (lineIdsByTrip.TryGetValue(tripCreatedEvent.Data.TripId, out var lineIds))
         {
@@ -83,7 +97,7 @@ internal sealed class LineReadModelGrouper
         }
     }
 
-    private void GroupSegmentCreated(IQuerySession session, IEvent<SegmentCreated> segmentCreatedEvent, IEventGrouping<Guid> grouping, Dictionary<Guid, List<Guid>> lineIdsBySegment)
+    private void GroupSegmentCreated(IEvent<SegmentCreated> segmentCreatedEvent, IEventGrouping<Guid> grouping, Dictionary<Guid, List<Guid>> lineIdsBySegment)
     {
         if (lineIdsBySegment.TryGetValue(segmentCreatedEvent.Data.SegmentId, out var lineIds))
         {
@@ -94,17 +108,29 @@ internal sealed class LineReadModelGrouper
         }
     }
 
-    private void GroupLocationSet(IQuerySession session, IEvent<StationLocationSet> stationLocationSetEvent, IEventGrouping<Guid> grouping)
+    private void GroupLocationSet(IEvent<StationLocationSet> stationLocationSetEvent, IEventGrouping<Guid> grouping, Dictionary<Guid, List<Guid>> lineIdsByStation)
     {
-        throw new NotImplementedException();
+        if (lineIdsByStation.TryGetValue(stationLocationSetEvent.Data.StationId, out var lineIds))
+        {
+            foreach (var lineId in lineIds)
+            {
+                grouping.AddEvent(lineId, stationLocationSetEvent);
+            }
+        }
     }
 
-    private void GroupCourseSet(IQuerySession session, IEvent<SegmentCourseSet> segmentCourseSetEvent, IEventGrouping<Guid> grouping)
+    private void GroupCourseSet(IEvent<SegmentCourseSet> segmentCourseSetEvent, IEventGrouping<Guid> grouping, Dictionary<Guid, List<Guid>> lineIdsBySegment)
     {
-        throw new NotImplementedException();
+        if (lineIdsBySegment.TryGetValue(segmentCourseSetEvent.Data.SegmentId, out var lineIds))
+        {
+            foreach (var lineId in lineIds)
+            {
+                grouping.AddEvent(lineId, segmentCourseSetEvent);
+            }
+        }
     }
 
-    private void GroupNamingPolicySet(IQuerySession session, IEvent<SettingsNamingPolicySet> namingPolicySetEvent, IEventGrouping<Guid> grouping, IEnumerable<Guid> lineIds)
+    private void GroupNamingPolicySet(IEvent<SettingsNamingPolicySet> namingPolicySetEvent, IEventGrouping<Guid> grouping, IEnumerable<Guid> lineIds)
     {
         foreach (var lineId in lineIds)
         {
