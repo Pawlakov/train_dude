@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Features.Shared.Drop;
+namespace TrainDude.Infrastructure.Admin.Drop;
 
 using System.Security.Claims;
 using System.Threading;

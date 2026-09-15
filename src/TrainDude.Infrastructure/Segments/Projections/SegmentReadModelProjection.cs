@@ -18,14 +18,16 @@ using Marten.Events.Projections;
 using TrainDude.Features.Segments.Domain.Events;
 using TrainDude.Features.Segments.Domain.Values;
 using TrainDude.Features.Segments.ReadModels;
+using TrainDude.Features.Settings;
 using TrainDude.Features.Settings.Domain.Events;
 using TrainDude.Features.Shared;
 using TrainDude.Features.Shared.Contracts.Enums;
 using TrainDude.Features.Shared.Extensions;
-using TrainDude.Features.Shared.ReadModels;
 using TrainDude.Features.Stations.Domain.Events;
 using TrainDude.Infrastructure.Segments.Events;
 using TrainDude.Infrastructure.Segments.Groupers;
+using TrainDude.Infrastructure.Shared.ReadModels;
+using TrainDude.Infrastructure.Stations;
 
 public sealed class SegmentReadModelProjection
     : MultiStreamProjection<SegmentReadModel, Guid>
@@ -38,7 +40,7 @@ public sealed class SegmentReadModelProjection
 
     public override async Task EnrichEventsAsync(SliceGroup<SegmentReadModel, Guid> group, IQuerySession querySession, CancellationToken cancellation)
     {
-        var settingsReference = await querySession.LoadAsync<SharedSettingsReference>(SettingsSingleton.Id, cancellation);
+        var settingsReference = await querySession.LoadAsync<SharedSettingsReference>(SettingsAccessor.SingletonId, cancellation);
 
         // works wonderfully but good luck reading this
         var stationIds = group.Slices
@@ -59,7 +61,7 @@ public sealed class SegmentReadModelProjection
             {
                 if (namingPolicySetEvent is not null)
                 {
-                    var nameSelector = StationNameResolver.GetNameSelector(namingPolicySetEvent.Data.NamingPolicy);
+                    var nameSelector = NameResolver.GetNameSelector(namingPolicySetEvent.Data.NamingPolicy);
                     var aName = nameSelector(stationsById[slice.Snapshot.A.Id]);
                     var bName = nameSelector(stationsById[slice.Snapshot.B.Id]);
                     var enriched = new SettingsNamingPolicySetWithReferences(namingPolicySetEvent.Data, aName, bName);
@@ -78,7 +80,7 @@ public sealed class SegmentReadModelProjection
                     null => settingsReference?.NamingPolicy ?? NamingPolicy.Modern,
                 };
 
-                var nameSelector = StationNameResolver.GetNameSelector(policy);
+                var nameSelector = NameResolver.GetNameSelector(policy);
                 var aEnriched = new SegmentEndReference(createdEvent.Data.A.Id, createdEvent.Data.A.Axle, createdEvent.Data.A.Pole, a.Location, nameSelector(a));
                 var bEnriched = new SegmentEndReference(createdEvent.Data.B.Id, createdEvent.Data.B.Axle, createdEvent.Data.B.Pole, b.Location, nameSelector(b));
                 var enriched = new SegmentCreatedWithReferences(createdEvent.Data, aEnriched, bEnriched);

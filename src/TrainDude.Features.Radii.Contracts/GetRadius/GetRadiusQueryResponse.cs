@@ -1,4 +1,4 @@
-// <copyright file="GetRadiusQueryResult.cs" company="Pawlakov">
+// <copyright file="GetRadiusQueryResponse.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 namespace TrainDude.Features.Radii.Contracts.GetRadius;

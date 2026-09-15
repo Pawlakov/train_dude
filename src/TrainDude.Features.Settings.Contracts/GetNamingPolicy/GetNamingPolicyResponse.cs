@@ -1,4 +1,4 @@
-// <copyright file="GetNamingPolicyResult.cs" company="Pawlakov">
+// <copyright file="GetNamingPolicyResponse.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 

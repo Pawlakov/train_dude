@@ -14,6 +14,7 @@ using TrainDude.Features.Lines.ReadModels;
 using TrainDude.Features.Lines.ReadModels.Values;
 using TrainDude.Features.Segments.Domain.Events;
 using TrainDude.Features.Segments.Domain.Values;
+using TrainDude.Features.Settings;
 using TrainDude.Features.Settings.Domain.Events;
 using TrainDude.Features.Shared;
 using TrainDude.Features.Shared.Contracts.Enums;
@@ -157,8 +158,8 @@ public class LineReadModelProjectionTests
 
         using (var session = this.fixture.Store.LightweightSession())
         {
-            session.Events.Append(SettingsSingleton.Id, new SettingsCreated(SettingsSingleton.Id, Who));
-            session.Events.Append(SettingsSingleton.Id, new SettingsNamingPolicySet(SettingsSingleton.Id, Who, NamingPolicy.German));
+            session.Events.Append(SettingsAccessor.SingletonId, new SettingsCreated(SettingsAccessor.SingletonId, Who));
+            session.Events.Append(SettingsAccessor.SingletonId, new SettingsNamingPolicySet(SettingsAccessor.SingletonId, Who, NamingPolicy.German));
             session.Events.Append(station3Id, new StationCreated(station3Id, Who, "C-old", null, "C", null));
             var end3 = new SegmentEnd(station2Id, 0, true);
             var end4 = new SegmentEnd(station3Id, 0, false);

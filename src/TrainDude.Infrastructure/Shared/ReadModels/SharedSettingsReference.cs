@@ -2,10 +2,9 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Features.Shared.ReadModels;
+namespace TrainDude.Infrastructure.Shared.ReadModels;
 
 using System;
-using System.Text.Json.Serialization;
 
 using TrainDude.Features.Shared.Contracts.Enums;
 

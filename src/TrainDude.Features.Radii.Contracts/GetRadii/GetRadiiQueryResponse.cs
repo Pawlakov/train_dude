@@ -1,4 +1,4 @@
-// <copyright file="GetRadiiQueryResult.cs" company="Pawlakov">
+// <copyright file="GetRadiiQueryResponse.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 

@@ -15,12 +15,13 @@ using JasperFx.Events.Grouping;
 using Marten;
 using Marten.Events.Projections;
 
+using TrainDude.Features.Settings;
 using TrainDude.Features.Settings.Domain.Events;
 using TrainDude.Features.Shared;
 using TrainDude.Features.Shared.Contracts.Enums;
-using TrainDude.Features.Shared.ReadModels;
 using TrainDude.Features.Stations.Domain.Events;
 using TrainDude.Features.Stations.ReadModels;
+using TrainDude.Infrastructure.Shared.ReadModels;
 using TrainDude.Infrastructure.Stations.Events;
 using TrainDude.Infrastructure.Stations.Groupers;
 
@@ -35,9 +36,9 @@ public sealed class StationReadModelProjection
 
     public override async Task EnrichEventsAsync(SliceGroup<StationReadModel, Guid> group, IQuerySession querySession, CancellationToken cancellation)
     {
-        var settings = await querySession.LoadAsync<SharedSettingsReference>(SettingsSingleton.Id, cancellation);
+        var settings = await querySession.LoadAsync<SharedSettingsReference>(SettingsAccessor.SingletonId, cancellation);
         var policy = settings?.NamingPolicy ?? NamingPolicy.Modern;
-        var nameSelector = StationNameResolver.GetNameSelector(policy);
+        var nameSelector = NameResolver.GetNameSelector(policy);
 
         foreach (var slice in group.Slices)
         {
@@ -75,7 +76,7 @@ public sealed class StationReadModelProjection
 
     public void Apply(SettingsNamingPolicySet e, StationReadModel readModel)
     {
-        var selector = StationNameResolver.GetNameSelector(e.NamingPolicy);
+        var selector = NameResolver.GetNameSelector(e.NamingPolicy);
         readModel.Name = selector(readModel);
     }
 }

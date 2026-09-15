@@ -1,4 +1,4 @@
-// <copyright file="StationNameResolver.cs" company="Pawlakov">
+// <copyright file="NameResolver.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
@@ -9,7 +9,7 @@ using System;
 using TrainDude.Features.Shared.Contracts.Base;
 using TrainDude.Features.Shared.Contracts.Enums;
 
-public class StationNameResolver
+public class NameResolver
 {
     private const string FallbackStationName = "???";
 
@@ -27,6 +27,6 @@ public class StationNameResolver
         mode switch
         {
             NamingPolicy.German => germanNew ?? german,
-            _ => polish ?? russian ?? StationNameResolver.FallbackStationName,
+            _ => polish ?? russian ?? NameResolver.FallbackStationName,
         };
 }

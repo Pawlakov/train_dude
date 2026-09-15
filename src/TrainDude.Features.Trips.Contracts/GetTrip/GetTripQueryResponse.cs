@@ -1,4 +1,4 @@
-// <copyright file="GetTripQueryResult.cs" company="Pawlakov">
+// <copyright file="GetTripQueryResponse.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 

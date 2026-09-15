@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 using Marten;
 
+using TrainDude.Features.Settings;
 using TrainDude.Features.Settings.Domain.Events;
 using TrainDude.Features.Shared;
 using TrainDude.Features.Shared.Contracts.Enums;
@@ -61,13 +62,13 @@ public class StationReadModelProjectionTests
 
         using (var session = this.fixture.Store.LightweightSession())
         {
-            session.Events.Append(SettingsSingleton.Id, new SettingsCreated(SettingsSingleton.Id, Who));
+            session.Events.Append(SettingsAccessor.SingletonId, new SettingsCreated(SettingsAccessor.SingletonId, Who));
             await session.SaveChangesAsync();
         }
 
         using (var session = this.fixture.Store.LightweightSession())
         {
-            session.Events.Append(SettingsSingleton.Id, new SettingsNamingPolicySet(SettingsSingleton.Id, Who, NamingPolicy.German));
+            session.Events.Append(SettingsAccessor.SingletonId, new SettingsNamingPolicySet(SettingsAccessor.SingletonId, Who, NamingPolicy.German));
             await session.SaveChangesAsync();
         }
 
@@ -162,14 +163,14 @@ public class StationReadModelProjectionTests
 
         using (var session = this.fixture.Store.LightweightSession())
         {
-            session.Events.Append(SettingsSingleton.Id, new SettingsCreated(SettingsSingleton.Id, Who));
+            session.Events.Append(SettingsAccessor.SingletonId, new SettingsCreated(SettingsAccessor.SingletonId, Who));
             session.Events.Append(stationId, new StationCreated(stationId, Who, "Lublinitz", "Loben", "Lubliniec", null));
             await session.SaveChangesAsync();
         }
 
         using (var session = this.fixture.Store.LightweightSession())
         {
-            session.Events.Append(SettingsSingleton.Id, new SettingsNamingPolicySet(SettingsSingleton.Id, Who, NamingPolicy.German));
+            session.Events.Append(SettingsAccessor.SingletonId, new SettingsNamingPolicySet(SettingsAccessor.SingletonId, Who, NamingPolicy.German));
             await session.SaveChangesAsync();
         }
 
@@ -185,7 +186,7 @@ public class StationReadModelProjectionTests
 
         using (var session = this.fixture.Store.LightweightSession())
         {
-            session.Events.Append(SettingsSingleton.Id, new SettingsNamingPolicySet(SettingsSingleton.Id, Who, NamingPolicy.Modern));
+            session.Events.Append(SettingsAccessor.SingletonId, new SettingsNamingPolicySet(SettingsAccessor.SingletonId, Who, NamingPolicy.Modern));
             await session.SaveChangesAsync();
 
             await this.fixture.Daemon.RebuildProjectionAsync<StationReadModel>(CancellationToken.None);
@@ -205,7 +206,7 @@ public class StationReadModelProjectionTests
 
         using (var session = this.fixture.Store.LightweightSession())
         {
-            session.Events.Append(SettingsSingleton.Id, new SettingsCreated(SettingsSingleton.Id, Who));
+            session.Events.Append(SettingsAccessor.SingletonId, new SettingsCreated(SettingsAccessor.SingletonId, Who));
             session.Events.Append(stationId1, new StationCreated(stationId1, Who, "Lublinitz", "Loben", "Lubliniec", null));
             session.Events.Append(stationId2, new StationCreated(stationId2, Who, "Gerdauen", null, null, "Железнодорожный"));
             await session.SaveChangesAsync();
@@ -213,7 +214,7 @@ public class StationReadModelProjectionTests
 
         using (var session = this.fixture.Store.LightweightSession())
         {
-            session.Events.Append(SettingsSingleton.Id, new SettingsNamingPolicySet(SettingsSingleton.Id, Who, NamingPolicy.German));
+            session.Events.Append(SettingsAccessor.SingletonId, new SettingsNamingPolicySet(SettingsAccessor.SingletonId, Who, NamingPolicy.German));
             await session.SaveChangesAsync();
         }
 
@@ -236,8 +237,8 @@ public class StationReadModelProjectionTests
     {
         using (var session = this.fixture.Store.LightweightSession())
         {
-            session.Events.Append(SettingsSingleton.Id, new SettingsCreated(SettingsSingleton.Id, Who));
-            session.Events.Append(SettingsSingleton.Id, new SettingsNamingPolicySet(SettingsSingleton.Id, Who, NamingPolicy.German));
+            session.Events.Append(SettingsAccessor.SingletonId, new SettingsCreated(SettingsAccessor.SingletonId, Who));
+            session.Events.Append(SettingsAccessor.SingletonId, new SettingsNamingPolicySet(SettingsAccessor.SingletonId, Who, NamingPolicy.German));
             await session.SaveChangesAsync();
         }
 

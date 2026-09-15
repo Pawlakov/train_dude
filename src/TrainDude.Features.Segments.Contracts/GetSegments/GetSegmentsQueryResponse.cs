@@ -1,4 +1,4 @@
-// <copyright file="GetSegmentsQueryResult.cs" company="Pawlakov">
+// <copyright file="GetSegmentsQueryResponse.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 

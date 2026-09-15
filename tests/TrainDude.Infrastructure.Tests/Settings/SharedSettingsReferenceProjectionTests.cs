@@ -7,10 +7,11 @@ namespace TrainDude.Infrastructure.Tests.Settings;
 using System.Threading;
 using System.Threading.Tasks;
 
+using TrainDude.Features.Settings;
 using TrainDude.Features.Settings.Domain.Events;
 using TrainDude.Features.Shared;
 using TrainDude.Features.Shared.Contracts.Enums;
-using TrainDude.Features.Shared.ReadModels;
+using TrainDude.Infrastructure.Shared.ReadModels;
 
 [NotInParallel]
 [ClassDataSource<ProjectionStoreFixture>(Shared = SharedType.PerTestSession)]
@@ -29,10 +30,10 @@ public class SharedSettingsReferenceProjectionTests
         var who = "test@example.com";
 
         using var session = this.fixture.Store.LightweightSession();
-        session.Events.Append(SettingsSingleton.Id, new SettingsCreated(SettingsSingleton.Id, who));
+        session.Events.Append(SettingsAccessor.SingletonId, new SettingsCreated(SettingsAccessor.SingletonId, who));
         await session.SaveChangesAsync();
 
-        var settings = await session.LoadAsync<SharedSettingsReference>(SettingsSingleton.Id);
+        var settings = await session.LoadAsync<SharedSettingsReference>(SettingsAccessor.SingletonId);
         await Assert.That(settings).IsNotNull();
         await Assert.That(settings.NamingPolicy).IsEqualTo(NamingPolicy.Modern);
     }
@@ -43,11 +44,11 @@ public class SharedSettingsReferenceProjectionTests
         var who = "test@example.com";
 
         using var session = this.fixture.Store.LightweightSession();
-        session.Events.Append(SettingsSingleton.Id, new SettingsCreated(SettingsSingleton.Id, who));
-        session.Events.Append(SettingsSingleton.Id, new SettingsNamingPolicySet(SettingsSingleton.Id, who, NamingPolicy.German));
+        session.Events.Append(SettingsAccessor.SingletonId, new SettingsCreated(SettingsAccessor.SingletonId, who));
+        session.Events.Append(SettingsAccessor.SingletonId, new SettingsNamingPolicySet(SettingsAccessor.SingletonId, who, NamingPolicy.German));
         await session.SaveChangesAsync();
 
-        var settings = await session.LoadAsync<SharedSettingsReference>(SettingsSingleton.Id);
+        var settings = await session.LoadAsync<SharedSettingsReference>(SettingsAccessor.SingletonId);
         await Assert.That(settings).IsNotNull();
         await Assert.That(settings.NamingPolicy).IsEqualTo(NamingPolicy.German);
     }
@@ -58,12 +59,12 @@ public class SharedSettingsReferenceProjectionTests
         var who = "test@example.com";
 
         using var session = this.fixture.Store.LightweightSession();
-        session.Events.Append(SettingsSingleton.Id, new SettingsCreated(SettingsSingleton.Id, who));
-        session.Events.Append(SettingsSingleton.Id, new SettingsNamingPolicySet(SettingsSingleton.Id, who, NamingPolicy.German));
-        session.Events.Append(SettingsSingleton.Id, new SettingsNamingPolicySet(SettingsSingleton.Id, who, NamingPolicy.Modern));
+        session.Events.Append(SettingsAccessor.SingletonId, new SettingsCreated(SettingsAccessor.SingletonId, who));
+        session.Events.Append(SettingsAccessor.SingletonId, new SettingsNamingPolicySet(SettingsAccessor.SingletonId, who, NamingPolicy.German));
+        session.Events.Append(SettingsAccessor.SingletonId, new SettingsNamingPolicySet(SettingsAccessor.SingletonId, who, NamingPolicy.Modern));
         await session.SaveChangesAsync();
 
-        var settings = await session.LoadAsync<SharedSettingsReference>(SettingsSingleton.Id);
+        var settings = await session.LoadAsync<SharedSettingsReference>(SettingsAccessor.SingletonId);
         await Assert.That(settings).IsNotNull();
         await Assert.That(settings.NamingPolicy).IsEqualTo(NamingPolicy.Modern);
     }

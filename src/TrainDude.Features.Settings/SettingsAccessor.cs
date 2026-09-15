@@ -21,17 +21,19 @@ public static class SettingsAccessor
 {
     private static readonly SemaphoreSlim SingletonLock = new(1, 1);
 
-    public static async Task ExecuteWithSettings(IDocumentSession session, ClaimsPrincipal user, Func<IEventStream<SettingsAggregate>, SettingsAggregate, Task> action, CancellationToken cancellationToken = default)
+    public static Guid SingletonId { get; } = new("25003045-0000-0000-0000-000000000000");
+
+    internal static async Task ExecuteWithSettings(IDocumentSession session, ClaimsPrincipal user, Func<IEventStream<SettingsAggregate>, SettingsAggregate, Task> action, CancellationToken cancellationToken = default)
     {
         await SingletonLock.WaitAsync(cancellationToken);
 
         try
         {
-            var stream = await session.Events.FetchForWriting<SettingsAggregate>(SettingsSingleton.Id, cancellationToken);
+            var stream = await session.Events.FetchForWriting<SettingsAggregate>(SingletonId, cancellationToken);
             var aggregate = stream.Aggregate;
             if (aggregate is null)
             {
-                var created = SettingsAggregate.Make(SettingsSingleton.Id, user.GetSubject());
+                var created = SettingsAggregate.Make(SingletonId, user.GetSubject());
                 stream.AppendOne(created);
 
                 aggregate = new SettingsAggregate();
@@ -47,13 +49,13 @@ public static class SettingsAccessor
         }
     }
 
-    public static async Task<SettingsAggregate> FetchForReading(IQuerySession session, ClaimsPrincipal user, CancellationToken cancellationToken = default)
+    internal static async Task<SettingsAggregate> FetchForReading(IQuerySession session, ClaimsPrincipal user, CancellationToken cancellationToken = default)
     {
-        var aggregate = await session.LoadAsync<SettingsAggregate>(SettingsSingleton.Id, cancellationToken);
+        var aggregate = await session.LoadAsync<SettingsAggregate>(SingletonId, cancellationToken);
         if (aggregate is null)
         {
             aggregate = new SettingsAggregate();
-            aggregate.Apply(SettingsAggregate.Make(SettingsSingleton.Id, user.GetSubject()));
+            aggregate.Apply(SettingsAggregate.Make(SingletonId, user.GetSubject()));
         }
 
         return aggregate;

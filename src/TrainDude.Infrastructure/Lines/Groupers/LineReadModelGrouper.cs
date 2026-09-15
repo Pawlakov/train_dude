@@ -18,6 +18,8 @@ using Marten.Events.Aggregation;
 using TrainDude.Features.Lines.Domain;
 using TrainDude.Features.Lines.Domain.Events;
 using TrainDude.Features.Segments.Domain.Events;
+using TrainDude.Features.Settings.Domain.Events;
+using TrainDude.Features.Stations.Domain.Events;
 using TrainDude.Features.Trips.Domain.Events;
 
 internal sealed class LineReadModelGrouper
@@ -38,19 +40,34 @@ internal sealed class LineReadModelGrouper
             .GroupBy(x => x.SegmentId)
             .ToDictionary(x => x.Key, x => x.Select(y => y.LineId).ToList());
 
+        var lineIds = await session.Events
+            .QueryRawEventDataOnly<LineCreated>()
+            .Select(x => x.LineId)
+            .Distinct()
+            .ToListAsync();
+
         foreach (var e in events.OrderBy(x => x.Sequence))
         {
-            if (e.Data is ILineEvent lineEvent)
+            switch (e.Data)
             {
-                grouping.AddEvent(lineEvent.LineId, e);
-            }
-            else if (e.Data is TripCreated)
-            {
-                this.GroupTripCreated(session, (IEvent<TripCreated>)e, grouping, lineIdsByTrip);
-            }
-            else if (e.Data is SegmentCreated)
-            {
-                this.GroupSegmentCreated(session, (IEvent<SegmentCreated>)e, grouping, lineIdsBySegment);
+                case ILineEvent lineEvent:
+                    grouping.AddEvent(lineEvent.LineId, e);
+                    break;
+                case TripCreated:
+                    this.GroupTripCreated(session, (IEvent<TripCreated>)e, grouping, lineIdsByTrip);
+                    break;
+                case SegmentCreated:
+                    this.GroupSegmentCreated(session, (IEvent<SegmentCreated>)e, grouping, lineIdsBySegment);
+                    break;
+                case StationLocationSet:
+                    this.GroupLocationSet(session, (IEvent<StationLocationSet>)e, grouping);
+                    break;
+                case SegmentCourseSet:
+                    this.GroupCourseSet(session, (IEvent<SegmentCourseSet>)e, grouping);
+                    break;
+                case SettingsNamingPolicySet:
+                    this.GroupNamingPolicySet(session, (IEvent<SettingsNamingPolicySet>)e, grouping, lineIds);
+                    break;
             }
         }
     }
@@ -74,6 +91,24 @@ internal sealed class LineReadModelGrouper
             {
                 grouping.AddEvent(lineId, segmentCreatedEvent);
             }
+        }
+    }
+
+    private void GroupLocationSet(IQuerySession session, IEvent<StationLocationSet> stationLocationSetEvent, IEventGrouping<Guid> grouping)
+    {
+        throw new NotImplementedException();
+    }
+
+    private void GroupCourseSet(IQuerySession session, IEvent<SegmentCourseSet> segmentCourseSetEvent, IEventGrouping<Guid> grouping)
+    {
+        throw new NotImplementedException();
+    }
+
+    private void GroupNamingPolicySet(IQuerySession session, IEvent<SettingsNamingPolicySet> namingPolicySetEvent, IEventGrouping<Guid> grouping, IEnumerable<Guid> lineIds)
+    {
+        foreach (var lineId in lineIds)
+        {
+            grouping.AddEvent(lineId, namingPolicySetEvent);
         }
     }
 }

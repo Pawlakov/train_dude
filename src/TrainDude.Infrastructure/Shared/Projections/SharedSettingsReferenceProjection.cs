@@ -12,7 +12,7 @@ using Marten.Events.Aggregation;
 
 using TrainDude.Features.Settings.Domain.Events;
 using TrainDude.Features.Shared.Contracts.Enums;
-using TrainDude.Features.Shared.ReadModels;
+using TrainDude.Infrastructure.Shared.ReadModels;
 
 public sealed class SharedSettingsReferenceProjection
     : SingleStreamProjection<SharedSettingsReference, Guid>

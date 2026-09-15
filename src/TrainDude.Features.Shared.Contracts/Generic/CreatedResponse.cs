@@ -1,4 +1,4 @@
-// <copyright file="CreatedResult.cs" company="Pawlakov">
+// <copyright file="CreatedResponse.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 

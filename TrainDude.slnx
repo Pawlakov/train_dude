@@ -33,6 +33,7 @@
   <Folder Name="/Tests/">
     <File Path="tests\Directory.Packages.props" />
     <Project Path="tests/TrainDude.Architecture.Tests/TrainDude.Architecture.Tests.csproj" />
+    <Project Path="tests/TrainDude.Features.Stations.Tests/TrainDude.Features.Stations.Tests.csproj" />
     <Project Path="tests\TrainDude.Infrastructure.Tests\TrainDude.Infrastructure.Tests.csproj" />
   </Folder>
 </Solution>

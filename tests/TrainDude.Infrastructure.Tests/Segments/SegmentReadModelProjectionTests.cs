@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using TrainDude.Features.Segments.Domain.Events;
 using TrainDude.Features.Segments.Domain.Values;
 using TrainDude.Features.Segments.ReadModels;
+using TrainDude.Features.Settings;
 using TrainDude.Features.Settings.Domain.Events;
 using TrainDude.Features.Shared;
 using TrainDude.Features.Shared.Contracts.Enums;
@@ -86,8 +87,8 @@ public class SegmentReadModelProjectionTests
 
         using (var session = this.fixture.Store.LightweightSession())
         {
-            session.Events.Append(SettingsSingleton.Id, new SettingsCreated(SettingsSingleton.Id, Who));
-            session.Events.Append(SettingsSingleton.Id, new SettingsNamingPolicySet(SettingsSingleton.Id, Who, NamingPolicy.German));
+            session.Events.Append(SettingsAccessor.SingletonId, new SettingsCreated(SettingsAccessor.SingletonId, Who));
+            session.Events.Append(SettingsAccessor.SingletonId, new SettingsNamingPolicySet(SettingsAccessor.SingletonId, Who, NamingPolicy.German));
             await session.SaveChangesAsync();
         }
 
@@ -256,7 +257,7 @@ public class SegmentReadModelProjectionTests
 
         using (var session = this.fixture.Store.LightweightSession())
         {
-            session.Events.Append(segmentId, new SettingsNamingPolicySet(SettingsSingleton.Id, Who, NamingPolicy.German));
+            session.Events.Append(segmentId, new SettingsNamingPolicySet(SettingsAccessor.SingletonId, Who, NamingPolicy.German));
             await session.SaveChangesAsync();
         }
 

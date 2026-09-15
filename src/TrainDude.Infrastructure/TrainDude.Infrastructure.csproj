@@ -1,5 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
+    <Folder Include="Admin\" />
     <Folder Include="Shared\" />
   </ItemGroup>
   <ItemGroup>

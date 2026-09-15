@@ -1,4 +1,4 @@
-// <copyright file="GetStationQueryResult.cs" company="Pawlakov">
+// <copyright file="GetStationQueryResponse.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 

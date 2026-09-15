@@ -1,4 +1,4 @@
-// <copyright file="GetLinesQueryResult.cs" company="Pawlakov">
+// <copyright file="GetLinesQueryResponse.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 

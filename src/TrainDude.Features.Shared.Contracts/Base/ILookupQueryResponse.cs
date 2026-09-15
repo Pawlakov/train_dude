@@ -1,4 +1,4 @@
-// <copyright file="ILookupQueryResult.cs" company="Pawlakov">
+// <copyright file="ILookupQueryResponse.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 

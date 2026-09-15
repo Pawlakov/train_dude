@@ -8,7 +8,6 @@
     <PackageReference Include="WolverineFx.Marten" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TrainDude.Features.Settings.Contracts\TrainDude.Features.Settings.Contracts.csproj" />
     <ProjectReference Include="..\TrainDude.Features.Shared.Contracts\TrainDude.Features.Shared.Contracts.csproj" />
   </ItemGroup>
 </Project>
