@@ -42,7 +42,7 @@ using Wolverine.Http.FluentValidation;
 /// <summary>
 /// The main class.
 /// </summary>
-public static class Program
+public class Program
 {
     /// <summary>
     /// The main function.

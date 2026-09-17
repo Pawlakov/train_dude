@@ -6,11 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Alba" />
+    <PackageReference Include="Testcontainers.PostgreSql" />
     <PackageReference Include="TUnit" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\TrainDude.Features.Stations\TrainDude.Features.Stations.csproj"/>
+    <ProjectReference Include="..\..\src\TrainDude.Web\TrainDude.Web.csproj" />
   </ItemGroup>
 
 </Project>
