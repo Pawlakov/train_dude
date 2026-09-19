@@ -4,6 +4,8 @@
 
 namespace TrainDude.Features.Stations.SetLocation;
 
+using System;
+
 using FluentValidation;
 
 using TrainDude.Features.Shared.Contracts.Values;
@@ -14,8 +16,12 @@ public sealed class SetLocationValidator
 {
     public SetLocationValidator()
     {
+        this.RuleFor(x => x.Id)
+            .NotEqual(Guid.Empty)
+            .WithMessage("A valid station id is required.");
+
         this.RuleFor(x => x.Location)
             .NotEqual(default(Location))
-            .WithMessage("A valid location id is required.");
+            .WithMessage("A valid location is required.");
     }
 }

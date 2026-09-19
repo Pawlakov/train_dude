@@ -44,7 +44,7 @@ public class CreateStationEndpointTests
     {
         var result = await this.fixture.Host.Scenario(x =>
         {
-            x.Post.Json(new CreateStationCommand(nameGerman, nameGermanNew, namePolish, nameRussian)) .ToUrl(CreateStationCommand.Route);
+            x.Post.Json(new CreateStationCommand(nameGerman, nameGermanNew, namePolish, nameRussian)).ToUrl(CreateStationCommand.Route);
             x.StatusCodeShouldBe(201);
         });
 
@@ -62,5 +62,40 @@ public class CreateStationEndpointTests
         var stationCreated = (StationCreated)events.Single().Data;
 
         await Assert.That(stationCreated.NameGerman).IsEqualTo(nameGerman);
+    }
+
+    [Test]
+    public async Task Post_ValidPayload_Returns201WithLocationHeaderAndId()
+    {
+        // TODO
+        Assert.Fail("TODO");
+    }
+
+    [Test]
+    public async Task Post_ValidPayload_StartsNewEventStreamWithStationCreated()
+    {
+        // TODO
+        Assert.Fail("TODO");
+    }
+
+    [Test]
+    public async Task Post_BothPolishAndRussianNamesProvided_Returns400()
+    {
+        // TODO
+        Assert.Fail("TODO");
+    }
+
+    [Test]
+    public async Task Post_Always_StampsWhoFromAuthenticatedUser()
+    {
+        // TODO
+        Assert.Fail("TODO");
+    }
+
+    [Test]
+    public async Task Post_Unauthenticated_Returns401()
+    {
+        // TODO
+        Assert.Fail("TODO");
     }
 }

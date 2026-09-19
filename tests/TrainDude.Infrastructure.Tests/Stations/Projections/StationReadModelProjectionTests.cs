@@ -2,7 +2,7 @@
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
-namespace TrainDude.Infrastructure.Tests.Stations;
+namespace TrainDude.Infrastructure.Tests.Stations.Projections;
 
 using System;
 using System.Threading;
@@ -12,7 +12,6 @@ using Marten;
 
 using TrainDude.Features.Settings;
 using TrainDude.Features.Settings.Domain.Events;
-using TrainDude.Features.Shared;
 using TrainDude.Features.Shared.Contracts.Enums;
 using TrainDude.Features.Shared.Contracts.Values;
 using TrainDude.Features.Stations.Domain.Events;

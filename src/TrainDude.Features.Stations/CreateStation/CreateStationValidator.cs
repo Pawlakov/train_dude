@@ -15,8 +15,7 @@ public sealed class CreateStationValidator
     {
         this.RuleFor(x => x.NameGerman)
             .NotEmpty()
-            .WithMessage("A valid name is required.")
-            .MaximumLength(200);
+            .WithMessage("A valid name is required.");
 
         this.RuleFor(x => x.NamePolish)
             .Empty()
