@@ -20,7 +20,7 @@ using TUnit.Core.Interfaces;
 using Wolverine;
 
 public class AnonymousHostFixture
-    : IAsyncInitializer, IAsyncDisposable
+    : IHostFixture, IAsyncInitializer, IAsyncDisposable
 {
     private readonly PostgreSqlContainer db = new PostgreSqlBuilder()
         .WithImage("postgres:16-alpine")

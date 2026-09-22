@@ -15,6 +15,7 @@ using Marten;
 
 using Microsoft.AspNetCore.Mvc;
 
+using TrainDude.Features.Shared.Contracts.Generic;
 using TrainDude.Features.Stations.Contracts.CreateStation;
 using TrainDude.Features.Stations.Contracts.GetStation;
 using TrainDude.Features.Stations.Domain.Events;
@@ -50,15 +51,21 @@ public class CreateStationEndpointTests
     [Arguments(null, "Polish", null)]
     public async Task Post_Valid_Returns201AndRecordsStationCreated(string? nameGermanNew, string? namePolish, string? nameRussian)
     {
-        var result = await this.PostAsync(new CreateStationCommand("German", nameGermanNew, namePolish, nameRussian), 201);
+        var result = await PostAsync(this.authFixture, new CreateStationCommand("German", nameGermanNew, namePolish, nameRussian), 201);
 
+        // Response
+        var response = await result.ReadAsJsonAsync<CreatedResponse>();
+        var stationId = response.Id;
+
+        // Response Header
         var locationPattern = new Regex(GetStationQuery.Route.Replace("{id}", @"(?<id>[0-9a-fA-F]{8}-(?:[0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12})") + "$");
         var location = result.Context.Response.Headers.Location;
         await Assert.That(location).IsNotNull();
         var match = locationPattern.Match(location.ToString());
         await Assert.That(match.Success).IsTrue();
-        var stationId = Guid.Parse(match.Groups["id"].Value);
+        await Assert.That(Guid.Parse(match.Groups["id"].Value)).IsEqualTo(stationId);
 
+        // Even Store
         var store = this.authFixture.Host.Services.GetRequiredService<IDocumentStore>();
 
         await using var session = store.QuerySession();
@@ -82,12 +89,12 @@ public class CreateStationEndpointTests
     [Test]
     public async Task Post_WithoutGermanName_Returns422()
     {
-        var result = await this.PostAsync(new CreateStationCommand(null, null, null, "Russian"), 422);
+        var result = await PostAsync(this.authFixture, new CreateStationCommand(null, null, null, "Russian"), 422);
 
         var problem = await result.ReadAsJsonAsync<ValidationProblemDetails>();
         await Assert.That(problem.Errors).ContainsKey(nameof(CreateStationCommand.NameGerman));
         await Assert.That(problem.Errors).AllKeys(x => x is nameof(CreateStationCommand.NameGerman));
-        await this.AssertNothingWrittenAsync();
+        await AssertNothingWrittenAsync(this.authFixture);
     }
 
     [Test]
@@ -109,12 +116,12 @@ public class CreateStationEndpointTests
     [Arguments("German", null, null, "Russian ", nameof(CreateStationCommand.NameRussian))]
     public async Task Post_WithMalformedNames_Returns422(string nameGerman, string? nameGermanNew, string? namePolish, string? nameRussian, string offender)
     {
-        var result = await this.PostAsync(new CreateStationCommand(nameGerman, nameGermanNew, namePolish, nameRussian), 422);
+        var result = await PostAsync(this.authFixture, new CreateStationCommand(nameGerman, nameGermanNew, namePolish, nameRussian), 422);
 
         var problem = await result.ReadAsJsonAsync<ValidationProblemDetails>();
         await Assert.That(problem.Errors).ContainsKey(offender);
         await Assert.That(problem.Errors).AllKeys(x => x == offender);
-        await this.AssertNothingWrittenAsync();
+        await AssertNothingWrittenAsync(this.authFixture);
     }
 
     [Test]
@@ -122,13 +129,13 @@ public class CreateStationEndpointTests
     [Arguments(null)]
     public async Task Post_WithBothPolishAndRussianNames_Returns422(string? nameGermanNew)
     {
-        var result = await this.PostAsync(new CreateStationCommand("German", nameGermanNew, "Polish", "Russian"), 422);
+        var result = await PostAsync(this.authFixture, new CreateStationCommand("German", nameGermanNew, "Polish", "Russian"), 422);
 
         var problem = await result.ReadAsJsonAsync<ValidationProblemDetails>();
         await Assert.That(problem.Errors).ContainsKey(nameof(CreateStationCommand.NamePolish));
         await Assert.That(problem.Errors).ContainsKey(nameof(CreateStationCommand.NameRussian));
         await Assert.That(problem.Errors).AllKeys(x => x is nameof(CreateStationCommand.NamePolish) or nameof(CreateStationCommand.NameRussian));
-        await this.AssertNothingWrittenAsync();
+        await AssertNothingWrittenAsync(this.authFixture);
     }
 
     [Test]
@@ -144,33 +151,29 @@ public class CreateStationEndpointTests
             x.StatusCodeShouldBe(400);
         });
 
-        await this.AssertNothingWrittenAsync();
+        await AssertNothingWrittenAsync(this.authFixture);
     }
 
     [Test]
     public async Task Post_Unauthenticated_Returns302()
     {
-        var result = await this.anonFixture.Host.Scenario(x =>
-        {
-            x.Post.Json(new CreateStationCommand("German", "German New", "Polish", null)).ToUrl(CreateStationCommand.Route);
-            x.StatusCodeShouldBe(302);
-        });
+        await PostAsync(this.anonFixture, new CreateStationCommand("German", "German New", "Polish", null), 302);
 
-        await this.AssertNothingWrittenAsync();
+        await AssertNothingWrittenAsync(this.anonFixture);
     }
 
-    private async Task<IScenarioResult> PostAsync(CreateStationCommand command, int expectedStatus)
+    private static async Task<IScenarioResult> PostAsync(IHostFixture fixture, CreateStationCommand command, int expectedStatus)
     {
-        return await this.authFixture.Host.Scenario(x =>
+        return await fixture.Host.Scenario(x =>
         {
             x.Post.Json(command).ToUrl(CreateStationCommand.Route);
             x.StatusCodeShouldBe(expectedStatus);
         });
     }
 
-    private async Task AssertNothingWrittenAsync()
+    private static async Task AssertNothingWrittenAsync(IHostFixture fixture)
     {
-        var store = this.authFixture.Host.Services.GetRequiredService<IDocumentStore>();
+        var store = fixture.Host.Services.GetRequiredService<IDocumentStore>();
         await using var session = store.QuerySession();
         var events = await session.Events.QueryAllRawEvents().ToListAsync();
         await Assert.That(events).IsEmpty();
