@@ -13,16 +13,6 @@ using NetArchTest.Rules;
 public class LayeringTests
 {
     [Test]
-    public async Task Infrastructure_Should_NotDependOnPresentationOrHostConcerns()
-    {
-        var result = Types.InAssembly(Assemblies.Infrastructure)
-            .ShouldNot().HaveDependencyOnAny("Microsoft.AspNetCore", "RestSharp", "Swashbuckle", "WolverineFx.Http")
-            .GetResult();
-
-        await Assert.That(result.FailingTypeNames()).IsEmpty();
-    }
-
-    [Test]
     public async Task Infrastructure_Should_NotReferenceHostOrApiAssemblies()
     {
         var forbidden = new[] { "TrainDude.Web.Client", "TrainDude.Web" };

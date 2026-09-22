@@ -85,7 +85,7 @@ public class ApiClient
 
     private static void HandleErrorResponse(RestResponse response)
     {
-        if (response.StatusCode == HttpStatusCode.BadRequest && !string.IsNullOrWhiteSpace(response.Content))
+        if (response.StatusCode == HttpStatusCode.UnprocessableContent && !string.IsNullOrWhiteSpace(response.Content))
         {
             var failures = TryParseValidationFailures(response.Content);
             if (failures is { Count: > 0 })

@@ -6,7 +6,14 @@ namespace TrainDude.Web;
 
 using System;
 using System.Security.Claims;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+
+using JasperFx;
+using JasperFx.Events.Daemon;
+using JasperFx.Events.Projections;
+
+using Marten;
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -20,24 +27,33 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
+using TrainDude.Features.Lines.Domain;
 using TrainDude.Features.Lines.GetLines;
+using TrainDude.Features.Radii.Domain;
 using TrainDude.Features.Radii.GetRadii;
+using TrainDude.Features.Segments.Domain;
 using TrainDude.Features.Segments.GetSegments;
+using TrainDude.Features.Settings.Domain;
 using TrainDude.Features.Settings.SetNamingPolicy;
 using TrainDude.Features.Shared.Exceptions;
+using TrainDude.Features.Stations.Domain;
 using TrainDude.Features.Stations.GetStations;
+using TrainDude.Features.Trips.Domain;
 using TrainDude.Features.Trips.GetTrips;
-using TrainDude.Infrastructure;
 using TrainDude.Infrastructure.Admin.Drop;
-using TrainDude.Infrastructure.HostBuilders;
+using TrainDude.Infrastructure.Lines.Projections;
+using TrainDude.Infrastructure.Segments.Projections;
+using TrainDude.Infrastructure.Shared.Projections;
+using TrainDude.Infrastructure.Stations.Projections;
 using TrainDude.Web.Components;
-using TrainDude.Web.HostBuilders;
+using TrainDude.Web.ExceptionHandlers;
 
 using Wolverine;
 using Wolverine.ErrorHandling;
 using Wolverine.FluentValidation;
 using Wolverine.Http;
 using Wolverine.Http.FluentValidation;
+using Wolverine.Marten;
 
 /// <summary>
 /// The main class.
@@ -120,9 +136,55 @@ public class Program
             .AddSwaggerGen();
 
         builder.Services
-            .AddEventStore(builder.Configuration.GetConnectionString("Write"), isDevelopment)
-            .AddHttpHandlers()
-            .AddReadExceptionHandlers();
+            .AddMarten(options =>
+            {
+                options.Connection(builder.Configuration.GetConnectionString("Write"));
+                options.DatabaseSchemaName = "train_dude";
+
+                options.Projections.Snapshot<SettingsAggregate>(SnapshotLifecycle.Inline);
+                options.Projections.Add<SharedSettingsReferenceProjection>(ProjectionLifecycle.Inline);
+
+                options.Projections.Snapshot<LineAggregate>(SnapshotLifecycle.Inline);
+                options.Projections.Add<LineReadModelProjection>(ProjectionLifecycle.Async);
+                options.Projections.Add<LineStationReferenceProjection>(ProjectionLifecycle.Inline);
+                options.Projections.Add<LineSegmentReferenceProjection>(ProjectionLifecycle.Inline);
+                options.Projections.Add<LineTripReferenceProjection>(ProjectionLifecycle.Inline);
+
+                options.Projections.Snapshot<RadiusAggregate>(SnapshotLifecycle.Inline);
+
+                options.Projections.Snapshot<SegmentAggregate>(SnapshotLifecycle.Inline);
+                options.Projections.Add<SegmentReadModelProjection>(ProjectionLifecycle.Async);
+                options.Projections.Add<SegmentStationReferenceProjection>(ProjectionLifecycle.Inline);
+
+                options.Projections.Snapshot<StationAggregate>(SnapshotLifecycle.Inline);
+                options.Projections.Add<StationReadModelProjection>(ProjectionLifecycle.Async);
+
+                options.Projections.Snapshot<TripAggregate>(SnapshotLifecycle.Inline);
+
+                if (isDevelopment)
+                {
+                    options.AutoCreateSchemaObjects = AutoCreate.All;
+                }
+            })
+            .UseLightweightSessions()
+            .IntegrateWithWolverine()
+            .AddAsyncDaemon(DaemonMode.Solo);
+
+        builder.Services.AddSingleton(typeof(IProblemDetailSource<>), typeof(UnprocessableEntityProblemDetailSource<>));
+
+        builder.Services
+            .ConfigureSystemTextJsonForWolverineOrMinimalApi(options =>
+            {
+                options.SerializerOptions.UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow;
+            });
+
+        builder.Services
+            .AddWolverineHttp()
+            .AddExceptionHandler<DomainExceptionHandler>()
+            .AddExceptionHandler<ConcurrencyExceptionHandler>()
+            .AddExceptionHandler<ValidationExceptionHandler>()
+            .AddExceptionHandler<GlobalExceptionHandler>()
+            .AddProblemDetails();
 
         builder.Host.UseWolverine(opts =>
         {

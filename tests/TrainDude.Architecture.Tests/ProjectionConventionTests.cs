@@ -40,12 +40,13 @@ public class ProjectionConventionTests
     [Test]
     public async Task Groupers_Should_ImplementIAggregateGrouperOfGuid()
     {
-        var result = Types.InAssembly(Assemblies.Infrastructure)
-            .That().HaveNameEndingWith("Grouper")
-            .Should().ImplementInterface(typeof(IAggregateGrouper<Guid>))
-            .GetResult();
+        var failingTypeNames = Assemblies.Infrastructure
+            .GetTypes()
+            .Where(t => t.Name.EndsWith("Grouper", StringComparison.Ordinal))
+            .Where(t => !typeof(IAggregateGrouper<Guid>).IsAssignableFrom(t))
+            .Select(t => t.FullName);
 
-        await Assert.That(result.FailingTypeNames()).IsEmpty();
+        await Assert.That(failingTypeNames).IsEmpty();
     }
 
     [Test]
