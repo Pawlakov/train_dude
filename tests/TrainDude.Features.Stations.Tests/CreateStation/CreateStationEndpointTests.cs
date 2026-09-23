@@ -23,23 +23,14 @@ using TrainDude.Features.Stations.Domain.Events;
 using TUnit.Core.Services;
 
 [NotInParallel]
-[ClassDataSource<AuthenticatedHostFixture, AnonymousHostFixture>(Shared = [SharedType.PerTestSession, SharedType.PerTestSession])]
 public class CreateStationEndpointTests
+    : BaseEndpointTests
 {
-    private readonly AuthenticatedHostFixture authFixture;
-    private readonly AnonymousHostFixture anonFixture;
-
-    public CreateStationEndpointTests(AuthenticatedHostFixture authFixture, AnonymousHostFixture anonFixture)
-    {
-        this.authFixture = authFixture;
-        this.anonFixture = anonFixture;
-    }
-
     [Before(Test)]
     public async Task SetUp()
     {
-        await this.authFixture.Host.ResetAllMartenDataAsync();
-        await this.anonFixture.Host.ResetAllMartenDataAsync();
+        await this.AnonFixture.Host.ResetAllMartenDataAsync();
+        await this.AuthFixture.Host.ResetAllMartenDataAsync();
     }
 
     [Test]
@@ -49,9 +40,9 @@ public class CreateStationEndpointTests
     [Arguments(null, null, "Russian")]
     [Arguments(null, null, null)]
     [Arguments(null, "Polish", null)]
-    public async Task Post_Valid_Returns201AndRecordsStationCreated(string? nameGermanNew, string? namePolish, string? nameRussian)
+    public async Task Post_Valid_Returns201AndAppendsEvent(string? nameGermanNew, string? namePolish, string? nameRussian)
     {
-        var result = await PostAsync(this.authFixture, new CreateStationCommand("German", nameGermanNew, namePolish, nameRussian), 201);
+        var result = await this.PostCreateCommandAsync(new CreateStationCommand("German", nameGermanNew, namePolish, nameRussian), 201);
 
         // Response
         var response = await result.ReadAsJsonAsync<CreatedResponse>();
@@ -66,7 +57,7 @@ public class CreateStationEndpointTests
         await Assert.That(Guid.Parse(match.Groups["id"].Value)).IsEqualTo(stationId);
 
         // Even Store
-        var store = this.authFixture.Host.Services.GetRequiredService<IDocumentStore>();
+        var store = this.AuthFixture.Host.Services.GetRequiredService<IDocumentStore>();
 
         await using var session = store.QuerySession();
 
@@ -79,7 +70,7 @@ public class CreateStationEndpointTests
         await Assert.That(stationCreated).IsNotNull();
 
         await Assert.That(stationCreated.StationId).IsEqualTo(stationId);
-        await Assert.That(stationCreated.Who).IsEqualTo(this.authFixture.AuthenticatedActor);
+        await Assert.That(stationCreated.Who).IsEqualTo(this.AuthFixture.AuthenticatedActor);
         await Assert.That(stationCreated.NameGerman).IsEqualTo("German");
         await Assert.That(stationCreated.NameGermanNew).IsEqualTo(nameGermanNew);
         await Assert.That(stationCreated.NamePolish).IsEqualTo(namePolish);
@@ -89,12 +80,12 @@ public class CreateStationEndpointTests
     [Test]
     public async Task Post_WithoutGermanName_Returns422()
     {
-        var result = await PostAsync(this.authFixture, new CreateStationCommand(null, null, null, "Russian"), 422);
+        var result = await this.PostCreateCommandAsync(new CreateStationCommand(null, null, null, "Russian"), 422);
 
         var problem = await result.ReadAsJsonAsync<ValidationProblemDetails>();
         await Assert.That(problem.Errors).ContainsKey(nameof(CreateStationCommand.NameGerman));
         await Assert.That(problem.Errors).AllKeys(x => x is nameof(CreateStationCommand.NameGerman));
-        await AssertNothingWrittenAsync(this.authFixture);
+        await this.AssertNothingWrittenAsync();
     }
 
     [Test]
@@ -116,12 +107,12 @@ public class CreateStationEndpointTests
     [Arguments("German", null, null, "Russian ", nameof(CreateStationCommand.NameRussian))]
     public async Task Post_WithMalformedNames_Returns422(string nameGerman, string? nameGermanNew, string? namePolish, string? nameRussian, string offender)
     {
-        var result = await PostAsync(this.authFixture, new CreateStationCommand(nameGerman, nameGermanNew, namePolish, nameRussian), 422);
+        var result = await this.PostCreateCommandAsync(new CreateStationCommand(nameGerman, nameGermanNew, namePolish, nameRussian), 422);
 
         var problem = await result.ReadAsJsonAsync<ValidationProblemDetails>();
         await Assert.That(problem.Errors).ContainsKey(offender);
         await Assert.That(problem.Errors).AllKeys(x => x == offender);
-        await AssertNothingWrittenAsync(this.authFixture);
+        await this.AssertNothingWrittenAsync();
     }
 
     [Test]
@@ -129,13 +120,13 @@ public class CreateStationEndpointTests
     [Arguments(null)]
     public async Task Post_WithBothPolishAndRussianNames_Returns422(string? nameGermanNew)
     {
-        var result = await PostAsync(this.authFixture, new CreateStationCommand("German", nameGermanNew, "Polish", "Russian"), 422);
+        var result = await this.PostCreateCommandAsync(new CreateStationCommand("German", nameGermanNew, "Polish", "Russian"), 422);
 
         var problem = await result.ReadAsJsonAsync<ValidationProblemDetails>();
         await Assert.That(problem.Errors).ContainsKey(nameof(CreateStationCommand.NamePolish));
         await Assert.That(problem.Errors).ContainsKey(nameof(CreateStationCommand.NameRussian));
         await Assert.That(problem.Errors).AllKeys(x => x is nameof(CreateStationCommand.NamePolish) or nameof(CreateStationCommand.NameRussian));
-        await AssertNothingWrittenAsync(this.authFixture);
+        await this.AssertNothingWrittenAsync();
     }
 
     [Test]
@@ -145,37 +136,20 @@ public class CreateStationEndpointTests
     [Arguments("{ \"NameGerman\": 67 }")]
     public async Task Post_WithMalformedJson_Returns400(string text)
     {
-        await this.authFixture.Host.Scenario(x =>
+        await this.AuthFixture.Host.Scenario(x =>
         {
             x.Post.Text(text).ContentType("application/json").ToUrl(CreateStationCommand.Route);
             x.StatusCodeShouldBe(400);
         });
 
-        await AssertNothingWrittenAsync(this.authFixture);
+        await this.AssertNothingWrittenAsync();
     }
 
     [Test]
     public async Task Post_Unauthenticated_Returns302()
     {
-        await PostAsync(this.anonFixture, new CreateStationCommand("German", "German New", "Polish", null), 302);
+        await this.PostCreateCommandAsync(new CreateStationCommand("German", "German New", "Polish", null), 302, false);
 
-        await AssertNothingWrittenAsync(this.anonFixture);
-    }
-
-    private static async Task<IScenarioResult> PostAsync(IHostFixture fixture, CreateStationCommand command, int expectedStatus)
-    {
-        return await fixture.Host.Scenario(x =>
-        {
-            x.Post.Json(command).ToUrl(CreateStationCommand.Route);
-            x.StatusCodeShouldBe(expectedStatus);
-        });
-    }
-
-    private static async Task AssertNothingWrittenAsync(IHostFixture fixture)
-    {
-        var store = fixture.Host.Services.GetRequiredService<IDocumentStore>();
-        await using var session = store.QuerySession();
-        var events = await session.Events.QueryAllRawEvents().ToListAsync();
-        await Assert.That(events).IsEmpty();
+        await this.AssertNothingWrittenAsync(false);
     }
 }

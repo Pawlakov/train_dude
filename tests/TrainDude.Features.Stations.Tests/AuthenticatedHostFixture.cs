@@ -1,4 +1,4 @@
-// <copyright file="HostFixture.cs" company="Pawlakov">
+// <copyright file="AuthenticatedHostFixture.cs" company="Pawlakov">
 // Copyright (c) Pawlakov. All rights reserved.
 // </copyright>
 
@@ -23,21 +23,13 @@ using TUnit.Core.Interfaces;
 using Wolverine;
 
 public class AuthenticatedHostFixture
-    : IHostFixture, IAsyncInitializer, IAsyncDisposable
+    : BaseHostFixture
 {
-    private readonly PostgreSqlContainer db = new PostgreSqlBuilder()
-        .WithImage("postgres:16-alpine")
-        .Build();
-
-    public IAlbaHost Host { get; private set; }
-
     public string AuthenticatedActor => "Actor";
 
-    public async Task InitializeAsync()
+    public override async Task InitializeAsync()
     {
-        await this.db.StartAsync();
-
-        var configValues = new Dictionary<string, string?> { ["ConnectionStrings:Write"] = this.db.GetConnectionString() };
+        var configValues = new Dictionary<string, string?> { ["ConnectionStrings:Write"] = this.Postgres.Container.GetConnectionString() };
         var configOverride = ConfigurationOverride.Create(configValues);
 
         var securityStub = new AuthenticationStub()
@@ -58,11 +50,5 @@ public class AuthenticatedHostFixture
         },
         securityStub,
         configOverride);
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        await this.Host.DisposeAsync();
-        await this.db.DisposeAsync();
     }
 }
