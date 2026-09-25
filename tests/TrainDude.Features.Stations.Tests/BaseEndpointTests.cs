@@ -35,6 +35,18 @@ public abstract class BaseEndpointTests
         });
     }
 
+    protected async Task<IScenarioResult> PostUpdateCommandAsync<TRequest>(TRequest command, int expectedStatus = 200, bool authenticated = true)
+        where TRequest : ISpecificCommand
+    {
+        var route = TRequest.Route.Replace("{id}", command.Id.ToString());
+        BaseHostFixture fixture = authenticated ? this.AuthFixture : this.AnonFixture;
+        return await fixture.Host.Scenario(x =>
+        {
+            x.Post.Json(command).ToUrl(route);
+            x.StatusCodeShouldBe(expectedStatus);
+        });
+    }
+
     protected async Task AssertNothingWrittenAsync(long? baseEventSequence = null, bool authenticated = true)
     {
         BaseHostFixture fixture = authenticated ? this.AuthFixture : this.AnonFixture;

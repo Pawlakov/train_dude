@@ -40,12 +40,7 @@ public class SetLocationEndpointTests
         var created = await createResult.ReadAsJsonAsync<CreatedResponse>();
         var stationId = created.Id;
 
-        var setLocationRoute = SetLocationCommand.Route.Replace("{id}", stationId.ToString());
-        var setLocationResult = await this.AuthFixture.Host.Scenario(x =>
-        {
-            x.Post.Json(new SetLocationCommand(stationId, 1, new Location(20, 50))).ToUrl(setLocationRoute);
-            x.StatusCodeShouldBe(200);
-        });
+        await this.PostUpdateCommandAsync(new SetLocationCommand(stationId, 1, new Location(20, 50)));
 
         var store = this.AuthFixture.Host.Services.GetRequiredService<IDocumentStore>();
 
@@ -72,12 +67,7 @@ public class SetLocationEndpointTests
         var stationId = created.Id;
         var sequence = await this.GetCurrentEventSequenceAsync();
 
-        var setLocationRoute = SetLocationCommand.Route.Replace("{id}", stationId.ToString());
-        var setLocationResult = await this.AuthFixture.Host.Scenario(x =>
-        {
-            x.Post.Json(new SetLocationCommand(stationId, 0, default)).ToUrl(setLocationRoute);
-            x.StatusCodeShouldBe(422);
-        });
+        var setLocationResult = await this.PostUpdateCommandAsync(new SetLocationCommand(stationId, 1, default), 422);
 
         var problem = await setLocationResult.ReadAsJsonAsync<ValidationProblemDetails>();
         await Assert.That(problem.Errors).ContainsKey(nameof(SetLocationCommand.Location));
@@ -92,12 +82,7 @@ public class SetLocationEndpointTests
         var sequence = await this.GetCurrentEventSequenceAsync();
 
         var stationId = Guid.NewGuid();
-        var setLocationRoute = SetLocationCommand.Route.Replace("{id}", stationId.ToString());
-        var setLocationResult = await this.AuthFixture.Host.Scenario(x =>
-        {
-            x.Post.Json(new SetLocationCommand(stationId, 0, new Location(20, 50))).ToUrl(setLocationRoute);
-            x.StatusCodeShouldBe(404);
-        });
+        await this.PostUpdateCommandAsync(new SetLocationCommand(stationId, 1, new Location(20, 50)), 404);
 
         await this.AssertNothingWrittenAsync(sequence);
     }
@@ -114,10 +99,10 @@ public class SetLocationEndpointTests
         var created = await createResult.ReadAsJsonAsync<CreatedResponse>();
         var stationId = created.Id;
 
-        var setLocationRoute = SetLocationCommand.Route.Replace("{id}", stationId.ToString());
+        var route = SetLocationCommand.Route.Replace("{id}", stationId.ToString());
         await this.AuthFixture.Host.Scenario(x =>
         {
-            x.Post.Text(text).ContentType("application/json").ToUrl(setLocationRoute);
+            x.Post.Text(text).ContentType("application/json").ToUrl(route);
             x.StatusCodeShouldBe(400);
         });
 
@@ -132,12 +117,7 @@ public class SetLocationEndpointTests
         var created = await createResult.ReadAsJsonAsync<CreatedResponse>();
         var stationId = created.Id;
 
-        var setLocationRoute = SetLocationCommand.Route.Replace("{id}", stationId.ToString());
-        var setLocationResult = await this.AnonFixture.Host.Scenario(x =>
-        {
-            x.Post.Json(new SetLocationCommand(stationId, 0, new Location(20, 50))).ToUrl(setLocationRoute);
-            x.StatusCodeShouldBe(302);
-        });
+        await this.PostUpdateCommandAsync(new SetLocationCommand(stationId, 1, new Location(20, 50)), 302, false);
 
         await this.AssertNothingWrittenAsync(sequence);
     }
@@ -149,22 +129,11 @@ public class SetLocationEndpointTests
         var created = await createResult.ReadAsJsonAsync<CreatedResponse>();
         var stationId = created.Id;
 
-        var setLocationRoute = SetLocationCommand.Route.Replace("{id}", stationId.ToString());
-
         var firstLocation = new Location(20, 50);
         var secondLocation = new Location(-10, 100);
 
-        await this.AuthFixture.Host.Scenario(x =>
-        {
-            x.Post.Json(new SetLocationCommand(stationId, 1, firstLocation)).ToUrl(setLocationRoute);
-            x.StatusCodeShouldBe(200);
-        });
-
-        await this.AuthFixture.Host.Scenario(x =>
-        {
-            x.Post.Json(new SetLocationCommand(stationId, 1, secondLocation)).ToUrl(setLocationRoute);
-            x.StatusCodeShouldBe(409);
-        });
+        await this.PostUpdateCommandAsync(new SetLocationCommand(stationId, 1, firstLocation));
+        await this.PostUpdateCommandAsync(new SetLocationCommand(stationId, 1, secondLocation), 409);
 
         var store = this.AuthFixture.Host.Services.GetRequiredService<IDocumentStore>();
 
