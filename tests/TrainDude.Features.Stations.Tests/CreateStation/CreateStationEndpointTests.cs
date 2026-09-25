@@ -150,6 +150,6 @@ public class CreateStationEndpointTests
     {
         await this.PostCreateCommandAsync(new CreateStationCommand("German", "German New", "Polish", null), 302, false);
 
-        await this.AssertNothingWrittenAsync(false);
+        await this.AssertNothingWrittenAsync(null, false);
     }
 }

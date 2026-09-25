@@ -4,12 +4,15 @@
 
 namespace TrainDude.Features.Stations.Tests.SetLocation;
 
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
 using Alba;
 
 using Marten;
+
+using Microsoft.AspNetCore.Mvc;
 
 using TrainDude.Features.Shared.Contracts.Generic;
 using TrainDude.Features.Shared.Contracts.Values;
@@ -21,22 +24,19 @@ using TUnit.Core.Services;
 
 [NotInParallel]
 public class SetLocationEndpointTests
+    : BaseEndpointTests
 {
-    [ClassDataSource<AuthenticatedHostFixture>(Shared = SharedType.PerTestSession)]
-    public required AuthenticatedHostFixture AuthFixture { get; init; }
-
-    [ClassDataSource<AnonymousHostFixture>(Shared = SharedType.PerTestSession)]
-    public required AnonymousHostFixture AnonFixture { get; init; }
+    [Before(Test)]
+    public async Task SetUp()
+    {
+        await this.AnonFixture.Host.ResetAllMartenDataAsync();
+        await this.AuthFixture.Host.ResetAllMartenDataAsync();
+    }
 
     [Test]
     public async Task Post_Valid_Returns200AndAppendsEvent()
     {
-        var createResult = await this.AuthFixture.Host.Scenario(x =>
-        {
-            x.Post.Json(new CreateStationCommand("German", null, "Polish", null)).ToUrl(CreateStationCommand.Route);
-            x.StatusCodeShouldBe(201);
-        });
-
+        var createResult = await this.PostCreateCommandAsync(new CreateStationCommand("German", null, "Polish", null));
         var created = await createResult.ReadAsJsonAsync<CreatedResponse>();
         var stationId = created.Id;
 
@@ -65,44 +65,124 @@ public class SetLocationEndpointTests
     }
 
     [Test]
-    public async Task Post_DefaultLocation_Returns400()
+    public async Task Post_DefaultLocation_Returns422()
     {
-        // TODO
-        Assert.Fail("TODO");
-    }
+        var createResult = await this.PostCreateCommandAsync(new CreateStationCommand("German", null, "Polish", null));
+        var created = await createResult.ReadAsJsonAsync<CreatedResponse>();
+        var stationId = created.Id;
+        var sequence = await this.GetCurrentEventSequenceAsync();
 
-    [Test]
-    public async Task Post_MissingLocationInBody_BindsToDefaultAndReturns400()
-    {
-        // TODO
-        Assert.Fail("TODO");
+        var setLocationRoute = SetLocationCommand.Route.Replace("{id}", stationId.ToString());
+        var setLocationResult = await this.AuthFixture.Host.Scenario(x =>
+        {
+            x.Post.Json(new SetLocationCommand(stationId, default)).ToUrl(setLocationRoute);
+            x.StatusCodeShouldBe(422);
+        });
+
+        var problem = await setLocationResult.ReadAsJsonAsync<ValidationProblemDetails>();
+        await Assert.That(problem.Errors).ContainsKey(nameof(SetLocationCommand.Location));
+        await Assert.That(problem.Errors).AllKeys(x => x is nameof(SetLocationCommand.Location));
+        await this.AssertNothingWrittenAsync(sequence);
     }
 
     [Test]
     public async Task Post_NonExistentStation_Returns404()
     {
-        // TODO
-        Assert.Fail("TODO");
+        var createResult = await this.PostCreateCommandAsync(new CreateStationCommand("German", null, "Polish", null));
+        var sequence = await this.GetCurrentEventSequenceAsync();
+
+        var stationId = Guid.NewGuid();
+        var setLocationRoute = SetLocationCommand.Route.Replace("{id}", stationId.ToString());
+        var setLocationResult = await this.AuthFixture.Host.Scenario(x =>
+        {
+            x.Post.Json(new SetLocationCommand(stationId, new Location(20, 50))).ToUrl(setLocationRoute);
+            x.StatusCodeShouldBe(404);
+        });
+
+        await this.AssertNothingWrittenAsync(sequence);
     }
 
     [Test]
-    public async Task Post_CalledTwice_LastLocationWins()
+    [Arguments("")]
+    [Arguments("{ invalid json")]
+    [Arguments("{ \"Valid\": \"syntactically but not semantically\" }")]
+    [Arguments("{ \"Location\": \"lokacja zmyślona\" }")]
+    public async Task Post_WithMalformedJson_Returns400(string text)
     {
-        // TODO
-        Assert.Fail("TODO");
+        var createResult = await this.PostCreateCommandAsync(new CreateStationCommand("German", null, "Polish", null));
+        var sequence = await this.GetCurrentEventSequenceAsync();
+        var created = await createResult.ReadAsJsonAsync<CreatedResponse>();
+        var stationId = created.Id;
+
+        var setLocationRoute = SetLocationCommand.Route.Replace("{id}", stationId.ToString());
+        await this.AuthFixture.Host.Scenario(x =>
+        {
+            x.Post.Text(text).ContentType("application/json").ToUrl(setLocationRoute);
+            x.StatusCodeShouldBe(400);
+        });
+
+        await this.AssertNothingWrittenAsync(sequence);
     }
 
     [Test]
-    public async Task Post_Unauthenticated_Returns401()
+    public async Task Post_Unauthenticated_Returns302()
     {
-        // TODO
-        Assert.Fail("TODO");
+        var createResult = await this.PostCreateCommandAsync(new CreateStationCommand("German", null, "Polish", null));
+        var sequence = await this.GetCurrentEventSequenceAsync();
+        var created = await createResult.ReadAsJsonAsync<CreatedResponse>();
+        var stationId = created.Id;
+
+        var setLocationRoute = SetLocationCommand.Route.Replace("{id}", stationId.ToString());
+        var setLocationResult = await this.AnonFixture.Host.Scenario(x =>
+        {
+            x.Post.Json(new SetLocationCommand(stationId, new Location(20, 50))).ToUrl(setLocationRoute);
+            x.StatusCodeShouldBe(302);
+        });
+
+        await this.AssertNothingWrittenAsync(sequence);
     }
 
     [Test]
-    public async Task Post_ConcurrentCallsOnSameStation_DoNotLoseAnUpdate()
+    public async Task Post_ConcurrentCalls_Returns200Then409()
     {
-        // TODO
-        Assert.Fail("TODO");
+        var createResult = await this.PostCreateCommandAsync(new CreateStationCommand("German", null, "Polish", null));
+        var created = await createResult.ReadAsJsonAsync<CreatedResponse>();
+        var stationId = created.Id;
+
+        var setLocationRoute = SetLocationCommand.Route.Replace("{id}", stationId.ToString());
+
+        var firstLocation = new Location(20, 50);
+        var secondLocation = new Location(-10, 100);
+
+        await this.AuthFixture.Host.Scenario(x =>
+        {
+            x.Post.Json(new SetLocationCommand(stationId, firstLocation)).ToUrl(setLocationRoute);
+            x.StatusCodeShouldBe(200);
+        });
+
+        await this.AuthFixture.Host.Scenario(x =>
+        {
+            x.Post.Json(new SetLocationCommand(stationId, secondLocation)).ToUrl(setLocationRoute);
+            x.StatusCodeShouldBe(409);
+        });
+
+        var store = this.AuthFixture.Host.Services.GetRequiredService<IDocumentStore>();
+
+        await using var session = store.QuerySession();
+
+        var events = await session.Events
+            .QueryAllRawEvents()
+            .OrderBy(x => x.Sequence)
+            .ToListAsync();
+
+        await Assert.That(events).Count().IsEqualTo(2);
+
+        var locationsSet = events
+            .Where(x => x.Data is StationLocationSet)
+            .Select(x => ((StationLocationSet)x.Data!).Location)
+            .ToList();
+
+        await Assert.That(locationsSet).Count().IsEqualTo(1);
+        await Assert.That(locationsSet.Count(x => x == firstLocation)).IsEqualTo(1);
     }
 }
