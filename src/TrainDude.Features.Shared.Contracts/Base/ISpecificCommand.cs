@@ -12,4 +12,6 @@ public interface ISpecificCommand
     : ICommand<EmptyResponse>
 {
     Guid Id { get; }
+
+    long Version { get; }
 }

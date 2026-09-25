@@ -43,7 +43,7 @@ public class SetLocationEndpointTests
         var setLocationRoute = SetLocationCommand.Route.Replace("{id}", stationId.ToString());
         var setLocationResult = await this.AuthFixture.Host.Scenario(x =>
         {
-            x.Post.Json(new SetLocationCommand(stationId, new Location(20, 50))).ToUrl(setLocationRoute);
+            x.Post.Json(new SetLocationCommand(stationId, 1, new Location(20, 50))).ToUrl(setLocationRoute);
             x.StatusCodeShouldBe(200);
         });
 
@@ -75,7 +75,7 @@ public class SetLocationEndpointTests
         var setLocationRoute = SetLocationCommand.Route.Replace("{id}", stationId.ToString());
         var setLocationResult = await this.AuthFixture.Host.Scenario(x =>
         {
-            x.Post.Json(new SetLocationCommand(stationId, default)).ToUrl(setLocationRoute);
+            x.Post.Json(new SetLocationCommand(stationId, 0, default)).ToUrl(setLocationRoute);
             x.StatusCodeShouldBe(422);
         });
 
@@ -95,7 +95,7 @@ public class SetLocationEndpointTests
         var setLocationRoute = SetLocationCommand.Route.Replace("{id}", stationId.ToString());
         var setLocationResult = await this.AuthFixture.Host.Scenario(x =>
         {
-            x.Post.Json(new SetLocationCommand(stationId, new Location(20, 50))).ToUrl(setLocationRoute);
+            x.Post.Json(new SetLocationCommand(stationId, 0, new Location(20, 50))).ToUrl(setLocationRoute);
             x.StatusCodeShouldBe(404);
         });
 
@@ -135,7 +135,7 @@ public class SetLocationEndpointTests
         var setLocationRoute = SetLocationCommand.Route.Replace("{id}", stationId.ToString());
         var setLocationResult = await this.AnonFixture.Host.Scenario(x =>
         {
-            x.Post.Json(new SetLocationCommand(stationId, new Location(20, 50))).ToUrl(setLocationRoute);
+            x.Post.Json(new SetLocationCommand(stationId, 0, new Location(20, 50))).ToUrl(setLocationRoute);
             x.StatusCodeShouldBe(302);
         });
 
@@ -156,13 +156,13 @@ public class SetLocationEndpointTests
 
         await this.AuthFixture.Host.Scenario(x =>
         {
-            x.Post.Json(new SetLocationCommand(stationId, firstLocation)).ToUrl(setLocationRoute);
+            x.Post.Json(new SetLocationCommand(stationId, 1, firstLocation)).ToUrl(setLocationRoute);
             x.StatusCodeShouldBe(200);
         });
 
         await this.AuthFixture.Host.Scenario(x =>
         {
-            x.Post.Json(new SetLocationCommand(stationId, secondLocation)).ToUrl(setLocationRoute);
+            x.Post.Json(new SetLocationCommand(stationId, 1, secondLocation)).ToUrl(setLocationRoute);
             x.StatusCodeShouldBe(409);
         });
 

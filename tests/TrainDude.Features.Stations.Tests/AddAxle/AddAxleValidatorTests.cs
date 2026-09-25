@@ -16,7 +16,7 @@ public class AddAxleValidatorTests
     public async Task Validate_DefaultId_Fails()
     {
         var validator = new AddAxleValidator();
-        var command = new AddAxleCommand(Guid.Empty);
+        var command = new AddAxleCommand(Guid.Empty, 0);
 
         var result = await validator.ValidateAsync(command);
 
@@ -28,7 +28,7 @@ public class AddAxleValidatorTests
     public async Task Validate_NonDefaultId_Passes()
     {
         var validator = new AddAxleValidator();
-        var command = new AddAxleCommand(Guid.NewGuid());
+        var command = new AddAxleCommand(Guid.NewGuid(), 0);
 
         var result = await validator.ValidateAsync(command);
 

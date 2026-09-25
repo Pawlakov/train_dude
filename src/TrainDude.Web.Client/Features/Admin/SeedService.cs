@@ -86,14 +86,14 @@ public class SeedService
 
         foreach (var segment in seed.Segments)
         {
-            var appendSegmentCommand = new AppendSegmentCommand(created.Id, this.segmentIdMap[segment]);
+            var appendSegmentCommand = new AppendSegmentCommand(created.Id, 0, this.segmentIdMap[segment]);
 
             await this.api.SendAsync<AppendSegmentCommand, EmptyResponse>(appendSegmentCommand, cancellationToken);
         }
 
         foreach (var trip in seed.Trips)
         {
-            var assignTripCommand = new AssignTripCommand(created.Id, this.tripIdMap[trip]);
+            var assignTripCommand = new AssignTripCommand(created.Id, 0, this.tripIdMap[trip]);
 
             await this.api.SendAsync<AssignTripCommand, EmptyResponse>(assignTripCommand, cancellationToken);
         }
@@ -116,7 +116,7 @@ public class SeedService
         if (seed is { Latitude: not null, Longitude: not null })
         {
             var location = new Location(seed.Longitude.Value, seed.Latitude.Value);
-            var setLocationCommand = new SetLocationCommand(created.Id, location);
+            var setLocationCommand = new SetLocationCommand(created.Id, 0, location);
 
             await this.api.SendAsync<SetLocationCommand, EmptyResponse>(setLocationCommand, cancellationToken);
         }
@@ -124,7 +124,7 @@ public class SeedService
         var axleCount = seed.AxleCount ?? 1;
         for (var i = 1; i < axleCount; ++i)
         {
-            var addAxleCommand = new AddAxleCommand(created.Id);
+            var addAxleCommand = new AddAxleCommand(created.Id, 0);
 
             await this.api.SendAsync<AddAxleCommand, EmptyResponse>(addAxleCommand, cancellationToken);
         }
@@ -140,7 +140,7 @@ public class SeedService
         if (seed.Course is not null && seed.Course is not [])
         {
             var locations = (seed.Course?.Select(x => new Location(x.Longitude, x.Latitude)) ?? []).ToList();
-            var setCourseCommand = new SetCourseCommand(created.Id, locations);
+            var setCourseCommand = new SetCourseCommand(created.Id, 0, locations);
 
             await this.api.SendAsync<SetCourseCommand, EmptyResponse>(setCourseCommand, cancellationToken);
         }
