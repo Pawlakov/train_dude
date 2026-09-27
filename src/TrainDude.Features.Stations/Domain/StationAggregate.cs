@@ -33,6 +33,8 @@ public class StationAggregate
 
     public Guid Id { get; private set; }
 
+    public long Version { get; set; }
+
     public int AxleCount { get; private set; }
 
     public Location? Location { get; private set; }

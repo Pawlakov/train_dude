@@ -4,9 +4,11 @@
 
 namespace TrainDude.Features.Stations.GetStationMap;
 
+using System;
 using System.Linq;
 
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 using TrainDude.Features.Shared.Contracts.Generic;
 using TrainDude.Features.Stations.Contracts.GetStationMap;
@@ -18,10 +20,13 @@ using Wolverine.Persistence.EventSourcing;
 
 public static class GetStationMapEndpoint
 {
+    public sealed record GetStationMapRequest([FromRoute] Guid Id);
+
     [WolverineGet(GetStationMapQuery.TypeRoute)]
     [Tags("Stations")]
-    public static MapQueryResponse Handle([AsParameters] GetStationMapQuery query, [Document(FromRoute = "id")] StationReadModel readModel)
+    public static MapQueryResponse Handle([AsParameters] GetStationMapRequest request, [Document(FromRoute = "id")] StationReadModel readModel)
     {
+        var query = new GetStationMapQuery(request.Id);
         var result = new MapQueryResponse(new[] { readModel.Location }.Where(x => x.HasValue).Select(x => x.Value).ToList(), []);
 
         return result;

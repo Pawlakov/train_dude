@@ -8,7 +8,7 @@ using System;
 
 using TrainDude.Features.Shared.Contracts.Base;
 
-public sealed record AddAxleCommand(Guid Id, long Version)
+public sealed record AddAxleCommand(Guid Id, long ExpectedVersion)
     : ISpecificCommand
 {
     public const string TypeRoute = "/api/stations/{id}/add-axle";

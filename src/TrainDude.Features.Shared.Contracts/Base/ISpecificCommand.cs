@@ -13,5 +13,5 @@ public interface ISpecificCommand
 {
     Guid Id { get; }
 
-    long Version { get; }
+    long ExpectedVersion { get; }
 }
