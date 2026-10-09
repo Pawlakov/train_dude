@@ -8,10 +8,12 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Marten;
+using Marten.Events;
 
 using TrainDude.Features.Shared.Contracts.Generic;
 using TrainDude.Features.Stations.Contracts.AddAxle;
 using TrainDude.Features.Stations.Contracts.CreateStation;
+using TrainDude.Features.Stations.Domain;
 using TrainDude.Features.Stations.Domain.Events;
 
 using TUnit.Core.Services;
@@ -30,26 +32,35 @@ public class AddAxleEndpointTests
     [Test]
     public async Task Post_ExistingStation_Returns200AndAppendsEvent()
     {
-        var createResult = await this.PostCreateCommandAsync(new CreateStationCommand("German", null, "Polish", null));
-        var created = await createResult.ReadAsJsonAsync<CreatedResponse>();
-        var stationId = created.Id;
+        var stationId = Guid.NewGuid();
+        {
+            var store = this.AuthFixture.Host.Services.GetRequiredService<IDocumentStore>();
+            await using (var session = store.LightweightSession())
+            {
+                session.Events.StartStream<StationAggregate>(stationId, new StationCreated(stationId, this.AuthFixture.AuthenticatedActor, "German", null, "Polish", null));
+                await session.SaveChangesAsync();
+            }
+
+            await store.WaitForNonStaleProjectionDataAsync(TimeSpan.FromSeconds(30));
+        }
 
         await this.PostUpdateCommandAsync(new AddAxleCommand(stationId, 1));
+        {
+            var store = this.AuthFixture.Host.Services.GetRequiredService<IDocumentStore>();
 
-        var store = this.AuthFixture.Host.Services.GetRequiredService<IDocumentStore>();
+            await using var session = store.QuerySession();
 
-        await using var session = store.QuerySession();
+            var events = await session.Events
+                .QueryAllRawEvents()
+                .ToListAsync();
 
-        var events = await session.Events
-            .QueryAllRawEvents()
-            .ToListAsync();
+            await Assert.That(events).Count().IsEqualTo(2);
+            var axleAdded = (StationAxleAdded?)events.Last().Data;
+            await Assert.That(axleAdded).IsNotNull();
 
-        await Assert.That(events).Count().IsEqualTo(2);
-        var axleAdded = (StationAxleAdded?)events.Last().Data;
-        await Assert.That(axleAdded).IsNotNull();
-
-        await Assert.That(axleAdded.StationId).IsEqualTo(stationId);
-        await Assert.That(axleAdded.Who).IsEqualTo(this.AuthFixture.AuthenticatedActor);
+            await Assert.That(axleAdded.StationId).IsEqualTo(stationId);
+            await Assert.That(axleAdded.Who).IsEqualTo(this.AuthFixture.AuthenticatedActor);
+        }
     }
 
     [Test]

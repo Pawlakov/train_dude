@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 using Marten;
 using Marten.Events;
 
+using TrainDude.Features.Settings;
+using TrainDude.Features.Settings.Domain.Events;
+using TrainDude.Features.Shared.Contracts.Enums;
 using TrainDude.Features.Shared.Contracts.Values;
 using TrainDude.Features.Stations.Contracts.GetStation;
 using TrainDude.Features.Stations.Domain;
@@ -29,14 +32,16 @@ public class GetStationEndpointTests
     }
 
     [Test]
-    [Arguments("German New", "Polish", null, false, "Polish")]
-    [Arguments("German New", null, null, false, "???")]
-    [Arguments("German New", null, "Russian", false, "Russian")]
-    [Arguments(null, null, "Russian", false, "Russian")]
-    [Arguments(null, null, null, false, "???")]
-    [Arguments(null, "Polish", null, false, "Polish")]
-    [Arguments(null, "Polish", null, true, "Polish")]
-    public async Task Get_ExistingDocument_Returns200AndCurrentData(string? nameGermanNew, string? namePolish, string? nameRussian, bool hasLocation, string expectedName)
+    [Arguments("German New", "Polish", null, false, null, "Polish")]
+    [Arguments("German New", null, null, false, null, "???")]
+    [Arguments("German New", null, "Russian", false, null, "Russian")]
+    [Arguments(null, null, "Russian", false, null, "Russian")]
+    [Arguments(null, null, null, false, null, "???")]
+    [Arguments(null, "Polish", null, false, null, "Polish")]
+    [Arguments(null, "Polish", null, true, null, "Polish")]
+    [Arguments(null, "Polish", null, false, NamingPolicy.Modern, "Polish")]
+    [Arguments(null, "Polish", null, false, NamingPolicy.German, "German")]
+    public async Task Get_ExistingDocument_Returns200AndCurrentData(string? nameGermanNew, string? namePolish, string? nameRussian, bool hasLocation, NamingPolicy? policy, string expectedName)
     {
         Location? location = hasLocation ? new Location(20, 50) : null;
         var stationId = Guid.NewGuid();
@@ -47,6 +52,11 @@ public class GetStationEndpointTests
             if (hasLocation)
             {
                 session.Events.Append(stationId, new StationLocationSet(stationId, this.AuthFixture.AuthenticatedActor, location.Value));
+            }
+
+            if (policy.HasValue)
+            {
+                session.Events.Append(SettingsAccessor.SingletonId, new SettingsNamingPolicySet(SettingsAccessor.SingletonId, this.AuthFixture.AuthenticatedActor, policy.Value));
             }
 
             await session.SaveChangesAsync();
